@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>О нас — Мой Дом</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo">
+      <img src="images/logo.png" alt="Мой Дом" class="logo-img">
+      <div class="logo-text">
+        <div class="logo-title">Мой<span>Дом</span></div>
+        <div class="logo-subtitle">Мультицентр недвижимости</div>
+      </div>
+    </a>
+    <div class="nav-right">
+      <ul>
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="catalog.html">Каталог</a></li>
+        <li><a href="services.html">Услуги</a></li>
+        <li><a href="about.html" class="active">О нас</a></li>
+        <li><a href="contacts.html">Контакты</a></li>
+      </ul>
+      <button class="mobile-menu-btn" id="mobile-menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="container">
+  <h1 class="section-title">О компании «Мой Дом»</h1>
+  <p>Мы — мультицентр недвижимости в Мариуполе. Более 20 лет опыта. Помогаем жителям города покупать, продавать и арендовать квартиры и дома. Работаем честно, сопровождаем каждую сделку юридически и всегда на связи.</p>
+
+  <h2 class="section-title">Наши услуги</h2>
+  <ul style="margin-top:16px;line-height:2;padding-left:20px;">
+    <li>Продажа и покупка недвижимости</li>
+    <li>Восстановление утраченных документов</li>
+    <li>Росреестр (регистрация)</li>
+    <li>Договоры купли-продажи и дарения</li>
+    <li>Оценка для банка, суда и вступления в наследство</li>
+    <li>Срочный выкуп</li>
+    <li>Судебная и строительная экспертиза</li>
+    <li>Аренда</li>
+    <li>Консультации по всем вопросам недвижимости</li>
+  </ul>
+
+  <h2 class="section-title">Наша команда</h2>
+  <div class="objects-grid">
+    <div class="card"><div class="card-body">
+      <div class="card-title">Анна Смирнова</div>
+      <div class="card-meta">Ведущий риелтор, 8 лет опыта</div>
+    </div></div>
+    <div class="card"><div class="card-body">
+      <div class="card-title">Иван Петров</div>
+      <div class="card-meta">Специалист по загородной недвижимости</div>
+    </div></div>
+    <div class="card"><div class="card-body">
+      <div class="card-title">Мария Козлова</div>
+      <div class="card-meta">Эксперт по аренде и инвестициям</div>
+    </div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Мультицентр недвижимости «Мой Дом»</h4>
+        <p>Помогаем покупать, продавать и арендовать жильё в Мариуполе.</p>
+      </div>
+      <div>
+        <h4>Телефон</h4>
+        <p><a href="tel:+79495044455" style="color:var(--accent); font-weight:bold;">+7 (949) 504-44-55</a></p>
+      </div>
+      <div>
+        <h4>Адрес</h4>
+        <p>г. Мариуполь, пр. Ленина (Мира), 54/46<br><small style="color:var(--muted)">(ориентир — остановка Драмтеатр)</small></p>
+      </div>
+      <div>
+        <h4>Мессенджеры</h4>
+        <ul style="list-style: none; padding: 0; margin-top: 5px;">
+          <li style="margin-bottom: 8px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">Telegram</a></li>
+          <li style="margin-bottom: 8px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">MAX</a></li>
+          <li><a href="https://vk.com/moy_dom_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">ВКонтакте</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">© 2025 Мой Дом. Все права защищены.</div>
+  </div>
+</footer>
+
+<script>
+  // Бургер-меню
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const navMenu = document.querySelector('.nav ul');
+  if (mobileBtn && navMenu) {
+    mobileBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('show');
+    });
+  }
+</script>
+</body>
+</html>

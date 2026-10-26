@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Контакты — Мой Дом</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo">
+      <img src="images/logo.png" alt="Мой Дом" class="logo-img">
+      <div class="logo-text">
+        <div class="logo-title">Мой<span>Дом</span></div>
+        <div class="logo-subtitle">Мультицентр недвижимости</div>
+      </div>
+    </a>
+    <div class="nav-right">
+      <ul>
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="catalog.html">Каталог</a></li>
+        <li><a href="services.html">Услуги</a></li>
+        <li><a href="about.html">О нас</a></li>
+        <li><a href="contacts.html" class="active">Контакты</a></li>
+      </ul>
+      <button class="mobile-menu-btn" id="mobile-menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="container">
+  <h1 class="section-title">Связаться с нами</h1>
+  <p class="section-sub">Оставьте заявку — мы перезвоним в течение 15 минут</p>
+
+  <form class="form" id="contact-form" style="margin: 0 0 40px 0;">
+    <div class="form-group">
+      <label for="name">Ваше имя</label>
+      <input type="text" id="name" required placeholder="Иван">
+    </div>
+    <div class="form-group">
+      <label for="phone">Телефон</label>
+      <input type="tel" id="phone" required placeholder="+7 (949) 504-44-55">
+    </div>
+    <div class="form-group">
+      <label for="message">Комментарий</label>
+      <textarea id="message" placeholder="Какой объект вас интересует?"></textarea>
+    </div>
+    
+    <div class="form-group" style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; color: var(--muted); margin-bottom: 20px;">
+      <input type="checkbox" id="agree" required style="margin-top: 4px; width: auto;">
+      <label for="agree" style="font-weight: 400; cursor: pointer;">
+        Я согласен на обработку персональных данных и с <a href="#" style="color: var(--accent);">политикой конфиденциальности</a>.
+      </label>
+    </div>
+
+    <button type="submit" class="btn btn-accent">Отправить заявку</button>
+  </form>
+
+  <h2 class="section-title">Мы на карте</h2>
+  <div class="map-wrapper" style="margin-bottom: 40px;">
+    <iframe
+      src="https://yandex.ru/map-widget/v1/?ll=37.548707%2C47.095000&z=17&pt=37.548707,47.095000,pm2rdm&l=map"
+      width="100%"
+      height="420"
+      frameborder="0"
+      allowfullscreen="true"
+      style="border:0;"
+      title="Мой Дом — г. Мариуполь, пр. Ленина (Мира), 54/46"
+      loading="lazy">
+    </iframe>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Мультицентр недвижимости «Мой Дом»</h4>
+        <p>Помогаем покупать, продавать и арендовать жильё в Мариуполе.</p>
+      </div>
+      <div>
+        <h4>Телефон</h4>
+        <p><a href="tel:+79495044455" style="color:var(--accent); font-weight:bold;">+7 (949) 504-44-55</a></p>
+      </div>
+      <div>
+        <h4>Адрес</h4>
+        <p>г. Мариуполь, пр. Ленина (Мира), 54/46<br><small style="color:var(--muted)">(ориентир — остановка Драмтеатр)</small></p>
+      </div>
+      <div>
+        <h4>Мессенджеры</h4>
+        <ul style="list-style: none; padding: 0; margin-top: 5px;">
+          <li style="margin-bottom: 8px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">Telegram</a></li>
+          <li style="margin-bottom: 8px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">MAX</a></li>
+          <li><a href="https://vk.com/moy_dom_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">ВКонтакте</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">© 2025 Мой Дом. Все права защищены.</div>
+  </div>
+</footer>
+
+<script>
+  // Бургер-меню
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const navMenu = document.querySelector('.nav ul');
+  if (mobileBtn && navMenu) {
+    mobileBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('show');
+    });
+  }
+
+  // Отправка формы
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Спасибо! Заявка отправлена. Мы свяжемся с вами.');
+    this.reset();
+  });
+</script>
+</body>
+</html>

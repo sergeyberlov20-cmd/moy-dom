@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мой Дом — Мультицентр недвижимости в Мариуполе</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo">
+      <img src="images/logo.png" alt="Мой Дом" class="logo-img">
+      <div class="logo-text">
+        <div class="logo-title">Мой<span>Дом</span></div>
+        <div class="logo-subtitle">Мультицентр недвижимости</div>
+      </div>
+    </a>
+    <div class="nav-right">
+      <ul>
+        <li><a href="index.html" class="active">Главная</a></li>
+        <li><a href="catalog.html">Каталог</a></li>
+        <li><a href="services.html">Услуги</a></li>
+        <li><a href="about.html">О нас</a></li>
+        <li><a href="contacts.html">Контакты</a></li>
+      </ul>
+      <button class="mobile-menu-btn" id="mobile-menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <h1>Мультицентр недвижимости «Мой Дом»</h1>
+    <p>Продажа, аренда и юридическое сопровождение в Мариуполе</p>
+    <a href="catalog.html" class="btn btn-accent">Смотреть каталог</a>
+  </div>
+</section>
+
+<section class="container">
+  <h2 class="section-title">Популярные объекты</h2>
+  <p class="section-sub">Свежие предложения от наших специалистов</p>
+  <div class="objects-grid" id="featured"></div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Мультицентр недвижимости «Мой Дом»</h4>
+        <p>Помогаем покупать, продавать и арендовать жильё в Мариуполе.</p>
+      </div>
+      <div>
+        <h4>Телефон</h4>
+        <p><a href="tel:+79495044455" style="color:var(--accent); font-weight:bold;">+7 (949) 504-44-55</a></p>
+      </div>
+      <div>
+        <h4>Адрес</h4>
+        <p>г. Мариуполь, пр. Ленина (Мира), 54/46<br><small style="color:var(--muted)">(ориентир — остановка Драмтеатр)</small></p>
+      </div>
+      <div>
+        <h4>Мессенджеры</h4>
+        <ul style="list-style: none; padding: 0; margin-top: 5px;">
+          <li style="margin-bottom: 8px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">Telegram</a></li>
+          <li style="margin-bottom: 8px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">MAX</a></li>
+          <li><a href="https://vk.com/moy_dom_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">ВКонтакте</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">© 2025 Мой Дом. Все права защищены.</div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script>
+  // Отрисовка карточек
+  const featured = document.getElementById('featured');
+  OBJECTS.slice(0, 3).forEach(obj => {
+    featured.insertAdjacentHTML('beforeend', renderCard(obj));
+  });
+
+  function renderCard(o) {
+    return `
+      <article class="card">
+        <div class="card-img" style="background-image:url('${o.image}')">
+          <span class="card-badge">${o.deal}</span>
+        </div>
+        <div class="card-body">
+          <div class="card-price">${formatPrice(o.price, o.deal)}</div>
+          <div class="card-title">${o.title}</div>
+          <div class="card-meta">${o.address}</div>
+          <a href="object.html?id=${o.id}" class="btn">Подробнее</a>
+        </div>
+      </article>`;
+  }
+
+  // Бургер-меню
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const navMenu = document.querySelector('.nav ul');
+  if (mobileBtn && navMenu) {
+    mobileBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('show');
+    });
+  }
+</script>
+</body>
+</html>
