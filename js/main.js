@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  // 3. Логика ИЗБРАННОГО (Сердечки)
+  // 3. Логика ИЗБРАННОГО
   window.getFavorites = () => JSON.parse(localStorage.getItem('favorites') || '[]');
   
   window.toggleFavorite = function(id, btn) {
