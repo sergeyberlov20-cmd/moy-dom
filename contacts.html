@@ -39,19 +39,19 @@
   <form class="form" id="contact-form" style="margin: 0 0 40px 0;">
     <div class="form-group">
       <label for="name">Ваше имя</label>
-      <input type="text" id="name" required placeholder="Иван">
+      <input type="text" id="name" name="name" required placeholder="Иван">
     </div>
     <div class="form-group">
       <label for="phone">Телефон</label>
-      <input type="tel" id="phone" required placeholder="+7 (949) 504-44-55">
+      <input type="tel" id="phone" name="phone" required placeholder="+7 (949) 504-44-55">
     </div>
     <div class="form-group">
       <label for="message">Комментарий</label>
-      <textarea id="message" placeholder="Какой объект вас интересует?"></textarea>
+      <textarea id="message" name="message" placeholder="Какой объект вас интересует?"></textarea>
     </div>
     
     <div class="form-group" style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; color: var(--muted); margin-bottom: 20px;">
-      <input type="checkbox" id="agree" required style="margin-top: 4px; width: auto;">
+      <input type="checkbox" id="agree" name="agree" required style="margin-top: 4px; width: auto;">
       <label for="agree" style="font-weight: 400; cursor: pointer;">
         Я согласен на обработку персональных данных и с <a href="privacy.html" style="color: var(--accent);">политикой конфиденциальности</a>.
       </label>
@@ -112,20 +112,12 @@
     mobileBtn.addEventListener('click', () => navMenu.classList.toggle('show'));
   }
 
-  // ОТПРАВКА ФОРМЫ В TELEGRAM
+  // ОТПРАВКА ФОРМЫ ЧЕРЕЗ FORMSPREE
   document.getElementById('contact-form').addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const message = document.getElementById('message').value;
-
-    // ВАШ ТОКЕН И ID
-    const TOKEN = '9194042924:AAH1UP91AAZ5h8Rz_8fhwmjLneSvtdmaX8I'; 
-    const CHAT_ID = '8240330397'; 
-
-    const text = `🔔 Новая заявка!\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n💬 Комментарий: ${message || 'Нет'}`;
-    const url = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+    const form = e.target;
+    const data = new FormData(form);
 
     const btn = this.querySelector('button[type="submit"]');
     const originalText = btn.textContent;
@@ -133,27 +125,23 @@
     btn.disabled = true;
 
     try {
-      const response = await fetch(url, {
+      // ВАШ ID ФОРМЫ УЖЕ ЗДЕСЬ
+      const response = await fetch('https://formspree.io/f/xaeejkvb', {
         method: 'POST',
+        body: data,
         headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: text
-        })
+          'Accept': 'application/json'
+        }
       });
-
-      const data = await response.json();
 
       if (response.ok) {
         alert('Спасибо! Заявка отправлена. Мы свяжемся с вами.');
-        this.reset();
+        form.reset();
       } else {
-        alert('Ошибка Telegram: ' + data.description);
+        alert('Ошибка отправки. Пожалуйста, позвоните нам.');
       }
     } catch (error) {
-      alert('Ошибка сети: ' + error.message + '. Возможно, заблокирован доступ к api.telegram.org');
+      alert('Ошибка сети. Попробуйте позже.');
     } finally {
       btn.textContent = originalText;
       btn.disabled = false;
