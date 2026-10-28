@@ -27,7 +27,6 @@
         <li><a href="contacts.html">Контакты</a></li>
       </ul>
       
-      <!-- НОВЫЕ ИКОНКИ -->
       <div class="social-icons">
         <a href="https://t.me/nevizhimost_mariupol" target="_blank" title="Telegram" class="social-tg">
           <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
@@ -157,42 +156,34 @@
   const fSort = document.getElementById('f-sort');
 
   function render() {
-    catalog.innerHTML = `
-      <div class="card skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div></div>
-      <div class="card skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div></div>
-      <div class="card skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div></div>
-    `;
+    const type = fType.value;
+    const deal = fDeal.value;
+    const rooms = fRooms.value;
+    const areaMin = Number(fAreaMin.value) || 0;
+    const min = Number(fMin.value) || 0;
+    const max = Number(fMax.value) || Infinity;
+    const sort = fSort.value;
 
-    setTimeout(() => {
-      const type = fType.value;
-      const deal = fDeal.value;
-      const rooms = fRooms.value;
-      const areaMin = Number(fAreaMin.value) || 0;
-      const min = Number(fMin.value) || 0;
-      const max = Number(fMax.value) || Infinity;
-      const sort = fSort.value;
+    let filtered = OBJECTS.filter(o => {
+      if (type && o.type !== type) return false;
+      if (deal && o.deal !== deal) return false;
+      if (rooms) {
+        const r = Number(rooms);
+        if (r === 4 ? o.rooms < 4 : o.rooms !== r) return false;
+      }
+      if (o.area < areaMin) return false;
+      if (o.price < min || o.price > max) return false;
+      return true;
+    });
 
-      let filtered = OBJECTS.filter(o => {
-        if (type && o.type !== type) return false;
-        if (deal && o.deal !== deal) return false;
-        if (rooms) {
-          const r = Number(rooms);
-          if (r === 4 ? o.rooms < 4 : o.rooms !== r) return false;
-        }
-        if (o.area < areaMin) return false;
-        if (o.price < min || o.price > max) return false;
-        return true;
-      });
+    if (sort === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+    else if (sort === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+    else if (sort === 'area-desc') filtered.sort((a, b) => b.area - a.area);
+    else if (sort === 'date-desc') filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-      if (sort === 'price-asc') filtered.sort((a, b) => a.price - b.price);
-      else if (sort === 'price-desc') filtered.sort((a, b) => b.price - a.price);
-      else if (sort === 'area-desc') filtered.sort((a, b) => b.area - a.area);
-      else if (sort === 'date-desc') filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-      catalog.innerHTML = filtered.length
-        ? filtered.map(renderCard).join('')
-        : '<p style="padding:40px 0;color:#818c99;font-size:1.1rem;">Объектов не найдено. Попробуйте изменить фильтры.</p>';
-    }, 300);
+    catalog.innerHTML = filtered.length
+      ? filtered.map(renderCard).join('')
+      : '<p style="padding:40px 0;color:#818c99;font-size:1.1rem;">Объектов не найдено. Попробуйте изменить фильтры.</p>';
   }
 
   function renderCard(o) {
