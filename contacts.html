@@ -136,13 +136,13 @@
         headers: { 'Accept': 'application/json' }
       });
       if (response.ok) {
-        alert('Спасибо! Заявка отправлена. Мы свяжемся с вами.');
+        showToast('Спасибо! Заявка отправлена. Мы свяжемся с вами.', 'success');
         form.reset();
       } else {
-        alert('Ошибка отправки. Пожалуйста, позвоните нам.');
+        showToast('Ошибка отправки. Пожалуйста, позвоните нам.', 'error');
       }
     } catch (error) {
-      alert('Ошибка сети. Попробуйте позже.');
+      showToast('Ошибка сети. Попробуйте позже.', 'error');
     } finally {
       btn.textContent = originalText;
       btn.disabled = false;
