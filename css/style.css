@@ -38,31 +38,35 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 
 /* Соцсети в шапке */
 .social-icons { display: flex; gap: 10px; align-items: center; }
-.social-icons a { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; color: #fff; text-decoration: none; transition: transform 0.2s, opacity 0.2s; }
+.social-icons a { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  width: 40px; 
+  height: 40px; 
+  border-radius: 8px; /* Квадратные с закруглением */
+  color: #fff; 
+  text-decoration: none; 
+  transition: transform 0.2s, opacity 0.2s; 
+}
 .social-icons a:hover { transform: translateY(-2px); opacity: 0.9; }
 .social-icons svg { width: 22px; height: 22px; fill: currentColor; }
 
+/* Цвета соцсетей */
 .social-tg { background: #0088cc; }
-.social-vk { background: #0077FF; border-radius: 50%; }
+.social-vk { background: #0077FF; }
 
-/* Иконка МАКС */
+/* Иконка МАКС (русские буквы) */
 .social-max { 
   background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%); 
-  border-radius: 8px;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  font-family: "Segoe UI", Roboto, Arial, sans-serif; /* Шрифт с идеальной кириллицей */
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
   font-weight: 800; 
-  font-size: 11px; /* Размер, чтобы слово влезло */
-  letter-spacing: 0.5px; /* Немного разрядки для стиля */
+  font-size: 11px; 
+  letter-spacing: 0.5px; 
   text-transform: uppercase;
 }
 .social-max::before {
   content: "МАКС";
-  transform: translateY(-1px); /* Легкая оптическая коррекция */
 }
 
 /* Кнопки */
