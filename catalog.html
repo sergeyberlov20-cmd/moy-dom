@@ -183,6 +183,7 @@
       ? filtered.map(renderCard).join('')
       : '<p style="padding:40px 0;color:#818c99;font-size:1.1rem;">Объектов не найдено. Попробуйте изменить фильтры.</p>';
       
+    // Вызываем инициализацию слайдеров ПОСЛЕ того, как карточки вставились в HTML
     if (window.initMiniSliders) window.initMiniSliders();
   }
 
