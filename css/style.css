@@ -36,23 +36,22 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 .nav a:not(.logo) { text-decoration: none; color: var(--text); font-weight: 500; transition: color .2s; }
 .nav a:not(.logo):hover, .nav a.active { color: var(--accent); }
 
-/* Соцсети в шапке */
+/* Соцсети в шапке (для ПК) */
 .social-icons { display: flex; gap: 10px; align-items: center; }
 .social-icons a { 
   display: block; 
   width: 40px; 
   height: 40px; 
-  border-radius: 8px; /* Принудительно делаем квадратными с закруглением */
+  border-radius: 8px; 
   text-decoration: none; 
   transition: transform 0.2s, opacity 0.2s; 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  overflow: hidden; /* Обрезаем картинку, если она вылезает за края */
+  overflow: hidden;
 }
 .social-icons a:hover { transform: translateY(-2px); opacity: 0.9; }
 
-/* Картинки соцсетей (имена файлов должны совпадать) */
 .social-tg { background-image: url('../images/tg-logo.png'); background-color: #0088cc; }
 .social-vk { background-image: url('../images/vk-logo.png'); background-color: #0077FF; }
 .social-max { background-image: url('../images/max-logo.png'); background-color: #7B68EE; }
@@ -153,20 +152,36 @@ footer a:hover { color: #fff; }
 #scrollTopBtn { display: none; position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--primary); color: #fff; border: none; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 99; transition: background 0.2s; }
 #scrollTopBtn:hover { background: var(--accent); }
 
-/* Адаптив */
+/* АДАПТИВ (Мобильная версия) */
 @media (max-width: 768px) {
   .nav { height: 60px; }
   .hero h1 { font-size: 1.6rem; }
   .hero p { font-size: 1rem; }
   .object-detail { grid-template-columns: 1fr; }
   .object-gallery { height: 280px; }
-  .logo-img { height: 40px; }
+  .logo-img { height: 35px; }
   .section-title { font-size: 1.5rem; }
-  
-  .social-icons { display: none; }
-  .mobile-menu-btn { display: flex; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 5px; z-index: 101; }
-  .mobile-menu-btn span { display: block; width: 25px; height: 3px; background: var(--text); transition: 0.3s; }
-  
+
+  /* СКРЫВАЕМ ПОДПИСЬ И УМЕНЬШАЕМ ЛОГО НА ТЕЛЕФОНЕ */
+  .logo-subtitle { display: none; } 
+  .logo-title { font-size: 1.1rem; }
+
+  /* ПОКАЗЫВАЕМ ИКОНКИ В ШАПКЕ И ДЕЛАЕМ ИХ КОМПАКТНЫМИ */
+  .social-icons { display: flex; gap: 6px; }
+  .social-icons a { 
+    width: 28px; 
+    height: 28px; 
+    border-radius: 6px; 
+  }
+
+  /* УМЕНЬШАЕМ ОТСТУПЫ В ПРАВОЙ ЧАСТИ */
+  .nav-right { gap: 10px; }
+
+  /* Бургер-меню */
+  .mobile-menu-btn { display: flex; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 0; z-index: 101; }
+  .mobile-menu-btn span { display: block; width: 22px; height: 2px; background: var(--text); transition: 0.3s; }
+
+  /* Выпадающее меню */
   .nav ul { display: none; flex-direction: column; position: absolute; top: 60px; right: 0; width: 250px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 99; }
   .nav ul.show { display: flex; }
   .nav ul li { margin-bottom: 15px; }
