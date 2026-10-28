@@ -1,26 +1,25 @@
 const OBJECTS = [
   {
-    id: 1,
-    type: "Квартира",
-    deal: "Продажа",
-    title: "2-комнатная квартира, 62 м²",
-    price: 4500000,
-    address: "г. Мариуполь, пр. Мира, 15",
-    rooms: 2,
-    area: 62,
-    floor: 5,
-    floors: 12,
-    lat: 47.0965,
-    lon: 37.5510,
-    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
-    images: [
-      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
-      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
-      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800"
-    ],
-    description: "Светлая квартира с ремонтом в новом доме.",
-    date: "2025-05-20"
-  },
+    "id": 1793228619221,
+    "type": "Квартира",
+    "deal": "Продажа",
+    "title": "Квартира, 2-комн., Бульвар Богдана Хмельницкого 39",
+    "price": 4500000,
+    "address": "Бульвар Богдана Хмельницкого 39",
+    "rooms": 2,
+    "area": 0,
+    "floor": 0,
+    "floors": 0,
+    "image": "images/Квартира_Продажа_2_4500000_Бульвар Богдана Хмельницкого 39/1.jpg",
+    "description": "Свежий объект.",
+    "date": "2026-10-28"
+  }
+];
+
+function formatPrice(price, deal) {
+  const formatted = new Intl.NumberFormat("ru-RU").format(price) + " ₽";
+  return deal === "Аренда" ? formatted + "/мес" : formatted;
+}},
   {
     id: 2,
     type: "Дом",
