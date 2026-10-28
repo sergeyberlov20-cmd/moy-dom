@@ -81,4 +81,25 @@
           <h1>${obj.title}</h1>
           <div class="price">${formatPrice(obj.price, obj.deal)}</div>
           <ul class="specs">
-            <
+            <li><span>Тип</span><span>${obj.type}</span></li>
+            <li><span>Сделка</span><span>${obj.deal}</span></li>
+            <li><span>Адрес</span><span>${obj.address}</span></li>
+            <li><span>Комнат</span><span>${obj.rooms}</span></li>
+            <li><span>Площадь</span><span>${obj.area} м²</span></li>
+            <li><span>Этаж</span><span>${obj.floor} из ${obj.floors}</span></li>
+          </ul>
+          <p>${obj.description}</p>
+          <br>
+          <a href="contacts.html" class="btn btn-accent">Записаться на просмотр</a>
+        </div>
+      </div>`;
+  }
+
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const navMenu = document.querySelector('.nav ul');
+  if (mobileBtn && navMenu) {
+    mobileBtn.addEventListener('click', () => navMenu.classList.toggle('show'));
+  }
+</script>
+</body>
+</html>
