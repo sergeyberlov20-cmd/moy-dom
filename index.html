@@ -58,11 +58,8 @@
   <h2 class="section-title">Популярные объекты</h2>
   <p class="section-sub">Свежие предложения от наших специалистов</p>
   
-  <div class="objects-grid" id="featured">
-    <div class="card skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text short"></div></div>
-    <div class="card skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text short"></div></div>
-    <div class="card skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text short"></div></div>
-  </div>
+  <!-- Карточки грузятся сразу, без скелетонов -->
+  <div class="objects-grid" id="featured"></div>
 </section>
 
 <button id="scrollTopBtn" title="Наверх">&#8593;</button>
@@ -104,13 +101,10 @@
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  setTimeout(() => {
-    const featured = document.getElementById('featured');
-    featured.innerHTML = '';
-    OBJECTS.slice(0, 3).forEach(obj => {
-      featured.insertAdjacentHTML('beforeend', renderCard(obj));
-    });
-  }, 500);
+  const featured = document.getElementById('featured');
+  OBJECTS.slice(0, 3).forEach(obj => {
+    featured.insertAdjacentHTML('beforeend', renderCard(obj));
+  });
 
   function renderCard(o) {
     return `
