@@ -36,15 +36,18 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 .nav a:not(.logo) { text-decoration: none; color: var(--text); font-weight: 500; transition: color .2s; }
 .nav a:not(.logo):hover, .nav a.active { color: var(--accent); }
 
-/* Соцсети в шапке (Цветные) */
+/* Соцсети в шапке */
 .social-icons { display: flex; gap: 10px; align-items: center; }
-.social-icons a { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; color: #fff; text-decoration: none; transition: transform 0.2s, opacity 0.2s; }
+.social-icons a { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; color: #fff; text-decoration: none; transition: transform 0.2s, opacity 0.2s; }
 .social-icons a:hover { transform: translateY(-2px); opacity: 0.9; }
-.social-icons svg { width: 20px; height: 20px; fill: currentColor; }
+.social-icons svg { width: 22px; height: 22px; fill: currentColor; }
 
 .social-tg { background: #0088cc; }
-.social-vk { background: #0077FF; }
-.social-max { background: #8A2BE2; } /* Фиолетовый для MAX */
+.social-vk { background: #0077FF; border-radius: 50%; }
+.social-max { 
+  background: linear-gradient(135deg, #4A90E2 0%, #8A2BE2 100%); 
+  position: relative;
+}
 
 /* Кнопки */
 .btn { display: inline-block; padding: 12px 24px; border-radius: var(--radius); background: var(--primary); color: #fff; text-decoration: none; font-weight: 600; border: none; cursor: pointer; transition: background .2s; text-align: center; }
