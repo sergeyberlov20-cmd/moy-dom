@@ -17,14 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  // 3. СЛАЙДЕР В КАРТОЧКАХ КАТАЛОГА И ГЛАВНОЙ
-  const initMiniSliders = () => {
+  // 3. Инициализация слайдеров в карточках (миниатюрах)
+  window.initMiniSliders = function() {
     document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
+      if (wrapper.dataset.sliderInitialized) return; 
+      
       const imgDiv = wrapper.querySelector('.card-img');
       const images = JSON.parse(wrapper.getAttribute('data-images') || '[]');
       let currentIndex = 0;
 
-      if (images.length <= 1) return; // Если фото одно, стрелки не нужны
+      if (images.length <= 1) return; 
 
       const prevBtn = wrapper.querySelector('.prev');
       const nextBtn = wrapper.querySelector('.next');
@@ -32,19 +34,22 @@ document.addEventListener('DOMContentLoaded', () => {
       if (prevBtn && nextBtn) {
         prevBtn.addEventListener('click', (e) => {
           e.preventDefault();
+          e.stopPropagation();
           currentIndex = (currentIndex - 1 + images.length) % images.length;
           imgDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
         });
         nextBtn.addEventListener('click', (e) => {
           e.preventDefault();
+          e.stopPropagation();
           currentIndex = (currentIndex + 1) % images.length;
           imgDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
         });
       }
+      wrapper.dataset.sliderInitialized = "true";
     });
   };
 
-  // 4. СЛАЙДЕР В ДЕТАЛЬНОЙ КАРТОЧКЕ
+  // 4. Слайдер в детальной карточке
   const gallery = document.getElementById('object-gallery');
   if (gallery) {
     let images = [];
@@ -97,7 +102,4 @@ document.addEventListener('DOMContentLoaded', () => {
       gallery.innerHTML = `<div style="width:100%; height:100%; background-image:url('${images[0]}'); background-size:cover; background-position:center;"></div>`;
     }
   }
-
-  // Запускаем мини-слайдеры после того, как карточки отрисовались
-  setTimeout(initMiniSliders, 100);
 });
