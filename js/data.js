@@ -10,7 +10,7 @@ const OBJECTS = [
     area: 62,
     floor: 5,
     floors: 12,
-    lat: 47.0965, // Координаты для карты
+    lat: 47.0965,
     lon: 37.5510,
     image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
     images: [
