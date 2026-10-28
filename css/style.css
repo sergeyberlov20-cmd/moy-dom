@@ -44,29 +44,24 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
   justify-content: center; 
   width: 40px; 
   height: 40px; 
-  border-radius: 8px; /* Квадратные с закруглением */
+  border-radius: 8px; 
   color: #fff; 
   text-decoration: none; 
   transition: transform 0.2s, opacity 0.2s; 
 }
 .social-icons a:hover { transform: translateY(-2px); opacity: 0.9; }
-.social-icons svg { width: 22px; height: 22px; fill: currentColor; }
 
-/* Цвета соцсетей */
+/* Увеличиваем иконки SVG */
+.social-icons svg { width: 24px; height: 24px; fill: currentColor; }
+
 .social-tg { background: #0088cc; }
 .social-vk { background: #0077FF; }
 
-/* Иконка МАКС (русские буквы) */
+/* Иконка МАКС (картинка) */
 .social-max { 
-  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%); 
-  font-family: "Segoe UI", Roboto, Arial, sans-serif;
-  font-weight: 800; 
-  font-size: 11px; 
-  letter-spacing: 0.5px; 
-  text-transform: uppercase;
-}
-.social-max::before {
-  content: "МАКС";
+  background-image: url('../images/max-logo.png');
+  background-size: cover;
+  background-position: center;
 }
 
 /* Кнопки */
