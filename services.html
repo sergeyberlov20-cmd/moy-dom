@@ -3,56 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Наши услуги — Мой Дом</title>
+  <title>Услуги агентства недвижимости в Мариуполе — Мой Дом</title>
+  <meta name="description" content="Полный комплекс риелторских и юридических услуг: продажа, аренда, оформление документов, оценка, судебная экспертиза.">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 20px;
-      margin: 32px 0;
-    }
-    .service-card {
-      background: var(--accent);
-      color: #fff;
-      border-radius: var(--radius);
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 180px;
-      transition: transform .2s, box-shadow .2s;
-      box-shadow: 0 4px 10px rgba(204, 34, 41, 0.2);
-    }
-    .service-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(204, 34, 41, 0.4);
-    }
-    .service-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      line-height: 1.2;
-    }
-    .service-desc {
-      font-size: 0.9rem;
-      opacity: 0.9;
-      margin-bottom: 20px;
-      flex-grow: 1;
-    }
-    .service-btn {
-      background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-      text-align: center;
-      padding: 10px;
-      border-radius: var(--radius);
-      text-decoration: none;
-      font-weight: 600;
-      transition: background 0.2s;
-    }
-    .service-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; margin: 32px 0; }
+    .service-card { background: var(--accent); color: #fff; border-radius: var(--radius); padding: 24px; display: flex; flex-direction: column; justify-content: space-between; min-height: 180px; transition: transform .2s, box-shadow .2s; box-shadow: 0 4px 10px rgba(204, 34, 41, 0.2); }
+    .service-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(204, 34, 41, 0.4); }
+    .service-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; line-height: 1.2; }
+    .service-desc { font-size: 0.9rem; opacity: 0.9; margin-bottom: 20px; flex-grow: 1; }
+    .service-btn { background: rgba(255, 255, 255, 0.2); color: #fff; text-align: center; padding: 10px; border-radius: var(--radius); text-decoration: none; font-weight: 600; transition: background 0.2s; }
+    .service-btn:hover { background: rgba(255, 255, 255, 0.3); }
   </style>
 </head>
 <body>
@@ -74,6 +35,11 @@
         <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
       </ul>
+      <div class="social-icons">
+        <a href="https://t.me/nevizhimost_mariupol" target="_blank" title="Telegram">TG</a>
+        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX">MAX</a>
+        <a href="https://vk.com/moy_dom_mariupol" target="_blank" title="ВКонтакте">VK</a>
+      </div>
       <button class="mobile-menu-btn" id="mobile-menu-btn">
         <span></span><span></span><span></span>
       </button>
@@ -160,6 +126,8 @@
   </div>
 </section>
 
+<button id="scrollTopBtn" title="Наверх">&#8593;</button>
+
 <footer>
   <div class="container">
     <div class="footer-grid">
@@ -194,12 +162,6 @@
   </div>
 </footer>
 
-<script>
-  const mobileBtn = document.getElementById('mobile-menu-btn');
-  const navMenu = document.querySelector('.nav ul');
-  if (mobileBtn && navMenu) {
-    mobileBtn.addEventListener('click', () => navMenu.classList.toggle('show'));
-  }
-</script>
+<script src="js/main.js"></script>
 </body>
 </html>
