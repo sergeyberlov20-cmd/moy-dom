@@ -42,19 +42,20 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
   display: block; 
   width: 40px; 
   height: 40px; 
-  border-radius: 8px; 
+  border-radius: 8px; /* Принудительно делаем квадратными с закруглением */
   text-decoration: none; 
   transition: transform 0.2s, opacity 0.2s; 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  overflow: hidden; /* Обрезаем картинку, если она вылезает за края */
 }
 .social-icons a:hover { transform: translateY(-2px); opacity: 0.9; }
 
 /* Картинки соцсетей (имена файлов должны совпадать) */
-.social-tg { background-image: url('../images/tg-logo.png'); }
-.social-vk { background-image: url('../images/vk-logo.png'); }
-.social-max { background-image: url('../images/max-logo.png'); }
+.social-tg { background-image: url('../images/tg-logo.png'); background-color: #0088cc; }
+.social-vk { background-image: url('../images/vk-logo.png'); background-color: #0077FF; }
+.social-max { background-image: url('../images/max-logo.png'); background-color: #7B68EE; }
 
 /* Кнопки */
 .btn { display: inline-block; padding: 12px 24px; border-radius: var(--radius); background: var(--primary); color: #fff; text-decoration: none; font-weight: 600; border: none; cursor: pointer; transition: background .2s; text-align: center; }
