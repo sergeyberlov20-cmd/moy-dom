@@ -75,9 +75,7 @@
         <li><a href="contacts.html">Контакты</a></li>
       </ul>
       <button class="mobile-menu-btn" id="mobile-menu-btn">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </button>
     </div>
   </div>
@@ -178,26 +176,24 @@
         <p>г. Мариуполь, пр. Ленина (Мира), 54/46<br><small style="color:var(--muted)">(ориентир — остановка Драмтеатр)</small></p>
       </div>
       <div>
-        <h4>Мессенджеры</h4>
+        <h4>Документы</h4>
         <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li style="margin-bottom: 8px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">Telegram</a></li>
-          <li style="margin-bottom: 8px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">MAX</a></li>
-          <li><a href="https://vk.com/moy_dom_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">ВКонтакте</a></li>
+          <li><a href="privacy.html" style="color:#a4b0c3; text-decoration:underline;">Политика конфиденциальности</a></li>
+          <li style="margin-top: 8px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">Telegram</a></li>
+          <li style="margin-top: 8px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">MAX</a></li>
+          <li style="margin-top: 8px;"><a href="https://vk.com/moy_dom_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">ВКонтакте</a></li>
         </ul>
       </div>
     </div>
-    <div class="copyright">© 2025 Мой Дом. Все права защищены.</div>
+    <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
   </div>
 </footer>
 
 <script>
-  // Бургер-меню
   const mobileBtn = document.getElementById('mobile-menu-btn');
   const navMenu = document.querySelector('.nav ul');
   if (mobileBtn && navMenu) {
-    mobileBtn.addEventListener('click', () => {
-      navMenu.classList.toggle('show');
-    });
+    mobileBtn.addEventListener('click', () => navMenu.classList.toggle('show'));
   }
 </script>
 </body>
