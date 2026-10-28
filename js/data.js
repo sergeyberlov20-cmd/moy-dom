@@ -1,107 +1,83 @@
-// js/main.js
-document.addEventListener('DOMContentLoaded', () => {
-  // 1. Бургер-меню
-  const mobileBtn = document.getElementById('mobile-menu-btn');
-  const navMenu = document.querySelector('.nav ul');
-  if (mobileBtn && navMenu) {
-    mobileBtn.addEventListener('click', () => navMenu.classList.toggle('show'));
+const OBJECTS = [
+  {
+    id: 1,
+    type: "Квартира",
+    deal: "Продажа",
+    title: "2-комнатная квартира, 62 м²",
+    price: 4500000,
+    address: "г. Мариуполь, пр. Мира, 15",
+    rooms: 2,
+    area: 62,
+    floor: 5,
+    floors: 12,
+    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
+    images: [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800"
+    ],
+    description: "Светлая квартира с ремонтом в новом доме.",
+    date: "2025-05-20"
+  },
+  {
+    id: 2,
+    type: "Дом",
+    deal: "Продажа",
+    title: "Загородный дом, 180 м²",
+    price: 9200000,
+    address: "Мариупольский р-н, п. Сосновка",
+    rooms: 5,
+    area: 180,
+    floor: 2,
+    floors: 2,
+    image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800",
+    images: [
+      "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800",
+      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800"
+    ],
+    description: "Уютный дом с участком 10 соток, гаражом и баней.",
+    date: "2025-05-15"
+  },
+  {
+    id: 3,
+    type: "Офис",
+    deal: "Аренда",
+    title: "Офис 50 м² в центре",
+    price: 35000,
+    address: "г. Мариуполь, пр. Ленина, 54",
+    rooms: 2,
+    area: 50,
+    floor: 3,
+    floors: 5,
+    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
+    images: [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
+      "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=800"
+    ],
+    description: "Светлый офис с ремонтом, парковка.",
+    date: "2025-05-28"
+  },
+  {
+    id: 4,
+    type: "Гараж",
+    deal: "Продажа",
+    title: "Гараж 24 м²",
+    price: 800000,
+    address: "г. Мариуполь, ГСК Восток",
+    rooms: 1,
+    area: 24,
+    floor: 0,
+    floors: 1,
+    image: "https://images.unsplash.com/photo-1590521540684-01d3553b4b59?w=800",
+    images: [
+      "https://images.unsplash.com/photo-1590521540684-01d3553b4b59?w=800"
+    ],
+    description: "Сухой гараж с погребом.",
+    date: "2025-05-10"
   }
+];
 
-  // 2. Кнопка "Наверх"
-  const scrollBtn = document.getElementById('scrollTopBtn');
-  if (scrollBtn) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) scrollBtn.style.display = 'block';
-      else scrollBtn.style.display = 'none';
-    });
-    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  }
-
-  // 3. Функция инициализации слайдеров в карточках (миниатюрах)
-  window.initMiniSliders = function() {
-    document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
-      // Если слайдер уже инициализирован, пропускаем
-      if (wrapper.dataset.sliderInitialized) return; 
-      
-      const imgDiv = wrapper.querySelector('.card-img');
-      const images = JSON.parse(wrapper.getAttribute('data-images') || '[]');
-      let currentIndex = 0;
-
-      // Если фото 1 или 0, стрелки не нужны
-      if (images.length <= 1) return; 
-
-      const prevBtn = wrapper.querySelector('.prev');
-      const nextBtn = wrapper.querySelector('.next');
-
-      if (prevBtn && nextBtn) {
-        prevBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation(); // Чтобы не открывалась карточка при клике на стрелку
-          currentIndex = (currentIndex - 1 + images.length) % images.length;
-          imgDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
-        });
-        nextBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          currentIndex = (currentIndex + 1) % images.length;
-          imgDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
-        });
-      }
-      wrapper.dataset.sliderInitialized = "true";
-    });
-  };
-
-  // 4. Слайдер в детальной карточке (object.html)
-  const gallery = document.getElementById('object-gallery');
-  if (gallery) {
-    let images = [];
-    try {
-      images = JSON.parse(gallery.getAttribute('data-images') || '[]');
-    } catch(e) {}
-
-    if (images && images.length > 1) {
-      let currentIndex = 0;
-      
-      gallery.innerHTML = `
-        <div style="position:relative; width:100%; height:100%;">
-          <div class="slider-img" style="width:100%; height:100%; background-size:cover; background-position:center; transition: background-image 0.3s;"></div>
-          <button class="slider-prev" type="button" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; font-size:1.2rem; z-index:10; display:flex; align-items:center; justify-content:center;">&#10094;</button>
-          <button class="slider-next" type="button" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; font-size:1.2rem; z-index:10; display:flex; align-items:center; justify-content:center;">&#10095;</button>
-          <div class="slider-dots" style="position:absolute; bottom:15px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:10;"></div>
-        </div>
-      `;
-      
-      const imgDiv = gallery.querySelector('.slider-img');
-      const dotsContainer = gallery.querySelector('.slider-dots');
-      
-      const updateImage = () => {
-        imgDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
-        const dots = dotsContainer.querySelectorAll('.dot');
-        dots.forEach((dot, i) => {
-          dot.style.background = i === currentIndex ? '#fff' : 'rgba(255,255,255,0.5)';
-        });
-      };
-
-      images.forEach((_, i) => {
-        const dot = document.createElement('div');
-        dot.className = 'dot';
-        dot.style.cssText = 'width:12px; height:12px; border-radius:50%; cursor:pointer; border: 1px solid rgba(0,0,0,0.3); transition:background 0.2s;';
-        dot.addEventListener('click', () => { currentIndex = i; updateImage(); });
-        dotsContainer.appendChild(dot);
-      });
-
-      gallery.querySelector('.slider-prev').addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + images.length) % images.length;
-        updateImage();
-      });
-      gallery.querySelector('.slider-next').addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % images.length;
-        updateImage();
-      });
-
-      updateImage();
-    } else if (images && images.length === 1) {
-      gallery.innerHTML = `<div style="width:100%; height:100%; background-image:url('${images[0]}'); background-size:cover; background-position:center;"></div>`;
-    }
-  }
-});
+function formatPrice(price, deal) {
+  const formatted = new Intl.NumberFormat("ru-RU").format(price) + " ₽";
+  return deal === "Аренда" ? formatted + "/мес" : formatted;
+}
