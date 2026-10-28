@@ -10,6 +10,8 @@ const OBJECTS = [
     area: 62,
     floor: 5,
     floors: 12,
+    lat: 47.0965, // Координаты для карты
+    lon: 37.5510,
     image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
     images: [
       "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
@@ -30,6 +32,8 @@ const OBJECTS = [
     area: 180,
     floor: 2,
     floors: 2,
+    lat: 47.1150, 
+    lon: 37.5200,
     image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800",
     images: [
       "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800",
@@ -49,6 +53,8 @@ const OBJECTS = [
     area: 50,
     floor: 3,
     floors: 5,
+    lat: 47.0950,
+    lon: 37.5487,
     image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
     images: [
       "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
@@ -68,6 +74,8 @@ const OBJECTS = [
     area: 24,
     floor: 0,
     floors: 1,
+    lat: 47.1000,
+    lon: 37.5600,
     image: "https://images.unsplash.com/photo-1590521540684-01d3553b4b59?w=800",
     images: [
       "https://images.unsplash.com/photo-1590521540684-01d3553b4b59?w=800"
