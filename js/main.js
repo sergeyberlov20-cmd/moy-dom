@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  // 3. Функция инициализации слайдеров в карточках (миниатюрах)
+  // 3. Инициализация слайдеров в карточках (миниатюрах)
   window.initMiniSliders = function() {
     document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
       if (wrapper.dataset.sliderInitialized) return; 
