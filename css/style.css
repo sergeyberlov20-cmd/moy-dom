@@ -74,7 +74,7 @@ header {
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   position: relative;
 }
 .nav ul {
@@ -89,6 +89,31 @@ header {
   transition: color .2s;
 }
 .nav a:not(.logo):hover, .nav a.active { color: var(--accent); }
+
+/* Соцсети в шапке */
+.social-icons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: background 0.2s, color 0.2s;
+}
+.social-icons a:hover {
+  background: var(--primary);
+  color: #fff;
+}
 
 /* Кнопки */
 .btn {
@@ -196,7 +221,7 @@ header {
   border-color: var(--primary);
 }
 
-/* Карточка объекта */
+/* Карточка объекта (детальная) */
 .object-detail { display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; margin: 32px 0; }
 .object-gallery { border-radius: var(--radius); overflow: hidden; height: 420px; background: #dfe7ea center/cover; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
 .object-info { background: var(--surface); padding: 24px; border-radius: var(--radius); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
@@ -254,10 +279,26 @@ footer a:hover { color: #fff; }
 .section-title { font-size: 1.8rem; margin: 32px 0 16px; color: var(--primary); }
 .section-sub { color: var(--muted); margin-bottom: 16px; }
 
-/* Скрываем бургер на компьютере */
-.mobile-menu-btn {
+/* Скрываем бургер и кнопку вверх на компьютере */
+.mobile-menu-btn { display: none; }
+#scrollTopBtn {
   display: none;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 99;
+  transition: background 0.2s;
 }
+#scrollTopBtn:hover { background: var(--accent); }
 
 /* Адаптив */
 @media (max-width: 768px) {
@@ -270,6 +311,9 @@ footer a:hover { color: #fff; }
   .logo-img { height: 40px; }
   .section-title { font-size: 1.5rem; }
   
+  /* Прячем соцсети на мобилке, чтобы не мешали */
+  .social-icons { display: none; }
+
   /* Мобильное меню */
   .nav ul {
     display: none;
@@ -310,4 +354,7 @@ footer a:hover { color: #fff; }
   }
   
   .objects-grid { grid-template-columns: 1fr; }
+  
+  /* Кнопка вверх на мобилке */
+  #scrollTopBtn { bottom: 20px; right: 20px; width: 45px; height: 45px; }
 }
