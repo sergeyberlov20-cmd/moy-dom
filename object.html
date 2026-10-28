@@ -25,6 +25,11 @@
         <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
       </ul>
+      <div class="social-icons">
+        <a href="https://t.me/nevizhimost_mariupol" target="_blank" title="Telegram">TG</a>
+        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX">MAX</a>
+        <a href="https://vk.com/moy_dom_mariupol" target="_blank" title="ВКонтакте">VK</a>
+      </div>
       <button class="mobile-menu-btn" id="mobile-menu-btn">
         <span></span><span></span><span></span>
       </button>
@@ -33,6 +38,8 @@
 </header>
 
 <div class="container" id="object-container"></div>
+
+<button id="scrollTopBtn" title="Наверх">&#8593;</button>
 
 <footer>
   <div class="container">
@@ -69,6 +76,7 @@
 </footer>
 
 <script src="js/data.js"></script>
+<script src="js/main.js"></script>
 <script>
   const id = Number(new URLSearchParams(location.search).get('id'));
   const obj = OBJECTS.find(o => o.id === id);
@@ -77,10 +85,15 @@
   if (!obj) {
     container.innerHTML = '<h1 class="section-title">Объект не найден</h1><a href="catalog.html" class="btn">В каталог</a>';
   } else {
+    // Имитация массива фото. В реальности менеджер добавит ссылки в data.js
+    // Здесь мы просто дублируем одну и ту же картинку 3 раза для демонстрации
+    const galleryImages = [obj.image, obj.image, obj.image]; 
+    
     container.innerHTML = `
       <div class="object-detail">
         <div>
-          <div class="object-gallery" style="background-image:url('${obj.image}')"></div>
+          <!-- Передаем фотографии в атрибут data-images -->
+          <div class="object-gallery" id="object-gallery" data-images='${JSON.stringify(galleryImages)}'></div>
         </div>
         <div class="object-info">
           <h1>${obj.title}</h1>
@@ -98,12 +111,6 @@
           <a href="contacts.html" class="btn btn-accent">Записаться на просмотр</a>
         </div>
       </div>`;
-  }
-
-  const mobileBtn = document.getElementById('mobile-menu-btn');
-  const navMenu = document.querySelector('.nav ul');
-  if (mobileBtn && navMenu) {
-    mobileBtn.addEventListener('click', () => navMenu.classList.toggle('show'));
   }
 </script>
 </body>
