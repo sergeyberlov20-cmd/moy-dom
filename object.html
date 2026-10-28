@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- Миниатюра (Favicon) -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1c2e5a">
+  
   <link rel="icon" type="image/png" href="images/logo.png">
   <link rel="apple-touch-icon" href="images/logo.png">
   
@@ -97,12 +99,8 @@
     }
 
     const galleryImages = obj.images || [obj.image]; 
-    
-    // Берем координаты из базы, если их нет - ставим офис
     const mapLat = obj.lat || 47.095000;
     const mapLon = obj.lon || 37.548707;
-    
-    // Проверяем, в избранном ли объект
     const isFav = isFavorite(obj.id) ? 'active' : '';
 
     container.innerHTML = `
@@ -136,9 +134,14 @@
         </div>
       </div>`;
       
-    // Запускаем слайдер для этой страницы
     if (window.initMiniSliders) window.initMiniSliders();
   });
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+    });
+  }
 </script>
 </body>
 </html>
