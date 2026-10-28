@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Каталог объектов — Мой Дом</title>
+  <title>Каталог недвижимости в Мариуполе — Мой Дом</title>
+  <meta name="description" content="Актуальный каталог квартир, домов и коммерческой недвижимости в Мариуполе. Удобные фильтры по цене, площади и типу.">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -25,6 +26,11 @@
         <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
       </ul>
+      <div class="social-icons">
+        <a href="https://t.me/nevizhimost_mariupol" target="_blank" title="Telegram">TG</a>
+        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX">MAX</a>
+        <a href="https://vk.com/moy_dom_mariupol" target="_blank" title="ВКонтакте">VK</a>
+      </div>
       <button class="mobile-menu-btn" id="mobile-menu-btn">
         <span></span><span></span><span></span>
       </button>
@@ -46,7 +52,6 @@
         <option value="date-desc">Сначала новые</option>
       </select>
     </div>
-
     <div class="filter-group">
       <label>Тип</label>
       <select id="f-type">
@@ -94,6 +99,8 @@
   <div class="objects-grid" id="catalog"></div>
 </section>
 
+<button id="scrollTopBtn" title="Наверх">&#8593;</button>
+
 <footer>
   <div class="container">
     <div class="footer-grid">
@@ -129,6 +136,7 @@
 </footer>
 
 <script src="js/data.js"></script>
+<script src="js/main.js"></script>
 <script>
   const catalog = document.getElementById('catalog');
   const fType = document.getElementById('f-type');
@@ -140,39 +148,43 @@
   const fSort = document.getElementById('f-sort');
 
   function render() {
-    const type = fType.value;
-    const deal = fDeal.value;
-    const rooms = fRooms.value;
-    const areaMin = Number(fAreaMin.value) || 0;
-    const min = Number(fMin.value) || 0;
-    const max = Number(fMax.value) || Infinity;
-    const sort = fSort.value;
+    // Скелетоны при смене фильтра
+    catalog.innerHTML = `
+      <div class="card skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div></div>
+      <div class="card skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div></div>
+      <div class="card skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div></div>
+    `;
 
-    let filtered = OBJECTS.filter(o => {
-      if (type && o.type !== type) return false;
-      if (deal && o.deal !== deal) return false;
-      if (rooms) {
-        const r = Number(rooms);
-        if (r === 4 ? o.rooms < 4 : o.rooms !== r) return false;
-      }
-      if (o.area < areaMin) return false;
-      if (o.price < min || o.price > max) return false;
-      return true;
-    });
+    setTimeout(() => {
+      const type = fType.value;
+      const deal = fDeal.value;
+      const rooms = fRooms.value;
+      const areaMin = Number(fAreaMin.value) || 0;
+      const min = Number(fMin.value) || 0;
+      const max = Number(fMax.value) || Infinity;
+      const sort = fSort.value;
 
-    if (sort === 'price-asc') {
-      filtered.sort((a, b) => a.price - b.price);
-    } else if (sort === 'price-desc') {
-      filtered.sort((a, b) => b.price - a.price);
-    } else if (sort === 'area-desc') {
-      filtered.sort((a, b) => b.area - a.area);
-    } else if (sort === 'date-desc') {
-      filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
-    }
+      let filtered = OBJECTS.filter(o => {
+        if (type && o.type !== type) return false;
+        if (deal && o.deal !== deal) return false;
+        if (rooms) {
+          const r = Number(rooms);
+          if (r === 4 ? o.rooms < 4 : o.rooms !== r) return false;
+        }
+        if (o.area < areaMin) return false;
+        if (o.price < min || o.price > max) return false;
+        return true;
+      });
 
-    catalog.innerHTML = filtered.length
-      ? filtered.map(renderCard).join('')
-      : '<p style="padding:40px 0;color:#818c99;font-size:1.1rem;">Объектов не найдено. Попробуйте изменить фильтры.</p>';
+      if (sort === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+      else if (sort === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+      else if (sort === 'area-desc') filtered.sort((a, b) => b.area - a.area);
+      else if (sort === 'date-desc') filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      catalog.innerHTML = filtered.length
+        ? filtered.map(renderCard).join('')
+        : '<p style="padding:40px 0;color:#818c99;font-size:1.1rem;">Объектов не найдено. Попробуйте изменить фильтры.</p>';
+    }, 300); // Небольшая задержка для красоты
   }
 
   function renderCard(o) {
@@ -185,9 +197,7 @@
           <div class="card-price">${formatPrice(o.price, o.deal)}</div>
           <div class="card-title">${o.title}</div>
           <div class="card-meta">${o.address}</div>
-          
           <a href="object.html?id=${o.id}" class="btn" style="margin-bottom: 8px;">Подробнее</a>
-          
           <div style="display: flex; gap: 8px; margin-top: auto;">
             <a href="tel:+79495044455" class="btn btn-accent" style="flex: 1; padding: 8px; font-size: 0.9rem;">📞 Позвонить</a>
             <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="flex: 1; padding: 8px; font-size: 0.9rem; background: #0088cc;">✈️ Telegram</a>
@@ -202,12 +212,6 @@
   });
   
   render();
-
-  const mobileBtn = document.getElementById('mobile-menu-btn');
-  const navMenu = document.querySelector('.nav ul');
-  if (mobileBtn && navMenu) {
-    mobileBtn.addEventListener('click', () => navMenu.classList.toggle('show'));
-  }
 </script>
 </body>
 </html>
