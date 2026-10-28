@@ -36,10 +36,11 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 .nav a:not(.logo) { text-decoration: none; color: var(--text); font-weight: 500; transition: color .2s; }
 .nav a:not(.logo):hover, .nav a.active { color: var(--accent); }
 
-/* Соцсети в шапке */
+/* Соцсети в шапке (SVG) */
 .social-icons { display: flex; gap: 10px; align-items: center; }
-.social-icons a { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--bg); color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.8rem; transition: background 0.2s, color 0.2s; }
-.social-icons a:hover { background: var(--primary); color: #fff; }
+.social-icons a { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--bg); color: var(--primary); text-decoration: none; transition: background 0.2s, color 0.2s, transform 0.2s; }
+.social-icons a:hover { background: var(--primary); color: #fff; transform: translateY(-2px); }
+.social-icons svg { width: 20px; height: 20px; fill: currentColor; }
 
 /* Кнопки */
 .btn { display: inline-block; padding: 12px 24px; border-radius: var(--radius); background: var(--primary); color: #fff; text-decoration: none; font-weight: 600; border: none; cursor: pointer; transition: background .2s; text-align: center; }
@@ -70,7 +71,7 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 .filter-group select, .filter-group input { padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: .95rem; font-family: inherit; outline: none; background: var(--bg); color: var(--text); transition: border .2s; }
 .filter-group select:focus, .filter-group input:focus { border-color: var(--primary); }
 
-/* Скелетон (заглушка при загрузке) */
+/* Скелетон */
 .skeleton { background: linear-gradient(90deg, #f0f2f5 25%, #e1e3e6 50%, #f0f2f5 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; border-radius: var(--radius); }
 @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 .skeleton-card { height: 350px; display: flex; flex-direction: column; }
@@ -114,7 +115,6 @@ footer a:hover { color: #fff; }
 .section-title { font-size: 1.8rem; margin: 32px 0 16px; color: var(--primary); }
 .section-sub { color: var(--muted); margin-bottom: 16px; }
 
-/* Скрываем бургер и кнопку вверх на компьютере */
 .mobile-menu-btn { display: none; }
 #scrollTopBtn { display: none; position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--primary); color: #fff; border: none; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 99; transition: background 0.2s; }
 #scrollTopBtn:hover { background: var(--accent); }
