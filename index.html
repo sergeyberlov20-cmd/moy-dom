@@ -104,7 +104,6 @@
   });
 
   function renderCard(o) {
-    // Генерируем HTML для стрелок, если фото больше 1
     let sliderBtns = '';
     if (o.images && o.images.length > 1) {
       sliderBtns = `
@@ -128,6 +127,10 @@
         </div>
       </article>`;
   }
+
+  setTimeout(() => {
+    if (window.initMiniSliders) window.initMiniSliders();
+  }, 100);
 </script>
 </body>
 </html>
