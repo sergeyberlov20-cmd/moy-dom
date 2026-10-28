@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Панель управления объектами</title>
+  <title>Универсальная панель управления</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: #f0f2f5; padding: 40px 20px; color: #000; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; padding: 40px 20px; color: #000; }
     .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     h1 { margin-top: 0; color: #1c2e5a; }
+    .rules { background: #e3f2fd; padding: 15px; border-radius: 6px; margin-bottom: 20px; font-size: 0.9rem; }
+    .rules code { background: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
     .btn { display: inline-block; padding: 12px 24px; background: #1c2e5a; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 1rem; margin-bottom: 20px; }
     .btn:hover { background: #13203f; }
     .btn-green { background: #2e7d32; }
@@ -25,7 +27,15 @@
 
 <div class="container">
   <h1>Управление объектами</h1>
-  <p>Выберите папку с объектами. Название папки должно быть в формате: <br><b>Комнаты_Цена_Адрес</b> (например: <code>3_4500000_ул.Ленина 15</code>).</p>
+  
+  <div class="rules">
+    <b>Правила названия папок:</b><br>
+    Формат: <code>Тип_Сделка_Комнаты_Цена_Адрес</code><br>
+    Примеры:<br>
+    <code>Квартира_Продажа_2_4500000_ул.Мира 15</code><br>
+    <code>Дом_Продажа_0_9200000_п.Сосновка</code><br>
+    <code>Офис_Аренда_3_50000_пр.Ленина 54</code>
+  </div>
   
   <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;">
   <button class="btn" onclick="document.getElementById('folderInput').click()">Выбрать папку с объектами</button>
@@ -36,70 +46,72 @@
   
   <div id="actions" style="display: none; margin-top: 30px; border-top: 1px solid #e1e3e6; padding-top: 20px;">
     <button class="btn btn-green" onclick="downloadData()">Скачать data.js</button>
-    <p style="font-size: 0.9rem; color: #818c99;">Скачайте файл и замените им старый <code>data.js</code> в папке <code>js</code>.</p>
+    <p style="font-size: 0.9rem; color: #818c99;">Скачайте файл и перетащите его в папку <code>js</code> на GitHub (через Upload files).</p>
   </div>
 </div>
 
 <script>
   let newObjects = [];
-  let objectIdCounter = 1;
 
   document.getElementById('folderInput').addEventListener('change', function(e) {
     const files = e.target.files;
     const folders = {};
 
-    // Группируем файлы по папкам
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const pathParts = file.webkitRelativePath.split('/');
-      // Нас интересуют только файлы, которые лежат не в корне, а в подпапках (вторая часть пути)
-      if (pathParts.length >= 3 && (file.type.startsWith('image/') || file.name.endsWith('.jpg') || file.name.endsWith('.png') || file.name.endsWith('.jpeg'))) {
+      if (pathParts.length >= 3 && (file.type.startsWith('image/') || file.name.match(/\.(jpg|jpeg|png|webp)$/i))) {
         const folderName = pathParts[1];
-        if (!folders[folderName]) {
-          folders[folderName] = [];
-        }
+        if (!folders[folderName]) folders[folderName] = [];
         folders[folderName].push(file);
       }
     }
 
     const folderNames = Object.keys(folders);
     if (folderNames.length === 0) {
-      document.getElementById('status').textContent = 'Не найдено папок с картинками. Убедитесь, что картинки лежат внутри папок.';
+      document.getElementById('status').textContent = 'Не найдено папок с картинками.';
       return;
     }
 
     document.getElementById('status').textContent = '';
-    newObjects = []; // Сбрасываем старые
+    newObjects = [];
 
     folderNames.forEach(folderName => {
+      // Разбиваем название по нижнему подчеркиванию
       const parts = folderName.split('_');
-      if (parts.length < 3) {
-        document.getElementById('status').textContent += `Папка "${folderName}" пропущена. Неверный формат названия (нужно Комнаты_Цена_Адрес).\n`;
+      
+      if (parts.length < 5) {
+        document.getElementById('status').textContent += `Папка "${folderName}" пропущена. Неверный формат (нужно минимум 5 частей).\n`;
         return;
       }
 
-      const rooms = parseInt(parts[0]) || 1;
-      const price = parseInt(parts[1]) || 0;
-      const address = parts.slice(2).join(' ');
+      const type = parts[0]; // Квартира, Дом, Офис
+      const deal = parts[1]; // Продажа, Аренда
+      const rooms = parseInt(parts[2]) || 0;
+      const price = parseInt(parts[3]) || 0;
+      const address = parts.slice(4).join('_'); // Склеиваем остаток адреса (если в нем есть подчеркивания)
 
-      // Берем первую картинку из папки как основную
       const imageFile = folders[folderName][0];
-      // Создаем ссылку на картинку (в будущем мы её просто назовем папкой)
       const imageSrc = 'images/' + folderName + '/' + imageFile.name;
 
+      // Формируем красивый заголовок
+      let title = type;
+      if (rooms > 0) title += `, ${rooms}-комн.`;
+      title += `, ${address}`;
+
       const newObj = {
-        id: Date.now() + Math.floor(Math.random() * 1000), // Уникальный ID
-        type: "Квартира",
-        deal: "Продажа",
-        title: `${rooms}-комнатная квартира`,
+        id: Date.now() + Math.floor(Math.random() * 1000),
+        type: type, // Сохраняем тип
+        deal: deal,
+        title: title,
         price: price,
         address: address,
         rooms: rooms,
-        area: 0, // Площадь менеджеру нужно будет дописать вручную в data.js
+        area: 0, // Площадь и этаж менеджер допишет вручную в data.js, если нужно
         floor: 0,
         floors: 0,
         image: imageSrc,
-        description: "Свежий объект. Площадь и этаж уточняются.",
+        description: "Свежий объект.",
         date: new Date().toISOString().split('T')[0]
       };
 
@@ -127,8 +139,8 @@
       div.innerHTML = `
         <img src="${obj.image}" alt="Фото" onerror="this.style.display='none'">
         <div class="item-info">
-          <div class="item-title">${obj.title} — ${new Intl.NumberFormat("ru-RU").format(obj.price)} ₽</div>
-          <div class="item-meta">${obj.address}</div>
+          <div class="item-title">${obj.type} (${obj.deal}) — ${new Intl.NumberFormat("ru-RU").format(obj.price)} ₽</div>
+          <div class="item-meta">${obj.address} ${obj.rooms > 0 ? '| ' + obj.rooms + ' комн.' : ''}</div>
         </div>
       `;
       listDiv.appendChild(div);
@@ -138,10 +150,8 @@
   function downloadData() {
     if (newObjects.length === 0) return;
 
-    // Генерируем код для файла data.js
     const dataString = `const OBJECTS = ${JSON.stringify(newObjects, null, 2)};\n\nfunction formatPrice(price, deal) {\n  const formatted = new Intl.NumberFormat("ru-RU").format(price) + " ₽";\n  return deal === "Аренда" ? formatted + "/мес" : formatted;\n}`;
 
-    // Скачиваем файл
     const blob = new Blob([dataString], { type: 'text/javascript' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
