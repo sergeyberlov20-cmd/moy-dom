@@ -45,7 +45,7 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 .social-tg { background: #0088cc; }
 .social-vk { background: #0077FF; border-radius: 50%; }
 
-/* Иконка MAX как на картинке */
+/* Иконка МАКС */
 .social-max { 
   background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%); 
   border-radius: 8px;
@@ -54,13 +54,15 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
   align-items: center;
   justify-content: center;
   position: relative;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif; /* Шрифт с идеальной кириллицей */
+  font-weight: 800; 
+  font-size: 11px; /* Размер, чтобы слово влезло */
+  letter-spacing: 0.5px; /* Немного разрядки для стиля */
+  text-transform: uppercase;
 }
 .social-max::before {
-  content: "Q";
-  font-family: Arial, sans-serif;
-  font-weight: 900;
-  font-size: 20px;
-  line-height: 1;
+  content: "МАКС";
+  transform: translateY(-1px); /* Легкая оптическая коррекция */
 }
 
 /* Кнопки */
