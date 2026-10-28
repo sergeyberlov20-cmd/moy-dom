@@ -14,7 +14,8 @@ const OBJECTS = [
     images: [
       "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
       "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
-      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800"
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800"
     ],
     description: "Светлая квартира с ремонтом в новом доме.",
     date: "2025-05-20"
@@ -33,7 +34,8 @@ const OBJECTS = [
     image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800",
     images: [
       "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800",
-      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800"
+      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800"
     ],
     description: "Уютный дом с участком 10 соток, гаражом и баней.",
     date: "2025-05-15"
@@ -51,7 +53,8 @@ const OBJECTS = [
     floors: 5,
     image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
     images: [
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800"
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
+      "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=800"
     ],
     description: "Светлый офис с ремонтом, парковка.",
     date: "2025-05-28"
