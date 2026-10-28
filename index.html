@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Миниатюра (Favicon) -->
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="apple-touch-icon" href="images/logo.png">
+  
   <title>Мой Дом — Мультицентр недвижимости в Мариуполе</title>
   <meta name="description" content="Агентство недвижимости «Мой Дом» в Мариуполе. Квартиры, дома, офисы. Продажа, аренда, юридическое сопровождение.">
   <link rel="stylesheet" href="css/style.css">
@@ -104,7 +109,6 @@
       if (o.images && o.images.length > 1) {
         sliderBtns = `<button class="card-slider-btn prev">&#10094;</button><button class="card-slider-btn next">&#10095;</button>`;
       }
-      // Проверяем, в избранном ли объект (функция из main.js)
       const isFav = typeof isFavorite === 'function' && isFavorite(o.id) ? 'active' : '';
 
       return `
