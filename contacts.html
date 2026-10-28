@@ -105,16 +105,47 @@
 </footer>
 
 <script>
+  // Бургер-меню
   const mobileBtn = document.getElementById('mobile-menu-btn');
   const navMenu = document.querySelector('.nav ul');
   if (mobileBtn && navMenu) {
     mobileBtn.addEventListener('click', () => navMenu.classList.toggle('show'));
   }
 
-  document.getElementById('contact-form').addEventListener('submit', function(e) {
+  // ОТПРАВКА ФОРМЫ В TELEGRAM
+  document.getElementById('contact-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-    alert('Спасибо! Заявка отправлена. Мы свяжемся с вами.');
-    this.reset();
+
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const message = document.getElementById('message').value;
+
+    // ВАШ ТОКЕН И ID УЖЕ ЗДЕСЬ
+    const TOKEN = '9194042924:AAH1UP91AAZ5h8Rz_8fhwmjLneSvtdmaX8I'; 
+    const CHAT_ID = '9194042924'; 
+
+    const text = `🔔 Новая заявка!\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n💬 Комментарий: ${message || 'Нет'}`;
+    const url = `https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`;
+
+    const btn = this.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+    btn.textContent = 'Отправка...';
+    btn.disabled = true;
+
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        alert('Спасибо! Заявка отправлена. Мы свяжемся с вами.');
+        this.reset();
+      } else {
+        alert('Ошибка отправки. Пожалуйста, позвоните нам по телефону.');
+      }
+    } catch (error) {
+      alert('Ошибка сети. Проверьте интернет и попробуйте снова.');
+    } finally {
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
   });
 </script>
 </body>
