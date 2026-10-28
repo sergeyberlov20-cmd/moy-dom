@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (images && images.length > 1) {
       let currentIndex = 0;
       
-      // Создаем структуру
       gallery.innerHTML = `
         <div style="position:relative; width:100%; height:100%;">
           <div class="slider-img" style="width:100%; height:100%; background-size:cover; background-position:center; transition: background-image 0.3s;"></div>
@@ -51,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       };
 
-      // Создаем точки
       images.forEach((_, i) => {
         const dot = document.createElement('div');
         dot.className = 'dot';
@@ -60,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
         dotsContainer.appendChild(dot);
       });
 
-      // Кнопки
       gallery.querySelector('.slider-prev').addEventListener('click', () => {
         currentIndex = (currentIndex - 1 + images.length) % images.length;
         updateImage();
