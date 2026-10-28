@@ -20,15 +20,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. Слайдер в карточке объекта
   const gallery = document.getElementById('object-gallery');
   if (gallery) {
-    const images = JSON.parse(gallery.getAttribute('data-images'));
+    let images = [];
+    try {
+      images = JSON.parse(gallery.getAttribute('data-images') || '[]');
+    } catch(e) {
+      console.error('Ошибка парсинга картинок');
+    }
+
     if (images && images.length > 1) {
       let currentIndex = 0;
       
+      // Создаем структуру
       gallery.innerHTML = `
         <div style="position:relative; width:100%; height:100%;">
           <div class="slider-img" style="width:100%; height:100%; background-size:cover; background-position:center; transition: background-image 0.3s;"></div>
-          <button class="slider-prev" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.5); color:#fff; border:none; border-radius:50%; width:40px; height:40px; cursor:pointer; font-size:1.2rem; z-index:10;">&#10094;</button>
-          <button class="slider-next" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.5); color:#fff; border:none; border-radius:50%; width:40px; height:40px; cursor:pointer; font-size:1.2rem; z-index:10;">&#10095;</button>
+          <button class="slider-prev" type="button" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; font-size:1.2rem; z-index:10; display:flex; align-items:center; justify-content:center;">&#10094;</button>
+          <button class="slider-next" type="button" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; font-size:1.2rem; z-index:10; display:flex; align-items:center; justify-content:center;">&#10095;</button>
           <div class="slider-dots" style="position:absolute; bottom:15px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:10;"></div>
         </div>
       `;
@@ -44,14 +51,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       };
 
+      // Создаем точки
       images.forEach((_, i) => {
         const dot = document.createElement('div');
         dot.className = 'dot';
-        dot.style.cssText = 'width:10px; height:10px; border-radius:50%; cursor:pointer; transition:background 0.2s;';
+        dot.style.cssText = 'width:12px; height:12px; border-radius:50%; cursor:pointer; border: 1px solid rgba(0,0,0,0.3); transition:background 0.2s;';
         dot.addEventListener('click', () => { currentIndex = i; updateImage(); });
         dotsContainer.appendChild(dot);
       });
 
+      // Кнопки
       gallery.querySelector('.slider-prev').addEventListener('click', () => {
         currentIndex = (currentIndex - 1 + images.length) % images.length;
         updateImage();
