@@ -1,6 +1,41 @@
 // js/main.js
 
-// 1. ФУНКЦИИ ДЛЯ ИЗБРАННОГО (вынесены наверх, чтобы были доступны везде и сразу)
+// 1. УВЕДОМЛЕНИЯ (TOAST)
+window.showToast = function(message, type = 'success') {
+  let container = document.querySelector('.toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  
+  const icon = type === 'success' ? '✅' : '❌';
+  
+  toast.innerHTML = `
+    <span class="toast-icon">${icon}</span>
+    <span class="toast-message">${message}</span>
+  `;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('show');
+  }, 10);
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 300);
+  }, 4000);
+};
+
+// 2. ФУНКЦИИ ДЛЯ ИЗБРАННОГО
 window.getFavorites = () => JSON.parse(localStorage.getItem('favorites') || '[]');
 
 window.toggleFavorite = function(id, btn) {
@@ -8,9 +43,11 @@ window.toggleFavorite = function(id, btn) {
   if (favs.includes(id)) {
     favs = favs.filter(fId => fId !== id);
     btn.classList.remove('active');
+    showToast('Объект удален из избранного', 'error');
   } else {
     favs.push(id);
     btn.classList.add('active');
+    showToast('Объект добавлен в избранное', 'success');
   }
   localStorage.setItem('favorites', JSON.stringify(favs));
 };
@@ -19,7 +56,7 @@ window.isFavorite = function(id) {
   return getFavorites().includes(id);
 };
 
-// 2. ОСТАЛЬНАЯ ЛОГИКА (меню, кнопка наверх, слайдеры)
+// 3. ОСТАЛЬНАЯ ЛОГИКА (меню, кнопка наверх, слайдеры)
 document.addEventListener('DOMContentLoaded', () => {
   // Бургер-меню
   const mobileBtn = document.getElementById('mobile-menu-btn');
