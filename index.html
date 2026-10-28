@@ -25,6 +25,14 @@
         <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
       </ul>
+      
+      <!-- Иконки соцсетей -->
+      <div class="social-icons">
+        <a href="https://t.me/nevizhimost_mariupol" target="_blank" title="Telegram">TG</a>
+        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX">MAX</a>
+        <a href="https://vk.com/moy_dom_mariupol" target="_blank" title="ВКонтакте">VK</a>
+      </div>
+
       <button class="mobile-menu-btn" id="mobile-menu-btn">
         <span></span><span></span><span></span>
       </button>
@@ -45,6 +53,8 @@
   <p class="section-sub">Свежие предложения от наших специалистов</p>
   <div class="objects-grid" id="featured"></div>
 </section>
+
+<button id="scrollTopBtn" title="Наверх">&#8593;</button>
 
 <footer>
   <div class="container">
@@ -81,7 +91,9 @@
 </footer>
 
 <script src="js/data.js"></script>
+<script src="js/main.js"></script>
 <script>
+  // Отрисовка карточек
   const featured = document.getElementById('featured');
   OBJECTS.slice(0, 3).forEach(obj => {
     featured.insertAdjacentHTML('beforeend', renderCard(obj));
@@ -100,12 +112,6 @@
           <a href="object.html?id=${o.id}" class="btn">Подробнее</a>
         </div>
       </article>`;
-  }
-
-  const mobileBtn = document.getElementById('mobile-menu-btn');
-  const navMenu = document.querySelector('.nav ul');
-  if (mobileBtn && navMenu) {
-    mobileBtn.addEventListener('click', () => navMenu.classList.toggle('show'));
   }
 </script>
 </body>
