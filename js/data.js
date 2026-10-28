@@ -10,12 +10,11 @@ const OBJECTS = [
     area: 62,
     floor: 5,
     floors: 12,
-    image: "https://picsum.photos/id/10/800/600",
+    image: "images/flat1.jpg",
     images: [
-      "https://picsum.photos/id/10/800/600",
-      "https://picsum.photos/id/20/800/600",
-      "https://picsum.photos/id/30/800/600",
-      "https://picsum.photos/id/40/800/600"
+      "images/flat1.jpg",
+      "images/flat2.jpg",
+      "images/flat3.jpg"
     ],
     description: "Светлая квартира с ремонтом в новом доме.",
     date: "2025-05-20"
@@ -31,11 +30,10 @@ const OBJECTS = [
     area: 180,
     floor: 2,
     floors: 2,
-    image: "https://picsum.photos/id/50/800/600",
+    image: "images/flat2.jpg",
     images: [
-      "https://picsum.photos/id/50/800/600",
-      "https://picsum.photos/id/60/800/600",
-      "https://picsum.photos/id/70/800/600"
+      "images/flat2.jpg",
+      "images/flat4.jpg"
     ],
     description: "Уютный дом с участком 10 соток, гаражом и баней.",
     date: "2025-05-15"
@@ -51,10 +49,10 @@ const OBJECTS = [
     area: 50,
     floor: 3,
     floors: 5,
-    image: "https://picsum.photos/id/80/800/600",
+    image: "images/flat3.jpg",
     images: [
-      "https://picsum.photos/id/80/800/600",
-      "https://picsum.photos/id/90/800/600"
+      "images/flat3.jpg",
+      "images/flat1.jpg"
     ],
     description: "Светлый офис с ремонтом, парковка.",
     date: "2025-05-28"
@@ -70,9 +68,9 @@ const OBJECTS = [
     area: 24,
     floor: 0,
     floors: 1,
-    image: "https://picsum.photos/id/100/800/600",
+    image: "images/flat4.jpg",
     images: [
-      "https://picsum.photos/id/100/800/600"
+      "images/flat4.jpg"
     ],
     description: "Сухой гараж с погребом.",
     date: "2025-05-10"
