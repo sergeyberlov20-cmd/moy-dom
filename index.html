@@ -93,36 +93,39 @@
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  const featured = document.getElementById('featured');
-  OBJECTS.slice(0, 3).forEach(obj => {
-    featured.insertAdjacentHTML('beforeend', renderCard(obj));
-  });
+  document.addEventListener('DOMContentLoaded', () => {
+    const featured = document.getElementById('featured');
+    OBJECTS.slice(0, 3).forEach(obj => {
+      featured.insertAdjacentHTML('beforeend', renderCard(obj));
+    });
 
-  function renderCard(o) {
-    let sliderBtns = '';
-    if (o.images && o.images.length > 1) {
-      sliderBtns = `<button class="card-slider-btn prev">&#10094;</button><button class="card-slider-btn next">&#10095;</button>`;
+    function renderCard(o) {
+      let sliderBtns = '';
+      if (o.images && o.images.length > 1) {
+        sliderBtns = `<button class="card-slider-btn prev">&#10094;</button><button class="card-slider-btn next">&#10095;</button>`;
+      }
+      // Проверяем, в избранном ли объект (функция из main.js)
+      const isFav = typeof isFavorite === 'function' && isFavorite(o.id) ? 'active' : '';
+
+      return `
+        <article class="card">
+          <div class="card-img-wrapper" data-images='${JSON.stringify(o.images || [o.image])}'>
+            <div class="card-img" style="background-image:url('${o.image}')"></div>
+            <span class="card-badge">${o.deal}</span>
+            <button class="favorite-btn ${isFav}" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(${o.id}, this)">♥</button>
+            ${sliderBtns}
+          </div>
+          <div class="card-body">
+            <div class="card-price">${formatPrice(o.price, o.deal)}</div>
+            <div class="card-title">${o.title}</div>
+            <div class="card-meta">${o.address}</div>
+            <a href="object.html?id=${o.id}" class="btn">Подробнее</a>
+          </div>
+        </article>`;
     }
-    const isFav = isFavorite(o.id) ? 'active' : '';
 
-    return `
-      <article class="card">
-        <div class="card-img-wrapper" data-images='${JSON.stringify(o.images || [o.image])}'>
-          <div class="card-img" style="background-image:url('${o.image}')"></div>
-          <span class="card-badge">${o.deal}</span>
-          <button class="favorite-btn ${isFav}" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(${o.id}, this)">♥</button>
-          ${sliderBtns}
-        </div>
-        <div class="card-body">
-          <div class="card-price">${formatPrice(o.price, o.deal)}</div>
-          <div class="card-title">${o.title}</div>
-          <div class="card-meta">${o.address}</div>
-          <a href="object.html?id=${o.id}" class="btn">Подробнее</a>
-        </div>
-      </article>`;
-  }
-
-  setTimeout(() => { if (window.initMiniSliders) window.initMiniSliders(); }, 200);
+    setTimeout(() => { if (window.initMiniSliders) window.initMiniSliders(); }, 200);
+  });
 </script>
 </body>
 </html>
