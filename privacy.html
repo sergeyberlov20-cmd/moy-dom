@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Политика конфиденциальности — Мой Дом</title>
+  <meta name="robots" content="noindex, nofollow"> <!-- Закрываем от поисковиков -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -25,6 +26,11 @@
         <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
       </ul>
+      <div class="social-icons">
+        <a href="https://t.me/nevizhimost_mariupol" target="_blank" title="Telegram">TG</a>
+        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX">MAX</a>
+        <a href="https://vk.com/moy_dom_mariupol" target="_blank" title="ВКонтакте">VK</a>
+      </div>
       <button class="mobile-menu-btn" id="mobile-menu-btn">
         <span></span><span></span><span></span>
       </button>
@@ -78,6 +84,8 @@
   Email: info@moydom.ru</p>
 </section>
 
+<button id="scrollTopBtn" title="Наверх">&#8593;</button>
+
 <footer>
   <div class="container">
     <div class="footer-grid">
@@ -112,12 +120,6 @@
   </div>
 </footer>
 
-<script>
-  const mobileBtn = document.getElementById('mobile-menu-btn');
-  const navMenu = document.querySelector('.nav ul');
-  if (mobileBtn && navMenu) {
-    mobileBtn.addEventListener('click', () => navMenu.classList.toggle('show'));
-  }
-</script>
+<script src="js/main.js"></script>
 </body>
 </html>
