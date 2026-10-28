@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Панель управления объектами</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: #f0f2f5; padding: 40px 20px; color: #000; }
+    .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    h1 { margin-top: 0; color: #1c2e5a; }
+    .btn { display: inline-block; padding: 12px 24px; background: #1c2e5a; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 1rem; margin-bottom: 20px; }
+    .btn:hover { background: #13203f; }
+    .btn-green { background: #2e7d32; }
+    .btn-green:hover { background: #1b5e20; }
+    .list { margin-top: 20px; }
+    .item { padding: 15px; border-bottom: 1px solid #e1e3e6; display: flex; gap: 15px; align-items: center; }
+    .item img { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; }
+    .item-info { flex: 1; }
+    .item-title { font-weight: bold; color: #1c2e5a; }
+    .item-meta { font-size: 0.9rem; color: #818c99; }
+    .error { color: #cc2229; font-size: 0.9rem; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Управление объектами</h1>
+  <p>Выберите папку с объектами. Название папки должно быть в формате: <br><b>Комнаты_Цена_Адрес</b> (например: <code>3_4500000_ул.Ленина 15</code>).</p>
+  
+  <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;">
+  <button class="btn" onclick="document.getElementById('folderInput').click()">Выбрать папку с объектами</button>
+  
+  <div id="status" class="error"></div>
+  
+  <div class="list" id="list"></div>
+  
+  <div id="actions" style="display: none; margin-top: 30px; border-top: 1px solid #e1e3e6; padding-top: 20px;">
+    <button class="btn btn-green" onclick="downloadData()">Скачать data.js</button>
+    <p style="font-size: 0.9rem; color: #818c99;">Скачайте файл и замените им старый <code>data.js</code> в папке <code>js</code>.</p>
+  </div>
+</div>
+
+<script>
+  let newObjects = [];
+  let objectIdCounter = 1;
+
+  document.getElementById('folderInput').addEventListener('change', function(e) {
+    const files = e.target.files;
+    const folders = {};
+
+    // Группируем файлы по папкам
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const pathParts = file.webkitRelativePath.split('/');
+      // Нас интересуют только файлы, которые лежат не в корне, а в подпапках (вторая часть пути)
+      if (pathParts.length >= 3 && (file.type.startsWith('image/') || file.name.endsWith('.jpg') || file.name.endsWith('.png') || file.name.endsWith('.jpeg'))) {
+        const folderName = pathParts[1];
+        if (!folders[folderName]) {
+          folders[folderName] = [];
+        }
+        folders[folderName].push(file);
+      }
+    }
+
+    const folderNames = Object.keys(folders);
+    if (folderNames.length === 0) {
+      document.getElementById('status').textContent = 'Не найдено папок с картинками. Убедитесь, что картинки лежат внутри папок.';
+      return;
+    }
+
+    document.getElementById('status').textContent = '';
+    newObjects = []; // Сбрасываем старые
+
+    folderNames.forEach(folderName => {
+      const parts = folderName.split('_');
+      if (parts.length < 3) {
+        document.getElementById('status').textContent += `Папка "${folderName}" пропущена. Неверный формат названия (нужно Комнаты_Цена_Адрес).\n`;
+        return;
+      }
+
+      const rooms = parseInt(parts[0]) || 1;
+      const price = parseInt(parts[1]) || 0;
+      const address = parts.slice(2).join(' ');
+
+      // Берем первую картинку из папки как основную
+      const imageFile = folders[folderName][0];
+      // Создаем ссылку на картинку (в будущем мы её просто назовем папкой)
+      const imageSrc = 'images/' + folderName + '/' + imageFile.name;
+
+      const newObj = {
+        id: Date.now() + Math.floor(Math.random() * 1000), // Уникальный ID
+        type: "Квартира",
+        deal: "Продажа",
+        title: `${rooms}-комнатная квартира`,
+        price: price,
+        address: address,
+        rooms: rooms,
+        area: 0, // Площадь менеджеру нужно будет дописать вручную в data.js
+        floor: 0,
+        floors: 0,
+        image: imageSrc,
+        description: "Свежий объект. Площадь и этаж уточняются.",
+        date: new Date().toISOString().split('T')[0]
+      };
+
+      newObjects.push(newObj);
+    });
+
+    renderList();
+  });
+
+  function renderList() {
+    const listDiv = document.getElementById('list');
+    const actionsDiv = document.getElementById('actions');
+    listDiv.innerHTML = '';
+    
+    if (newObjects.length === 0) {
+      actionsDiv.style.display = 'none';
+      return;
+    }
+
+    actionsDiv.style.display = 'block';
+
+    newObjects.forEach(obj => {
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.innerHTML = `
+        <img src="${obj.image}" alt="Фото" onerror="this.style.display='none'">
+        <div class="item-info">
+          <div class="item-title">${obj.title} — ${new Intl.NumberFormat("ru-RU").format(obj.price)} ₽</div>
+          <div class="item-meta">${obj.address}</div>
+        </div>
+      `;
+      listDiv.appendChild(div);
+    });
+  }
+
+  function downloadData() {
+    if (newObjects.length === 0) return;
+
+    // Генерируем код для файла data.js
+    const dataString = `const OBJECTS = ${JSON.stringify(newObjects, null, 2)};\n\nfunction formatPrice(price, deal) {\n  const formatted = new Intl.NumberFormat("ru-RU").format(price) + " ₽";\n  return deal === "Аренда" ? formatted + "/мес" : formatted;\n}`;
+
+    // Скачиваем файл
+    const blob = new Blob([dataString], { type: 'text/javascript' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data.js';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+</script>
+
+</body>
+</html>
