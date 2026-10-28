@@ -17,15 +17,40 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  // 3. Слайдер в карточке объекта
+  // 3. СЛАЙДЕР В КАРТОЧКАХ КАТАЛОГА И ГЛАВНОЙ
+  const initMiniSliders = () => {
+    document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
+      const imgDiv = wrapper.querySelector('.card-img');
+      const images = JSON.parse(wrapper.getAttribute('data-images') || '[]');
+      let currentIndex = 0;
+
+      if (images.length <= 1) return; // Если фото одно, стрелки не нужны
+
+      const prevBtn = wrapper.querySelector('.prev');
+      const nextBtn = wrapper.querySelector('.next');
+
+      if (prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          currentIndex = (currentIndex - 1 + images.length) % images.length;
+          imgDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
+        });
+        nextBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          currentIndex = (currentIndex + 1) % images.length;
+          imgDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
+        });
+      }
+    });
+  };
+
+  // 4. СЛАЙДЕР В ДЕТАЛЬНОЙ КАРТОЧКЕ
   const gallery = document.getElementById('object-gallery');
   if (gallery) {
     let images = [];
     try {
       images = JSON.parse(gallery.getAttribute('data-images') || '[]');
-    } catch(e) {
-      console.error('Ошибка парсинга картинок');
-    }
+    } catch(e) {}
 
     if (images && images.length > 1) {
       let currentIndex = 0;
@@ -72,4 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
       gallery.innerHTML = `<div style="width:100%; height:100%; background-image:url('${images[0]}'); background-size:cover; background-position:center;"></div>`;
     }
   }
+
+  // Запускаем мини-слайдеры после того, как карточки отрисовались
+  setTimeout(initMiniSliders, 100);
 });
