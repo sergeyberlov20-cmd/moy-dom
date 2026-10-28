@@ -1,13 +1,34 @@
 // js/main.js
+
+// 1. ФУНКЦИИ ДЛЯ ИЗБРАННОГО (вынесены наверх, чтобы были доступны везде и сразу)
+window.getFavorites = () => JSON.parse(localStorage.getItem('favorites') || '[]');
+
+window.toggleFavorite = function(id, btn) {
+  let favs = getFavorites();
+  if (favs.includes(id)) {
+    favs = favs.filter(fId => fId !== id);
+    btn.classList.remove('active');
+  } else {
+    favs.push(id);
+    btn.classList.add('active');
+  }
+  localStorage.setItem('favorites', JSON.stringify(favs));
+};
+
+window.isFavorite = function(id) {
+  return getFavorites().includes(id);
+};
+
+// 2. ОСТАЛЬНАЯ ЛОГИКА (меню, кнопка наверх, слайдеры)
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Бургер-меню
+  // Бургер-меню
   const mobileBtn = document.getElementById('mobile-menu-btn');
   const navMenu = document.querySelector('.nav ul');
   if (mobileBtn && navMenu) {
     mobileBtn.addEventListener('click', () => navMenu.classList.toggle('show'));
   }
 
-  // 2. Кнопка "Наверх"
+  // Кнопка "Наверх"
   const scrollBtn = document.getElementById('scrollTopBtn');
   if (scrollBtn) {
     window.addEventListener('scroll', () => {
@@ -17,26 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  // 3. Логика ИЗБРАННОГО
-  window.getFavorites = () => JSON.parse(localStorage.getItem('favorites') || '[]');
-  
-  window.toggleFavorite = function(id, btn) {
-    let favs = getFavorites();
-    if (favs.includes(id)) {
-      favs = favs.filter(fId => fId !== id);
-      btn.classList.remove('active');
-    } else {
-      favs.push(id);
-      btn.classList.add('active');
-    }
-    localStorage.setItem('favorites', JSON.stringify(favs));
-  };
-
-  window.isFavorite = function(id) {
-    return getFavorites().includes(id);
-  };
-
-  // 4. Инициализация слайдеров в карточках (миниатюрах)
+  // Инициализация слайдеров в карточках
   window.initMiniSliders = function() {
     document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
       if (wrapper.dataset.sliderInitialized) return; 
@@ -68,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // 5. Слайдер в детальной карточке
+  // Слайдер в детальной карточке
   const gallery = document.getElementById('object-gallery');
   if (gallery) {
     let images = [];
