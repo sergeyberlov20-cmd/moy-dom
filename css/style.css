@@ -270,14 +270,14 @@ footer a:hover { color: #fff; }
   .logo-img { height: 40px; }
   .section-title { font-size: 1.5rem; }
   
-  /* Мобильное меню (выпадает справа, аккуратное) */
+  /* Мобильное меню */
   .nav ul {
     display: none;
     flex-direction: column;
     position: absolute;
     top: 60px;
-    right: 0; /* Прижимаем к правому краю */
-    width: 250px; /* Фиксированная ширина */
+    right: 0;
+    width: 250px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -309,8 +309,5 @@ footer a:hover { color: #fff; }
     transition: 0.3s;
   }
   
-  /* Карточки в один столбик */
-  .objects-grid {
-    grid-template-columns: 1fr;
-  }
+  .objects-grid { grid-template-columns: 1fr; }
 }
