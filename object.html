@@ -46,17 +46,7 @@
   </div>
 </header>
 
-<div class="container" id="object-container">
-  <div class="object-detail">
-    <div class="skeleton object-gallery"></div>
-    <div class="object-info">
-      <div class="skeleton skeleton-text" style="height:30px; width:80%; margin:0 0 15px 0;"></div>
-      <div class="skeleton skeleton-text" style="height:40px; width:50%; margin:0 0 30px 0;"></div>
-      <div class="skeleton skeleton-text"></div>
-      <div class="skeleton skeleton-text"></div>
-    </div>
-  </div>
-</div>
+<div class="container" id="object-container"></div>
 
 <button id="scrollTopBtn" title="Наверх">&#8593;</button>
 
@@ -97,18 +87,14 @@
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  setTimeout(() => {
-    const id = Number(new URLSearchParams(location.search).get('id'));
-    const obj = OBJECTS.find(o => o.id === id);
-    const container = document.getElementById('object-container');
+  const id = Number(new URLSearchParams(location.search).get('id'));
+  const obj = OBJECTS.find(o => o.id === id);
+  const container = document.getElementById('object-container');
 
-    if (!obj) {
-      container.innerHTML = '<h1 class="section-title">Объект не найден</h1><a href="catalog.html" class="btn">В каталог</a>';
-      return;
-    }
-
+  if (!obj) {
+    container.innerHTML = '<h1 class="section-title">Объект не найден</h1><a href="catalog.html" class="btn">В каталог</a>';
+  } else {
     const galleryImages = obj.images || [obj.image]; 
-    
     const mapLat = 47.095000;
     const mapLon = 37.548707;
 
@@ -139,7 +125,7 @@
           <a href="contacts.html" class="btn btn-accent" style="display:block;">Записаться на просмотр</a>
         </div>
       </div>`;
-  }, 300);
+  }
 </script>
 </body>
 </html>
