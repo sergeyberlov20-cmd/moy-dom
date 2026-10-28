@@ -17,7 +17,26 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  // 3. Инициализация слайдеров в карточках (миниатюрах)
+  // 3. Логика ИЗБРАННОГО (Сердечки)
+  window.getFavorites = () => JSON.parse(localStorage.getItem('favorites') || '[]');
+  
+  window.toggleFavorite = function(id, btn) {
+    let favs = getFavorites();
+    if (favs.includes(id)) {
+      favs = favs.filter(fId => fId !== id);
+      btn.classList.remove('active');
+    } else {
+      favs.push(id);
+      btn.classList.add('active');
+    }
+    localStorage.setItem('favorites', JSON.stringify(favs));
+  };
+
+  window.isFavorite = function(id) {
+    return getFavorites().includes(id);
+  };
+
+  // 4. Инициализация слайдеров в карточках (миниатюрах)
   window.initMiniSliders = function() {
     document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
       if (wrapper.dataset.sliderInitialized) return; 
@@ -49,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // 4. Слайдер в детальной карточке
+  // 5. Слайдер в детальной карточке
   const gallery = document.getElementById('object-gallery');
   if (gallery) {
     let images = [];
