@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Миниатюра (Favicon) -->
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link rel="apple-touch-icon" href="images/logo.png">
+  
   <title>Объект — Мой Дом</title>
   <meta name="description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики.">
   <link rel="stylesheet" href="css/style.css">
@@ -81,13 +86,16 @@
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  const id = Number(new URLSearchParams(location.search).get('id'));
-  const obj = OBJECTS.find(o => o.id === id);
-  const container = document.getElementById('object-container');
+  document.addEventListener('DOMContentLoaded', () => {
+    const id = Number(new URLSearchParams(location.search).get('id'));
+    const obj = OBJECTS.find(o => o.id === id);
+    const container = document.getElementById('object-container');
 
-  if (!obj) {
-    container.innerHTML = '<h1 class="section-title">Объект не найден</h1><a href="catalog.html" class="btn">В каталог</a>';
-  } else {
+    if (!obj) {
+      container.innerHTML = '<h1 class="section-title">Объект не найден</h1><a href="catalog.html" class="btn">В каталог</a>';
+      return;
+    }
+
     const galleryImages = obj.images || [obj.image]; 
     
     // Берем координаты из базы, если их нет - ставим офис
@@ -127,7 +135,10 @@
           <a href="contacts.html" class="btn btn-accent" style="display:block;">Записаться на просмотр</a>
         </div>
       </div>`;
-  }
+      
+    // Запускаем слайдер для этой страницы
+    if (window.initMiniSliders) window.initMiniSliders();
+  });
 </script>
 </body>
 </html>
