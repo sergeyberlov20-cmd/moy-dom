@@ -11,6 +11,11 @@ const OBJECTS = [
     floor: 5,
     floors: 12,
     image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
+    images: [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800"
+    ],
     description: "Светлая квартира с ремонтом в новом доме.",
     date: "2025-05-20"
   },
@@ -26,6 +31,10 @@ const OBJECTS = [
     floor: 2,
     floors: 2,
     image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800",
+    images: [
+      "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800",
+      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800"
+    ],
     description: "Уютный дом с участком 10 соток, гаражом и баней.",
     date: "2025-05-15"
   },
@@ -41,6 +50,9 @@ const OBJECTS = [
     floor: 3,
     floors: 5,
     image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
+    images: [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800"
+    ],
     description: "Светлый офис с ремонтом, парковка.",
     date: "2025-05-28"
   },
@@ -56,6 +68,9 @@ const OBJECTS = [
     floor: 0,
     floors: 1,
     image: "https://images.unsplash.com/photo-1590521540684-01d3553b4b59?w=800",
+    images: [
+      "https://images.unsplash.com/photo-1590521540684-01d3553b4b59?w=800"
+    ],
     description: "Сухой гараж с погребом.",
     date: "2025-05-10"
   }
