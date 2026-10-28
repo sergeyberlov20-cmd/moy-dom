@@ -25,6 +25,7 @@
         <li><a href="services.html">Услуги</a></li>
         <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
+        <li><a href="favorites.html" style="color:#cc2229; font-weight:bold;">❤ Избранное</a></li>
       </ul>
       
       <div class="social-icons">
@@ -56,7 +57,6 @@
         <ul style="list-style: none; padding: 0; margin-top: 5px;">
           <li style="margin-bottom: 8px;"><a href="tel:+79495044455" style="color:var(--accent); font-weight:bold;">+7 (949) 504-44-55</a></li>
           <li style="margin-bottom: 8px; color: #a4b0c3;">г. Мариуполь, пр. Ленина (Мира), 54/46</li>
-          <li style="color: #a4b0c3;">Пн–Сб: с 9:00</li>
         </ul>
       </div>
       <div>
@@ -89,8 +89,13 @@
     container.innerHTML = '<h1 class="section-title">Объект не найден</h1><a href="catalog.html" class="btn">В каталог</a>';
   } else {
     const galleryImages = obj.images || [obj.image]; 
-    const mapLat = 47.095000;
-    const mapLon = 37.548707;
+    
+    // Берем координаты из базы, если их нет - ставим офис
+    const mapLat = obj.lat || 47.095000;
+    const mapLon = obj.lon || 37.548707;
+    
+    // Проверяем, в избранном ли объект
+    const isFav = isFavorite(obj.id) ? 'active' : '';
 
     container.innerHTML = `
       <div class="object-detail">
@@ -98,7 +103,10 @@
           <div class="object-gallery" id="object-gallery" data-images='${JSON.stringify(galleryImages)}'></div>
         </div>
         <div class="object-info">
-          <h1>${obj.title}</h1>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <h1 style="margin-bottom:8px;">${obj.title}</h1>
+            <button class="favorite-btn ${isFav}" style="position:relative; top:0; right:0; width:44px; height:44px; font-size:1.5rem; flex-shrink:0;" onclick="toggleFavorite(${obj.id}, this)">♥</button>
+          </div>
           <div class="price">${formatPrice(obj.price, obj.deal)}</div>
           <ul class="specs">
             <li><span>Тип</span><span>${obj.type}</span></li>
@@ -112,7 +120,7 @@
           <br>
           
           <div class="mini-map">
-            <iframe src="https://yandex.ru/map-widget/v1/?ll=${mapLon}%2C${mapLat}&z=15&pt=${mapLon},${mapLat},pm2rdm&l=map" width="100%" height="250" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
+            <iframe src="https://yandex.ru/map-widget/v1/?ll=${mapLon}%2C${mapLat}&z=16&pt=${mapLon},${mapLat},pm2rdm&l=map" width="100%" height="250" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
           </div>
           <br>
 
