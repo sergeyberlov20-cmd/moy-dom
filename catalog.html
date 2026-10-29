@@ -33,7 +33,7 @@
         <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
         <li>
-          <a href="favorites.html" style="color:#cc2229; font-weight:bold; display:flex; align-items:center; gap:4px;">
+          <a href="favorites.html" style="color:#cc2229; font-weight:bold; display:flex; align-items:center; gap:4px; justify-content:center;">
             <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor;"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
             Избранное
           </a>
@@ -144,7 +144,7 @@
     const fMin = document.getElementById('f-min');
     const fMax = document.getElementById('f-max');
 
-    // Логика открытия/закрытия
+    // Логика открытия/закрытия фильтров
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
         e.stopPropagation();
@@ -155,7 +155,7 @@
       });
     });
 
-    // Закрытие при клике вне шторки
+    // Закрытие при клике вне фильтров
     document.addEventListener('click', () => {
       document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('active'));
     });
@@ -239,54 +239,4 @@
   });
 </script>
 </body>
-</html>ank" class="btn" style="flex: 1; padding: 8px; font-size: 0.9rem; background: #0088cc;">✈️ Telegram</a>
-            </div>
-          </div>
-        </article>`;
-    }
-
-    document.querySelectorAll('.f-type, .f-deal, .f-rooms').forEach(el => {
-      el.addEventListener('change', render);
-    });
-    [fMin, fMax].forEach(el => {
-      el.addEventListener('input', render);
-    });
-    
-    render();
-  });
-</script>
-</body>
-</html>  el.addEventListener('change', render);
-    });
-    [fMin, fMax].forEach(el => {
-      el.addEventListener('input', render);
-    });
-    
-    render();
-  });
-</script>
-</body>
-</html>>
-            <a href="object.html?id=${o.id}" class="btn" style="margin-bottom: 8px;">Подробнее</a>
-            <div style="display: flex; gap: 8px; margin-top: auto;">
-              <a href="tel:+79495044455" class="btn btn-accent" style="flex: 1; padding: 8px; font-size: 0.9rem;">📞 Позвонить</a>
-              <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="flex: 1; padding: 8px; font-size: 0.9rem; background: #0088cc;">✈️ Telegram</a>
-            </div>
-          </div>
-        </article>`;
-    }
-
-    // Вешаем события на все чекбоксы и поля ввода цены
-    document.querySelectorAll('.f-type, .f-deal, .f-rooms').forEach(el => {
-      el.addEventListener('change', render);
-    });
-    [fMin, fMax].forEach(el => {
-      el.addEventListener('input', render);
-    });
-    
-    // Первая отрисовка
-    render();
-  });
-</script>
-</body>
-</html>
+    </html>
