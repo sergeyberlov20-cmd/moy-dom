@@ -36,6 +36,25 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 .nav a:not(.logo) { text-decoration: none; color: var(--text); font-weight: 500; transition: color .2s; }
 .nav a:not(.logo):hover, .nav a.active { color: var(--accent); }
 
+/* ФИКС ДЛЯ КНОПКИ ИЗБРАННОЕ (Чтобы не колбасило) */
+a[href="favorites.html"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  color: var(--accent) !important;
+  font-weight: bold !important;
+}
+
+a[href="favorites.html"] svg {
+  width: 16px !important;
+  height: 16px !important;
+  flex-shrink: 0 !important;
+  fill: currentColor;
+}
+
 /* Соцсети в шапке */
 .social-icons { display: flex; gap: 10px; align-items: center; }
 .social-icons a { 
@@ -137,7 +156,7 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 
 /* Анимация появления меню */
 .filter-content {
-  display: flex; /* Всегда flex для анимации */
+  display: flex; 
   flex-direction: column;
   gap: 12px;
   
@@ -153,14 +172,12 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
   max-height: 300px;
   overflow-y: auto;
   
-  /* Скрытое состояние */
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
   transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
 }
 
-/* Открытое состояние */
 .filter-dropdown.active .filter-content { 
   opacity: 1;
   visibility: visible;
@@ -265,17 +282,21 @@ footer a:hover { color: #fff; }
     z-index: 250; 
   }
   .nav ul.show { display: flex; }
-  .nav ul li { width: 100%; list-style: none; }
+  .nav ul li { width: 100%; list-style: none; text-align: center; margin-bottom: 0; }
   
   .nav ul a { 
     font-size: 1.1rem; 
     font-weight: 600; 
     display: block; 
     padding: 12px 20px; 
-    text-align: center;
     color: var(--text);
   }
   .nav ul a:hover { background: var(--bg); }
+
+  /* Центрируем Избранное на мобилке */
+  a[href="favorites.html"] {
+    justify-content: center !important;
+  }
 
   .objects-grid { grid-template-columns: 1fr; }
   #scrollTopBtn { bottom: 20px; right: 20px; width: 45px; height: 45px; }
@@ -310,4 +331,4 @@ footer a:hover { color: #fff; }
   .filter-content label:last-child {
     border-bottom: none;
   }
-             }
+  }
