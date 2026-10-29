@@ -56,7 +56,6 @@
 <section class="container">
   <h1 class="section-title">Каталог объектов</h1>
 
-  <!-- ФИЛЬТРЫ В СТИЛЕ OZON -->
   <div class="filters-bar">
     <!-- Сделка -->
     <div class="filter-dropdown">
@@ -149,7 +148,7 @@
     const fMin = document.getElementById('f-min');
     const fMax = document.getElementById('f-max');
 
-    // 1. Логика выпадающих списков
+    // Логика выпадающих списков
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
         e.stopPropagation();
@@ -157,23 +156,29 @@
           if (d !== dropdown) d.classList.remove('active');
         });
         dropdown.classList.toggle('active');
+        // Предотвращаем скролл страницы, когда открыта шторка на телефоне
+        if (window.innerWidth <= 768 && dropdown.classList.contains('active')) {
+           document.body.style.overflow = 'hidden';
+        } else {
+           document.body.style.overflow = '';
+        }
       });
     });
 
+    // Закрытие при клике вне фильтров
     document.addEventListener('click', () => {
       document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('active'));
+      document.body.style.overflow = '';
     });
 
     document.querySelectorAll('.filter-content').forEach(content => {
       content.addEventListener('click', (e) => e.stopPropagation());
     });
 
-    // 2. Функция сбора выбранных чекбоксов
     function getCheckedValues(className) {
       return Array.from(document.querySelectorAll(`.${className}:checked`)).map(cb => cb.value);
     }
 
-    // 3. Отрисовка и фильтрация
     function render() {
       const types = getCheckedValues('f-type');
       const deals = getCheckedValues('f-deal');
@@ -194,7 +199,6 @@
         }
 
         if (o.price < min || o.price > max) return false;
-
         return true;
       });
 
@@ -237,6 +241,16 @@
 
     document.querySelectorAll('.f-type, .f-deal, .f-rooms').forEach(el => {
       el.addEventListener('change', render);
+    });
+    [fMin, fMax].forEach(el => {
+      el.addEventListener('input', render);
+    });
+    
+    render();
+  });
+</script>
+</body>
+</html>  el.addEventListener('change', render);
     });
     [fMin, fMax].forEach(el => {
       el.addEventListener('input', render);
