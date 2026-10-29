@@ -57,7 +57,6 @@
   <h1 class="section-title">Каталог объектов</h1>
 
   <div class="filters-bar">
-    <!-- Сделка -->
     <div class="filter-dropdown">
       <div class="filter-title">Сделка <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
       <div class="filter-content">
@@ -66,7 +65,6 @@
       </div>
     </div>
 
-    <!-- Тип -->
     <div class="filter-dropdown">
       <div class="filter-title">Тип <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
       <div class="filter-content">
@@ -77,7 +75,6 @@
       </div>
     </div>
 
-    <!-- Комнаты -->
     <div class="filter-dropdown">
       <div class="filter-title">Комнаты <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
       <div class="filter-content">
@@ -88,7 +85,6 @@
       </div>
     </div>
 
-    <!-- Цена -->
     <div class="filter-dropdown">
       <div class="filter-title">Цена <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
       <div class="filter-content">
@@ -148,7 +144,7 @@
     const fMin = document.getElementById('f-min');
     const fMax = document.getElementById('f-max');
 
-    // Логика выпадающих списков
+    // Логика открытия/закрытия
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
         e.stopPropagation();
@@ -156,19 +152,12 @@
           if (d !== dropdown) d.classList.remove('active');
         });
         dropdown.classList.toggle('active');
-        // Предотвращаем скролл страницы, когда открыта шторка на телефоне
-        if (window.innerWidth <= 768 && dropdown.classList.contains('active')) {
-           document.body.style.overflow = 'hidden';
-        } else {
-           document.body.style.overflow = '';
-        }
       });
     });
 
-    // Закрытие при клике вне фильтров
+    // Закрытие при клике вне шторки
     document.addEventListener('click', () => {
       document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('active'));
-      document.body.style.overflow = '';
     });
 
     document.querySelectorAll('.filter-content').forEach(content => {
@@ -234,6 +223,23 @@
             <div style="display: flex; gap: 8px; margin-top: auto;">
               <a href="tel:+79495044455" class="btn btn-accent" style="flex: 1; padding: 8px; font-size: 0.9rem;">📞 Позвонить</a>
               <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="flex: 1; padding: 8px; font-size: 0.9rem; background: #0088cc;">✈️ Telegram</a>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    document.querySelectorAll('.f-type, .f-deal, .f-rooms').forEach(el => {
+      el.addEventListener('change', render);
+    });
+    [fMin, fMax].forEach(el => {
+      el.addEventListener('input', render);
+    });
+    
+    render();
+  });
+</script>
+</body>
+</html>ank" class="btn" style="flex: 1; padding: 8px; font-size: 0.9rem; background: #0088cc;">✈️ Telegram</a>
             </div>
           </div>
         </article>`;
