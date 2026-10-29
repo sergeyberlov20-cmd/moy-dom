@@ -31,7 +31,7 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 .logo-title { font-weight: 800; font-size: 1.4rem; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1; }
 .logo-title span { color: var(--accent); }
 .logo-subtitle { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-.nav-right { display: flex; align-items: center; gap: 20px; position: relative; }
+.nav-right { display: flex; align-items: center; gap: 20px; }
 .nav ul { display: flex; gap: 20px; list-style: none; }
 .nav a:not(.logo) { text-decoration: none; color: var(--text); font-weight: 500; transition: color .2s; }
 .nav a:not(.logo):hover, .nav a.active { color: var(--accent); }
@@ -63,7 +63,7 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 /* Grid объектов */
 .objects-grid { 
   display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-  gap: 20px; margin: 24px 0; position: relative; z-index: 1; 
+  gap: 20px; margin: 24px 0; position: relative; z-index: 1; /* Карточки всегда ниже фильтров */
 }
 
 .card { background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.1); transition: transform .2s, box-shadow .2s; display: flex; flex-direction: column; position: relative; }
@@ -110,7 +110,7 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
   margin: 20px 0;
   flex-wrap: wrap;
   position: relative;
-  z-index: 100; 
+  z-index: 100; /* Фильтры выше карточек */
 }
 
 .filter-dropdown {
@@ -148,8 +148,8 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
   z-index: 1000;
   flex-direction: column;
   gap: 12px;
-  max-height: 250px; /* Ограничиваем высоту */
-  overflow-y: auto; /* Добавляем скролл внутри */
+  max-height: 250px;
+  overflow-y: auto;
 }
 
 .filter-dropdown.active .filter-content { display: flex; }
@@ -202,6 +202,103 @@ footer a:hover { color: #fff; }
 #scrollTopBtn { 
   display: none; position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; 
   border-radius: 50%; background: var(--primary); color: #fff; border: none; cursor: pointer; 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 99; transition: background 0.2s; 
+  align-items: center; justify-content: center; 
+}
+#scrollTopBtn:hover { background: var(--accent); }
+#scrollTopBtn svg { width: 24px; height: 24px; fill: currentColor; }
+
+/* Toast Уведомления */
+.toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+.toast { background: var(--surface); color: var(--text); padding: 16px 24px; border-radius: var(--radius); box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px; font-weight: 500; font-size: 0.95rem; transform: translateX(120%); transition: transform 0.3s ease-out, opacity 0.3s ease-out; opacity: 0; border-left: 4px solid var(--primary); }
+.toast.show { transform: translateX(0); opacity: 1; }
+.toast.success { border-left-color: #4caf50; }
+.toast.error { border-left-color: var(--accent); }
+.toast-icon { font-size: 1.2rem; }
+
+/* АДАПТИВ */
+@media (max-width: 768px) {
+  .nav { height: 60px; }
+  .hero h1 { font-size: 1.6rem; }
+  .hero p { font-size: 1rem; }
+  .object-detail { grid-template-columns: 1fr; }
+  .object-gallery { height: 280px; }
+  .logo-img { height: 35px !important; }
+  .section-title { font-size: 1.5rem; }
+
+  .logo-subtitle { display: none !important; } 
+  .logo-title { font-size: 1.1rem !important; }
+
+  .social-icons { display: flex !important; gap: 6px !important; }
+  .social-icons a { width: 28px !important; height: 28px !important; border-radius: 6px !important; }
+
+  .nav-right { gap: 10px !important; position: static; }
+
+  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 0; z-index: 101; }
+  .mobile-menu-btn span { display: block; width: 22px; height: 2px; background: var(--text); transition: 0.3s; }
+
+  /* БУРГЕР-МЕНЮ СВЕРХУ (НА ВСЮ ШИРИНУ) */
+  .nav ul { 
+    display: none; 
+    flex-direction: column; 
+    position: absolute; 
+    top: 100%; /* Прямо под шапкой */
+    left: 0; 
+    width: 100%; /* На всю ширину экрана */
+    background: var(--surface); 
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0; 
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1); 
+    z-index: 999; 
+    gap: 15px;
+  }
+  .nav ul.show { display: flex; }
+  .nav ul li { text-align: center; width: 100%; }
+  .nav ul a { font-size: 1.2rem; display: block; font-weight: 600; padding: 5px 0; }
+  
+  .objects-grid { grid-template-columns: 1fr; }
+  #scrollTopBtn { bottom: 20px; right: 20px; width: 45px; height: 45px; }
+
+  /* ФИЛЬТРЫ НА МОБИЛЬНЫХ (Аккуратные карточки) */
+  .filters-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-dropdown { 
+    flex-shrink: 1;
+  }
+
+  .filter-dropdown.active { z-index: 9999; }
+
+  .filter-content {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: max-content;
+    min-width: 200px;
+    max-width: 250px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    padding: 16px;
+    z-index: 10000;
+    max-height: 250px;
+    overflow-y: auto;
+  }
+  
+  .filter-content label {
+    font-size: 1rem;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .filter-content label:last-child {
+    border-bottom: none;
+  }
+    } cursor: pointer; 
   box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 99; transition: background 0.2s; 
   align-items: center; justify-content: center; 
 }
