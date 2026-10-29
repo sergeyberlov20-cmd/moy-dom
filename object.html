@@ -13,15 +13,6 @@
   <title>Объект — Мой Дом</title>
   <meta name="description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики.">
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    /* Дополнительные стили для галереи, чтобы картинка не вылезала за края */
-    .object-gallery img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* Картинка заполняет блок, сохраняя пропорции */
-      display: block;
-    }
-  </style>
 </head>
 <body>
 
@@ -59,7 +50,9 @@
 
 <div class="container" id="object-container"></div>
 
-<button id="scrollTopBtn" title="Наверх">&#8593;</button>
+<button id="scrollTopBtn" title="Наверх">
+  <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+</button>
 
 <footer>
   <div class="container">
@@ -120,12 +113,14 @@
     container.innerHTML = `
       <div class="object-detail">
         <div>
-          <div class="object-gallery" id="object-gallery" data-images='${JSON.stringify(galleryImages)}' style="position:relative; overflow:hidden;"></div>
+          <div class="object-gallery" id="object-gallery" data-images='${JSON.stringify(galleryImages)}'></div>
         </div>
         <div class="object-info">
           <div style="display:flex; justify-content:space-between; align-items:flex-start;">
             <h1 style="margin-bottom:8px;">${obj.title}</h1>
-            <button class="favorite-btn ${isFav}" style="position:relative; top:0; right:0; width:44px; height:44px; font-size:1.5rem; flex-shrink:0;" onclick="toggleFavorite(${obj.id}, this)">♥</button>
+            <button class="favorite-btn ${isFav}" style="position:relative; top:0; right:0; width:44px; height:44px; flex-shrink:0;" onclick="toggleFavorite(${obj.id}, this)">
+              <svg viewBox="0 0 24 24" style="width:22px; height:22px;"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+            </button>
           </div>
           <div class="price">${formatPrice(obj.price, obj.deal)}</div>
           <ul class="specs">
@@ -147,59 +142,11 @@
           <a href="contacts.html" class="btn btn-accent" style="display:block;">Записаться на просмотр</a>
         </div>
       </div>`;
-
-    // ВСТРОЕННЫЙ СЛАЙДЕР (Использует тег IMG для 100% надежности)
-    const gallery = document.getElementById('object-gallery');
-    if (gallery) {
-      const images = JSON.parse(gallery.getAttribute('data-images'));
-      let currentIndex = 0;
-
-      if (images && images.length > 0) {
-        let html = `<div style="position:relative; width:100%; height:100%;">
-          <img id="main-photo" src="${images[0]}" alt="Фото объекта">`;
-        
-        if (images.length > 1) {
-          html += `
-            <button type="button" id="btn-prev" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; font-size:1.2rem; z-index:10; display:flex; align-items:center; justify-content:center;">&#10094;</button>
-            <button type="button" id="btn-next" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; font-size:1.2rem; z-index:10; display:flex; align-items:center; justify-content:center;">&#10095;</button>
-            <div id="slider-dots" style="position:absolute; bottom:15px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:10;"></div>
-          `;
-        }
-        html += `</div>`;
-        gallery.innerHTML = html;
-
-        if (images.length > 1) {
-          const dotsContainer = document.getElementById('slider-dots');
-          images.forEach((_, i) => {
-            const dot = document.createElement('div');
-            dot.style.cssText = `width:12px; height:12px; border-radius:50%; cursor:pointer; border: 1px solid rgba(0,0,0,0.3); transition:background 0.2s; background: ${i === 0 ? '#fff' : 'rgba(255,255,255,0.5)'};`;
-            dot.addEventListener('click', () => {
-              currentIndex = i;
-              updateSlide();
-            });
-            dotsContainer.appendChild(dot);
-          });
-
-          const updateSlide = () => {
-            document.getElementById('main-photo').src = images[currentIndex];
-            const dots = dotsContainer.querySelectorAll('div');
-            dots.forEach((dot, i) => {
-              dot.style.background = i === currentIndex ? '#fff' : 'rgba(255,255,255,0.5)';
-            });
-          };
-
-          document.getElementById('btn-prev').addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
-            updateSlide();
-          });
-          document.getElementById('btn-next').addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % images.length;
-            updateSlide();
-          });
-        }
-      }
+      
+    if (window.initDetailGallery) {
+      window.initDetailGallery();
     }
   });
 </script>
 </body>
-</html>
+  </html>
