@@ -56,7 +56,7 @@
 <section class="container">
   <h1 class="section-title">Каталог объектов</h1>
 
-  <!-- НОВЫЕ ФИЛЬТРЫ -->
+  <!-- ФИЛЬТРЫ В СТИЛЕ OZON -->
   <div class="filters-bar">
     <!-- Сделка -->
     <div class="filter-dropdown">
@@ -153,7 +153,6 @@
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
         e.stopPropagation();
-        // Закрываем другие открытые фильтры
         document.querySelectorAll('.filter-dropdown').forEach(d => {
           if (d !== dropdown) d.classList.remove('active');
         });
@@ -161,12 +160,10 @@
       });
     });
 
-    // Закрываем фильтры при клике вне их области
     document.addEventListener('click', () => {
       document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('active'));
     });
 
-    // Не закрываем при клике внутри контента
     document.querySelectorAll('.filter-content').forEach(content => {
       content.addEventListener('click', (e) => e.stopPropagation());
     });
@@ -178,20 +175,16 @@
 
     // 3. Отрисовка и фильтрация
     function render() {
-      const types = getCheckedValues('f-type'); // Массив выбранных типов
-      const deals = getCheckedValues('f-deal'); // Массив сделок
-      const rooms = getCheckedValues('f-rooms'); // Массив комнат
+      const types = getCheckedValues('f-type');
+      const deals = getCheckedValues('f-deal');
+      const rooms = getCheckedValues('f-rooms');
       const min = Number(fMin.value) || 0;
       const max = Number(fMax.value) || Infinity;
 
       let filtered = OBJECTS.filter(o => {
-        // Если выбраны типы, и текущего нет в списке - отсекаем
         if (types.length > 0 && !types.includes(o.type)) return false;
-        
-        // То же для сделки
         if (deals.length > 0 && !deals.includes(o.deal)) return false;
         
-        // Если выбраны комнаты
         if (rooms.length > 0) {
           const hasMatchingRoom = rooms.some(r => {
             const rNum = Number(r);
@@ -200,15 +193,10 @@
           if (!hasMatchingRoom) return false;
         }
 
-        // Фильтр по цене
         if (o.price < min || o.price > max) return false;
 
         return true;
       });
-
-      // Сортировка (оставили прежнюю, просто применяем к отфильтрованному массиву)
-      const sortSelect = document.getElementById('f-sort'); // Если добавите сортировку обратно
-      // (Пока сортировку можно убрать из UI, или добавить её как еще один фильтр)
 
       catalog.innerHTML = filtered.length
         ? filtered.map(renderCard).join('')
@@ -238,6 +226,27 @@
             <div class="card-price">${formatPrice(o.price, o.deal)}</div>
             <div class="card-title">${o.title}</div>
             <div class="card-meta">${o.address}</div>
+            <a href="object.html?id=${o.id}" class="btn" style="margin-bottom: 8px;">Подробнее</a>
+            <div style="display: flex; gap: 8px; margin-top: auto;">
+              <a href="tel:+79495044455" class="btn btn-accent" style="flex: 1; padding: 8px; font-size: 0.9rem;">📞 Позвонить</a>
+              <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="flex: 1; padding: 8px; font-size: 0.9rem; background: #0088cc;">✈️ Telegram</a>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    document.querySelectorAll('.f-type, .f-deal, .f-rooms').forEach(el => {
+      el.addEventListener('change', render);
+    });
+    [fMin, fMax].forEach(el => {
+      el.addEventListener('input', render);
+    });
+    
+    render();
+  });
+</script>
+</body>
+</html>>
             <a href="object.html?id=${o.id}" class="btn" style="margin-bottom: 8px;">Подробнее</a>
             <div style="display: flex; gap: 8px; margin-top: auto;">
               <a href="tel:+79495044455" class="btn btn-accent" style="flex: 1; padding: 8px; font-size: 0.9rem;">📞 Позвонить</a>
