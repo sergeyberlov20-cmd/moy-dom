@@ -16,9 +16,6 @@
 </head>
 <body>
 
-<!-- Затемненный фон для мобильной шторки -->
-<div id="filter-backdrop" class="filter-backdrop"></div>
-
 <header>
   <div class="container nav">
     <a href="index.html" class="logo">
@@ -36,7 +33,7 @@
         <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
         <li>
-          <a href="favorites.html" style="color:#cc2229; font-weight:bold; display:flex; align-items:center; gap:4px;">
+          <a href="favorites.html" style="color:#cc2229; font-weight:bold; display:flex; align-items:center; gap:4px; justify-content:center;">
             <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor;"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
             Избранное
           </a>
@@ -146,9 +143,23 @@
     const catalog = document.getElementById('catalog');
     const fMin = document.getElementById('f-min');
     const fMax = document.getElementById('f-max');
-    const backdrop = document.getElementById('filter-backdrop');
 
-    // 1. Открытие/закрытие фильтров
+    // 1. Бургер-меню (как вы просили, оставляем рабочим)
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mainNav = document.getElementById('main-nav');
+    if (mobileBtn && mainNav) {
+      mobileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        mainNav.classList.toggle('show');
+      });
+      document.addEventListener('click', (e) => {
+        if (!mainNav.contains(e.target) && !mobileBtn.contains(e.target)) {
+          mainNav.classList.remove('show');
+        }
+      });
+    }
+
+    // 2. Логика открытия/закрытия фильтров
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
         e.stopPropagation();
@@ -158,29 +169,15 @@
           if (d !== dropdown) d.classList.remove('active');
         });
         
-        const isActive = dropdown.classList.toggle('active');
-        
-        // Управление фоном и скроллом на мобилке
-        if (window.innerWidth <= 768) {
-          if (isActive) {
-            backdrop.classList.add('show');
-            document.body.style.overflow = 'hidden'; // Блокируем скролл
-          } else {
-            backdrop.classList.remove('show');
-            document.body.style.overflow = '';
-          }
-        }
+        dropdown.classList.toggle('active');
       });
     });
 
-    // Закрытие при клике на фон
-    backdrop.addEventListener('click', () => {
+    // Закрытие при клике вне
+    document.addEventListener('click', () => {
       document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('active'));
-      backdrop.classList.remove('show');
-      document.body.style.overflow = '';
     });
 
-    // Предотвращаем закрытие при клике внутри меню
     document.querySelectorAll('.filter-content').forEach(content => {
       content.addEventListener('click', (e) => e.stopPropagation());
     });
@@ -189,7 +186,7 @@
       return Array.from(document.querySelectorAll(`.${className}:checked`)).map(cb => cb.value);
     }
 
-    // 2. Фильтрация
+    // 3. Фильтрация
     function render() {
       const types = getCheckedValues('f-type');
       const deals = getCheckedValues('f-deal');
@@ -258,22 +255,6 @@
     });
     
     render();
-
-    // 3. Бургер-меню (открытие сверху)
-    const mobileBtn = document.getElementById('mobile-menu-btn');
-    const mainNav = document.getElementById('main-nav');
-    if (mobileBtn && mainNav) {
-      mobileBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        mainNav.classList.toggle('show');
-      });
-      // Закрываем при клике вне
-      document.addEventListener('click', (e) => {
-        if (!mainNav.contains(e.target) && !mobileBtn.contains(e.target)) {
-          mainNav.classList.remove('show');
-        }
-      });
-    }
   });
 </script>
 </body>
