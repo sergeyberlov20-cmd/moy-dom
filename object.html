@@ -7,7 +7,6 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1c2e5a">
   
-  <!-- Обновленная квадратная иконка -->
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
   
@@ -90,20 +89,33 @@
 <script src="js/main.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const id = Number(new URLSearchParams(location.search).get('id'));
+    // 1. Получаем ID из ссылки
+    const urlParams = new URLSearchParams(location.search);
+    const id = Number(urlParams.get('id'));
+    
+    // 2. Ищем объект в базе
     const obj = OBJECTS.find(o => o.id === id);
     const container = document.getElementById('object-container');
 
+    // 3. Если объекта нет - показываем заглушку
     if (!obj) {
       container.innerHTML = '<h1 class="section-title">Объект не найден</h1><a href="catalog.html" class="btn">В каталог</a>';
       return;
     }
 
-    const galleryImages = obj.images || [obj.image]; 
+    // 4. Безопасные проверки (чтобы ничего не сломалось)
+    const galleryImages = obj.images && obj.images.length > 0 ? obj.images : [obj.image]; 
     const mapLat = obj.lat || 47.095000;
     const mapLon = obj.lon || 37.548707;
-    const isFav = isFavorite(obj.id) ? 'active' : '';
+    
+    let isFav = '';
+    try {
+      if (typeof isFavorite === 'function') {
+        isFav = isFavorite(obj.id) ? 'active' : '';
+      }
+    } catch(e) {}
 
+    // 5. Рендерим страницу
     container.innerHTML = `
       <div class="object-detail">
         <div>
@@ -135,9 +147,13 @@
         </div>
       </div>`;
       
-    if (window.initMiniSliders) window.initMiniSliders();
+    // 6. Запускаем слайдер (если функция готова)
+    if (window.initMiniSliders) {
+      window.initMiniSliders();
+    }
   });
 
+  // Регистрация PWA
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
