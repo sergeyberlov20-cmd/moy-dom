@@ -325,4 +325,78 @@
   }
 </script>
 </body>
+</html>gRoom = rooms.some(r => {
+            const rNum = Number(r);
+            return rNum === 4 ? o.rooms >= 4 : o.rooms === rNum;
+          });
+          if (!hasMatchingRoom) return false;
+        }
+
+        if (o.price < min || o.price > max) return false;
+        return true;
+      });
+
+      catalog.innerHTML = filtered.length
+        ? filtered.map(renderCard).join('')
+        : '<p style="padding:40px 0;color:#818c99;font-size:1.1rem;">Объектов не найдено. Попробуйте изменить фильтры.</p>';
+        
+      if (window.initMiniSliders) window.initMiniSliders();
+    }
+
+    function renderCard(o) {
+      let sliderBtns = '';
+      if (o.images && o.images.length > 1) {
+        sliderBtns = `<button class="card-slider-btn prev">&#10094;</button><button class="card-slider-btn next">&#10095;</button>`;
+      }
+      const isFav = typeof isFavorite === 'function' && isFavorite(o.id) ? 'active' : '';
+
+      return `
+        <article class="card">
+          <div class="card-img-wrapper" data-images='${JSON.stringify(o.images || [o.image])}'>
+            <div class="card-img" style="background-image:url('${o.image}')"></div>
+            <span class="card-badge">${o.deal}</span>
+            <button class="favorite-btn ${isFav}" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(${o.id}, this)">
+              <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+            </button>
+            ${sliderBtns}
+          </div>
+          <div class="card-body">
+            <div class="card-price">${formatPrice(o.price, o.deal)}</div>
+            <div class="card-title">${o.title}</div>
+            <div class="card-meta">${o.address}</div>
+            <a href="object.html?id=${o.id}" class="btn" style="margin-bottom: 8px;">Подробнее</a>
+            <div style="display: flex; gap: 8px; margin-top: auto;">
+              <a href="tel:+79495044455" class="btn btn-accent" style="flex: 1; padding: 8px; font-size: 0.9rem;">📞 Позвонить</a>
+              <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="flex: 1; padding: 8px; font-size: 0.9rem; background: #0088cc;">✈️ Telegram</a>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    document.querySelectorAll('.f-type, .f-deal, .f-rooms').forEach(el => {
+      el.addEventListener('change', render);
+    });
+    [fMin, fMax].forEach(el => {
+      el.addEventListener('input', render);
+    });
+    
+    render();
+  });
+
+  // Бургер меню
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const navMenu = document.getElementById('nav-menu');
+  if (mobileBtn && navMenu) {
+    mobileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navMenu.classList.toggle('show');
+    });
+    document.addEventListener('click', (e) => {
+       if (!e.target.closest('.nav')) {
+           navMenu.classList.remove('show');
+       }
+    });
+  }
+</script>
+</body>
 </html>
