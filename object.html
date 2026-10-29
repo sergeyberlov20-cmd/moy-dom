@@ -89,33 +89,25 @@
 <script src="js/main.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. Получаем ID из ссылки
     const urlParams = new URLSearchParams(location.search);
     const id = Number(urlParams.get('id'));
-    
-    // 2. Ищем объект в базе
     const obj = OBJECTS.find(o => o.id === id);
     const container = document.getElementById('object-container');
 
-    // 3. Если объекта нет - показываем заглушку
     if (!obj) {
       container.innerHTML = '<h1 class="section-title">Объект не найден</h1><a href="catalog.html" class="btn">В каталог</a>';
       return;
     }
 
-    // 4. Безопасные проверки (чтобы ничего не сломалось)
     const galleryImages = obj.images && obj.images.length > 0 ? obj.images : [obj.image]; 
     const mapLat = obj.lat || 47.095000;
     const mapLon = obj.lon || 37.548707;
     
     let isFav = '';
     try {
-      if (typeof isFavorite === 'function') {
-        isFav = isFavorite(obj.id) ? 'active' : '';
-      }
+      if (typeof isFavorite === 'function') isFav = isFavorite(obj.id) ? 'active' : '';
     } catch(e) {}
 
-    // 5. Рендерим страницу
     container.innerHTML = `
       <div class="object-detail">
         <div>
@@ -147,13 +139,12 @@
         </div>
       </div>`;
       
-    // 6. Запускаем слайдер (если функция готова)
-    if (window.initMiniSliders) {
-      window.initMiniSliders();
+    // ВАЖНО: Вызываем слайдер ПОСЛЕ того, как HTML вставился в страницу
+    if (window.initDetailGallery) {
+      window.initDetailGallery();
     }
   });
 
-  // Регистрация PWA
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
