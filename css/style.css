@@ -129,7 +129,7 @@ a[href="favorites.html"] svg {
   margin: 20px 0;
   flex-wrap: wrap;
   position: relative;
-  z-index: 150; /* Фильтры выше карточек */
+  z-index: 150;
 }
 
 .filter-dropdown {
@@ -154,12 +154,10 @@ a[href="favorites.html"] svg {
 .filter-title svg { width: 14px; height: 14px; fill: var(--muted); transition: transform 0.3s; }
 .filter-dropdown.active .filter-title svg { transform: rotate(180deg); }
 
-/* Анимация появления меню */
 .filter-content {
   display: flex; 
   flex-direction: column;
   gap: 12px;
-  
   position: absolute;
   top: 110%;
   left: 0;
@@ -171,7 +169,6 @@ a[href="favorites.html"] svg {
   z-index: 1000;
   max-height: 300px;
   overflow-y: auto;
-  
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
@@ -264,10 +261,27 @@ footer a:hover { color: #fff; }
 
   .nav-right { gap: 10px !important; position: static; }
 
-  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 0; z-index: 300; }
-  .mobile-menu-btn span { display: block; width: 22px; height: 2px; background: var(--text); transition: 0.3s; }
+  /* ИДЕАЛЬНЫЕ ПОЛОСОЧКИ БУРГЕРА */
+  .mobile-menu-btn { 
+    display: flex !important; 
+    flex-direction: column; 
+    gap: 5px; 
+    background: none; 
+    border: none; 
+    cursor: pointer; 
+    padding: 0; 
+    z-index: 300; 
+  }
+  .mobile-menu-btn span { 
+    display: block; 
+    width: 24px; 
+    height: 2px; 
+    background: var(--text); 
+    transition: 0.3s; 
+    border-radius: 2px;
+  }
 
-  /* БУРГЕР-МЕНЮ (ВЫПАДАЕТ СВЕРХУ, КАК ВАМ ПОНРАВИЛОСЬ) */
+  /* БУРГЕР-МЕНЮ (ВЫПАДАЕТ СВЕРХУ) */
   .nav ul { 
     display: none; 
     flex-direction: column; 
@@ -293,7 +307,6 @@ footer a:hover { color: #fff; }
   }
   .nav ul a:hover { background: var(--bg); }
 
-  /* Центрируем Избранное на мобилке */
   a[href="favorites.html"] {
     justify-content: center !important;
   }
@@ -331,4 +344,4 @@ footer a:hover { color: #fff; }
   .filter-content label:last-child {
     border-bottom: none;
   }
-  }
+    }
