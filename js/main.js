@@ -133,9 +133,19 @@ window.initDetailGallery = function() {
 // 5. БУРГЕР-МЕНЮ И КНОПКА НАВЕРХ
 document.addEventListener('DOMContentLoaded', () => {
   const mobileBtn = document.getElementById('mobile-menu-btn');
-  const navMenu = document.querySelector('.nav ul');
-  if (mobileBtn && navMenu) {
-    mobileBtn.addEventListener('click', () => navMenu.classList.toggle('show'));
+  const mainNav = document.getElementById('main-nav');
+  
+  if (mobileBtn && mainNav) {
+    mobileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      mainNav.classList.toggle('show');
+    });
+    
+    document.addEventListener('click', (e) => {
+      if (!mainNav.contains(e.target) && !mobileBtn.contains(e.target)) {
+        mainNav.classList.remove('show');
+      }
+    });
   }
 
   const scrollBtn = document.getElementById('scrollTopBtn');
