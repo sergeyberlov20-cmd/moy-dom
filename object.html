@@ -104,9 +104,9 @@
     const mapLon = obj.lon || 37.548707;
     
     let isFav = '';
-    try {
-      if (typeof isFavorite === 'function') isFav = isFavorite(obj.id) ? 'active' : '';
-    } catch(e) {}
+    if (typeof isFavorite === 'function' && isFavorite(obj.id)) {
+      isFav = 'active';
+    }
 
     container.innerHTML = `
       <div class="object-detail">
@@ -138,18 +138,60 @@
           <a href="contacts.html" class="btn btn-accent" style="display:block;">Записаться на просмотр</a>
         </div>
       </div>`;
-      
-    // ВАЖНО: Вызываем слайдер ПОСЛЕ того, как HTML вставился в страницу
-    if (window.initDetailGallery) {
-      window.initDetailGallery();
+
+    // ВСТРОЕННЫЙ СЛАЙДЕР (РАБОТАЕТ ВСЕГДА)
+    const gallery = document.getElementById('object-gallery');
+    if (gallery) {
+      const images = JSON.parse(gallery.getAttribute('data-images'));
+      let currentIndex = 0;
+
+      if (images && images.length > 0) {
+        let html = `<div style="position:relative; width:100%; height:100%;">
+          <div class="slider-img" style="width:100%; height:100%; background:url('${images[0]}') center/cover; transition: background-image 0.3s;"></div>`;
+        
+        if (images.length > 1) {
+          html += `
+            <button type="button" id="btn-prev" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; font-size:1.2rem; z-index:10; display:flex; align-items:center; justify-content:center;">&#10094;</button>
+            <button type="button" id="btn-next" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; font-size:1.2rem; z-index:10; display:flex; align-items:center; justify-content:center;">&#10095;</button>
+            <div id="slider-dots" style="position:absolute; bottom:15px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:10;"></div>
+          `;
+        }
+        html += `</div>`;
+        gallery.innerHTML = html;
+
+        if (images.length > 1) {
+          const dotsContainer = document.getElementById('slider-dots');
+          images.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.style.cssText = `width:12px; height:12px; border-radius:50%; cursor:pointer; border: 1px solid rgba(0,0,0,0.3); transition:background 0.2s; background: ${i === 0 ? '#fff' : 'rgba(255,255,255,0.5)'};`;
+            dot.addEventListener('click', () => {
+              currentIndex = i;
+              updateSlide();
+            });
+            dotsContainer.appendChild(dot);
+          });
+
+          const updateSlide = () => {
+            const imgDiv = gallery.querySelector('.slider-img');
+            imgDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
+            const dots = dotsContainer.querySelectorAll('div');
+            dots.forEach((dot, i) => {
+              dot.style.background = i === currentIndex ? '#fff' : 'rgba(255,255,255,0.5)';
+            });
+          };
+
+          document.getElementById('btn-prev').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateSlide();
+          });
+          document.getElementById('btn-next').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % images.length;
+            updateSlide();
+          });
+        }
+      }
     }
   });
-
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
-    });
-  }
 </script>
 </body>
 </html>
