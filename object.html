@@ -13,6 +13,15 @@
   <title>Объект — Мой Дом</title>
   <meta name="description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики.">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Дополнительные стили для галереи, чтобы картинка не вылезала за края */
+    .object-gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Картинка заполняет блок, сохраняя пропорции */
+      display: block;
+    }
+  </style>
 </head>
 <body>
 
@@ -104,14 +113,14 @@
     const mapLon = obj.lon || 37.548707;
     
     let isFav = '';
-    if (typeof isFavorite === 'function' && isFavorite(obj.id)) {
-      isFav = 'active';
-    }
+    try {
+      if (typeof isFavorite === 'function') isFav = isFavorite(obj.id) ? 'active' : '';
+    } catch(e) {}
 
     container.innerHTML = `
       <div class="object-detail">
         <div>
-          <div class="object-gallery" id="object-gallery" data-images='${JSON.stringify(galleryImages)}'></div>
+          <div class="object-gallery" id="object-gallery" data-images='${JSON.stringify(galleryImages)}' style="position:relative; overflow:hidden;"></div>
         </div>
         <div class="object-info">
           <div style="display:flex; justify-content:space-between; align-items:flex-start;">
@@ -139,7 +148,7 @@
         </div>
       </div>`;
 
-    // ВСТРОЕННЫЙ СЛАЙДЕР (РАБОТАЕТ ВСЕГДА)
+    // ВСТРОЕННЫЙ СЛАЙДЕР (Использует тег IMG для 100% надежности)
     const gallery = document.getElementById('object-gallery');
     if (gallery) {
       const images = JSON.parse(gallery.getAttribute('data-images'));
@@ -147,7 +156,7 @@
 
       if (images && images.length > 0) {
         let html = `<div style="position:relative; width:100%; height:100%;">
-          <div class="slider-img" style="width:100%; height:100%; background:url('${images[0]}') center/cover; transition: background-image 0.3s;"></div>`;
+          <img id="main-photo" src="${images[0]}" alt="Фото объекта">`;
         
         if (images.length > 1) {
           html += `
@@ -172,8 +181,7 @@
           });
 
           const updateSlide = () => {
-            const imgDiv = gallery.querySelector('.slider-img');
-            imgDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
+            document.getElementById('main-photo').src = images[currentIndex];
             const dots = dotsContainer.querySelectorAll('div');
             dots.forEach((dot, i) => {
               dot.style.background = i === currentIndex ? '#fff' : 'rgba(255,255,255,0.5)';
