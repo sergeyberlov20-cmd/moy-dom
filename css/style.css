@@ -23,13 +23,7 @@ body {
 .container { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
 
 /* Header */
-header { 
-  background: var(--surface); 
-  border-bottom: 1px solid var(--border); 
-  position: sticky; 
-  top: 0; 
-  z-index: 9999; 
-}
+header { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; /* Бургер всегда выше карточек */ }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 80px; position: relative; }
 .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .logo-img { height: 50px; width: auto; border-radius: 6px; }
@@ -116,7 +110,7 @@ header {
   margin: 20px 0;
   flex-wrap: wrap;
   position: relative;
-  z-index: 100;
+  z-index: 150; /* Фильтры выше карточек, но ниже шапки */
 }
 
 .filter-dropdown {
@@ -131,7 +125,7 @@ header {
   align-items: center;
 }
 
-.filter-dropdown.active { z-index: 99999; }
+.filter-dropdown.active { z-index: 999; }
 
 .filter-title {
   font-weight: 400; font-size: 0.95rem; display: flex; align-items: center;
@@ -144,19 +138,18 @@ header {
 .filter-content {
   display: none;
   position: absolute;
-  top: 100%;
+  top: 110%;
   left: 0;
   min-width: 200px;
   background: var(--surface);
   border-radius: var(--radius);
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   padding: 16px;
-  z-index: 100000;
+  z-index: 1000;
   flex-direction: column;
   gap: 12px;
-  max-height: 250px;
+  max-height: 300px;
   overflow-y: auto;
-  margin-top: 4px;
 }
 
 .filter-dropdown.active .filter-content { display: flex; }
@@ -168,15 +161,21 @@ header {
 .price-inputs input { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.9rem; outline: none; }
 .price-inputs input:focus { border-color: var(--primary); }
 
-/* Затемнение фона (Только для мобильных) */
-.filter-overlay {
+/* Задний фон (затемнение) для мобильных */
+.filter-backdrop {
   display: none;
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.5);
-  z-index: 99998;
+  z-index: 300; /* Ниже шторки, но выше всего остального */
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
-.filter-overlay.show { display: block; }
+
+.filter-backdrop.show {
+  display: block;
+  opacity: 1;
+}
 
 /* Карточка объекта (детальная) */
 .object-detail { display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; margin: 32px 0; }
@@ -226,7 +225,7 @@ footer a:hover { color: #fff; }
 #scrollTopBtn svg { width: 24px; height: 24px; fill: currentColor; }
 
 /* Toast Уведомления */
-.toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 999999; display: flex; flex-direction: column; gap: 10px; }
+.toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
 .toast { background: var(--surface); color: var(--text); padding: 16px 24px; border-radius: var(--radius); box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px; font-weight: 500; font-size: 0.95rem; transform: translateX(120%); transition: transform 0.3s ease-out, opacity 0.3s ease-out; opacity: 0; border-left: 4px solid var(--primary); }
 .toast.show { transform: translateX(0); opacity: 1; }
 .toast.success { border-left-color: #4caf50; }
@@ -249,68 +248,98 @@ footer a:hover { color: #fff; }
   .social-icons { display: flex !important; gap: 6px !important; }
   .social-icons a { width: 28px !important; height: 28px !important; border-radius: 6px !important; }
 
-  .nav-right { gap: 10px !important; }
+  .nav-right { gap: 10px !important; position: static; }
 
-  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 0; z-index: 10005; }
-  .mobile-menu-btn span { display: block; width: 22px; height: 2px; background: var(--text); transition: 0.3s; }
+  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 0; z-index: 300; }
+  .mobile-menu-btn span { display: block; width: 24px; height: 2px; background: var(--text); transition: 0.3s; }
 
-  /* БУРГЕР-МЕНЮ (ВЫПАДАЕТ РОВНО ИЗ ТРЕХ ТОЧЕК) */
+  /* БУРГЕР-МЕНЮ (ШТОРКА СВЕРХУ) */
   .nav ul { 
-    display: none; 
+    display: flex; 
     flex-direction: column; 
-    position: absolute; 
-    top: 50px; /* Чуть ниже кнопки */
-    right: 0; /* Привязка к правому краю */
-    left: auto;
-    width: 220px; 
+    position: fixed; 
+    top: 60px; /* Под шапкой */
+    left: 0; 
+    width: 100%; 
     background: var(--surface); 
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 15px; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
-    z-index: 10006; 
-    gap: 15px;
+    border-bottom: 1px solid var(--border);
+    padding: 0; 
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1); 
+    z-index: 250; 
+    
+    /* Анимация шторки */
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
-  .nav ul.show { display: flex; }
-  .nav ul li { text-align: right; width: 100%; }
-  .nav ul a { font-size: 1.1rem; display: block; font-weight: 500; padding: 5px 0; }
   
+  /* Когда меню открыто */
+  .nav ul.show { 
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav ul li { 
+    width: 100%; 
+    border-bottom: 1px solid var(--border); 
+    list-style: none;
+  }
+  .nav ul li:last-child { border-bottom: none; }
+  
+  .nav ul a { 
+    font-size: 1.1rem; 
+    font-weight: 600; 
+    display: block; 
+    padding: 15px 20px; 
+    text-align: left;
+    color: var(--text);
+  }
+  .nav ul a:hover { background: var(--bg); }
+
   .objects-grid { grid-template-columns: 1fr; }
   #scrollTopBtn { bottom: 20px; right: 20px; width: 45px; height: 45px; }
 
-  /* ФИЛЬТРЫ НА МОБИЛЬНЫХ (ВЫЕЗЖАЮТ СНИЗУ НА ВЕСЬ ЭКРАН) */
+  /* ФИЛЬТРЫ (ШТОРКА СНИЗУ С АНИМАЦИЕЙ) */
   .filters-bar {
     flex-wrap: wrap;
     gap: 8px;
   }
 
   .filter-dropdown { flex-shrink: 1; }
-  .filter-dropdown.active { z-index: 100000; }
 
+  /* Скрываем обычные выпадашки на мобилке */
   .filter-content {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    max-height: 80vh;
-    top: auto;
-    margin: 0;
+    max-width: none;
     border-radius: 20px 20px 0 0;
-    box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
-    padding: 24px;
-    z-index: 100000;
-    transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    display: flex; /* Всегда flex, скрываем через transform */
+    padding: 20px 20px 40px 20px;
+    margin: 0;
+    box-shadow: 0 -5px 30px rgba(0,0,0,0.2);
+    z-index: 9999;
+    max-height: 80vh;
     overflow-y: auto;
+    
+    /* Анимация шторки снизу */
+    display: flex;
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
   }
 
-  /* Когда открыт - показываем */
   .filter-dropdown.active .filter-content {
+    display: flex;
     transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
   }
 
-  /* Полоска для свайпа */
+  /* Полоска для свайпа сверху */
   .filter-content::before {
     content: '';
     display: block;
@@ -327,126 +356,13 @@ footer a:hover { color: #fff; }
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
   .filter-content label:last-child {
     border-bottom: none;
   }
-  }{ display: none; }
-#scrollTopBtn { 
-  display: none; position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; 
-  border-radius: 50%; background: var(--primary); color: #fff; border: none; cursor: pointer; 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 99; transition: background 0.2s; 
-  align-items: center; justify-content: center; 
+  .filter-content input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+  }
 }
-#scrollTopBtn:hover { background: var(--accent); }
-#scrollTopBtn svg { width: 24px; height: 24px; fill: currentColor; }
-
-/* Toast Уведомления */
-.toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 999999; display: flex; flex-direction: column; gap: 10px; }
-.toast { background: var(--surface); color: var(--text); padding: 16px 24px; border-radius: var(--radius); box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px; font-weight: 500; font-size: 0.95rem; transform: translateX(120%); transition: transform 0.3s ease-out, opacity 0.3s ease-out; opacity: 0; border-left: 4px solid var(--primary); }
-.toast.show { transform: translateX(0); opacity: 1; }
-.toast.success { border-left-color: #4caf50; }
-.toast.error { border-left-color: var(--accent); }
-.toast-icon { font-size: 1.2rem; }
-
-/* АДАПТИВ */
-@media (max-width: 768px) {
-  .nav { height: 60px; }
-  .hero h1 { font-size: 1.6rem; }
-  .hero p { font-size: 1rem; }
-  .object-detail { grid-template-columns: 1fr; }
-  .object-gallery { height: 280px; }
-  .logo-img { height: 35px !important; }
-  .section-title { font-size: 1.5rem; }
-
-  .logo-subtitle { display: none !important; } 
-  .logo-title { font-size: 1.1rem !important; }
-
-  .social-icons { display: flex !important; gap: 6px !important; }
-  .social-icons a { width: 28px !important; height: 28px !important; border-radius: 6px !important; }
-
-  .nav-right { gap: 10px !important; }
-
-  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 0; z-index: 10005; }
-  .mobile-menu-btn span { display: block; width: 22px; height: 2px; background: var(--text); transition: 0.3s; }
-
-  /* БУРГЕР-МЕНЮ (ВЫПАДАЕТ РОВНО ИЗ ТРЕХ ТОЧЕК) */
-  .nav ul { 
-    display: none; 
-    flex-direction: column; 
-    position: absolute; 
-    top: 50px; /* Чуть ниже кнопки */
-    right: 0; /* Привязка к правому краю */
-    left: auto;
-    width: 220px; 
-    background: var(--surface); 
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 15px; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
-    z-index: 10006; 
-    gap: 15px;
-  }
-  .nav ul.show { display: flex; }
-  .nav ul li { text-align: right; width: 100%; }
-  .nav ul a { font-size: 1.1rem; display: block; font-weight: 500; padding: 5px 0; }
-  
-  .objects-grid { grid-template-columns: 1fr; }
-  #scrollTopBtn { bottom: 20px; right: 20px; width: 45px; height: 45px; }
-
-  /* ФИЛЬТРЫ НА МОБИЛЬНЫХ (ВЫЕЗЖАЮТ СНИЗУ НА ВЕСЬ ЭКРАН) */
-  .filters-bar {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .filter-dropdown { flex-shrink: 1; }
-  .filter-dropdown.active { z-index: 100000; }
-
-  .filter-content {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    max-height: 80vh;
-    top: auto;
-    margin: 0;
-    border-radius: 20px 20px 0 0;
-    box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
-    padding: 24px;
-    z-index: 100000;
-    transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    display: flex; /* Всегда flex, скрываем через transform */
-    overflow-y: auto;
-  }
-
-  /* Когда открыт - показываем */
-  .filter-dropdown.active .filter-content {
-    transform: translateY(0);
-  }
-
-  /* Полоска для свайпа */
-  .filter-content::before {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 4px;
-    background: #ccc;
-    border-radius: 2px;
-    margin: 0 auto 20px auto;
-  }
-
-  .filter-content label {
-    font-size: 1.1rem;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .filter-content label:last-child {
-    border-bottom: none;
-  }
-            }
