@@ -7,7 +7,6 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1c2e5a">
   
-  <!-- Обновленная квадратная иконка -->
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
   
@@ -63,7 +62,9 @@
   <div class="objects-grid" id="featured"></div>
 </section>
 
-<button id="scrollTopBtn" title="Наверх">&#8593;</button>
+<button id="scrollTopBtn" title="Наверх">
+  <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+</button>
 
 <footer>
   <div class="container">
@@ -119,7 +120,9 @@
           <div class="card-img-wrapper" data-images='${JSON.stringify(o.images || [o.image])}'>
             <div class="card-img" style="background-image:url('${o.image}')"></div>
             <span class="card-badge">${o.deal}</span>
-            <button class="favorite-btn ${isFav}" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(${o.id}, this)">♥</button>
+            <button class="favorite-btn ${isFav}" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(${o.id}, this)">
+              <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+            </button>
             ${sliderBtns}
           </div>
           <div class="card-body">
@@ -133,12 +136,6 @@
 
     setTimeout(() => { if (window.initMiniSliders) window.initMiniSliders(); }, 200);
   });
-
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
-    });
-  }
 </script>
 </body>
 </html>
