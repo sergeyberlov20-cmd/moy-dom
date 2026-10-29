@@ -35,7 +35,7 @@ window.toggleFavorite = function(id, btn) {
   } else {
     favs.push(id);
     btn.classList.add('active');
-    showToast('Объект добавлен в избранное', 'success');
+    showToast('Объект сохранен в избранное', 'success');
   }
   localStorage.setItem('favorites', JSON.stringify(favs));
 };
@@ -74,7 +74,7 @@ window.initMiniSliders = function() {
   });
 };
 
-// 4. СЛАЙДЕР ДЛЯ ДЕТАЛЬНОЙ КАРТОЧКИ (вызывается из object.html)
+// 4. СЛАЙДЕР ДЛЯ ДЕТАЛЬНОЙ КАРТОЧКИ
 window.initDetailGallery = function() {
   const gallery = document.getElementById('object-gallery');
   if (!gallery) return;
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const scrollBtn = document.getElementById('scrollTopBtn');
   if (scrollBtn) {
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) scrollBtn.style.display = 'block';
+      if (window.scrollY > 300) scrollBtn.style.display = 'flex';
       else scrollBtn.style.display = 'none';
     });
     scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
