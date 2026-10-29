@@ -36,7 +36,7 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 .nav a:not(.logo) { text-decoration: none; color: var(--text); font-weight: 500; transition: color .2s; }
 .nav a:not(.logo):hover, .nav a.active { color: var(--accent); }
 
-/* Соцсети в шапке (ВАШИ КАРТИНКИ - НЕ ТРОГАЕМ) */
+/* Соцсети в шапке */
 .social-icons { display: flex; gap: 10px; align-items: center; }
 .social-icons a { 
   display: block; 
@@ -98,7 +98,7 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 }
 .favorite-btn svg { width: 18px; height: 18px; fill: currentColor; transition: fill 0.2s; }
 .favorite-btn:hover { transform: scale(1.1); background: #fff; }
-.favorite-btn.active { color: var(--accent); } /* Красная закладка при сохранении */
+.favorite-btn.active { color: var(--accent); }
 
 .card-slider-btn {
   position: absolute;
@@ -128,12 +128,102 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 .card-title { font-weight: 600; margin-bottom: 8px; font-size: 1.05rem; color: var(--text); }
 .card-meta { color: var(--muted); font-size: .9rem; margin-bottom: 14px; }
 
-/* Фильтры */
-.filters { background: var(--surface); padding: 20px; border-radius: var(--radius); box-shadow: 0 1px 2px rgba(0,0,0,0.1); display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; margin-top: 24px; margin-bottom: 24px; }
-.filter-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 140px; }
-.filter-group label { font-size: .85rem; color: var(--muted); font-weight: 600; }
-.filter-group select, .filter-group input { padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: .95rem; font-family: inherit; outline: none; background: var(--bg); color: var(--text); transition: border .2s; }
-.filter-group select:focus, .filter-group input:focus { border-color: var(--primary); }
+/* =========================================
+   ФИЛЬТРЫ В СТИЛЕ OZON
+   ========================================= */
+.filters-bar {
+  display: flex;
+  gap: 10px;
+  margin: 24px 0;
+  flex-wrap: wrap;
+}
+
+.filter-dropdown {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  cursor: pointer;
+  user-select: none;
+  min-width: 160px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.filter-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text);
+}
+
+.filter-title svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--muted);
+  transition: transform 0.3s;
+}
+
+.filter-dropdown.active .filter-title svg {
+  transform: rotate(180deg);
+}
+
+.filter-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  padding: 16px;
+  z-index: 50;
+  margin-top: 4px;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filter-dropdown.active .filter-content {
+  display: flex;
+}
+
+.filter-content label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.filter-content input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.price-inputs {
+  display: flex;
+  gap: 8px;
+}
+
+.price-inputs input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.price-inputs input:focus {
+  border-color: var(--primary);
+}
 
 /* Карточка объекта (детальная) */
 .object-detail { display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; margin: 32px 0; }
@@ -190,6 +280,50 @@ footer a:hover { color: #fff; }
 .toast { background: var(--surface); color: var(--text); padding: 16px 24px; border-radius: var(--radius); box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px; font-weight: 500; font-size: 0.95rem; transform: translateX(120%); transition: transform 0.3s ease-out, opacity 0.3s ease-out; opacity: 0; border-left: 4px solid var(--primary); }
 .toast.show { transform: translateX(0); opacity: 1; }
 .toast.success { border-left-color: #4caf50; }
+.toast.error { border-left-color: var(--accent); }
+.toast-icon { font-size: 1.2rem; }
+
+/* АДАПТИВ */
+@media (max-width: 768px) {
+  .nav { height: 60px; }
+  .hero h1 { font-size: 1.6rem; }
+  .hero p { font-size: 1rem; }
+  .object-detail { grid-template-columns: 1fr; }
+  .object-gallery { height: 280px; }
+  .logo-img { height: 35px !important; }
+  .section-title { font-size: 1.5rem; }
+
+  .logo-subtitle { display: none !important; } 
+  .logo-title { font-size: 1.1rem !important; }
+
+  .social-icons { display: flex !important; gap: 6px !important; }
+  .social-icons a { width: 28px !important; height: 28px !important; border-radius: 6px !important; }
+
+  .nav-right { gap: 10px !important; }
+
+  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 0; z-index: 101; }
+  .mobile-menu-btn span { display: block; width: 22px; height: 2px; background: var(--text); transition: 0.3s; }
+
+  .nav ul { display: none; flex-direction: column; position: absolute; top: 60px; right: 0; width: 250px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 99; }
+  .nav ul.show { display: flex; }
+  .nav ul li { margin-bottom: 15px; }
+  .nav ul li:last-child { margin-bottom: 0; }
+  .nav ul a { font-size: 1.1rem; display: block; }
+  
+  .objects-grid { grid-template-columns: 1fr; }
+  #scrollTopBtn { bottom: 20px; right: 20px; width: 45px; height: 45px; }
+
+  /* Фильтры на мобильных */
+  .filter-dropdown { width: 100%; }
+  .filter-content { 
+    position: static; 
+    box-shadow: none; 
+    border: none; 
+    border-top: 1px solid var(--border); 
+    padding: 12px 0 0 0; 
+    margin-top: 10px; 
+  }
+                  }ccess { border-left-color: #4caf50; }
 .toast.error { border-left-color: var(--accent); }
 .toast-icon { font-size: 1.2rem; }
 
