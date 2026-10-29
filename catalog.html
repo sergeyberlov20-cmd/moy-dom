@@ -144,10 +144,11 @@
     const fMin = document.getElementById('f-min');
     const fMax = document.getElementById('f-max');
 
-    // Логика открытия/закрытия фильтров
+    // Открытие / закрытие фильтров
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
         e.stopPropagation();
+        // Закрываем остальные фильтры
         document.querySelectorAll('.filter-dropdown').forEach(d => {
           if (d !== dropdown) d.classList.remove('active');
         });
@@ -155,11 +156,12 @@
       });
     });
 
-    // Закрытие при клике вне фильтров
+    // Закрытие при клике вне меню
     document.addEventListener('click', () => {
       document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('active'));
     });
 
+    // Останавливаем клик внутри меню от закрытия
     document.querySelectorAll('.filter-content').forEach(content => {
       content.addEventListener('click', (e) => e.stopPropagation());
     });
@@ -233,6 +235,13 @@
     });
     [fMin, fMax].forEach(el => {
       el.addEventListener('input', render);
+    });
+    
+    render();
+  });
+</script>
+</body>
+</html>ender);
     });
     
     render();
