@@ -23,7 +23,7 @@ body {
 .container { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
 
 /* Header */
-header { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; /* Бургер всегда выше карточек */ }
+header { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 80px; position: relative; }
 .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .logo-img { height: 50px; width: auto; border-radius: 6px; }
@@ -102,7 +102,7 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 .card-meta { color: var(--muted); font-size: .9rem; margin-bottom: 14px; }
 
 /* =========================================
-   ФИЛЬТРЫ (OZON STYLE)
+   ФИЛЬТРЫ (OZON STYLE + АНИМАЦИЯ)
    ========================================= */
 .filters-bar {
   display: flex;
@@ -110,7 +110,7 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
   margin: 20px 0;
   flex-wrap: wrap;
   position: relative;
-  z-index: 150; /* Фильтры выше карточек, но ниже шапки */
+  z-index: 150; /* Фильтры выше карточек */
 }
 
 .filter-dropdown {
@@ -135,8 +135,12 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 .filter-title svg { width: 14px; height: 14px; fill: var(--muted); transition: transform 0.3s; }
 .filter-dropdown.active .filter-title svg { transform: rotate(180deg); }
 
+/* Анимация появления меню */
 .filter-content {
-  display: none;
+  display: flex; /* Всегда flex для анимации */
+  flex-direction: column;
+  gap: 12px;
+  
   position: absolute;
   top: 110%;
   left: 0;
@@ -146,13 +150,22 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   padding: 16px;
   z-index: 1000;
-  flex-direction: column;
-  gap: 12px;
   max-height: 300px;
   overflow-y: auto;
+  
+  /* Скрытое состояние */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
 }
 
-.filter-dropdown.active .filter-content { display: flex; }
+/* Открытое состояние */
+.filter-dropdown.active .filter-content { 
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
 
 .filter-content label { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; cursor: pointer; color: var(--text); }
 .filter-content input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
@@ -160,22 +173,6 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pos
 .price-inputs { display: flex; gap: 8px; }
 .price-inputs input { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.9rem; outline: none; }
 .price-inputs input:focus { border-color: var(--primary); }
-
-/* Задний фон (затемнение) для мобильных */
-.filter-backdrop {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 300; /* Ниже шторки, но выше всего остального */
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.filter-backdrop.show {
-  display: block;
-  opacity: 1;
-}
 
 /* Карточка объекта (детальная) */
 .object-detail { display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; margin: 32px 0; }
@@ -250,50 +247,32 @@ footer a:hover { color: #fff; }
 
   .nav-right { gap: 10px !important; position: static; }
 
-  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 0; z-index: 300; }
-  .mobile-menu-btn span { display: block; width: 24px; height: 2px; background: var(--text); transition: 0.3s; }
+  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 0; z-index: 300; }
+  .mobile-menu-btn span { display: block; width: 22px; height: 2px; background: var(--text); transition: 0.3s; }
 
-  /* БУРГЕР-МЕНЮ (ШТОРКА СВЕРХУ) */
+  /* БУРГЕР-МЕНЮ (ВЫПАДАЕТ СВЕРХУ, КАК ВАМ ПОНРАВИЛОСЬ) */
   .nav ul { 
-    display: flex; 
+    display: none; 
     flex-direction: column; 
-    position: fixed; 
-    top: 60px; /* Под шапкой */
+    position: absolute; 
+    top: 100%; 
     left: 0; 
     width: 100%; 
     background: var(--surface); 
     border-bottom: 1px solid var(--border);
-    padding: 0; 
+    padding: 10px 0; 
     box-shadow: 0 10px 15px rgba(0,0,0,0.1); 
     z-index: 250; 
-    
-    /* Анимация шторки */
-    transform: translateY(-100%);
-    opacity: 0;
-    pointer-events: none;
-    transition: transform 0.3s ease, opacity 0.3s ease;
   }
-  
-  /* Когда меню открыто */
-  .nav ul.show { 
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .nav ul li { 
-    width: 100%; 
-    border-bottom: 1px solid var(--border); 
-    list-style: none;
-  }
-  .nav ul li:last-child { border-bottom: none; }
+  .nav ul.show { display: flex; }
+  .nav ul li { width: 100%; list-style: none; }
   
   .nav ul a { 
     font-size: 1.1rem; 
     font-weight: 600; 
     display: block; 
-    padding: 15px 20px; 
-    text-align: left;
+    padding: 12px 20px; 
+    text-align: center;
     color: var(--text);
   }
   .nav ul a:hover { background: var(--bg); }
@@ -301,68 +280,34 @@ footer a:hover { color: #fff; }
   .objects-grid { grid-template-columns: 1fr; }
   #scrollTopBtn { bottom: 20px; right: 20px; width: 45px; height: 45px; }
 
-  /* ФИЛЬТРЫ (ШТОРКА СНИЗУ С АНИМАЦИЕЙ) */
+  /* ФИЛЬТРЫ НА МОБИЛЬНЫХ */
   .filters-bar {
     flex-wrap: wrap;
     gap: 8px;
   }
 
   .filter-dropdown { flex-shrink: 1; }
+  .filter-dropdown.active { z-index: 9999; }
 
-  /* Скрываем обычные выпадашки на мобилке */
   .filter-content {
-    position: fixed;
-    bottom: 0;
+    position: absolute;
+    top: 110%;
     left: 0;
-    width: 100%;
-    max-width: none;
-    border-radius: 20px 20px 0 0;
-    padding: 20px 20px 40px 20px;
-    margin: 0;
-    box-shadow: 0 -5px 30px rgba(0,0,0,0.2);
-    z-index: 9999;
-    max-height: 80vh;
-    overflow-y: auto;
-    
-    /* Анимация шторки снизу */
-    display: flex;
-    transform: translateY(100%);
-    opacity: 0;
-    pointer-events: none;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+    width: max-content;
+    min-width: 180px;
+    max-width: 250px;
+    max-height: 250px;
   }
-
-  .filter-dropdown.active .filter-content {
-    display: flex;
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  /* Полоска для свайпа сверху */
-  .filter-content::before {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 4px;
-    background: #ccc;
-    border-radius: 2px;
-    margin: 0 auto 20px auto;
-  }
-
+  
   .filter-content label {
-    font-size: 1.1rem;
-    padding: 12px 0;
+    font-size: 1rem;
+    padding: 8px 0;
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
   .filter-content label:last-child {
     border-bottom: none;
   }
-  .filter-content input[type="checkbox"] {
-    width: 22px;
-    height: 22px;
-  }
-}
+             }
