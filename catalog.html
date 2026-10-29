@@ -16,6 +16,9 @@
 </head>
 <body>
 
+<!-- Затемнение фона при открытии фильтров -->
+<div class="filter-overlay" id="filter-overlay"></div>
+
 <header>
   <div class="container nav">
     <a href="index.html" class="logo">
@@ -26,14 +29,14 @@
       </div>
     </a>
     <div class="nav-right">
-      <ul>
+      <ul id="nav-menu">
         <li><a href="index.html">Главная</a></li>
         <li><a href="catalog.html" class="active">Каталог</a></li>
         <li><a href="services.html">Услуги</a></li>
         <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
         <li>
-          <a href="favorites.html" style="color:#cc2229; font-weight:bold; display:flex; align-items:center; gap:4px; justify-content:center;">
+          <a href="favorites.html" style="color:#cc2229; font-weight:bold; display:flex; align-items:center; gap:4px; justify-content:flex-end;">
             <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor;"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
             Избранное
           </a>
@@ -143,28 +146,94 @@
     const catalog = document.getElementById('catalog');
     const fMin = document.getElementById('f-min');
     const fMax = document.getElementById('f-max');
+    const overlay = document.getElementById('filter-overlay');
 
-    // Открытие / закрытие фильтров
+    // Логика открытия/закрытия фильтров
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
         e.stopPropagation();
-        // Закрываем остальные фильтры
         document.querySelectorAll('.filter-dropdown').forEach(d => {
           if (d !== dropdown) d.classList.remove('active');
         });
         dropdown.classList.toggle('active');
+        
+        // Показываем/скрываем затемнение
+        if (dropdown.classList.contains('active')) {
+          overlay.classList.add('show');
+        } else {
+          overlay.classList.remove('show');
+        }
       });
     });
 
-    // Закрытие при клике вне меню
-    document.addEventListener('click', () => {
+    // Закрытие при клике на затемнение
+    overlay.addEventListener('click', () => {
       document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('active'));
+      overlay.classList.remove('show');
     });
 
-    // Останавливаем клик внутри меню от закрытия
+    // Закрытие при клике вне меню (на ПК)
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.filter-dropdown')) {
+        document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('active'));
+        overlay.classList.remove('show');
+      }
+    });
+
+    // Предотвращаем закрытие при клике внутри контента фильтра
     document.querySelectorAll('.filter-content').forEach(content => {
       content.addEventListener('click', (e) => e.stopPropagation());
     });
+
+
+    // ЛОГИКА СВАЙПА ВНИЗ ДЛЯ МОБИЛЬНЫХ ФИЛЬТРОВ
+    document.querySelectorAll('.filter-content').forEach(content => {
+      let startY = 0;
+      let currentY = 0;
+      let isDragging = false;
+
+      content.addEventListener('touchstart', (e) => {
+        // Начинаем свайп только если прокрутка в самом верху
+        if (content.scrollTop <= 0) {
+          startY = e.touches[0].clientY;
+          isDragging = true;
+          content.style.transition = 'none'; // Отключаем анимацию на время перетаскивания
+        }
+      }, { passive: true });
+
+      content.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentY = e.touches[0].clientY;
+        const diff = currentY - startY;
+        
+        // Двигаем только вниз
+        if (diff > 0) {
+          content.style.transform = `translateY(${diff}px)`;
+          e.preventDefault(); // Блокируем прокрутку страницы
+        }
+      }, { passive: false });
+
+      content.addEventListener('touchend', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        
+        content.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
+        const diff = currentY - startY;
+        
+        // Если свайпнули больше, чем на 100px вниз - закрываем
+        if (diff > 100) {
+           content.closest('.filter-dropdown').classList.remove('active');
+           content.style.transform = ''; // Сбрасываем
+           overlay.classList.remove('show');
+        } else {
+           // Иначе возвращаем на место
+           content.style.transform = 'translateY(0)';
+        }
+        startY = 0;
+        currentY = 0;
+      });
+    });
+
 
     function getCheckedValues(className) {
       return Array.from(document.querySelectorAll(`.${className}:checked`)).map(cb => cb.value);
@@ -239,20 +308,21 @@
     
     render();
   });
-</script>
-</body>
-</html>ender);
+
+  // Бургер меню
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const navMenu = document.getElementById('nav-menu');
+  if (mobileBtn && navMenu) {
+    mobileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navMenu.classList.toggle('show');
     });
-    
-    render();
-  });
-</script>
-</body>
-</html>ender);
+    document.addEventListener('click', (e) => {
+       if (!e.target.closest('.nav')) {
+           navMenu.classList.remove('show');
+       }
     });
-    
-    render();
-  });
+  }
 </script>
 </body>
-    </html>
+</html>
