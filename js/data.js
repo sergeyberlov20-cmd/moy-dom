@@ -1,5 +1,4 @@
 const OBJECTS = [
-  // 1. Хмельницкого 39 (исправлен путь)
   {
     "id": 1793228619221,
     "type": "Квартира",
@@ -13,20 +12,18 @@ const OBJECTS = [
     "floors": 5,
     "lat": 47.0972016,
     "lon": 37.5291474,
-    "image": "images/Квартира_Продажа_2_4500000_Хмельницкого_39/1.jpg",
+    "image": "https://loremflickr.com/800/600/apartment,interior",
     "images": [
-      "images/Квартира_Продажа_2_4500000_Хмельницкого_39/1.jpg",
-      "images/Квартира_Продажа_2_4500000_Хмельницкого_39/2.jpg",
-      "images/Квартира_Продажа_2_4500000_Хмельницкого_39/3.jpg",
-      "images/Квартира_Продажа_2_4500000_Хмельницкого_39/4.jpg",
-      "images/Квартира_Продажа_2_4500000_Хмельницкого_39/5.jpg",
-      "images/Квартира_Продажа_2_4500000_Хмельницкого_39/6.jpg"
+      "https://loremflickr.com/800/600/apartment,interior",
+      "https://loremflickr.com/800/600/apartment,room",
+      "https://loremflickr.com/800/600/apartment,kitchen",
+      "https://loremflickr.com/800/600/apartment,bathroom",
+      "https://loremflickr.com/800/600/apartment,bedroom",
+      "https://loremflickr.com/800/600/apartment,living"
     ],
     "description": "Светлая квартира с окнами на юг. Продаётся с мебелью и техникой. Тихий центр.",
     "date": "2026-10-28"
   },
-
-  // 2. Приморское
   {
     "id": 1793228619222,
     "type": "Дом",
@@ -40,22 +37,20 @@ const OBJECTS = [
     "floors": 1,
     "lat": 47.095000,
     "lon": 37.548707,
-    "image": "images/Дом_Продажа_0_2500000_Приморское/1.jpg",
+    "image": "https://loremflickr.com/800/600/house,cottage",
     "images": [
-      "images/Дом_Продажа_0_2500000_Приморское/1.jpg",
-      "images/Дом_Продажа_0_2500000_Приморское/2.jpg",
-      "images/Дом_Продажа_0_2500000_Приморское/3.jpg",
-      "images/Дом_Продажа_0_2500000_Приморское/4.jpg",
-      "images/Дом_Продажа_0_2500000_Приморское/5.jpg",
-      "images/Дом_Продажа_0_2500000_Приморское/6.jpg",
-      "images/Дом_Продажа_0_2500000_Приморское/7.jpg",
-      "images/Дом_Продажа_0_2500000_Приморское/8.jpg"
+      "https://loremflickr.com/800/600/house,cottage",
+      "https://loremflickr.com/800/600/house,garden",
+      "https://loremflickr.com/800/600/house,exterior",
+      "https://loremflickr.com/800/600/house,pool",
+      "https://loremflickr.com/800/600/house,terrace",
+      "https://loremflickr.com/800/600/house,interior",
+      "https://loremflickr.com/800/600/house,room",
+      "https://loremflickr.com/800/600/house,kitchen"
     ],
     "description": "Уютный домик с каркасным бассейном, колодцем, камином. Все для шашлыка. До моря 5 минут пешком!",
     "date": "2026-10-28"
   },
-
-  // 3. Казанцева 27
   {
     "id": 1793228619223,
     "type": "Квартира",
@@ -69,22 +64,20 @@ const OBJECTS = [
     "floors": 9,
     "lat": 47.095000,
     "lon": 37.548707,
-    "image": "images/Квартира_Продажа_2_5100000_Казанцева_27/1.jpg",
+    "image": "https://loremflickr.com/800/600/apartment,living",
     "images": [
-      "images/Квартира_Продажа_2_5100000_Казанцева_27/1.jpg",
-      "images/Квартира_Продажа_2_5100000_Казанцева_27/2.jpg",
-      "images/Квартира_Продажа_2_5100000_Казанцева_27/3.jpg",
-      "images/Квартира_Продажа_2_5100000_Казанцева_27/4.jpg",
-      "images/Квартира_Продажа_2_5100000_Казанцева_27/5.jpg",
-      "images/Квартира_Продажа_2_5100000_Казанцева_27/6.jpg",
-      "images/Квартира_Продажа_2_5100000_Казанцева_27/7.jpg",
-      "images/Квартира_Продажа_2_5100000_Казанцева_27/8.jpg"
+      "https://loremflickr.com/800/600/apartment,living",
+      "https://loremflickr.com/800/600/apartment,bedroom",
+      "https://loremflickr.com/800/600/apartment,kitchen",
+      "https://loremflickr.com/800/600/apartment,bathroom",
+      "https://loremflickr.com/800/600/apartment,room",
+      "https://loremflickr.com/800/600/apartment,interior",
+      "https://loremflickr.com/800/600/apartment,balcony",
+      "https://loremflickr.com/800/600/apartment,hallway"
     ],
     "description": "Квартира в центре города. Капитальный ремонт, теплые полы, 3 кондиционера, дорогая сантехника.",
     "date": "2026-10-27"
   },
-
-  // 4. Менделеева 22/70
   {
     "id": 1793228619224,
     "type": "Квартира",
@@ -98,23 +91,21 @@ const OBJECTS = [
     "floors": 2,
     "lat": 47.095000,
     "lon": 37.548707,
-    "image": "images/Квартира_Продажа_2_2000000_Менделеева_22-70/1.jpg",
+    "image": "https://loremflickr.com/800/600/apartment,renovation",
     "images": [
-      "images/Квартира_Продажа_2_2000000_Менделеева_22-70/1.jpg",
-      "images/Квартира_Продажа_2_2000000_Менделеева_22-70/2.jpg",
-      "images/Квартира_Продажа_2_2000000_Менделеева_22-70/3.jpg",
-      "images/Квартира_Продажа_2_2000000_Менделеева_22-70/4.jpg",
-      "images/Квартира_Продажа_2_2000000_Менделеева_22-70/5.jpg",
-      "images/Квартира_Продажа_2_2000000_Менделеева_22-70/6.jpg",
-      "images/Квартира_Продажа_2_2000000_Менделеева_22-70/7.jpg",
-      "images/Квартира_Продажа_2_2000000_Менделеева_22-70/8.jpg",
-      "images/Квартира_Продажа_2_2000000_Менделеева_22-70/9.jpg"
+      "https://loremflickr.com/800/600/apartment,renovation",
+      "https://loremflickr.com/800/600/apartment,empty",
+      "https://loremflickr.com/800/600/apartment,room",
+      "https://loremflickr.com/800/600/apartment,wall",
+      "https://loremflickr.com/800/600/apartment,floor",
+      "https://loremflickr.com/800/600/apartment,window",
+      "https://loremflickr.com/800/600/apartment,door",
+      "https://loremflickr.com/800/600/apartment,ceiling",
+      "https://loremflickr.com/800/600/apartment,balcony"
     ],
     "description": "Квартира под ремонт на Левом берегу. Все коммуникации есть, рядом инфраструктура.",
     "date": "2026-10-27"
   },
-
-  // 5. Ленина 167
   {
     "id": 1793228619225,
     "type": "Квартира",
@@ -128,22 +119,20 @@ const OBJECTS = [
     "floors": 5,
     "lat": 47.095000,
     "lon": 37.548707,
-    "image": "images/Квартира_Продажа_3_5800000_Ленина_167/1.jpg",
+    "image": "https://loremflickr.com/800/600/apartment,design",
     "images": [
-      "images/Квартира_Продажа_3_5800000_Ленина_167/1.jpg",
-      "images/Квартира_Продажа_3_5800000_Ленина_167/2.jpg",
-      "images/Квартира_Продажа_3_5800000_Ленина_167/3.jpg",
-      "images/Квартира_Продажа_3_5800000_Ленина_167/4.jpg",
-      "images/Квартира_Продажа_3_5800000_Ленина_167/5.jpg",
-      "images/Квартира_Продажа_3_5800000_Ленина_167/6.jpg",
-      "images/Квартира_Продажа_3_5800000_Ленина_167/7.jpg",
-      "images/Квартира_Продажа_3_5800000_Ленина_167/8.jpg"
+      "https://loremflickr.com/800/600/apartment,design",
+      "https://loremflickr.com/800/600/apartment,modern",
+      "https://loremflickr.com/800/600/apartment,room",
+      "https://loremflickr.com/800/600/apartment,kitchen",
+      "https://loremflickr.com/800/600/apartment,bathroom",
+      "https://loremflickr.com/800/600/apartment,bedroom",
+      "https://loremflickr.com/800/600/apartment,living",
+      "https://loremflickr.com/800/600/apartment,hallway"
     ],
     "description": "Уютная 3-комнатная квартира в ЖК «Невский». Качественный ремонт, вся мебель и техника остаются.",
     "date": "2026-10-26"
   },
-
-  // 6. Строителей 79
   {
     "id": 1793228619226,
     "type": "Квартира",
@@ -157,22 +146,20 @@ const OBJECTS = [
     "floors": 5,
     "lat": 47.095000,
     "lon": 37.548707,
-    "image": "images/Квартира_Аренда_2_25000_Строителей_79/1.jpg",
+    "image": "https://loremflickr.com/800/600/apartment,rent",
     "images": [
-      "images/Квартира_Аренда_2_25000_Строителей_79/1.jpg",
-      "images/Квартира_Аренда_2_25000_Строителей_79/2.jpg",
-      "images/Квартира_Аренда_2_25000_Строителей_79/3.jpg",
-      "images/Квартира_Аренда_2_25000_Строителей_79/4.jpg",
-      "images/Квартира_Аренда_2_25000_Строителей_79/5.jpg",
-      "images/Квартира_Аренда_2_25000_Строителей_79/6.jpg",
-      "images/Квартира_Аренда_2_25000_Строителей_79/7.jpg",
-      "images/Квартира_Аренда_2_25000_Строителей_79/8.jpg"
+      "https://loremflickr.com/800/600/apartment,rent",
+      "https://loremflickr.com/800/600/apartment,furniture",
+      "https://loremflickr.com/800/600/apartment,room",
+      "https://loremflickr.com/800/600/apartment,kitchen",
+      "https://loremflickr.com/800/600/apartment,bathroom",
+      "https://loremflickr.com/800/600/apartment,bedroom",
+      "https://loremflickr.com/800/600/apartment,living",
+      "https://loremflickr.com/800/600/apartment,hallway"
     ],
     "description": "Квартира с евроремонтом. Полностью укомплектована мебелью и техникой. Рядом рынок Застава.",
     "date": "2026-10-25"
   },
-
-  // 7. Меотиды 15/20
   {
     "id": 1793228619227,
     "type": "Квартира",
@@ -186,23 +173,21 @@ const OBJECTS = [
     "floors": 5,
     "lat": 47.095000,
     "lon": 37.548707,
-    "image": "images/Квартира_Аренда_2_25000_Меотиды_15-20/1.jpg",
+    "image": "https://loremflickr.com/800/600/apartment,comfort",
     "images": [
-      "images/Квартира_Аренда_2_25000_Меотиды_15-20/1.jpg",
-      "images/Квартира_Аренда_2_25000_Меотиды_15-20/2.jpg",
-      "images/Квартира_Аренда_2_25000_Меотиды_15-20/3.jpg",
-      "images/Квартира_Аренда_2_25000_Меотиды_15-20/4.jpg",
-      "images/Квартира_Аренда_2_25000_Меотиды_15-20/5.jpg",
-      "images/Квартира_Аренда_2_25000_Меотиды_15-20/6.jpg",
-      "images/Квартира_Аренда_2_25000_Меотиды_15-20/7.jpg",
-      "images/Квартира_Аренда_2_25000_Меотиды_15-20/8.jpg",
-      "images/Квартира_Аренда_2_25000_Меотиды_15-20/9.jpg"
+      "https://loremflickr.com/800/600/apartment,comfort",
+      "https://loremflickr.com/800/600/apartment,room",
+      "https://loremflickr.com/800/600/apartment,kitchen",
+      "https://loremflickr.com/800/600/apartment,bathroom",
+      "https://loremflickr.com/800/600/apartment,bedroom",
+      "https://loremflickr.com/800/600/apartment,living",
+      "https://loremflickr.com/800/600/apartment,hallway",
+      "https://loremflickr.com/800/600/apartment,balcony",
+      "https://loremflickr.com/800/600/apartment,view"
     ],
     "description": "Чистая и комфортная квартира, укомплектована мебелью и бытовой техникой. Сдается на длительный срок.",
     "date": "2026-10-25"
   },
-
-  // 8. Куприна 6
   {
     "id": 1793228619228,
     "type": "Квартира",
@@ -216,19 +201,17 @@ const OBJECTS = [
     "floors": 5,
     "lat": 47.095000,
     "lon": 37.548707,
-    "image": "images/Квартира_Аренда_1_25000_Куприна_6/1.jpg",
+    "image": "https://loremflickr.com/800/600/apartment,studio",
     "images": [
-      "images/Квартира_Аренда_1_25000_Куприна_6/1.jpg",
-      "images/Квартира_Аренда_1_25000_Куприна_6/2.jpg",
-      "images/Квартира_Аренда_1_25000_Куприна_6/3.jpg",
-      "images/Квартира_Аренда_1_25000_Куприна_6/4.jpg",
-      "images/Квартира_Аренда_1_25000_Куприна_6/5.jpg"
+      "https://loremflickr.com/800/600/apartment,studio",
+      "https://loremflickr.com/800/600/apartment,room",
+      "https://loremflickr.com/800/600/apartment,kitchen",
+      "https://loremflickr.com/800/600/apartment,bathroom",
+      "https://loremflickr.com/800/600/apartment,living"
     ],
     "description": "Квартира в центре. Вся необходимая техника есть. Развитая инфраструктура, рядом ТЦ Морской.",
     "date": "2026-10-24"
   },
-
-  // 9. Победы 72
   {
     "id": 1793228619229,
     "type": "Квартира",
@@ -242,17 +225,17 @@ const OBJECTS = [
     "floors": 5,
     "lat": 47.095000,
     "lon": 37.548707,
-    "image": "images/Квартира_Продажа_2_2900000_Победы_72/1.jpg",
+    "image": "https://loremflickr.com/800/600/apartment,sea",
     "images": [
-      "images/Квартира_Продажа_2_2900000_Победы_72/1.jpg",
-      "images/Квартира_Продажа_2_2900000_Победы_72/2.jpg",
-      "images/Квартира_Продажа_2_2900000_Победы_72/3.jpg",
-      "images/Квартира_Продажа_2_2900000_Победы_72/4.jpg",
-      "images/Квартира_Продажа_2_2900000_Победы_72/5.jpg",
-      "images/Квартира_Продажа_2_2900000_Победы_72/6.jpg",
-      "images/Квартира_Продажа_2_2900000_Победы_72/7.jpg",
-      "images/Квартира_Продажа_2_2900000_Победы_72/8.jpg",
-      "images/Квартира_Продажа_2_2900000_Победы_72/9.jpg"
+      "https://loremflickr.com/800/600/apartment,sea",
+      "https://loremflickr.com/800/600/apartment,room",
+      "https://loremflickr.com/800/600/apartment,kitchen",
+      "https://loremflickr.com/800/600/apartment,bathroom",
+      "https://loremflickr.com/800/600/apartment,bedroom",
+      "https://loremflickr.com/800/600/apartment,living",
+      "https://loremflickr.com/800/600/apartment,hallway",
+      "https://loremflickr.com/800/600/apartment,balcony",
+      "https://loremflickr.com/800/600/apartment,view"
     ],
     "description": "Снижение цены! Светлая и теплая квартира с косметическим ремонтом. Вблизи моря.",
     "date": "2026-10-24"
