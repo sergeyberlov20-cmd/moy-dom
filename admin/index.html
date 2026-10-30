@@ -1,38 +1,32 @@
-backend:
-  name: git-gateway
-  branch: main
-  identity_url: "https://astonishing-churros-80144a.netlify.app/.netlify/identity"
-  gateway_url: "https://astonishing-churros-80144a.netlify.app/.netlify/git"
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админ-панель — Мой Дом</title>
+  <style>
+    body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f2f5; margin: 0; }
+    .login-btn { padding: 15px 30px; background: #1c2e5a; color: white; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .login-btn:hover { background: #cc2229; }
+  </style>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+</head>
+<body>
+  <button class="login-btn" id="login-btn">Войти в панель управления</button>
 
-media_folder: "images/uploads"
-public_folder: "images/uploads"
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.init({
+        APIUrl: "https://astonishing-churros-80144a.netlify.app/.netlify/identity"
+      });
+    }
 
-collections:
-  - name: "objects"
-    label: "Каталог объектов"
-    files:
-      - name: "objects-list"
-        label: "Список недвижимости"
-        file: "js/data.json"
-        fields:
-          - label: "Объекты"
-            name: "objects"
-            widget: "list"
-            summary: "{{fields.type}} - {{fields.title}}"
-            fields:
-              - {label: "ID (уникальное число)", name: "id", widget: "number", hint: "Оставьте как есть, если редактируете. Если создаете новый — напишите любое число (например, 1001)"}
-              - {label: "Тип", name: "type", widget: "select", options: ["Квартира", "Дом", "Офис", "Гараж"]}
-              - {label: "Сделка", name: "deal", widget: "select", options: ["Продажа", "Аренда"]}
-              - {label: "Заголовок", name: "title", widget: "string"}
-              - {label: "Цена", name: "price", widget: "number"}
-              - {label: "Адрес", name: "address", widget: "string"}
-              - {label: "Комнат", name: "rooms", widget: "number", default: 0}
-              - {label: "Площадь (м²)", name: "area", widget: "number", default: 0, required: false}
-              - {label: "Этаж", name: "floor", widget: "number", default: 0, required: false}
-              - {label: "Этажей в доме", name: "floors", widget: "number", default: 0, required: false}
-              - {label: "Широта (lat)", name: "lat", widget: "number", required: false}
-              - {label: "Долгота (lon)", name: "lon", widget: "number", required: false}
-              - {label: "Главное фото", name: "image", widget: "image"}
-              - {label: "Галерея фото", name: "images", widget: "list", field: {label: "Фото", name: "image", widget: "image"}}
-              - {label: "Описание", name: "description", widget: "text"}
-              - {label: "Дата", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false}
+    document.getElementById('login-btn').addEventListener('click', () => {
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.open();
+      }
+    });
+  </script>
+</body>
+</html>
