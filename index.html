@@ -3,12 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- PWA отключено до оплаты; при активации раскомментировать и вернуть manifest.json + sw.js
-  <link rel="manifest" href="manifest.json">
-  -->
-  <meta name="theme-color" content="#1c2e5a">
   
+  <meta name="theme-color" content="#1c2e5a">
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
   
@@ -109,7 +105,7 @@
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('dataLoaded', () => {
     const featured = document.getElementById('featured');
     OBJECTS.slice(0, 3).forEach(obj => {
       featured.insertAdjacentHTML('beforeend', renderCard(obj));
