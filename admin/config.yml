@@ -1,9 +1,11 @@
+# Публичный адрес самого сайта
 site_url: https://sergeyberlov20-cmd.github.io/moy-dom
 
 backend:
   name: github
   repo: sergeyberlov20-cmd/moy-dom
   branch: main
+  # Адрес твоего Cloudflare Worker для авторизации
   base_url: https://sveltia-auth.sergeyberlov20.workers.dev
 
 media_folder: "images/uploads"
