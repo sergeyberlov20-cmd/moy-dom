@@ -44,7 +44,56 @@ window.isFavorite = function(id) {
   return getFavorites().includes(id);
 };
 
-// 3. СЛАЙДЕР ДЛЯ КАТАЛОГА (миниатюры)
+// 3. УНИВЕРСАЛЬНЫЙ РЕНДЕР КАРТОЧКИ (используется на главной, в каталоге и в избранном)
+// opts.actions = true -> показать кнопки "Позвонить" и "Telegram"
+window.renderCard = function(o, opts = {}) {
+  const actions = opts.actions === true;
+
+  let sliderBtns = '';
+  if (o.images && o.images.length > 1) {
+    sliderBtns = `<button class="card-slider-btn prev">&#10094;</button><button class="card-slider-btn next">&#10095;</button>`;
+  }
+  const isFav = isFavorite(o.id) ? 'active' : '';
+
+  const actionsHtml = actions
+    ? `<div style="display: flex; gap: 8px; margin-top: auto;">
+         <a href="tel:+79495044455" class="btn btn-accent" style="flex: 1; padding: 8px; font-size: 0.9rem;">📞 Позвонить</a>
+         <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="flex: 1; padding: 8px; font-size: 0.9rem; background: #0088cc;">✈️ Telegram</a>
+       </div>`
+    : '';
+
+  const moreBtnStyle = actions ? 'margin-bottom: 8px;' : '';
+
+  return `
+    <article class="card">
+      <div class="card-img-wrapper" data-images='${JSON.stringify(o.images || [o.image])}'>
+        <div class="card-img" style="background-image:url('${o.image}')"></div>
+        <span class="card-badge">${o.deal}</span>
+        <button class="favorite-btn ${isFav}" aria-label="В избранное" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(${o.id}, this)">
+          <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+        </button>
+        ${sliderBtns}
+      </div>
+      <div class="card-body">
+        <div class="card-price">${formatPrice(o.price, o.deal)}</div>
+        <div class="card-title">${o.title}</div>
+        <div class="card-meta">${o.address}</div>
+        <a href="object.html?id=${o.id}" class="btn" style="${moreBtnStyle}">Подробнее</a>
+        ${actionsHtml}
+      </div>
+    </article>`;
+};
+
+// 4. ДЕБАУНС (для фильтра цены)
+window.debounce = function(fn, ms) {
+  let t;
+  return function(...args) {
+    clearTimeout(t);
+    t = setTimeout(() => fn.apply(this, args), ms);
+  };
+};
+
+// 5. СЛАЙДЕР ДЛЯ КАТАЛОГА (миниатюры)
 window.initMiniSliders = function() {
   document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
     if (wrapper.dataset.sliderInitialized) return; 
@@ -74,7 +123,7 @@ window.initMiniSliders = function() {
   });
 };
 
-// 4. СЛАЙДЕР ДЛЯ ДЕТАЛЬНОЙ КАРТОЧКИ
+// 6. СЛАЙДЕР ДЛЯ ДЕТАЛЬНОЙ КАРТОЧКИ
 window.initDetailGallery = function() {
   const gallery = document.getElementById('object-gallery');
   if (!gallery) return;
@@ -130,7 +179,7 @@ window.initDetailGallery = function() {
   }
 };
 
-// 5. БУРГЕР-МЕНЮ И КНОПКА НАВЕРХ
+// 7. БУРГЕР-МЕНЮ И КНОПКА НАВЕРХ
 document.addEventListener('DOMContentLoaded', () => {
   const mobileBtn = document.getElementById('mobile-menu-btn');
   const mainNav = document.getElementById('main-nav');
