@@ -51,14 +51,27 @@ window.isFavorite = function(id) {
   return getFavorites().includes(id);
 };
 
-// 4. УНИВЕРСАЛЬНЫЙ РЕНДЕР КАРТОЧКИ (теперь с lazy load для картинок)
+// ХЕЛПЕР: Очистка пути от лишних слешей в начале (чтобы картинки грузились)
+function cleanImagePath(path) {
+  if (!path) return '';
+  return path.replace(/^\//, ''); // Удаляет первый слеш, если он есть
+}
+
+// 4. УНИВЕРСАЛЬНЫЙ РЕНДЕР КАРТОЧКИ
 window.renderCard = function(o, opts = {}) {
   const actions = opts.actions === true;
+  const safeMainImage = cleanImagePath(o.image);
+  
+  // Очищаем массив картинок для слайдера
+  const safeImages = (o.images && o.images.length > 0) 
+    ? o.images.map(img => cleanImagePath(img)) 
+    : [safeMainImage];
 
   let sliderBtns = '';
-  if (o.images && o.images.length > 1) {
+  if (safeImages.length > 1) {
     sliderBtns = `<button class="card-slider-btn prev">&#10094;</button><button class="card-slider-btn next">&#10095;</button>`;
   }
+  
   const isFav = isFavorite(o.id) ? 'active' : '';
 
   const actionsHtml = actions
@@ -72,9 +85,8 @@ window.renderCard = function(o, opts = {}) {
 
   return `
     <article class="card">
-      <div class="card-img-wrapper" data-images='${JSON.stringify(o.images || [o.image])}'>
-        <!-- Используем img с loading="lazy" вместо div с background-image -->
-        <img src="${o.image}" class="card-img" loading="lazy" alt="${o.title}">
+      <div class="card-img-wrapper" data-images='${JSON.stringify(safeImages)}'>
+        <img src="${safeMainImage}" class="card-img" loading="lazy" alt="${o.title}">
         <span class="card-badge">${o.deal}</span>
         <button class="favorite-btn ${isFav}" aria-label="В избранное" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(${o.id}, this)">
           <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
@@ -100,12 +112,13 @@ window.debounce = function(fn, ms) {
   };
 };
 
-// 6. СЛАЙДЕР ДЛЯ КАТАЛОГА (адаптирован под тег img)
+// 6. СЛАЙДЕР ДЛЯ КАТАЛОГА
 window.initMiniSliders = function() {
   document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
     if (wrapper.dataset.sliderInitialized) return; 
     
     const imgTag = wrapper.querySelector('.card-img');
+    // Тут уже очищенные пути, так как мы передали safeImages в data-images
     const images = JSON.parse(wrapper.getAttribute('data-images') || '[]');
     let currentIndex = 0;
 
@@ -118,12 +131,12 @@ window.initMiniSliders = function() {
       prevBtn.addEventListener('click', (e) => {
         e.preventDefault(); e.stopPropagation();
         currentIndex = (currentIndex - 1 + images.length) % images.length;
-        imgTag.src = images[currentIndex]; // Меняем src, а не background
+        imgTag.src = images[currentIndex];
       });
       nextBtn.addEventListener('click', (e) => {
         e.preventDefault(); e.stopPropagation();
         currentIndex = (currentIndex + 1) % images.length;
-        imgTag.src = images[currentIndex]; // Меняем src
+        imgTag.src = images[currentIndex];
       });
     }
     wrapper.dataset.sliderInitialized = "true";
@@ -135,10 +148,13 @@ window.initDetailGallery = function() {
   const gallery = document.getElementById('object-gallery');
   if (!gallery) return;
 
-  let images = [];
+  let rawImages = [];
   try {
-    images = JSON.parse(gallery.getAttribute('data-images') || '[]');
+    rawImages = JSON.parse(gallery.getAttribute('data-images') || '[]');
   } catch(e) {}
+
+  // Очищаем пути и для детальной галереи
+  const images = rawImages.map(img => cleanImagePath(img));
 
   if (images && images.length > 1) {
     let currentIndex = 0;
