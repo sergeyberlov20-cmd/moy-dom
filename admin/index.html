@@ -11,15 +11,13 @@
   </style>
 </head>
 <body>
-  <!-- Кнопка входа -->
   <button class="login-btn" id="login-btn">Войти в панель управления</button>
 
-  <!-- Скрипты загружаются в самом конце, когда body уже создан -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <!-- Обрати внимание на две точки перед /js/ - это значит "выйти из папки admin в корень" -->
+  <script src="../js/netlify-identity-widget.js"></script>
+  <script src="../js/decap-cms.js"></script>
   
   <script>
-    // Инициализация виджета и обработка нажатия кнопки
     document.addEventListener('DOMContentLoaded', () => {
       if (window.netlifyIdentity) {
         window.netlifyIdentity.init({
