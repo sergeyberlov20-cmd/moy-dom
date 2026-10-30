@@ -8,142 +8,87 @@
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
   
-  <title>Контакты — Мой Дом | Агентство недвижимости в Мариуполе</title>
-  <meta name="description" content="Свяжитесь с нами для консультации по недвижимости. Телефон: +7 (949) 504-44-55, адрес: пр. Ленина (Мира), 54/46.">
+  <title>Объект — Мой Дом</title>
+  <meta name="description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики.">
   <link rel="stylesheet" href="css/style.css">
   
-  <!-- ПРЕМИАЛЬНЫЕ СТИЛИ ДЛЯ КОНТАКТОВ -->
   <style>
-    .contacts-layout {
+    .object-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      margin: 40px 0 80px;
+      grid-template-columns: 1fr 400px;
+      gap: 30px;
+      margin: 40px 0;
       align-items: start;
     }
-
-    .contact-card {
+    .object-main-left { display: flex; flex-direction: column; gap: 24px; }
+    .object-sidebar-right {
       background: var(--surface);
-      padding: 40px;
+      padding: 30px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 100px;
+      border: 1px solid var(--border);
+    }
+    .description-box {
+      background: var(--surface);
+      padding: 30px;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
     }
-
-    .contact-card h2 {
-      font-size: 1.5rem;
+    .description-title {
+      font-size: 1.4rem;
+      font-weight: 900;
       color: var(--primary);
-      margin-bottom: 10px;
-      font-weight: 800;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 15px;
     }
-
-    .contact-card p {
-      color: var(--muted);
-      margin-bottom: 30px;
-      font-size: 1rem;
-    }
-
-    /* Стили для красивых полей ввода */
-    .form-group label {
-      display: block;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-    
-    .form-group input, 
-    .form-group textarea {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      font-size: 1rem;
-      font-family: inherit;
-      background: #f8f9fa;
-      transition: all 0.2s;
-      outline: none;
-    }
-    
-    .form-group input:focus, 
-    .form-group textarea:focus {
-      border-color: var(--primary);
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(28, 46, 90, 0.1);
-    }
-
-    /* Красивый чекбокс */
-    .checkbox-group {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin: 24px 0;
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-    .checkbox-group input {
-      margin-top: 3px;
-      width: 18px;
-      height: 18px;
-      accent-color: var(--primary);
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-    .checkbox-group a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    .checkbox-group a:hover {
-      text-decoration: underline;
-    }
-
-    /* Стили для контактов справа */
-    .info-list {
-      list-style: none;
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 25px 0;
       padding: 0;
-      margin: 0 0 30px 0;
+      list-style: none;
     }
-    .info-list li {
+    .specs-grid li {
+      background: #f8f9fa;
+      padding: 12px 16px;
+      border-radius: 8px;
       display: flex;
-      gap: 16px;
-      margin-bottom: 24px;
-      align-items: flex-start;
+      flex-direction: column;
+      border: 1px solid var(--border);
     }
-    .info-list svg {
-      width: 24px;
-      height: 24px;
-      fill: var(--accent);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .info-list div strong {
-      display: block;
-      font-size: 1.1rem;
-      color: var(--text);
+    .specs-grid li span:first-child {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       margin-bottom: 4px;
     }
-    .info-list div span {
-      color: var(--muted);
-      font-size: 0.95rem;
+    .specs-grid li span:last-child {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 1rem;
     }
-
-    .map-wrapper {
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      line-height: 0; /* Убирает отступ под iframe */
+    .guarantee-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
     }
-
+    .guarantee-box svg { width: 28px; height: 28px; fill: #16a34a; flex-shrink: 0; }
+    .guarantee-box p { margin: 0; font-size: 0.9rem; color: #166534; font-weight: 500; line-height: 1.4; }
     @media (max-width: 900px) {
-      .contacts-layout {
-        grid-template-columns: 1fr;
-        gap: 30px;
-      }
-      .contact-card {
-        padding: 24px;
-      }
+      .object-layout { grid-template-columns: 1fr; }
+      .object-sidebar-right { position: static; }
+      .specs-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -164,7 +109,7 @@
         <li><a href="catalog.html">Каталог</a></li>
         <li><a href="services.html">Услуги</a></li>
         <li><a href="about.html">О нас</a></li>
-        <li><a href="contacts.html" class="active">Контакты</a></li>
+        <li><a href="contacts.html">Контакты</a></li>
         <li>
           <a href="favorites.html">
             <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
@@ -172,13 +117,11 @@
           </a>
         </li>
       </ul>
-      
       <div class="social-icons">
         <a href="https://t.me/nevizhimost_mariupol" target="_blank" title="Telegram" class="social-tg"></a>
         <a href="https://vk.com/moy_dom_mariupol" target="_blank" title="ВКонтакте" class="social-vk"></a>
         <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX" class="social-max"></a>
       </div>
-
       <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню">
         <span></span><span></span><span></span>
       </button>
@@ -186,89 +129,14 @@
   </div>
 </header>
 
-<section class="container">
-  <h1 class="section-title" style="margin-bottom: 10px;">Свяжитесь с нами</h1>
-  <p class="section-sub" style="margin-bottom: 0;">Ответим на любые вопросы по недвижимости в Мариуполе</p>
-
-  <div class="contacts-layout">
-    
-    <!-- ЛЕВАЯ КОЛОНКА: ФОРМА -->
-    <div class="contact-card">
-      <h2>Оставить заявку</h2>
-      <p>Заполните форму, и мы перезвоним вам в течение 15 минут.</p>
-
-      <form id="contact-form">
-        <div class="form-group">
-          <label for="name">Ваше имя</label>
-          <input type="text" id="name" name="name" required placeholder="Иван Иванов">
-        </div>
-        
-        <div class="form-group">
-          <label for="phone">Телефон</label>
-          <input type="tel" id="phone" name="phone" required placeholder="+7 (949) 504-44-55">
-        </div>
-        
-        <div class="form-group">
-          <label for="message">Комментарий (необязательно)</label>
-          <textarea id="message" name="message" rows="4" placeholder="Какой объект вас интересует?"></textarea>
-        </div>
-        
-        <div class="checkbox-group">
-          <input type="checkbox" id="agree" name="agree" required>
-          <label for="agree">
-            Я согласен на обработку персональных данных и с <a href="privacy.html">политикой конфиденциальности</a>.
-          </label>
-        </div>
-
-        <button type="submit" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">Отправить заявку</button>
-      </form>
-    </div>
-
-    <!-- ПРАВАЯ КОЛОНКА: ИНФО И КАРТА -->
-    <div>
-      <div class="contact-card" style="margin-bottom: 30px;">
-        <h2>Наши контакты</h2>
-        <p>Вы всегда можете связаться с нами напрямую.</p>
-        
-        <ul class="info-list">
-          <li>
-            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-            <div>
-              <strong>Телефон</strong>
-              <span><a href="tel:+79495044455" style="color: var(--primary); font-weight: bold; text-decoration: none;">+7 (949) 504-44-55</a></span>
-            </div>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            <div>
-              <strong>Офис в Мариуполе</strong>
-              <span>пр. Ленина (Мира), 54/46</span>
-            </div>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            <div>
-              <strong>Email</strong>
-              <span>info@moydom.ru</span>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="map-wrapper">
-        <iframe
-          src="https://yandex.ru/map-widget/v1/?ll=37.548707%2C47.095000&z=17&pt=37.548707,47.095000,pm2rdm&l=map"
-          width="100%"
-          height="320"
-          frameborder="0"
-          allowfullscreen="true"
-          loading="lazy">
-        </iframe>
-      </div>
-    </div>
-
+<div class="container" id="object-container">
+  <div id="loader" style="text-align: center; padding: 100px 0; color: var(--muted);">
+    <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #e1e3e6; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+    <p style="margin-top: 15px; font-weight: 500;">Загружаем данные...</p>
   </div>
-</section>
+</div>
+
+<style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
 
 <button id="scrollTopBtn" title="Наверх" aria-label="Наверх">
   <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
@@ -307,35 +175,83 @@
   </div>
 </footer>
 
+<script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  document.getElementById('contact-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const form = e.target;
-    const data = new FormData(form);
-    const btn = this.querySelector('button[type="submit"]');
-    const originalText = btn.textContent;
-    btn.textContent = 'Отправка...';
-    btn.disabled = true;
+  document.addEventListener('dataLoaded', () => {
+    const urlParams = new URLSearchParams(location.search);
+    const id = Number(urlParams.get('id'));
+    const obj = OBJECTS.find(o => o.id === id);
+    const container = document.getElementById('object-container');
 
-    try {
-      const response = await fetch('https://formspree.io/f/xaeejkvb', {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      });
-      if (response.ok) {
-        showToast('Спасибо! Заявка отправлена. Мы свяжемся с вами.', 'success');
-        form.reset();
-      } else {
-        showToast('Ошибка отправки. Пожалуйста, позвоните нам.', 'error');
-      }
-    } catch (error) {
-      showToast('Ошибка сети. Попробуйте позже.', 'error');
-    } finally {
-      btn.textContent = originalText;
-      btn.disabled = false;
+    if (!obj) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 80px 20px;">
+          <h1 class="section-title">Объект не найден</h1>
+          <p style="color: var(--muted); margin-bottom: 20px;">Возможно, он уже продан или ссылка устарела.</p>
+          <a href="catalog.html" class="btn">Вернуться в каталог</a>
+        </div>`;
+      return;
     }
+
+    document.title = `${obj.title} — ${obj.deal} | Мой Дом`;
+    const rawGallery = obj.images && obj.images.length > 0 ? obj.images : [obj.image]; 
+    const galleryImages = rawGallery.map(img => img.replace(/^\//, ''));
+    const mapLat = obj.lat || 47.095000;
+    const mapLon = obj.lon || 37.548707;
+    
+    let isFav = '';
+    try { if (typeof isFavorite === 'function') isFav = isFavorite(obj.id) ? 'active' : ''; } catch(e) {}
+
+    const roomsRow  = obj.rooms  > 0 ? `<li><span>Комнат</span><span>${obj.rooms}</span></li>` : '';
+    const areaRow   = obj.area   > 0 ? `<li><span>Площадь</span><span>${obj.area} м²</span></li>` : '';
+    const floorRow  = (obj.floor > 0 && obj.floors > 0) ? `<li><span>Этаж</span><span>${obj.floor} из ${obj.floors}</span></li>` : '';
+
+    container.innerHTML = `
+      <div class="object-layout">
+        <div class="object-main-left">
+          <div class="object-gallery" id="object-gallery" data-images='${JSON.stringify(galleryImages)}' style="height: 500px;"></div>
+          <div class="description-box">
+            <div class="description-title">Подробное описание</div>
+            <p style="white-space: pre-wrap; line-height: 1.8; font-size: 1.05rem; color: #333; margin: 0;">${obj.description}</p>
+          </div>
+        </div>
+        <div class="object-sidebar-right">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
+            <h1 style="font-size: 1.5rem; line-height: 1.3; margin: 0; font-weight: 800;">${obj.title}</h1>
+            <button class="favorite-btn ${isFav}" aria-label="В избранное" style="position:relative; top:0; right:0; width:40px; height:40px; flex-shrink:0;" onclick="toggleFavorite(${obj.id}, this)">
+              <svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+            </button>
+          </div>
+          <div style="color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; display: flex; align-items: center; gap: 6px;">
+            <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor; opacity:0.6;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            ${obj.address}
+          </div>
+          <div style="font-size: 2.2rem; color: var(--accent); font-weight: 900; margin-bottom: 20px; letter-spacing: -1px;">
+            ${formatPrice(obj.price, obj.deal)}
+          </div>
+          <ul class="specs-grid">
+            <li><span>Тип</span><span>${obj.type}</span></li>
+            <li><span>Сделка</span><span>${obj.deal}</span></li>
+            ${roomsRow}
+            ${areaRow}
+            ${floorRow}
+          </ul>
+          <div class="mini-map" style="margin-bottom: 24px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
+            <iframe src="https://yandex.ru/map-widget/v1/?ll=${mapLon}%2C${mapLat}&z=16&pt=${mapLon},${mapLat},pm2rdm&l=map" width="100%" height="200" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <a href="tel:+79495044455" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">📞 Позвонить</a>
+            <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="width: 100%; padding: 16px; font-size: 1.1rem; background: #0088cc;">✈️ Написать в Telegram</a>
+          </div>
+          <div class="guarantee-box">
+            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            <p>Юридическая чистота сделки гарантирована агентством «Мой Дом»</p>
+          </div>
+        </div>
+      </div>`;
+      
+    if (window.initDetailGallery) { window.initDetailGallery(); }
   });
 </script>
 </body>
