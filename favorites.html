@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
+  <!-- PWA отключено до оплаты
   <link rel="manifest" href="manifest.json">
+  -->
   <meta name="theme-color" content="#1c2e5a">
   
   <link rel="icon" type="image/png" href="images/icon-192.png">
@@ -46,7 +48,7 @@
         <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX" class="social-max"></a>
       </div>
 
-      <button class="mobile-menu-btn" id="mobile-menu-btn">
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -58,7 +60,7 @@
   <div class="objects-grid" id="favorites-grid"></div>
 </section>
 
-<button id="scrollTopBtn" title="Наверх">
+<button id="scrollTopBtn" title="Наверх" aria-label="Наверх">
   <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
 </button>
 
@@ -82,32 +84,6 @@
       favObjects.forEach(obj => {
         grid.insertAdjacentHTML('beforeend', renderCard(obj));
       });
-    }
-
-    function renderCard(o) {
-      let sliderBtns = '';
-      if (o.images && o.images.length > 1) {
-        sliderBtns = `<button class="card-slider-btn prev">&#10094;</button><button class="card-slider-btn next">&#10095;</button>`;
-      }
-      const isFav = isFavorite(o.id) ? 'active' : '';
-
-      return `
-        <article class="card">
-          <div class="card-img-wrapper" data-images='${JSON.stringify(o.images || [o.image])}'>
-            <div class="card-img" style="background-image:url('${o.image}')"></div>
-            <span class="card-badge">${o.deal}</span>
-            <button class="favorite-btn ${isFav}" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(${o.id}, this)">
-              <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
-            </button>
-            ${sliderBtns}
-          </div>
-          <div class="card-body">
-            <div class="card-price">${formatPrice(o.price, o.deal)}</div>
-            <div class="card-title">${o.title}</div>
-            <div class="card-meta">${o.address}</div>
-            <a href="object.html?id=${o.id}" class="btn">Подробнее</a>
-          </div>
-        </article>`;
     }
 
     setTimeout(() => { if (window.initMiniSliders) window.initMiniSliders(); }, 100);
