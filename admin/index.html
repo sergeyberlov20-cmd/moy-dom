@@ -16,6 +16,7 @@
   <button class="login-btn" id="login-btn">Войти в панель управления</button>
 
   <script>
+    // Явно указываем виджету, где искать настройки Identity
     if (window.netlifyIdentity) {
       window.netlifyIdentity.init({
         APIUrl: "https://astonishing-churros-80144a.netlify.app/.netlify/identity"
