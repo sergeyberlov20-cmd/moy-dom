@@ -6,7 +6,7 @@ backend:
   branch: main
 
 media_folder: "images/uploads"
-public_folder: "/images/uploads"
+public_folder: "images/uploads"
 
 collections:
   - name: "objects"
@@ -21,14 +21,9 @@ collections:
             widget: "list"
             summary: "{{fields.type}} - {{fields.title}}"
             fields:
-              # --- СНАЧАЛА ФОТО ---
               - {label: "Главное фото (обложка)", name: "image", widget: "image"}
               - {label: "Галерея фото (все фото объекта)", name: "images", widget: "list", field: {label: "Фото", name: "image", widget: "image"}}
-              
-              # --- ЗАТЕМ БОЛЬШОЕ ОПИСАНИЕ ---
-              - {label: "Описание объекта", name: "description", widget: "text", hint: "Распишите подробно: ремонт, инфраструктура, мебель, причины продажи и т.д. (Можно использовать переносы строк)."}
-
-              # --- ОСНОВНЫЕ ХАРАКТЕРИСТИКИ ---
+              - {label: "Описание объекта", name: "description", widget: "text", hint: "Распишите подробно: ремонт, инфраструктура, мебель, причины продажи и т.д."}
               - {label: "Тип", name: "type", widget: "select", options: ["Квартира", "Дом", "Офис", "Гараж"]}
               - {label: "Сделка", name: "deal", widget: "select", options: ["Продажа", "Аренда"]}
               - {label: "Заголовок", name: "title", widget: "string"}
@@ -40,7 +35,5 @@ collections:
               - {label: "Этажей в доме", name: "floors", widget: "number", default: 0, required: false}
               - {label: "Широта", name: "lat", widget: "number", required: false}
               - {label: "Долгота", name: "lon", widget: "number", required: false}
-              
-              # --- СЛУЖЕБНЫЕ ПОЛЯ ---
-              - {label: "ID (число)", name: "id", widget: "number", hint: "Оставьте как есть при редактировании. Для нового напишите любое (например, 1001)."}
+              - {label: "ID (число)", name: "id", widget: "number"}
               - {label: "Дата", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false}
