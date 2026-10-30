@@ -22,7 +22,7 @@ collections:
             widget: "list"
             summary: "{{fields.type}} - {{fields.title}}"
             fields:
-              - {label: "ID (число)", name: "id", widget: "number", hint: "Оставьте как есть при редактировании. Для нового напишите любое (например, 1001)."}
+              - {label: "ID (число)", name: "id", widget: "number"}
               - {label: "Тип", name: "type", widget: "select", options: ["Квартира", "Дом", "Офис", "Гараж"]}
               - {label: "Сделка", name: "deal", widget: "select", options: ["Продажа", "Аренда"]}
               - {label: "Заголовок", name: "title", widget: "string"}
