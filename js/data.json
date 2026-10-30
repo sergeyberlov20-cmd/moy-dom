@@ -252,11 +252,11 @@
       "area": 21,
       "floor": 1,
       "floors": 1,
-      "lat": 47.095,
-      "lon": 37.548,
-      "image": "images/uploads/3.jpg",
+      "lat": 3123123,
+      "lon": 231231,
+      "image": "/images/uploads/3.jpg",
       "images": [
-        "images/uploads/3.jpg"
+        "/images/uploads/2.jpg"
       ],
       "description": "ваываываыва",
       "date": "2026-10-30"
