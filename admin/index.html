@@ -16,15 +16,20 @@
   <button class="login-btn" id="login-btn">Войти в панель управления</button>
 
   <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.init({
-        APIUrl: "https://astonishing-churros-80144a.netlify.app/.netlify/identity"
-      });
-    }
-
-    document.getElementById('login-btn').addEventListener('click', () => {
+    document.addEventListener('DOMContentLoaded', () => {
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.open();
+        window.netlifyIdentity.init({
+          APIUrl: "https://astonishing-churros-80144a.netlify.app/.netlify/identity"
+        });
+      }
+
+      const loginBtn = document.getElementById('login-btn');
+      if (loginBtn) {
+        loginBtn.addEventListener('click', () => {
+          if (window.netlifyIdentity) {
+            window.netlifyIdentity.open();
+          }
+        });
       }
     });
   </script>
