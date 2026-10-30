@@ -240,6 +240,26 @@
       ],
       "description": "Снижение цены! Светлая и теплая квартира с косметическим ремонтом. Вблизи моря.",
       "date": "2026-10-24"
+    },
+    {
+      "id": 10,
+      "type": "Квартира",
+      "deal": "Аренда",
+      "title": "уаыыв",
+      "price": 2343242,
+      "address": "ул.ленина",
+      "rooms": 3,
+      "area": 21,
+      "floor": 1,
+      "floors": 1,
+      "lat": 3123123,
+      "lon": 231231,
+      "image": "/images/uploads/team3.png",
+      "images": [
+        "/images/uploads/logo.png"
+      ],
+      "description": "ваываываыва",
+      "date": "2026-10-30"
     }
   ]
 }
