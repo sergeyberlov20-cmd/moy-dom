@@ -3,7 +3,7 @@ backend:
   branch: main
   site_domain: "astonishing-churros-80144a.netlify.app"
   identity_url: "https://astonishing-churros-80144a.netlify.app/.netlify/identity"
-  gateway_url: "https://astonishing-churros-80144a.netlify.app/.netlify/git/github"
+  gateway_url: "https://astonishing-churros-80144a.netlify.app/.netlify/git"
 
 media_folder: "images/uploads"
 public_folder: "images/uploads"
@@ -21,7 +21,7 @@ collections:
             widget: "list"
             summary: "{{fields.type}} - {{fields.title}}"
             fields:
-              - {label: "ID (уникальное число)", name: "id", widget: "number", hint: "Оставьте как есть, если редактируете. Если создаете новый — напишите любое число (например, 1001)"}
+              - {label: "ID", name: "id", widget: "number"}
               - {label: "Тип", name: "type", widget: "select", options: ["Квартира", "Дом", "Офис", "Гараж"]}
               - {label: "Сделка", name: "deal", widget: "select", options: ["Продажа", "Аренда"]}
               - {label: "Заголовок", name: "title", widget: "string"}
@@ -31,9 +31,9 @@ collections:
               - {label: "Площадь (м²)", name: "area", widget: "number", default: 0, required: false}
               - {label: "Этаж", name: "floor", widget: "number", default: 0, required: false}
               - {label: "Этажей в доме", name: "floors", widget: "number", default: 0, required: false}
-              - {label: "Широта (lat)", name: "lat", widget: "number", required: false}
-              - {label: "Долгота (lon)", name: "lon", widget: "number", required: false}
+              - {label: "Широта", name: "lat", widget: "number", required: false}
+              - {label: "Долгота", name: "lon", widget: "number", required: false}
               - {label: "Главное фото", name: "image", widget: "image"}
-              - {label: "Галерея фото", name: "images", widget: "list", field: {label: "Фото", name: "image", widget: "image"}}
+              - {label: "Галерея", name: "images", widget: "list", field: {label: "Фото", name: "image", widget: "image"}}
               - {label: "Описание", name: "description", widget: "text"}
               - {label: "Дата", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false}
