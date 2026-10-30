@@ -10,6 +10,7 @@
     h1 { margin-top: 0; color: #1c2e5a; }
     .rules { background: #e3f2fd; padding: 15px; border-radius: 6px; margin-bottom: 20px; font-size: 0.9rem; }
     .rules code { background: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+    .warning { background: #fff3cd; padding: 15px; border-radius: 6px; margin-bottom: 20px; font-size: 0.95rem; border-left: 5px solid #ff9800; }
     .btn { display: inline-block; padding: 12px 24px; background: #1c2e5a; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 1rem; margin-bottom: 20px; }
     .btn:hover { background: #13203f; }
     .btn-green { background: #2e7d32; }
@@ -36,6 +37,12 @@
     <code>Дом_Продажа_0_9200000_п.Сосновка</code><br>
     <code>Офис_Аренда_3_50000_пр.Ленина 54</code>
   </div>
+
+  <div class="warning">
+    <b>⚠️ Внимание: файл будет полностью заменён</b><br>
+    При скачивании <code>data.js</code> на сайте <b>исчезнут все объекты</b>, которых нет в выбранной папке.<br>
+    Убедитесь, что в папке лежат <b>ВСЕ</b> объекты, которые должны остаться в каталоге, а не только новые.
+  </div>
   
   <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;">
   <button class="btn" onclick="document.getElementById('folderInput').click()">Выбрать папку с объектами</button>
@@ -52,6 +59,18 @@
 
 <script>
   let newObjects = [];
+
+  // Стабильный ID: один и тот же адрес всегда даёт один и тот же ID.
+  // Благодаря этому избранное не ломается при перегенерации data.js.
+  function stringHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash | 0;
+    }
+    return Math.abs(hash);
+  }
 
   document.getElementById('folderInput').addEventListener('change', function(e) {
     const files = e.target.files;
@@ -77,7 +96,6 @@
     newObjects = [];
 
     folderNames.forEach(folderName => {
-      // Разбиваем название по нижнему подчеркиванию
       const parts = folderName.split('_');
       
       if (parts.length < 5) {
@@ -85,29 +103,31 @@
         return;
       }
 
-      const type = parts[0]; // Квартира, Дом, Офис
-      const deal = parts[1]; // Продажа, Аренда
+      const type = parts[0];
+      const deal = parts[1];
       const rooms = parseInt(parts[2]) || 0;
       const price = parseInt(parts[3]) || 0;
-      const address = parts.slice(4).join('_'); // Склеиваем остаток адреса (если в нем есть подчеркивания)
+      const address = parts.slice(4).join('_');
 
       const imageFile = folders[folderName][0];
       const imageSrc = 'images/' + folderName + '/' + imageFile.name;
 
-      // Формируем красивый заголовок
       let title = type;
       if (rooms > 0) title += `, ${rooms}-комн.`;
       title += `, ${address}`;
 
+      // Стабильный ID: хеш от типа + сделки + адреса
+      const stableId = stringHash(type + '|' + deal + '|' + address);
+
       const newObj = {
-        id: Date.now() + Math.floor(Math.random() * 1000),
-        type: type, // Сохраняем тип
+        id: stableId,
+        type: type,
         deal: deal,
         title: title,
         price: price,
         address: address,
         rooms: rooms,
-        area: 0, // Площадь и этаж менеджер допишет вручную в data.js, если нужно
+        area: 0,
         floor: 0,
         floors: 0,
         image: imageSrc,
@@ -140,7 +160,7 @@
         <img src="${obj.image}" alt="Фото" onerror="this.style.display='none'">
         <div class="item-info">
           <div class="item-title">${obj.type} (${obj.deal}) — ${new Intl.NumberFormat("ru-RU").format(obj.price)} ₽</div>
-          <div class="item-meta">${obj.address} ${obj.rooms > 0 ? '| ' + obj.rooms + ' комн.' : ''}</div>
+          <div class="item-meta">${obj.address} ${obj.rooms > 0 ? '| ' + obj.rooms + ' комн.' : ''} | ID: ${obj.id}</div>
         </div>
       `;
       listDiv.appendChild(div);
@@ -150,7 +170,7 @@
   function downloadData() {
     if (newObjects.length === 0) return;
 
-    const dataString = `const OBJECTS = ${JSON.stringify(newObjects, null, 2)};\n\nfunction formatPrice(price, deal) {\n  const formatted = new Intl.NumberFormat("ru-RU").format(price) + " ₽";\n  return deal === "Аренда" ? formatted + "/мес" : formatted;\n}`;
+    const dataString = `const OBJECTS = ${JSON.stringify(newObjects, null, 2)};\n\nconst _priceFormatter = new Intl.NumberFormat("ru-RU");\n\nfunction formatPrice(price, deal) {\n  const formatted = _priceFormatter.format(price) + " ₽";\n  return deal === "Аренда" ? formatted + "/мес" : formatted;\n}`;
 
     const blob = new Blob([dataString], { type: 'text/javascript' });
     const url = URL.createObjectURL(blob);
