@@ -242,7 +242,10 @@ const OBJECTS = [
   }
 ];
 
+// Один общий форматтер (создается 1 раз, а не на каждый вызов)
+const _priceFormatter = new Intl.NumberFormat("ru-RU");
+
 function formatPrice(price, deal) {
-  const formatted = new Intl.NumberFormat("ru-RU").format(price) + " ₽";
+  const formatted = _priceFormatter.format(price) + " ₽";
   return deal === "Аренда" ? formatted + "/мес" : formatted;
-      }
+}
