@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
+  <!-- PWA отключено до оплаты
   <link rel="manifest" href="manifest.json">
+  -->
   <meta name="theme-color" content="#1c2e5a">
   
   <link rel="icon" type="image/png" href="images/icon-192.png">
@@ -46,7 +48,7 @@
         <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX" class="social-max"></a>
       </div>
 
-      <button class="mobile-menu-btn" id="mobile-menu-btn">
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -99,7 +101,7 @@
   <div class="objects-grid" id="catalog"></div>
 </section>
 
-<button id="scrollTopBtn" title="Наверх">
+<button id="scrollTopBtn" title="Наверх" aria-label="Наверх">
   <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
 </button>
 
@@ -144,15 +146,12 @@
     const fMin = document.getElementById('f-min');
     const fMax = document.getElementById('f-max');
 
-    // Логика открытия/закрытия фильтров
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
         e.stopPropagation();
-        
         document.querySelectorAll('.filter-dropdown').forEach(d => {
           if (d !== dropdown) d.classList.remove('active');
         });
-        
         dropdown.classList.toggle('active');
       });
     });
@@ -176,7 +175,7 @@
       const min = Number(fMin.value) || 0;
       const max = Number(fMax.value) || Infinity;
 
-      let filtered = OBJECTS.filter(o => {
+      const filtered = OBJECTS.filter(o => {
         if (types.length > 0 && !types.includes(o.type)) return false;
         if (deals.length > 0 && !deals.includes(o.deal)) return false;
         
@@ -193,51 +192,23 @@
       });
 
       catalog.innerHTML = filtered.length
-        ? filtered.map(renderCard).join('')
+        ? filtered.map(o => renderCard(o, { actions: true })).join('')
         : '<p style="padding:40px 0;color:#818c99;font-size:1.1rem;">Объектов не найдено. Попробуйте изменить фильтры.</p>';
         
       if (window.initMiniSliders) window.initMiniSliders();
     }
 
-    function renderCard(o) {
-      let sliderBtns = '';
-      if (o.images && o.images.length > 1) {
-        sliderBtns = `<button class="card-slider-btn prev">&#10094;</button><button class="card-slider-btn next">&#10095;</button>`;
-      }
-      const isFav = typeof isFavorite === 'function' && isFavorite(o.id) ? 'active' : '';
-
-      return `
-        <article class="card">
-          <div class="card-img-wrapper" data-images='${JSON.stringify(o.images || [o.image])}'>
-            <div class="card-img" style="background-image:url('${o.image}')"></div>
-            <span class="card-badge">${o.deal}</span>
-            <button class="favorite-btn ${isFav}" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(${o.id}, this)">
-              <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
-            </button>
-            ${sliderBtns}
-          </div>
-          <div class="card-body">
-            <div class="card-price">${formatPrice(o.price, o.deal)}</div>
-            <div class="card-title">${o.title}</div>
-            <div class="card-meta">${o.address}</div>
-            <a href="object.html?id=${o.id}" class="btn" style="margin-bottom: 8px;">Подробнее</a>
-            <div style="display: flex; gap: 8px; margin-top: auto;">
-              <a href="tel:+79495044455" class="btn btn-accent" style="flex: 1; padding: 8px; font-size: 0.9rem;">📞 Позвонить</a>
-              <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="flex: 1; padding: 8px; font-size: 0.9rem; background: #0088cc;">✈️ Telegram</a>
-            </div>
-          </div>
-        </article>`;
-    }
+    // Дебаунс: фильтр цены не будет перерисовывать каталог на каждую цифру
+    const renderDebounced = debounce(render, 200);
 
     document.querySelectorAll('.f-type, .f-deal, .f-rooms').forEach(el => {
       el.addEventListener('change', render);
     });
-    [fMin, fMax].forEach(el => {
-      el.addEventListener('input', render);
-    });
+    fMin.addEventListener('input', renderDebounced);
+    fMax.addEventListener('input', renderDebounced);
     
     render();
   });
 </script>
 </body>
-  </html>
+</html>
