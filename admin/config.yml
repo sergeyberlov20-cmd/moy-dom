@@ -1,9 +1,10 @@
+site_url: https://sergeyberlov20-cmd.github.io/moy-dom
+
 backend:
   name: github
   repo: sergeyberlov20-cmd/moy-dom
   branch: main
-  base_url: https://sveltia-auth.sergeyberlov20.workers.dev  # Твой Cloudflare Worker
-  site_url: https://sergeyberlov20-cmd.github.io/moy-dom      # Твой сайт на GitHub Pages
+  base_url: https://sveltia-auth.sergeyberlov20.workers.dev
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
