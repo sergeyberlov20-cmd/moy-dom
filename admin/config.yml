@@ -4,7 +4,7 @@ backend:
   name: github
   repo: sergeyberlov20-cmd/moy-dom
   branch: main
-  base_url: https://sveltia-auth.sergeyberlov20.workers.dev
+  # Мы убрали base_url, так как будем входить по токену
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
