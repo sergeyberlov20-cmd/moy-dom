@@ -12,38 +12,29 @@
   <meta name="description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики.">
   <link rel="stylesheet" href="css/style.css">
   
-  <!-- Новые стили для идеальной сетки карточки -->
   <style>
     .object-layout {
       display: grid;
-      grid-template-columns: 1fr 380px; /* Левая часть широкая, правая фиксированная */
+      grid-template-columns: 1fr 380px;
       gap: 30px;
       margin: 30px 0;
       align-items: start;
     }
-
-    .object-main-left {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
+    .object-main-left { display: flex; flex-direction: column; gap: 24px; }
     .object-sidebar-right {
       background: var(--surface);
       padding: 24px;
       border-radius: var(--radius);
       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
       position: sticky;
-      top: 100px; /* Чтобы правая колонка не уезжала при скролле */
+      top: 100px;
     }
-
     .description-box {
       background: var(--surface);
       padding: 24px;
       border-radius: var(--radius);
       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
-
     .description-title {
       font-size: 1.3rem;
       font-weight: 700;
@@ -52,15 +43,9 @@
       border-bottom: 2px solid var(--border);
       padding-bottom: 10px;
     }
-
-    /* Стили для мобильной версии */
     @media (max-width: 900px) {
-      .object-layout {
-        grid-template-columns: 1fr; /* В одну колонку */
-      }
-      .object-sidebar-right {
-        position: static; /* Отключаем прилипание */
-      }
+      .object-layout { grid-template-columns: 1fr; }
+      .object-sidebar-right { position: static; }
     }
   </style>
 </head>
@@ -104,7 +89,6 @@
 </header>
 
 <div class="container" id="object-container">
-  <!-- Лоадер -->
   <div id="loader" style="text-align: center; padding: 100px 0; color: var(--muted);">
     <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #e1e3e6; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
     <p style="margin-top: 15px;">Загружаем объект...</p>
@@ -170,7 +154,10 @@
 
     document.title = `${obj.title} — ${obj.deal} | Мой Дом`;
     
-    const galleryImages = obj.images && obj.images.length > 0 ? obj.images : [obj.image]; 
+    // Очищаем пути для галереи
+    const rawGallery = obj.images && obj.images.length > 0 ? obj.images : [obj.image]; 
+    const galleryImages = rawGallery.map(img => img.replace(/^\//, ''));
+
     const mapLat = obj.lat || 47.095000;
     const mapLon = obj.lon || 37.548707;
     
@@ -181,16 +168,13 @@
     const areaRow   = obj.area   > 0 ? `<li><span>Площадь</span><span>${obj.area} м²</span></li>` : '';
     const floorRow  = (obj.floor > 0 && obj.floors > 0) ? `<li><span>Этаж</span><span>${obj.floor} из ${obj.floors}</span></li>` : '';
 
-    // НОВАЯ СТРУКТУРА: Левая колонка (Фото + Описание) и Правая (Инфо)
     container.innerHTML = `
       <div class="object-layout">
         
         <!-- ЛЕВАЯ КОЛОНКА -->
         <div class="object-main-left">
-          <!-- Галерея -->
           <div class="object-gallery" id="object-gallery" data-images='${JSON.stringify(galleryImages)}' style="height: 450px;"></div>
           
-          <!-- Описание (как на OLX) -->
           <div class="description-box">
             <div class="description-title">Описание объекта</div>
             <p style="white-space: pre-wrap; line-height: 1.8; font-size: 1.05rem; color: #333; margin: 0;">${obj.description}</p>
@@ -219,7 +203,7 @@
             ${floorRow}
           </ul>
           
-          <div class="mini-map" style="margin-bottom: 24px;">
+          <div class="mini-map" style="margin-bottom: 24px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border);">
             <iframe src="https://yandex.ru/map-widget/v1/?ll=${mapLon}%2C${mapLat}&z=16&pt=${mapLon},${mapLat},pm2rdm&l=map" width="100%" height="200" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
           </div>
 
