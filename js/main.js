@@ -1,6 +1,6 @@
 // js/main.js
 
-// 1. ФОРМАТИРОВАНИЕ ЦЕНЫ (перенесено из data.js)
+// 1. ФОРМАТИРОВАНИЕ ЦЕНЫ
 const _priceFormatter = new Intl.NumberFormat("ru-RU");
 window.formatPrice = function(price, deal) {
   const formatted = _priceFormatter.format(price) + " ₽";
@@ -51,7 +51,7 @@ window.isFavorite = function(id) {
   return getFavorites().includes(id);
 };
 
-// 4. УНИВЕРСАЛЬНЫЙ РЕНДЕР КАРТОЧКИ
+// 4. УНИВЕРСАЛЬНЫЙ РЕНДЕР КАРТОЧКИ (теперь с lazy load для картинок)
 window.renderCard = function(o, opts = {}) {
   const actions = opts.actions === true;
 
@@ -73,7 +73,8 @@ window.renderCard = function(o, opts = {}) {
   return `
     <article class="card">
       <div class="card-img-wrapper" data-images='${JSON.stringify(o.images || [o.image])}'>
-        <div class="card-img" style="background-image:url('${o.image}')"></div>
+        <!-- Используем img с loading="lazy" вместо div с background-image -->
+        <img src="${o.image}" class="card-img" loading="lazy" alt="${o.title}">
         <span class="card-badge">${o.deal}</span>
         <button class="favorite-btn ${isFav}" aria-label="В избранное" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(${o.id}, this)">
           <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
@@ -99,12 +100,12 @@ window.debounce = function(fn, ms) {
   };
 };
 
-// 6. СЛАЙДЕР ДЛЯ КАТАЛОГА
+// 6. СЛАЙДЕР ДЛЯ КАТАЛОГА (адаптирован под тег img)
 window.initMiniSliders = function() {
   document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
     if (wrapper.dataset.sliderInitialized) return; 
     
-    const imgDiv = wrapper.querySelector('.card-img');
+    const imgTag = wrapper.querySelector('.card-img');
     const images = JSON.parse(wrapper.getAttribute('data-images') || '[]');
     let currentIndex = 0;
 
@@ -117,12 +118,12 @@ window.initMiniSliders = function() {
       prevBtn.addEventListener('click', (e) => {
         e.preventDefault(); e.stopPropagation();
         currentIndex = (currentIndex - 1 + images.length) % images.length;
-        imgDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
+        imgTag.src = images[currentIndex]; // Меняем src, а не background
       });
       nextBtn.addEventListener('click', (e) => {
         e.preventDefault(); e.stopPropagation();
         currentIndex = (currentIndex + 1) % images.length;
-        imgDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
+        imgTag.src = images[currentIndex]; // Меняем src
       });
     }
     wrapper.dataset.sliderInitialized = "true";
