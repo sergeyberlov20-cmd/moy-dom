@@ -4,17 +4,168 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- PWA отключено до оплаты
-  <link rel="manifest" href="manifest.json">
-  -->
   <meta name="theme-color" content="#1c2e5a">
-  
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
   
   <title>О компании «Мой Дом» — Мультицентр недвижимости в Мариуполе</title>
   <meta name="description" content="Более 20 лет опыта на рынке недвижимости Мариуполя. Полный комплекс услуг: продажа, аренда, юридическое сопровождение, оценка.">
   <link rel="stylesheet" href="css/style.css">
+  
+  <!-- НОВЫЕ СТИЛИ ДЛЯ ПРЕМИАЛЬНОГО ВИДА -->
+  <style>
+    .about-intro {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 900px;
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+
+    /* Цитата руководителя */
+    .director-quote {
+      background: var(--surface);
+      border-left: 5px solid var(--accent);
+      padding: 24px 30px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 40px 0 50px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--primary);
+      position: relative;
+    }
+    .director-quote::before {
+      content: "“";
+      position: absolute;
+      top: 10px;
+      left: 15px;
+      font-size: 4rem;
+      color: rgba(204, 34, 41, 0.1);
+      font-family: serif;
+    }
+    .director-quote-author {
+      display: block;
+      margin-top: 15px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      font-style: normal;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Плашки услуг */
+    .services-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 50px;
+    }
+    .service-badge {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 12px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .service-badge:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(204, 34, 41, 0.1);
+    }
+
+    /* Зона команды */
+    .team-section {
+      background: #f8f9fa;
+      padding: 50px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 60px;
+    }
+
+    /* Улучшенные карточки команды */
+    .team-card {
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .team-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+    }
+    .team-photo {
+      height: 300px;
+      overflow: hidden;
+      background: #dfe7ea;
+      position: relative;
+    }
+    .team-photo img {
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .team-card:hover .team-photo img {
+      transform: scale(1.06);
+    }
+    
+    /* Карточка: текст и кнопка */
+    .team-card .card-body {
+      text-align: center;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1; /* Растягиваем тело карточки */
+    }
+    .team-card .card-title {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+      color: var(--primary);
+    }
+    .team-card .card-meta {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    .team-card .card-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 20px;
+      flex-grow: 1; /* Текст занимает свободное место, прижимая кнопку вниз */
+    }
+    .btn-contact {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      margin-top: auto; /* Прижимает кнопку к низу */
+    }
+    .btn-contact:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+  </style>
 </head>
 <body>
 
@@ -55,94 +206,123 @@
   </div>
 </header>
 
-<section class="container">
-  <h1 class="section-title">О компании «Мой Дом»</h1>
-  <p>Мы — мультицентр недвижимости в Мариуполе. Более 20 лет опыта. Помогаем жителям города покупать, продавать и арендовать квартиры и дома. Работаем честно, сопровождаем каждую сделку юридически и всегда на связи.</p>
+<section class="container" style="padding-top: 40px;">
+  
+  <h1 class="section-title" style="margin-top: 0;">О компании «Мой Дом»</h1>
+  
+  <p class="about-intro">
+    Мы — мультицентр недвижимости в Мариуполе. Более 20 лет опыта. Помогаем жителям города покупать, продавать и арендовать квартиры и дома. Работаем честно, сопровождаем каждую сделку юридически и всегда на связи.
+  </p>
+
+  <!-- Цитата для солидности -->
+  <div class="director-quote">
+    Наша главная задача — сделать процесс покупки или продажи недвижимости максимально безопасным, комфортным и прозрачным для каждого клиента. Мы ценим доверие и отвечаем за результат.
+    <span class="director-quote-author">— Руководство агентства «Мой Дом»</span>
+  </div>
 
   <h2 class="section-title">Наши услуги</h2>
-  <ul style="margin-top:16px;line-height:2;padding-left:20px;">
-    <li>Продажа и покупка недвижимости</li>
-    <li>Восстановление утраченных документов</li>
-    <li>Росреестр (регистрация)</li>
-    <li>Договоры купли-продажи и дарения</li>
-    <li>Оценка для банка, суда и вступления в наследство</li>
-    <li>Срочный выкуп</li>
-    <li>Судебная и строительная экспертиза</li>
-    <li>Аренда</li>
-    <li>Консультации по всем вопросам недвижимости</li>
-  </ul>
-
-  <h2 class="section-title">Наша команда</h2>
-  <div class="objects-grid">
-    
-    <!-- Карточка 1 -->
-    <div class="card">
-      <div style="height: 250px; overflow: hidden; background: #dfe7ea;">
-        <img src="images/team/team1.jpg" alt="Сотрудник 1" style="width:100%; height:100%; object-fit:cover;">
-      </div>
-      <div class="card-body">
-        <div class="card-title">Анна Смирнова</div>
-        <div class="card-meta">Ведущий риелтор</div>
-      </div>
-    </div>
-
-    <!-- Карточка 2 -->
-    <div class="card">
-      <div style="height: 250px; overflow: hidden; background: #dfe7ea;">
-        <img src="images/team/team2.jpg" alt="Сотрудник 2" style="width:100%; height:100%; object-fit:cover;">
-      </div>
-      <div class="card-body">
-        <div class="card-title">Мария Петрова</div>
-        <div class="card-meta">Эксперт по аренде и инвестициям</div>
-      </div>
-    </div>
-
-    <!-- Карточка 3 -->
-    <div class="card">
-      <div style="height: 250px; overflow: hidden; background: #dfe7ea;">
-        <img src="images/team/team3.jpg" alt="Сотрудник 3" style="width:100%; height:100%; object-fit:cover;">
-      </div>
-      <div class="card-body">
-        <div class="card-title">Екатерина Иванова</div>
-        <div class="card-meta">Специалист по загородной недвижимости</div>
-      </div>
-    </div>
-
-    <!-- Карточка 4 (Мужчина) -->
-    <div class="card">
-      <div style="height: 250px; overflow: hidden; background: #dfe7ea;">
-        <img src="images/team/team4.jpg" alt="Сотрудник 4" style="width:100%; height:100%; object-fit:cover;">
-      </div>
-      <div class="card-body">
-        <div class="card-title">Алексей Соколов</div>
-        <div class="card-meta">Юрист по недвижимости</div>
-      </div>
-    </div>
-
-    <!-- Карточка 5 -->
-    <div class="card">
-      <div style="height: 250px; overflow: hidden; background: #dfe7ea;">
-        <img src="images/team/team5.jpg" alt="Сотрудник 5" style="width:100%; height:100%; object-fit:cover;">
-      </div>
-      <div class="card-body">
-        <div class="card-title">Ольга Кузнецова</div>
-        <div class="card-meta">Менеджер по работе с клиентами</div>
-      </div>
-    </div>
-
-    <!-- Карточка 6 -->
-    <div class="card">
-      <div style="height: 250px; overflow: hidden; background: #dfe7ea;">
-        <img src="images/team/team6.jpg" alt="Сотрудник 6" style="width:100%; height:100%; object-fit:cover;">
-      </div>
-      <div class="card-body">
-        <div class="card-title">Елена Попова</div>
-        <div class="card-meta">Риелтор по коммерческой недвижимости</div>
-      </div>
-    </div>
-
+  <div class="services-badges">
+    <span class="service-badge">✓ Продажа и покупка</span>
+    <span class="service-badge">✓ Восстановление документов</span>
+    <span class="service-badge">✓ Росреестр</span>
+    <span class="service-badge">✓ Договоры купли-продажи</span>
+    <span class="service-badge">✓ Оценка для банка и суда</span>
+    <span class="service-badge">✓ Срочный выкуп</span>
+    <span class="service-badge">✓ Судебная экспертиза</span>
+    <span class="service-badge">✓ Аренда</span>
+    <span class="service-badge">✓ Бесплатные консультации</span>
   </div>
+
 </section>
+
+<!-- Блок команды на сером фоне -->
+<div class="team-section">
+  <div class="container">
+    <h2 class="section-title" style="margin-top: 0; text-align: center; margin-bottom: 40px;">Наша команда</h2>
+    
+    <div class="objects-grid">
+      
+      <!-- Карточка 1 -->
+      <div class="card team-card">
+        <div class="team-photo">
+          <img src="images/team/team1.jpg" alt="Анна Смирнова">
+        </div>
+        <div class="card-body">
+          <div class="card-title">Анна Смирнова</div>
+          <div class="card-meta">Ведущий риелтор</div>
+          <div class="card-desc">Поможет найти идеальную квартиру. Знает рынок Мариуполя наизусть, проведет сделку безопасно и быстро.</div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
+      </div>
+
+      <!-- Карточка 2 -->
+      <div class="card team-card">
+        <div class="team-photo">
+          <img src="images/team/team2.jpg" alt="Мария Петрова">
+        </div>
+        <div class="card-body">
+          <div class="card-title">Мария Петрова</div>
+          <div class="card-meta">Эксперт по аренде</div>
+          <div class="card-desc">Подберет жилье для комфортной жизни или выгодного вложения. Работает с долгосрочной и посуточной арендой.</div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
+      </div>
+
+      <!-- Карточка 3 -->
+      <div class="card team-card">
+        <div class="team-photo">
+          <img src="images/team/team3.jpg" alt="Екатерина Иванова">
+        </div>
+        <div class="card-body">
+          <div class="card-title">Екатерина Иванова</div>
+          <div class="card-meta">Загородная недвижимость</div>
+          <div class="card-desc">Специализируется на домах и участках. Поможет выбрать экологически чистое место для вашей семьи.</div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
+      </div>
+
+      <!-- Карточка 4 (Мужчина) -->
+      <div class="card team-card">
+        <div class="team-photo">
+          <img src="images/team/team4.jpg" alt="Алексей Соколов">
+        </div>
+        <div class="card-body">
+          <div class="card-title">Алексей Соколов</div>
+          <div class="card-meta">Юрист по недвижимости</div>
+          <div class="card-desc">Проверит чистоту сделки, поможет с восстановлением документов и защитит ваши интересы в суде.</div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
+      </div>
+
+      <!-- Карточка 5 -->
+      <div class="card team-card">
+        <div class="team-photo">
+          <img src="images/team/team5.jpg" alt="Ольга Кузнецова">
+        </div>
+        <div class="card-body">
+          <div class="card-title">Ольга Кузнецова</div>
+          <div class="card-meta">Менеджер по клиентам</div>
+          <div class="card-desc">Всегда на связи. Ответит на любые вопросы, организует показ объекта и поможет с оформлением.</div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
+      </div>
+
+      <!-- Карточка 6 -->
+      <div class="card team-card">
+        <div class="team-photo">
+          <img src="images/team/team6.jpg" alt="Елена Попова">
+        </div>
+        <div class="card-body">
+          <div class="card-title">Елена Попова</div>
+          <div class="card-meta">Коммерческая недвижимость</div>
+          <div class="card-desc">Эксперт по офисам и помещениям под бизнес. Подберет объект с высокой проходимостью и окупаемостью.</div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <button id="scrollTopBtn" title="Наверх" aria-label="Наверх">
   <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
