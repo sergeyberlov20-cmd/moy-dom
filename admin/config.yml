@@ -1,8 +1,9 @@
 backend:
   name: git-gateway
   branch: main
+  site_domain: "astonishing-churros-80144a.netlify.app"
   identity_url: "https://astonishing-churros-80144a.netlify.app/.netlify/identity"
-  gateway_url: "https://astonishing-churros-80144a.netlify.app/.netlify/git"
+  gateway_url: "https://astonishing-churros-80144a.netlify.app/.netlify/git/github"
 
 media_folder: "images/uploads"
 public_folder: "images/uploads"
