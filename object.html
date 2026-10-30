@@ -8,6 +8,7 @@
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
   
+  <!-- Динамические Title и Description будут подставляться скриптом ниже -->
   <title>Объект — Мой Дом</title>
   <meta name="description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики.">
   <link rel="stylesheet" href="css/style.css">
@@ -51,7 +52,17 @@
   </div>
 </header>
 
-<div class="container" id="object-container"></div>
+<!-- Контейнер для объекта, внутри него будет крутиться загрузка -->
+<div class="container" id="object-container">
+  <div id="loader" style="text-align: center; padding: 80px 0; color: var(--muted);">
+    <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #e1e3e6; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+    <p style="margin-top: 15px; font-size: 1.1rem;">Загружаем информацию об объекте...</p>
+  </div>
+</div>
+
+<style>
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+</style>
 
 <button id="scrollTopBtn" title="Наверх" aria-label="Наверх">
   <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
@@ -99,11 +110,25 @@
     const obj = OBJECTS.find(o => o.id === id);
     const container = document.getElementById('object-container');
 
+    // Если объект не найден
     if (!obj) {
-      container.innerHTML = '<h1 class="section-title">Объект не найден</h1><a href="catalog.html" class="btn">В каталог</a>';
+      container.innerHTML = `
+        <div style="text-align: center; padding: 60px 20px;">
+          <h1 class="section-title" style="margin-top: 0;">Объект не найден</h1>
+          <p style="color: var(--muted); margin-bottom: 20px;">Возможно, он уже продан или ссылка устарела.</p>
+          <a href="catalog.html" class="btn">Вернуться в каталог</a>
+        </div>`;
       return;
     }
 
+    // --- ДИНАМИЧЕСКОЕ SEO ---
+    // Меняем заголовок вкладки браузера
+    document.title = `${obj.title} — ${obj.deal} | Мой Дом`;
+    // Меняем описание для поисковиков
+    const shortDesc = obj.description.replace(/\n/g, ' ').substring(0, 150) + '...';
+    document.querySelector('meta[name="description"]').setAttribute("content", shortDesc);
+
+    // Подготовка данных
     const galleryImages = obj.images && obj.images.length > 0 ? obj.images : [obj.image]; 
     const mapLat = obj.lat || 47.095000;
     const mapLon = obj.lon || 37.548707;
@@ -113,10 +138,12 @@
       if (typeof isFavorite === 'function') isFav = isFavorite(obj.id) ? 'active' : '';
     } catch(e) {}
 
+    // Скрываем поля, если они равны 0 (для домов/участков)
     const roomsRow  = obj.rooms  > 0 ? `<li><span>Комнат</span><span>${obj.rooms}</span></li>` : '';
     const areaRow   = obj.area   > 0 ? `<li><span>Площадь</span><span>${obj.area} м²</span></li>` : '';
     const floorRow  = (obj.floor > 0 && obj.floors > 0) ? `<li><span>Этаж</span><span>${obj.floor} из ${obj.floors}</span></li>` : '';
 
+    // Отрисовка карточки
     container.innerHTML = `
       <div class="object-detail">
         <div>
@@ -124,12 +151,13 @@
         </div>
         <div class="object-info">
           <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <h1 style="margin-bottom:8px;">${obj.title}</h1>
+            <h1 style="margin-bottom:8px; font-size: 1.6rem; line-height: 1.3;">${obj.title}</h1>
             <button class="favorite-btn ${isFav}" aria-label="В избранное" style="position:relative; top:0; right:0; width:44px; height:44px; flex-shrink:0;" onclick="toggleFavorite(${obj.id}, this)">
               <svg viewBox="0 0 24 24" style="width:22px; height:22px;"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
             </button>
           </div>
           <div class="price">${formatPrice(obj.price, obj.deal)}</div>
+          
           <ul class="specs">
             <li><span>Тип</span><span>${obj.type}</span></li>
             <li><span>Сделка</span><span>${obj.deal}</span></li>
@@ -138,18 +166,26 @@
             ${areaRow}
             ${floorRow}
           </ul>
-          <p>${obj.description}</p>
-          <br>
+          
+          <!-- ОПИСАНИЕ КАК НА OLX (с сохранением абзацев) -->
+          <div style="margin-top: 20px;">
+            <h3 style="font-size: 1.2rem; margin-bottom: 10px; color: var(--primary);">Описание</h3>
+            <p style="white-space: pre-wrap; line-height: 1.7; font-size: 1.05rem; color: #333; margin: 0 0 20px 0;">${obj.description}</p>
+          </div>
           
           <div class="mini-map">
             <iframe src="https://yandex.ru/map-widget/v1/?ll=${mapLon}%2C${mapLat}&z=16&pt=${mapLon},${mapLat},pm2rdm&l=map" width="100%" height="250" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
           </div>
           <br>
 
-          <a href="contacts.html" class="btn btn-accent" style="display:block;">Записаться на просмотр</a>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="contacts.html" class="btn btn-accent" style="flex: 1;">Записаться на просмотр</a>
+            <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="flex: 1; background: #0088cc;">Написать в Telegram</a>
+          </div>
         </div>
       </div>`;
       
+    // Запускаем слайдер галереи
     if (window.initDetailGallery) {
       window.initDetailGallery();
     }
