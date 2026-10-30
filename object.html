@@ -3,12 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- PWA отключено до оплаты
-  <link rel="manifest" href="manifest.json">
-  -->
-  <meta name="theme-color" content="#1c2e5a">
   
+  <meta name="theme-color" content="#1c2e5a">
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
   
@@ -97,7 +93,7 @@
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('dataLoaded', () => {
     const urlParams = new URLSearchParams(location.search);
     const id = Number(urlParams.get('id'));
     const obj = OBJECTS.find(o => o.id === id);
@@ -117,170 +113,6 @@
       if (typeof isFavorite === 'function') isFav = isFavorite(obj.id) ? 'active' : '';
     } catch(e) {}
 
-    // Скрываем поля, если значение = 0 (актуально для домов/участков)
-    const roomsRow  = obj.rooms  > 0 ? `<li><span>Комнат</span><span>${obj.rooms}</span></li>` : '';
-    const areaRow   = obj.area   > 0 ? `<li><span>Площадь</span><span>${obj.area} м²</span></li>` : '';
-    const floorRow  = (obj.floor > 0 && obj.floors > 0) ? `<li><span>Этаж</span><span>${obj.floor} из ${obj.floors}</span></li>` : '';
-
-    container.innerHTML = `
-      <div class="object-detail">
-        <div>
-          <div class="object-gallery" id="object-gallery" data-images='${JSON.stringify(galleryImages)}'></div>
-        </div>
-        <div class="object-info">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <h1 style="margin-bottom:8px;">${obj.title}</h1>
-            <button class="favorite-btn ${isFav}" aria-label="В избранное" style="position:relative; top:0; right:0; width:44px; height:44px; flex-shrink:0;" onclick="toggleFavorite(${obj.id}, this)">
-              <svg viewBox="0 0 24 24" style="width:22px; height:22px;"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
-            </button>
-          </div>
-          <div class="price">${formatPrice(obj.price, obj.deal)}</div>
-          <ul class="specs">
-            <li><span>Тип</span><span>${obj.type}</span></li>
-            <li><span>Сделка</span><span>${obj.deal}</span></li>
-            <li><span>Адрес</span><span>${obj.address}</span></li>
-            ${roomsRow}
-            ${areaRow}
-            ${floorRow}
-          </ul>
-          <p>${obj.description}</p>
-          <br>
-          
-          <div class="mini-map">
-            <iframe src="https://yandex.ru/map-widget/v1/?ll=${mapLon}%2C${mapLat}&z=16&pt=${mapLon},${mapLat},pm2rdm&l=map" width="100%" height="250" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
-          </div>
-          <br>
-
-          <a href="contacts.html" class="btn btn-accent" style="display:block;">Записаться на просмотр</a>
-        </div>
-      </div>`;
-      
-    if (window.initDetailGallery) {
-      window.initDetailGallery();
-    }
-  });
-</script>
-</body>
-</html><!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- PWA отключено до оплаты
-  <link rel="manifest" href="manifest.json">
-  -->
-  <meta name="theme-color" content="#1c2e5a">
-  
-  <link rel="icon" type="image/png" href="images/icon-192.png">
-  <link rel="apple-touch-icon" href="images/icon-192.png">
-  
-  <title>Объект — Мой Дом</title>
-  <meta name="description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики.">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-
-<header>
-  <div class="container nav">
-    <a href="index.html" class="logo">
-      <img src="images/logo.png" alt="Мой Дом" class="logo-img">
-      <div class="logo-text">
-        <div class="logo-title">Мой<span>Дом</span></div>
-        <div class="logo-subtitle">Мультицентр недвижимости</div>
-      </div>
-    </a>
-    <div class="nav-right">
-      <ul id="main-nav">
-        <li><a href="index.html">Главная</a></li>
-        <li><a href="catalog.html">Каталог</a></li>
-        <li><a href="services.html">Услуги</a></li>
-        <li><a href="about.html">О нас</a></li>
-        <li><a href="contacts.html">Контакты</a></li>
-        <li>
-          <a href="favorites.html">
-            <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
-            Избранное
-          </a>
-        </li>
-      </ul>
-      
-      <div class="social-icons">
-        <a href="https://t.me/nevizhimost_mariupol" target="_blank" title="Telegram" class="social-tg"></a>
-        <a href="https://vk.com/moy_dom_mariupol" target="_blank" title="ВКонтакте" class="social-vk"></a>
-        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX" class="social-max"></a>
-      </div>
-
-      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<div class="container" id="object-container"></div>
-
-<button id="scrollTopBtn" title="Наверх" aria-label="Наверх">
-  <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
-</button>
-
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <h4>Мультицентр недвижимости «Мой Дом»</h4>
-        <p>Помогаем покупать, продавать и арендовать жильё в Мариуполе.</p>
-      </div>
-      <div>
-        <h4>Контакты</h4>
-        <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li style="margin-bottom: 8px;"><a href="tel:+79495044455" style="color:var(--accent); font-weight:bold;">+7 (949) 504-44-55</a></li>
-          <li style="margin-bottom: 8px; color: #a4b0c3;">г. Мариуполь, пр. Ленина (Мира), 54/46</li>
-        </ul>
-      </div>
-      <div>
-        <h4>Мессенджеры</h4>
-        <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li style="margin-bottom: 8px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">Telegram</a></li>
-          <li style="margin-bottom: 8px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">MAX</a></li>
-          <li><a href="https://vk.com/moy_dom_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">ВКонтакте</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Документы</h4>
-        <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li><a href="privacy.html" style="color:#a4b0c3; text-decoration:underline;">Политика конфиденциальности</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
-  </div>
-</footer>
-
-<script src="js/data.js"></script>
-<script src="js/main.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(location.search);
-    const id = Number(urlParams.get('id'));
-    const obj = OBJECTS.find(o => o.id === id);
-    const container = document.getElementById('object-container');
-
-    if (!obj) {
-      container.innerHTML = '<h1 class="section-title">Объект не найден</h1><a href="catalog.html" class="btn">В каталог</a>';
-      return;
-    }
-
-    const galleryImages = obj.images && obj.images.length > 0 ? obj.images : [obj.image]; 
-    const mapLat = obj.lat || 47.095000;
-    const mapLon = obj.lon || 37.548707;
-    
-    let isFav = '';
-    try {
-      if (typeof isFavorite === 'function') isFav = isFavorite(obj.id) ? 'active' : '';
-    } catch(e) {}
-
-    // Скрываем поля, если значение = 0 (актуально для домов/участков)
     const roomsRow  = obj.rooms  > 0 ? `<li><span>Комнат</span><span>${obj.rooms}</span></li>` : '';
     const areaRow   = obj.area   > 0 ? `<li><span>Площадь</span><span>${obj.area} м²</span></li>` : '';
     const floorRow  = (obj.floor > 0 && obj.floors > 0) ? `<li><span>Этаж</span><span>${obj.floor} из ${obj.floors}</span></li>` : '';
