@@ -3,12 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- PWA отключено до оплаты
-  <link rel="manifest" href="manifest.json">
-  -->
-  <meta name="theme-color" content="#1c2e5a">
   
+  <meta name="theme-color" content="#1c2e5a">
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
   
@@ -141,7 +137,7 @@
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('dataLoaded', () => {
     const catalog = document.getElementById('catalog');
     const fMin = document.getElementById('f-min');
     const fMax = document.getElementById('f-max');
@@ -198,7 +194,6 @@
       if (window.initMiniSliders) window.initMiniSliders();
     }
 
-    // Дебаунс: фильтр цены не будет перерисовывать каталог на каждую цифру
     const renderDebounced = debounce(render, 200);
 
     document.querySelectorAll('.f-type, .f-deal, .f-rooms').forEach(el => {
