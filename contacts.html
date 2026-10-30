@@ -3,18 +3,130 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- PWA отключено до оплаты
-  <link rel="manifest" href="manifest.json">
-  -->
-  <meta name="theme-color" content="#1c2e5a">
   
+  <meta name="theme-color" content="#1c2e5a">
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
   
   <title>Контакты — Мой Дом | Агентство недвижимости в Мариуполе</title>
   <meta name="description" content="Свяжитесь с нами для консультации по недвижимости. Телефон: +7 (949) 504-44-55, адрес: пр. Ленина (Мира), 54/46.">
   <link rel="stylesheet" href="css/style.css">
+  
+  <style>
+    .contacts-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin: 40px 0 80px;
+      align-items: start;
+    }
+    .contact-card {
+      background: var(--surface);
+      padding: 40px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .contact-card h2 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+    .contact-card p {
+      color: var(--muted);
+      margin-bottom: 30px;
+      font-size: 1rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .form-group input, 
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: #f8f9fa;
+      transition: all 0.2s;
+      outline: none;
+    }
+    .form-group input:focus, 
+    .form-group textarea:focus {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(28, 46, 90, 0.1);
+    }
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 24px 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .checkbox-group input {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .checkbox-group a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .checkbox-group a:hover {
+      text-decoration: underline;
+    }
+    .info-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 30px 0;
+    }
+    .info-list li {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      align-items: flex-start;
+    }
+    .info-list svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .info-list div strong {
+      display: block;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .info-list div span {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .map-wrapper {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      line-height: 0;
+    }
+    @media (max-width: 900px) {
+      .contacts-layout { grid-template-columns: 1fr; gap: 30px; }
+      .contact-card { padding: 24px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -41,13 +153,11 @@
           </a>
         </li>
       </ul>
-      
       <div class="social-icons">
         <a href="https://t.me/nevizhimost_mariupol" target="_blank" title="Telegram" class="social-tg"></a>
         <a href="https://vk.com/moy_dom_mariupol" target="_blank" title="ВКонтакте" class="social-vk"></a>
         <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX" class="social-max"></a>
       </div>
-
       <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню">
         <span></span><span></span><span></span>
       </button>
@@ -56,45 +166,77 @@
 </header>
 
 <section class="container">
-  <h1 class="section-title">Связаться с нами</h1>
-  <p class="section-sub">Оставьте заявку — мы перезвоним в течение 15 минут</p>
+  <h1 class="section-title" style="margin-bottom: 10px;">Свяжитесь с нами</h1>
+  <p class="section-sub" style="margin-bottom: 0;">Ответим на любые вопросы по недвижимости в Мариуполе</p>
 
-  <form class="form" id="contact-form" style="margin: 0 0 40px 0;">
-    <div class="form-group">
-      <label for="name">Ваше имя</label>
-      <input type="text" id="name" name="name" required placeholder="Иван">
-    </div>
-    <div class="form-group">
-      <label for="phone">Телефон</label>
-      <input type="tel" id="phone" name="phone" required placeholder="+7 (949) 504-44-55">
-    </div>
-    <div class="form-group">
-      <label for="message">Комментарий</label>
-      <textarea id="message" name="message" placeholder="Какой объект вас интересует?"></textarea>
-    </div>
-    
-    <div class="form-group" style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; color: var(--muted); margin-bottom: 20px;">
-      <input type="checkbox" id="agree" name="agree" required style="margin-top: 4px; width: auto;">
-      <label for="agree" style="font-weight: 400; cursor: pointer;">
-        Я согласен на обработку персональных данных и с <a href="privacy.html" style="color: var(--accent);">политикой конфиденциальности</a>.
-      </label>
+  <div class="contacts-layout">
+    <div class="contact-card">
+      <h2>Оставить заявку</h2>
+      <p>Заполните форму, и мы перезвоним вам в течение 15 минут.</p>
+
+      <form id="contact-form">
+        <div class="form-group">
+          <label for="name">Ваше имя</label>
+          <input type="text" id="name" name="name" required placeholder="Иван Иванов">
+        </div>
+        <div class="form-group">
+          <label for="phone">Телефон</label>
+          <input type="tel" id="phone" name="phone" required placeholder="+7 (949) 504-44-55">
+        </div>
+        <div class="form-group">
+          <label for="message">Комментарий (необязательно)</label>
+          <textarea id="message" name="message" rows="4" placeholder="Какой объект вас интересует?"></textarea>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="agree" name="agree" required>
+          <label for="agree">
+            Я согласен на обработку персональных данных и с <a href="privacy.html">политикой конфиденциальности</a>.
+          </label>
+        </div>
+        <button type="submit" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">Отправить заявку</button>
+      </form>
     </div>
 
-    <button type="submit" class="btn btn-accent">Отправить заявку</button>
-  </form>
+    <div>
+      <div class="contact-card" style="margin-bottom: 30px;">
+        <h2>Наши контакты</h2>
+        <p>Вы всегда можете связаться с нами напрямую.</p>
+        <ul class="info-list">
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            <div>
+              <strong>Телефон</strong>
+              <span><a href="tel:+79495044455" style="color: var(--primary); font-weight: bold; text-decoration: none;">+7 (949) 504-44-55</a></span>
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            <div>
+              <strong>Офис в Мариуполе</strong>
+              <span>пр. Ленина (Мира), 54/46</span>
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <div>
+              <strong>Email</strong>
+              <span>info@moydom.ru</span>
+            </div>
+          </li>
+        </ul>
+      </div>
 
-  <h2 class="section-title">Мы на карте</h2>
-  <div class="map-wrapper" style="margin-bottom: 40px;">
-    <iframe
-      src="https://yandex.ru/map-widget/v1/?ll=37.548707%2C47.095000&z=17&pt=37.548707,47.095000,pm2rdm&l=map"
-      width="100%"
-      height="420"
-      frameborder="0"
-      allowfullscreen="true"
-      style="border:0;"
-      title="Мой Дом — г. Мариуполь, пр. Ленина (Мира), 54/46"
-      loading="lazy">
-    </iframe>
+      <div class="map-wrapper">
+        <iframe
+          src="https://yandex.ru/map-widget/v1/?ll=37.548707%2C47.095000&z=17&pt=37.548707,47.095000,pm2rdm&l=map"
+          width="100%"
+          height="320"
+          frameborder="0"
+          allowfullscreen="true"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -107,27 +249,27 @@
     <div class="footer-grid">
       <div>
         <h4>Мультицентр недвижимости «Мой Дом»</h4>
-        <p>Помогаем покупать, продавать и арендовать жильё в Мариуполе.</p>
+        <p style="line-height: 1.8;">Помогаем покупать, продавать и арендовать жильё в Мариуполе. Работаем честно и открыто.</p>
       </div>
       <div>
         <h4>Контакты</h4>
         <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li style="margin-bottom: 8px;"><a href="tel:+79495044455" style="color:var(--accent); font-weight:bold;">+7 (949) 504-44-55</a></li>
-          <li style="margin-bottom: 8px; color: #a4b0c3;">г. Мариуполь, пр. Ленина (Мира), 54/46</li>
+          <li style="margin-bottom: 12px;"><a href="tel:+79495044455" style="color:#fff; font-weight:bold; font-size: 1.2rem;">+7 (949) 504-44-55</a></li>
+          <li style="margin-bottom: 12px;">г. Мариуполь, пр. Ленина (Мира), 54/46</li>
         </ul>
       </div>
       <div>
         <h4>Мессенджеры</h4>
         <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li style="margin-bottom: 8px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">Telegram</a></li>
-          <li style="margin-bottom: 8px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">MAX</a></li>
-          <li><a href="https://vk.com/moy_dom_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">ВКонтакте</a></li>
+          <li style="margin-bottom: 12px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank">Telegram</a></li>
+          <li style="margin-bottom: 12px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank">MAX</a></li>
+          <li><a href="https://vk.com/moy_dom_mariupol" target="_blank">ВКонтакте</a></li>
         </ul>
       </div>
       <div>
         <h4>Документы</h4>
         <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li><a href="privacy.html" style="color:#a4b0c3; text-decoration:underline;">Политика конфиденциальности</a></li>
+          <li><a href="privacy.html">Политика конфиденциальности</a></li>
         </ul>
       </div>
     </div>
