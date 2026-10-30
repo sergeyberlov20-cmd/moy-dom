@@ -1,6 +1,13 @@
 // js/main.js
 
-// 1. УВЕДОМЛЕНИЯ (TOAST)
+// 1. ФОРМАТИРОВАНИЕ ЦЕНЫ (перенесено из data.js)
+const _priceFormatter = new Intl.NumberFormat("ru-RU");
+window.formatPrice = function(price, deal) {
+  const formatted = _priceFormatter.format(price) + " ₽";
+  return deal === "Аренда" ? formatted + "/мес" : formatted;
+};
+
+// 2. УВЕДОМЛЕНИЯ (TOAST)
 window.showToast = function(message, type = 'success') {
   let container = document.querySelector('.toast-container');
   if (!container) {
@@ -23,7 +30,7 @@ window.showToast = function(message, type = 'success') {
   }, 4000);
 };
 
-// 2. ФУНКЦИИ ДЛЯ ИЗБРАННОГО
+// 3. ФУНКЦИИ ДЛЯ ИЗБРАННОГО
 window.getFavorites = () => JSON.parse(localStorage.getItem('favorites') || '[]');
 
 window.toggleFavorite = function(id, btn) {
@@ -44,8 +51,7 @@ window.isFavorite = function(id) {
   return getFavorites().includes(id);
 };
 
-// 3. УНИВЕРСАЛЬНЫЙ РЕНДЕР КАРТОЧКИ (используется на главной, в каталоге и в избранном)
-// opts.actions = true -> показать кнопки "Позвонить" и "Telegram"
+// 4. УНИВЕРСАЛЬНЫЙ РЕНДЕР КАРТОЧКИ
 window.renderCard = function(o, opts = {}) {
   const actions = opts.actions === true;
 
@@ -84,7 +90,7 @@ window.renderCard = function(o, opts = {}) {
     </article>`;
 };
 
-// 4. ДЕБАУНС (для фильтра цены)
+// 5. ДЕБАУНС
 window.debounce = function(fn, ms) {
   let t;
   return function(...args) {
@@ -93,7 +99,7 @@ window.debounce = function(fn, ms) {
   };
 };
 
-// 5. СЛАЙДЕР ДЛЯ КАТАЛОГА (миниатюры)
+// 6. СЛАЙДЕР ДЛЯ КАТАЛОГА
 window.initMiniSliders = function() {
   document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
     if (wrapper.dataset.sliderInitialized) return; 
@@ -123,7 +129,7 @@ window.initMiniSliders = function() {
   });
 };
 
-// 6. СЛАЙДЕР ДЛЯ ДЕТАЛЬНОЙ КАРТОЧКИ
+// 7. СЛАЙДЕР ДЛЯ ДЕТАЛЬНОЙ КАРТОЧКИ
 window.initDetailGallery = function() {
   const gallery = document.getElementById('object-gallery');
   if (!gallery) return;
@@ -179,7 +185,7 @@ window.initDetailGallery = function() {
   }
 };
 
-// 7. БУРГЕР-МЕНЮ И КНОПКА НАВЕРХ
+// 8. БУРГЕР-МЕНЮ И КНОПКА НАВЕРХ
 document.addEventListener('DOMContentLoaded', () => {
   const mobileBtn = document.getElementById('mobile-menu-btn');
   const mainNav = document.getElementById('main-nav');
