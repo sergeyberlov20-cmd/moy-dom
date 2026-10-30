@@ -13,39 +13,107 @@
   <link rel="stylesheet" href="css/style.css">
   
   <style>
+    /* ПРЕМИАЛЬНАЯ СЕТКА ДЛЯ СТРАНИЦЫ ОБЪЕКТА */
     .object-layout {
       display: grid;
-      grid-template-columns: 1fr 380px;
+      grid-template-columns: 1fr 400px;
       gap: 30px;
-      margin: 30px 0;
+      margin: 40px 0;
       align-items: start;
     }
-    .object-main-left { display: flex; flex-direction: column; gap: 24px; }
+
+    .object-main-left {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
     .object-sidebar-right {
       background: var(--surface);
-      padding: 24px;
+      padding: 30px;
       border-radius: var(--radius);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      box-shadow: var(--shadow);
       position: sticky;
-      top: 100px;
+      top: 100px; /* Чтобы блок не уезжал при скролле описания */
+      border: 1px solid var(--border);
     }
+
     .description-box {
       background: var(--surface);
-      padding: 24px;
+      padding: 30px;
       border-radius: var(--radius);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
     }
+
     .description-title {
-      font-size: 1.3rem;
-      font-weight: 700;
+      font-size: 1.4rem;
+      font-weight: 900;
       color: var(--primary);
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       border-bottom: 2px solid var(--border);
-      padding-bottom: 10px;
+      padding-bottom: 15px;
     }
+
+    /* Красивая сетка характеристик вместо скучного списка */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 25px 0;
+      padding: 0;
+      list-style: none;
+    }
+    .specs-grid li {
+      background: #f8f9fa;
+      padding: 12px 16px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+    }
+    .specs-grid li span:first-child {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .specs-grid li span:last-child {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    /* Блок гарантии */
+    .guarantee-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .guarantee-box svg {
+      width: 28px;
+      height: 28px;
+      fill: #16a34a;
+      flex-shrink: 0;
+    }
+    .guarantee-box p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #166534;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
     @media (max-width: 900px) {
       .object-layout { grid-template-columns: 1fr; }
       .object-sidebar-right { position: static; }
+      .specs-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -91,7 +159,7 @@
 <div class="container" id="object-container">
   <div id="loader" style="text-align: center; padding: 100px 0; color: var(--muted);">
     <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #e1e3e6; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
-    <p style="margin-top: 15px;">Загружаем объект...</p>
+    <p style="margin-top: 15px; font-weight: 500;">Загружаем данные...</p>
   </div>
 </div>
 
@@ -106,27 +174,27 @@
     <div class="footer-grid">
       <div>
         <h4>Мультицентр недвижимости «Мой Дом»</h4>
-        <p>Помогаем покупать, продавать и арендовать жильё в Мариуполе.</p>
+        <p style="line-height: 1.8;">Помогаем покупать, продавать и арендовать жильё в Мариуполе. Работаем честно и открыто.</p>
       </div>
       <div>
         <h4>Контакты</h4>
         <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li style="margin-bottom: 8px;"><a href="tel:+79495044455" style="color:var(--accent); font-weight:bold;">+7 (949) 504-44-55</a></li>
-          <li style="margin-bottom: 8px; color: #a4b0c3;">г. Мариуполь, пр. Ленина (Мира), 54/46</li>
+          <li style="margin-bottom: 12px;"><a href="tel:+79495044455" style="color:#fff; font-weight:bold; font-size: 1.2rem;">+7 (949) 504-44-55</a></li>
+          <li style="margin-bottom: 12px;">г. Мариуполь, пр. Ленина (Мира), 54/46</li>
         </ul>
       </div>
       <div>
         <h4>Мессенджеры</h4>
         <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li style="margin-bottom: 8px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">Telegram</a></li>
-          <li style="margin-bottom: 8px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">MAX</a></li>
-          <li><a href="https://vk.com/moy_dom_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">ВКонтакте</a></li>
+          <li style="margin-bottom: 12px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank">Telegram</a></li>
+          <li style="margin-bottom: 12px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank">MAX</a></li>
+          <li><a href="https://vk.com/moy_dom_mariupol" target="_blank">ВКонтакте</a></li>
         </ul>
       </div>
       <div>
         <h4>Документы</h4>
         <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li><a href="privacy.html" style="color:#a4b0c3; text-decoration:underline;">Политика конфиденциальности</a></li>
+          <li><a href="privacy.html">Политика конфиденциальности</a></li>
         </ul>
       </div>
     </div>
@@ -145,8 +213,9 @@
 
     if (!obj) {
       container.innerHTML = `
-        <div style="text-align: center; padding: 60px 20px;">
+        <div style="text-align: center; padding: 80px 20px;">
           <h1 class="section-title">Объект не найден</h1>
+          <p style="color: var(--muted); margin-bottom: 20px;">Возможно, он уже продан или ссылка устарела.</p>
           <a href="catalog.html" class="btn">Вернуться в каталог</a>
         </div>`;
       return;
@@ -154,7 +223,6 @@
 
     document.title = `${obj.title} — ${obj.deal} | Мой Дом`;
     
-    // Очищаем пути для галереи
     const rawGallery = obj.images && obj.images.length > 0 ? obj.images : [obj.image]; 
     const galleryImages = rawGallery.map(img => img.replace(/^\//, ''));
 
@@ -164,6 +232,7 @@
     let isFav = '';
     try { if (typeof isFavorite === 'function') isFav = isFavorite(obj.id) ? 'active' : ''; } catch(e) {}
 
+    // Характеристики
     const roomsRow  = obj.rooms  > 0 ? `<li><span>Комнат</span><span>${obj.rooms}</span></li>` : '';
     const areaRow   = obj.area   > 0 ? `<li><span>Площадь</span><span>${obj.area} м²</span></li>` : '';
     const floorRow  = (obj.floor > 0 && obj.floors > 0) ? `<li><span>Этаж</span><span>${obj.floor} из ${obj.floors}</span></li>` : '';
@@ -171,46 +240,58 @@
     container.innerHTML = `
       <div class="object-layout">
         
-        <!-- ЛЕВАЯ КОЛОНКА -->
+        <!-- ЛЕВАЯ КОЛОНКА (Фото и описание) -->
         <div class="object-main-left">
-          <div class="object-gallery" id="object-gallery" data-images='${JSON.stringify(galleryImages)}' style="height: 450px;"></div>
+          <div class="object-gallery" id="object-gallery" data-images='${JSON.stringify(galleryImages)}' style="height: 500px;"></div>
           
           <div class="description-box">
-            <div class="description-title">Описание объекта</div>
+            <div class="description-title">Подробное описание</div>
             <p style="white-space: pre-wrap; line-height: 1.8; font-size: 1.05rem; color: #333; margin: 0;">${obj.description}</p>
           </div>
         </div>
 
-        <!-- ПРАВАЯ КОЛОНКА -->
+        <!-- ПРАВАЯ КОЛОНКА (Инфо и кнопки) -->
         <div class="object-sidebar-right">
+          
           <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
-            <h1 style="font-size: 1.4rem; line-height: 1.3; margin: 0;">${obj.title}</h1>
+            <h1 style="font-size: 1.5rem; line-height: 1.3; margin: 0; font-weight: 800;">${obj.title}</h1>
             <button class="favorite-btn ${isFav}" aria-label="В избранное" style="position:relative; top:0; right:0; width:40px; height:40px; flex-shrink:0;" onclick="toggleFavorite(${obj.id}, this)">
               <svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
             </button>
           </div>
+
+          <div style="color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; display: flex; align-items: center; gap: 6px;">
+            <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor; opacity:0.6;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            ${obj.address}
+          </div>
           
-          <div class="price" style="font-size: 2rem; color: var(--accent); font-weight: 800; margin-bottom: 20px;">
+          <div style="font-size: 2.2rem; color: var(--accent); font-weight: 900; margin-bottom: 20px; letter-spacing: -1px;">
             ${formatPrice(obj.price, obj.deal)}
           </div>
           
-          <ul class="specs" style="margin-bottom: 24px;">
+          <ul class="specs-grid">
             <li><span>Тип</span><span>${obj.type}</span></li>
             <li><span>Сделка</span><span>${obj.deal}</span></li>
-            <li><span>Адрес</span><span style="text-align: right;">${obj.address}</span></li>
             ${roomsRow}
             ${areaRow}
             ${floorRow}
           </ul>
           
-          <div class="mini-map" style="margin-bottom: 24px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border);">
+          <div class="mini-map" style="margin-bottom: 24px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
             <iframe src="https://yandex.ru/map-widget/v1/?ll=${mapLon}%2C${mapLat}&z=16&pt=${mapLon},${mapLat},pm2rdm&l=map" width="100%" height="200" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
           </div>
 
           <div style="display: flex; flex-direction: column; gap: 10px;">
-            <a href="tel:+79495044455" class="btn btn-accent" style="width: 100%; padding: 14px;">📞 Позвонить</a>
-            <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="width: 100%; padding: 14px; background: #0088cc;">✈️ Написать в Telegram</a>
+            <a href="tel:+79495044455" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">📞 Позвонить</a>
+            <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="width: 100%; padding: 16px; font-size: 1.1rem; background: #0088cc;">✈️ Написать в Telegram</a>
           </div>
+
+          <!-- Блок гарантии для солидности -->
+          <div class="guarantee-box">
+            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            <p>Юридическая чистота сделки гарантирована агентством «Мой Дом»</p>
+          </div>
+
         </div>
 
       </div>`;
