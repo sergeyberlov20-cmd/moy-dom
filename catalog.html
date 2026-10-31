@@ -3,25 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <meta name="theme-color" content="#1c2e5a">
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
-  
   <title>Каталог недвижимости в Мариуполе — Мой Дом</title>
   <meta name="description" content="Актуальный каталог квартир, домов и коммерческой недвижимости в Мариуполе.">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
 <header>
   <div class="container nav">
     <a href="index.html" class="logo">
       <img src="images/logo.png" alt="Мой Дом" class="logo-img">
-      <div class="logo-text">
-        <div class="logo-title">Мой<span>Дом</span></div>
-        <div class="logo-subtitle">Мультицентр недвижимости</div>
-      </div>
+      <div class="logo-text"><div class="logo-title">Мой<span>Дом</span></div><div class="logo-subtitle">Мультицентр недвижимости</div></div>
     </a>
     <div class="nav-right">
       <ul id="main-nav">
@@ -30,105 +24,38 @@
         <li><a href="services.html">Услуги</a></li>
         <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
-        <li>
-          <a href="favorites.html">
-            <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
-            Избранное
-          </a>
-        </li>
+        <li><a href="favorites.html"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg> Избранное</a></li>
       </ul>
-      
       <div class="social-icons">
-        <a href="https://t.me/nevizhimost_mariupol" target="_blank" title="Telegram" class="social-tg"></a>
-        <a href="https://vk.com/moy_dom_mariupol" target="_blank" title="ВКонтакте" class="social-vk"></a>
-        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX" class="social-max"></a>
+        <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="social-tg"></a>
+        <a href="https://vk.com/moy_dom_mariupol" target="_blank" class="social-vk"></a>
+        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" class="social-max"></a>
       </div>
-
-      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню"><span></span><span></span><span></span></button>
     </div>
   </div>
 </header>
 
 <section class="container">
   <h1 class="section-title">Каталог объектов</h1>
-
   <div class="filters-bar">
-    <div class="filter-dropdown">
-      <div class="filter-title">Сделка <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
-      <div class="filter-content">
-        <label><input type="checkbox" class="f-deal" value="Продажа"> Продажа</label>
-        <label><input type="checkbox" class="f-deal" value="Аренда"> Аренда</label>
-      </div>
-    </div>
-
-    <div class="filter-dropdown">
-      <div class="filter-title">Тип <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
-      <div class="filter-content">
-        <label><input type="checkbox" class="f-type" value="Квартира"> Квартира</label>
-        <label><input type="checkbox" class="f-type" value="Дом"> Дом</label>
-        <label><input type="checkbox" class="f-type" value="Офис"> Офис</label>
-        <label><input type="checkbox" class="f-type" value="Гараж"> Гараж</label>
-      </div>
-    </div>
-
-    <div class="filter-dropdown">
-      <div class="filter-title">Комнаты <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
-      <div class="filter-content">
-        <label><input type="checkbox" class="f-rooms" value="1"> 1 комната</label>
-        <label><input type="checkbox" class="f-rooms" value="2"> 2 комнаты</label>
-        <label><input type="checkbox" class="f-rooms" value="3"> 3 комнаты</label>
-        <label><input type="checkbox" class="f-rooms" value="4"> 4+ комнат</label>
-      </div>
-    </div>
-
-    <div class="filter-dropdown">
-      <div class="filter-title">Цена <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
-      <div class="filter-content">
-        <div class="price-inputs">
-          <input type="number" id="f-min" placeholder="От">
-          <input type="number" id="f-max" placeholder="До">
-        </div>
-      </div>
-    </div>
+    <div class="filter-dropdown"><div class="filter-title">Сделка <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div><div class="filter-content"><label><input type="checkbox" class="f-deal" value="Продажа"> Продажа</label><label><input type="checkbox" class="f-deal" value="Аренда"> Аренда</label></div></div>
+    <div class="filter-dropdown"><div class="filter-title">Тип <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div><div class="filter-content"><label><input type="checkbox" class="f-type" value="Квартира"> Квартира</label><label><input type="checkbox" class="f-type" value="Дом"> Дом</label><label><input type="checkbox" class="f-type" value="Офис"> Офис</label><label><input type="checkbox" class="f-type" value="Гараж"> Гараж</label></div></div>
+    <div class="filter-dropdown"><div class="filter-title">Комнаты <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div><div class="filter-content"><label><input type="checkbox" class="f-rooms" value="1"> 1 комната</label><label><input type="checkbox" class="f-rooms" value="2"> 2 комнаты</label><label><input type="checkbox" class="f-rooms" value="3"> 3 комнаты</label><label><input type="checkbox" class="f-rooms" value="4"> 4+ комнат</label></div></div>
+    <div class="filter-dropdown"><div class="filter-title">Цена <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div><div class="filter-content"><div class="price-inputs"><input type="number" id="f-min" placeholder="От"><input type="number" id="f-max" placeholder="До"></div></div></div>
   </div>
-
   <div class="objects-grid" id="catalog"></div>
 </section>
 
-<button id="scrollTopBtn" title="Наверх" aria-label="Наверх">
-  <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
-</button>
+<button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></button>
 
 <footer>
   <div class="container">
     <div class="footer-grid">
-      <div>
-        <h4>Мультицентр недвижимости «Мой Дом»</h4>
-        <p>Помогаем покупать, продавать и арендовать жильё в Мариуполе.</p>
-      </div>
-      <div>
-        <h4>Контакты</h4>
-        <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li style="margin-bottom: 8px;"><a href="tel:+79495044455" style="color:var(--accent); font-weight:bold;">+7 (949) 504-44-55</a></li>
-          <li style="margin-bottom: 8px; color: #a4b0c3;">г. Мариуполь, пр. Ленина (Мира), 54/46</li>
-        </ul>
-      </div>
-      <div>
-        <h4>Мессенджеры</h4>
-        <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li style="margin-bottom: 8px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">Telegram</a></li>
-          <li style="margin-bottom: 8px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">MAX</a></li>
-          <li><a href="https://vk.com/moy_dom_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">ВКонтакте</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Документы</h4>
-        <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li><a href="privacy.html" style="color:#a4b0c3; text-decoration:underline;">Политика конфиденциальности</a></li>
-        </ul>
-      </div>
+      <div><h4>Мультицентр недвижимости «Мой Дом»</h4><p style="line-height: 1.8;">Помогаем покупать, продавать и арендовать жильё в Мариуполе. Работаем честно и открыто.</p></div>
+      <div><h4>Контакты</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="tel:+79495044455" style="color:#fff; font-weight:bold; font-size: 1.2rem;">+7 (949) 504-44-55</a></li><li style="margin-bottom: 12px;">г. Мариуполь, пр. Ленина (Мира), 54/46</li></ul></div>
+      <div><h4>Мессенджеры</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank">Telegram</a></li><li style="margin-bottom: 12px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank">MAX</a></li><li><a href="https://vk.com/moy_dom_mariupol" target="_blank">ВКонтакте</a></li></ul></div>
+      <div><h4>Документы</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li><a href="privacy.html">Политика конфиденциальности</a></li></ul></div>
     </div>
     <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
   </div>
@@ -145,24 +72,14 @@
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
         e.stopPropagation();
-        document.querySelectorAll('.filter-dropdown').forEach(d => {
-          if (d !== dropdown) d.classList.remove('active');
-        });
+        document.querySelectorAll('.filter-dropdown').forEach(d => { if (d !== dropdown) d.classList.remove('active'); });
         dropdown.classList.toggle('active');
       });
     });
+    document.addEventListener('click', () => { document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('active')); });
+    document.querySelectorAll('.filter-content').forEach(content => { content.addEventListener('click', (e) => e.stopPropagation()); });
 
-    document.addEventListener('click', () => {
-      document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('active'));
-    });
-
-    document.querySelectorAll('.filter-content').forEach(content => {
-      content.addEventListener('click', (e) => e.stopPropagation());
-    });
-
-    function getCheckedValues(className) {
-      return Array.from(document.querySelectorAll(`.${className}:checked`)).map(cb => cb.value);
-    }
+    function getCheckedValues(className) { return Array.from(document.querySelectorAll(`.${className}:checked`)).map(cb => cb.value); }
 
     function render() {
       const types = getCheckedValues('f-type');
@@ -174,34 +91,22 @@
       const filtered = OBJECTS.filter(o => {
         if (types.length > 0 && !types.includes(o.type)) return false;
         if (deals.length > 0 && !deals.includes(o.deal)) return false;
-        
         if (rooms.length > 0) {
-          const hasMatchingRoom = rooms.some(r => {
-            const rNum = Number(r);
-            return rNum === 4 ? o.rooms >= 4 : o.rooms === rNum;
-          });
+          const hasMatchingRoom = rooms.some(r => { const rNum = Number(r); return rNum === 4 ? o.rooms >= 4 : o.rooms === rNum; });
           if (!hasMatchingRoom) return false;
         }
-
         if (o.price < min || o.price > max) return false;
         return true;
       });
 
-      catalog.innerHTML = filtered.length
-        ? filtered.map(o => renderCard(o, { actions: true })).join('')
-        : '<p style="padding:40px 0;color:#818c99;font-size:1.1rem;">Объектов не найдено. Попробуйте изменить фильтры.</p>';
-        
+      catalog.innerHTML = filtered.length ? filtered.map(o => renderCard(o, { actions: true })).join('') : '<p style="padding:40px 0;color:#818c99;font-size:1.1rem;">Объектов не найдено. Попробуйте изменить фильтры.</p>';
       if (window.initMiniSliders) window.initMiniSliders();
     }
 
     const renderDebounced = debounce(render, 200);
-
-    document.querySelectorAll('.f-type, .f-deal, .f-rooms').forEach(el => {
-      el.addEventListener('change', render);
-    });
+    document.querySelectorAll('.f-type, .f-deal, .f-rooms').forEach(el => { el.addEventListener('change', render); });
     fMin.addEventListener('input', renderDebounced);
     fMax.addEventListener('input', renderDebounced);
-    
     render();
   });
 </script>
