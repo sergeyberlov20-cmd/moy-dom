@@ -3,105 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <meta name="theme-color" content="#1c2e5a">
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
-  
   <title>Объект — Мой Дом</title>
   <meta name="description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики.">
   <link rel="stylesheet" href="css/style.css">
-  
   <style>
-    .object-layout {
-      display: grid;
-      grid-template-columns: 1fr 400px;
-      gap: 30px;
-      margin: 40px 0;
-      align-items: start;
-    }
+    .object-layout { display: grid; grid-template-columns: 1fr 400px; gap: 30px; margin: 40px 0; align-items: start; }
     .object-main-left { display: flex; flex-direction: column; gap: 24px; }
-    .object-sidebar-right {
-      background: var(--surface);
-      padding: 30px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      position: sticky;
-      top: 100px;
-      border: 1px solid var(--border);
-    }
-    .description-box {
-      background: var(--surface);
-      padding: 30px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
-    .description-title {
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: var(--primary);
-      margin-bottom: 20px;
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 15px;
-    }
-    .specs-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin: 25px 0;
-      padding: 0;
-      list-style: none;
-    }
-    .specs-grid li {
-      background: #f8f9fa;
-      padding: 12px 16px;
-      border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--border);
-    }
-    .specs-grid li span:first-child {
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
-    }
-    .specs-grid li span:last-child {
-      font-weight: 700;
-      color: var(--text);
-      font-size: 1rem;
-    }
-    .guarantee-box {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 24px;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
+    .object-sidebar-right { background: var(--surface); padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow); position: sticky; top: 100px; border: 1px solid var(--border); }
+    .description-box { background: var(--surface); padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .description-title { font-size: 1.4rem; font-weight: 900; color: var(--primary); margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 15px; }
+    .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 25px 0; padding: 0; list-style: none; }
+    .specs-grid li { background: #f8f9fa; padding: 12px 16px; border-radius: 8px; display: flex; flex-direction: column; border: 1px solid var(--border); }
+    .specs-grid li span:first-child { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .specs-grid li span:last-child { font-weight: 700; color: var(--text); font-size: 1rem; }
+    .guarantee-box { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 16px; border-radius: 12px; margin-top: 24px; display: flex; gap: 12px; align-items: center; }
     .guarantee-box svg { width: 28px; height: 28px; fill: #16a34a; flex-shrink: 0; }
     .guarantee-box p { margin: 0; font-size: 0.9rem; color: #166534; font-weight: 500; line-height: 1.4; }
-    @media (max-width: 900px) {
-      .object-layout { grid-template-columns: 1fr; }
-      .object-sidebar-right { position: static; }
-      .specs-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 900px) { .object-layout { grid-template-columns: 1fr; } .object-sidebar-right { position: static; } .specs-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-
 <header>
   <div class="container nav">
     <a href="index.html" class="logo">
       <img src="images/logo.png" alt="Мой Дом" class="logo-img">
-      <div class="logo-text">
-        <div class="logo-title">Мой<span>Дом</span></div>
-        <div class="logo-subtitle">Мультицентр недвижимости</div>
-      </div>
+      <div class="logo-text"><div class="logo-title">Мой<span>Дом</span></div><div class="logo-subtitle">Мультицентр недвижимости</div></div>
     </a>
     <div class="nav-right">
       <ul id="main-nav">
@@ -110,21 +39,14 @@
         <li><a href="services.html">Услуги</a></li>
         <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
-        <li>
-          <a href="favorites.html">
-            <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
-            Избранное
-          </a>
-        </li>
+        <li><a href="favorites.html"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg> Избранное</a></li>
       </ul>
       <div class="social-icons">
-        <a href="https://t.me/nevizhimost_mariupol" target="_blank" title="Telegram" class="social-tg"></a>
-        <a href="https://vk.com/moy_dom_mariupol" target="_blank" title="ВКонтакте" class="social-vk"></a>
-        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX" class="social-max"></a>
+        <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="social-tg"></a>
+        <a href="https://vk.com/moy_dom_mariupol" target="_blank" class="social-vk"></a>
+        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" class="social-max"></a>
       </div>
-      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню"><span></span><span></span><span></span></button>
     </div>
   </div>
 </header>
@@ -135,41 +57,17 @@
     <p style="margin-top: 15px; font-weight: 500;">Загружаем данные...</p>
   </div>
 </div>
-
 <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
 
-<button id="scrollTopBtn" title="Наверх" aria-label="Наверх">
-  <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
-</button>
+<button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></button>
 
 <footer>
   <div class="container">
     <div class="footer-grid">
-      <div>
-        <h4>Мультицентр недвижимости «Мой Дом»</h4>
-        <p style="line-height: 1.8;">Помогаем покупать, продавать и арендовать жильё в Мариуполе. Работаем честно и открыто.</p>
-      </div>
-      <div>
-        <h4>Контакты</h4>
-        <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li style="margin-bottom: 12px;"><a href="tel:+79495044455" style="color:#fff; font-weight:bold; font-size: 1.2rem;">+7 (949) 504-44-55</a></li>
-          <li style="margin-bottom: 12px;">г. Мариуполь, пр. Ленина (Мира), 54/46</li>
-        </ul>
-      </div>
-      <div>
-        <h4>Мессенджеры</h4>
-        <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li style="margin-bottom: 12px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank">Telegram</a></li>
-          <li style="margin-bottom: 12px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank">MAX</a></li>
-          <li><a href="https://vk.com/moy_dom_mariupol" target="_blank">ВКонтакте</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Документы</h4>
-        <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li><a href="privacy.html">Политика конфиденциальности</a></li>
-        </ul>
-      </div>
+      <div><h4>Мультицентр недвижимости «Мой Дом»</h4><p style="line-height: 1.8;">Помогаем покупать, продавать и арендовать жильё в Мариуполе. Работаем честно и открыто.</p></div>
+      <div><h4>Контакты</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="tel:+79495044455" style="color:#fff; font-weight:bold; font-size: 1.2rem;">+7 (949) 504-44-55</a></li><li style="margin-bottom: 12px;">г. Мариуполь, пр. Ленина (Мира), 54/46</li></ul></div>
+      <div><h4>Мессенджеры</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank">Telegram</a></li><li style="margin-bottom: 12px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank">MAX</a></li><li><a href="https://vk.com/moy_dom_mariupol" target="_blank">ВКонтакте</a></li></ul></div>
+      <div><h4>Документы</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li><a href="privacy.html">Политика конфиденциальности</a></li></ul></div>
     </div>
     <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
   </div>
@@ -185,12 +83,7 @@
     const container = document.getElementById('object-container');
 
     if (!obj) {
-      container.innerHTML = `
-        <div style="text-align: center; padding: 80px 20px;">
-          <h1 class="section-title">Объект не найден</h1>
-          <p style="color: var(--muted); margin-bottom: 20px;">Возможно, он уже продан или ссылка устарела.</p>
-          <a href="catalog.html" class="btn">Вернуться в каталог</a>
-        </div>`;
+      container.innerHTML = `<div style="text-align: center; padding: 80px 20px;"><h1 class="section-title">Объект не найден</h1><p style="color: var(--muted); margin-bottom: 20px;">Возможно, он уже продан или ссылка устарела.</p><a href="catalog.html" class="btn">Вернуться в каталог</a></div>`;
       return;
     }
 
@@ -199,7 +92,6 @@
     const galleryImages = rawGallery.map(img => img.replace(/^\//, ''));
     const mapLat = obj.lat || 47.095000;
     const mapLon = obj.lon || 37.548707;
-    
     let isFav = '';
     try { if (typeof isFavorite === 'function') isFav = isFavorite(obj.id) ? 'active' : ''; } catch(e) {}
 
@@ -227,15 +119,11 @@
             <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor; opacity:0.6;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
             ${obj.address}
           </div>
-          <div style="font-size: 2.2rem; color: var(--accent); font-weight: 900; margin-bottom: 20px; letter-spacing: -1px;">
-            ${formatPrice(obj.price, obj.deal)}
-          </div>
+          <div style="font-size: 2.2rem; color: var(--accent); font-weight: 900; margin-bottom: 20px; letter-spacing: -1px;">${formatPrice(obj.price, obj.deal)}</div>
           <ul class="specs-grid">
             <li><span>Тип</span><span>${obj.type}</span></li>
             <li><span>Сделка</span><span>${obj.deal}</span></li>
-            ${roomsRow}
-            ${areaRow}
-            ${floorRow}
+            ${roomsRow}${areaRow}${floorRow}
           </ul>
           <div class="mini-map" style="margin-bottom: 24px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
             <iframe src="https://yandex.ru/map-widget/v1/?ll=${mapLon}%2C${mapLat}&z=16&pt=${mapLon},${mapLat},pm2rdm&l=map" width="100%" height="200" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
@@ -250,7 +138,6 @@
           </div>
         </div>
       </div>`;
-      
     if (window.initDetailGallery) { window.initDetailGallery(); }
   });
 </script>
