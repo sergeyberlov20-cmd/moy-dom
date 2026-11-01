@@ -39,7 +39,6 @@ header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); bor
 .nav a:not(.logo) { text-decoration: none; color: var(--text); font-weight: 500; transition: color .2s; }
 .nav a:not(.logo):hover, .nav a.active { color: var(--accent); }
 
-/* Прячем бургер на ПК */
 .mobile-menu-btn { display: none; } 
 
 a[href="favorites.html"] {
@@ -146,26 +145,31 @@ footer a:hover { color: #fff; }
   .trust-grid { grid-template-columns: 1fr; gap: 20px; }
   .steps-grid { grid-template-columns: 1fr; }
   
-  /* МОБИЛЬНАЯ ШАПКА С СОЦСЕТЯМИ */
-  .nav { height: 70px; padding: 0 10px; }
-  .nav-right { gap: 8px; flex-wrap: nowrap; align-items: center; }
+  /* МОБИЛЬНАЯ ШАПКА (БОЛЬШОЙ ЛОГОТИП) */
+  .nav { height: 85px; padding: 0 12px; }
+  .nav-right { gap: 12px; flex-wrap: nowrap; align-items: center; }
   
-  /* Логотип делаем чуть меньше, чтобы влезли соцсети */
-  .logo { gap: 6px !important; display: flex; align-items: center; margin-right: auto; flex-shrink: 0; }
-  .logo-img { width: 45px !important; height: 45px !important; object-fit: contain; } 
+  /* Логотип */
+  .logo { gap: 8px !important; display: flex; align-items: center; margin-right: auto; flex-shrink: 0; }
+  
+  /* Иконка: большая и со скруглениями как на ПК */
+  .logo-img { width: 55px !important; height: 55px !important; object-fit: contain; border-radius: 8px; } 
+  
   .logo-text { display: flex !important; flex-direction: column; justify-content: center; white-space: nowrap; }
-  .logo-title { font-size: 1.1rem !important; line-height: 1; margin-bottom: 2px; } 
-  .logo-subtitle { display: none !important; } /* Убрали подзаголовок на мобилке, чтобы не мешал */
   
-  /* ВОЗВРАЩАЕМ СОЦСЕТИ */
-  .social-icons { display: flex !important; gap: 4px !important; margin-right: 2px; }
-  .social-icons a { width: 24px !important; height: 24px !important; border-radius: 4px !important; }
+  /* Текст: крупнее */
+  .logo-title { font-size: 1.3rem !important; line-height: 1; margin-bottom: 3px; } 
+  .logo-subtitle { display: block !important; font-size: 0.6rem !important; letter-spacing: 0.5px; } 
   
-  /* Бургер */
+  /* Соцсети: средний размер */
+  .social-icons { display: flex !important; gap: 6px !important; margin-right: 4px; }
+  .social-icons a { width: 28px !important; height: 28px !important; border-radius: 6px !important; }
+  
+  /* Бургер: четкий и ровный */
   .mobile-menu-btn { 
     display: flex !important; 
     flex-direction: column; 
-    gap: 5px; 
+    gap: 6px; 
     background: none; 
     border: none; 
     cursor: pointer; 
@@ -173,7 +177,7 @@ footer a:hover { color: #fff; }
     z-index: 300; 
     flex-shrink: 0; 
   }
-  .mobile-menu-btn span { width: 24px; height: 2px; background: var(--text); transition: 0.3s; border-radius: 2px; }
+  .mobile-menu-btn span { width: 26px; height: 2px; background: var(--text); transition: 0.3s; border-radius: 2px; }
   
   .nav ul { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 0 0 16px 16px; z-index: 250; }
   .nav ul.show { display: flex; }
