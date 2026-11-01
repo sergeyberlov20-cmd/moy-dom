@@ -7,21 +7,7 @@ window.formatPrice = function(price, deal) {
   return deal === "Аренда" ? formatted + "/мес" : formatted;
 };
 
-// 2. АВТОМАТИЧЕСКАЯ ОПТИМИЗАЦИЯ КАРТИНОК (Сжатие и WebP)
-// Мы используем бесплатный CDN wsrv.nl, чтобы не сжимать фото руками
-function optimizeImage(path, width = 800) {
-  if (!path) return '';
-  const cleanPath = path.replace(/^\//, ''); // Убираем слеш в начале
-  
-  // Формируем полный URL до картинки на GitHub Pages
-  const baseURL = 'https://sergeyberlov20-cmd.github.io/moy-dom/';
-  const fullURL = baseURL + cleanPath;
-
-  // Отправляем на оптимизатор: ширина, формат webp, качество 80%
-  return `https://wsrv.nl/?url=${encodeURIComponent(fullURL)}&w=${width}&output=webp&q=80&il`;
-}
-
-// 3. УВЕДОМЛЕНИЯ (TOAST)
+// 2. УВЕДОМЛЕНИЯ (TOAST)
 window.showToast = function(message, type = 'success') {
   let container = document.querySelector('.toast-container');
   if (!container) {
@@ -44,7 +30,7 @@ window.showToast = function(message, type = 'success') {
   }, 4000);
 };
 
-// 4. ФУНКЦИИ ДЛЯ ИЗБРАННОГО
+// 3. ФУНКЦИИ ДЛЯ ИЗБРАННОГО
 window.getFavorites = () => JSON.parse(localStorage.getItem('favorites') || '[]');
 
 window.toggleFavorite = function(id, btn) {
@@ -65,14 +51,19 @@ window.isFavorite = function(id) {
   return getFavorites().includes(id);
 };
 
-// 5. УНИВЕРСАЛЬНЫЙ РЕНДЕР КАРТОЧКИ
+// Очистка пути от лишних слешей
+function cleanImagePath(path) {
+  if (!path) return '';
+  return path.replace(/^\//, '');
+}
+
+// 4. УНИВЕРСАЛЬНЫЙ РЕНДЕР КАРТОЧКИ
 window.renderCard = function(o, opts = {}) {
   const actions = opts.actions === true;
+  const safeMainImage = cleanImagePath(o.image);
   
-  // Оптимизируем картинки под размер карточки (800px достаточно)
-  const safeMainImage = optimizeImage(o.image, 800);
   const safeImages = (o.images && o.images.length > 0) 
-    ? o.images.map(img => optimizeImage(img, 800)) 
+    ? o.images.map(img => cleanImagePath(img)) 
     : [safeMainImage];
 
   let sliderBtns = '';
@@ -81,6 +72,7 @@ window.renderCard = function(o, opts = {}) {
   }
   
   const isFav = isFavorite(o.id) ? 'active' : '';
+
   const today = new Date().toISOString().split('T')[0];
   const isNew = o.date === today;
   const badgeHtml = isNew 
@@ -119,7 +111,7 @@ window.renderCard = function(o, opts = {}) {
     </article>`;
 };
 
-// 6. ДЕБАУНС
+// 5. ДЕБАУНС
 window.debounce = function(fn, ms) {
   let t;
   return function(...args) {
@@ -128,7 +120,7 @@ window.debounce = function(fn, ms) {
   };
 };
 
-// 7. СЛАЙДЕР ДЛЯ КАТАЛОГА
+// 6. СЛАЙДЕР ДЛЯ КАТАЛОГА
 window.initMiniSliders = function() {
   document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
     if (wrapper.dataset.sliderInitialized) return; 
@@ -158,7 +150,7 @@ window.initMiniSliders = function() {
   });
 };
 
-// 8. СЛАЙДЕР ДЛЯ ДЕТАЛЬНОЙ КАРТОЧКИ
+// 7. СЛАЙДЕР ДЛЯ ДЕТАЛЬНОЙ КАРТОЧКИ
 window.initDetailGallery = function() {
   const gallery = document.getElementById('object-gallery');
   if (!gallery) return;
@@ -168,8 +160,7 @@ window.initDetailGallery = function() {
     rawImages = JSON.parse(gallery.getAttribute('data-images') || '[]');
   } catch(e) {}
 
-  // Для большой галереи запрашиваем картинки шириной 1600px (высокое качество)
-  const images = rawImages.map(img => optimizeImage(img, 1600));
+  const images = rawImages.map(img => cleanImagePath(img));
 
   if (images && images.length > 1) {
     let currentIndex = 0;
@@ -217,7 +208,7 @@ window.initDetailGallery = function() {
   }
 };
 
-// 9. БУРГЕР-МЕНЮ И КНОПКА НАВЕРХ
+// 8. БУРГЕР-МЕНЮ И КНОПКА НАВЕРХ
 document.addEventListener('DOMContentLoaded', () => {
   const mobileBtn = document.getElementById('mobile-menu-btn');
   const mainNav = document.getElementById('main-nav');
