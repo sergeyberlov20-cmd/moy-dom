@@ -11,15 +11,11 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
 <header>
   <div class="container nav">
     <a href="index.html" class="logo">
       <img src="images/logo.png" alt="Мой Дом" class="logo-img" width="50" height="50">
-      <div class="logo-text">
-        <div class="logo-title">Мой<span>Дом</span></div>
-        <div class="logo-subtitle">Мультицентр недвижимости</div>
-      </div>
+      <div class="logo-text"><div class="logo-title">Мой<span>Дом</span></div><div class="logo-subtitle">Мультицентр недвижимости</div></div>
     </a>
     <div class="nav-right">
       <ul id="main-nav">
@@ -28,25 +24,17 @@
         <li><a href="services.html">Услуги</a></li>
         <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
-        <li>
-          <a href="favorites.html">
-            <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
-            Избранное
-          </a>
-        </li>
+        <li><a href="favorites.html"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg> Избранное</a></li>
       </ul>
       <div class="social-icons">
-        <a href="https://t.me/nevizhimost_mariupol" target="_blank" title="Telegram" class="social-tg"></a>
-        <a href="https://vk.com/moy_dom_mariupol" target="_blank" title="ВКонтакте" class="social-vk"></a>
-        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX" class="social-max"></a>
+        <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="social-tg"></a>
+        <a href="https://vk.com/moy_dom_mariupol" target="_blank" class="social-vk"></a>
+        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" class="social-max"></a>
       </div>
-      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню"><span></span><span></span><span></span></button>
     </div>
   </div>
 </header>
-
 <section class="container">
   <h1 class="section-title">Каталог объектов</h1>
   <div class="filters-bar">
@@ -57,11 +45,7 @@
   </div>
   <div class="objects-grid" id="catalog"></div>
 </section>
-
-<button id="scrollTopBtn" title="Наверх" aria-label="Наверх">
-  <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
-</button>
-
+<button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></button>
 <footer>
   <div class="container">
     <div class="footer-grid">
@@ -73,7 +57,6 @@
     <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
   </div>
 </footer>
-
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
@@ -81,7 +64,6 @@
     const catalog = document.getElementById('catalog');
     const fMin = document.getElementById('f-min');
     const fMax = document.getElementById('f-max');
-
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
         e.stopPropagation();
@@ -91,16 +73,13 @@
     });
     document.addEventListener('click', () => { document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('active')); });
     document.querySelectorAll('.filter-content').forEach(content => { content.addEventListener('click', (e) => e.stopPropagation()); });
-
     function getCheckedValues(className) { return Array.from(document.querySelectorAll(`.${className}:checked`)).map(cb => cb.value); }
-
     function render() {
       const types = getCheckedValues('f-type');
       const deals = getCheckedValues('f-deal');
       const rooms = getCheckedValues('f-rooms');
       const min = Number(fMin.value) || 0;
       const max = Number(fMax.value) || Infinity;
-
       const filtered = OBJECTS.filter(o => {
         if (types.length > 0 && !types.includes(o.type)) return false;
         if (deals.length > 0 && !deals.includes(o.deal)) return false;
@@ -111,11 +90,9 @@
         if (o.price < min || o.price > max) return false;
         return true;
       });
-
       catalog.innerHTML = filtered.length ? filtered.map(o => renderCard(o, { actions: true })).join('') : '<p style="padding:40px 0;color:#818c99;font-size:1.1rem;">Объектов не найдено. Попробуйте изменить фильтры.</p>';
       if (window.initMiniSliders) window.initMiniSliders();
     }
-
     const renderDebounced = debounce(render, 200);
     document.querySelectorAll('.f-type, .f-deal, .f-rooms').forEach(el => { el.addEventListener('change', render); });
     fMin.addEventListener('input', renderDebounced);
