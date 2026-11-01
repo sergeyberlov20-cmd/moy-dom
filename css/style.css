@@ -49,9 +49,22 @@ a[href="favorites.html"] {
 }
 a[href="favorites.html"] svg { width: 16px !important; height: 16px !important; fill: currentColor; }
 
-/* Соцсети */
-.social-icons { display: flex; gap: 12px; align-items: center; }
-.social-icons a { display: block; width: 36px; height: 36px; border-radius: 8px; transition: transform 0.2s; background-size: cover; background-position: center; }
+/* Соцсети (font-size: 0 убивает случайные символы) */
+.social-icons { 
+  display: flex; 
+  gap: 12px; 
+  align-items: center; 
+  font-size: 0; 
+}
+.social-icons a { 
+  display: block; 
+  width: 36px; 
+  height: 36px; 
+  border-radius: 8px; 
+  transition: transform 0.2s; 
+  background-size: cover; 
+  background-position: center; 
+}
 .social-icons a:hover { transform: translateY(-3px); }
 .social-tg { background-image: url('../images/tg-logo.png'); background-color: #0088cc; }
 .social-vk { background-image: url('../images/vk-logo.png'); background-color: #0077FF; }
@@ -214,15 +227,12 @@ footer a:hover { color: #fff; }
   
   .logo { gap: 12px !important; display: flex; align-items: center; margin-right: auto; }
   
-  /* Увеличиваем иконку до 60px */
   .logo-img { width: 60px !important; height: 60px !important; object-fit: contain; } 
   
   .logo-text { display: flex !important; flex-direction: column; justify-content: center; }
   
-  /* Увеличиваем текст */
   .logo-title { font-size: 1.6rem !important; line-height: 1; margin-bottom: 4px; } 
   
-  /* Подзаголовок стал крупнее и читаемым */
   .logo-subtitle { display: block !important; font-size: 0.75rem !important; letter-spacing: 0.5px; } 
   
   .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 6px; background: none; border: none; cursor: pointer; padding: 5px; z-index: 300; flex-shrink: 0; }
