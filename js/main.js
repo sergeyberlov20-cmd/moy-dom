@@ -1,13 +1,10 @@
 // js/main.js
-
-// 1. ФОРМАТИРОВАНИЕ ЦЕНЫ
 const _priceFormatter = new Intl.NumberFormat("ru-RU");
 window.formatPrice = function(price, deal) {
   const formatted = _priceFormatter.format(price) + " ₽";
   return deal === "Аренда" ? formatted + "/мес" : formatted;
 };
 
-// 2. УВЕДОМЛЕНИЯ (TOAST)
 window.showToast = function(message, type = 'success') {
   let container = document.querySelector('.toast-container');
   if (!container) {
@@ -21,13 +18,9 @@ window.showToast = function(message, type = 'success') {
   toast.innerHTML = `<span class="toast-icon">${icon}</span><span class="toast-message">${message}</span>`;
   container.appendChild(toast);
   setTimeout(() => { toast.classList.add('show'); }, 10);
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300);
-  }, 4000);
+  setTimeout(() => { toast.classList.remove('show'); setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300); }, 4000);
 };
 
-// 3. ФУНКЦИИ ДЛЯ ИЗБРАННОГО
 window.getFavorites = () => JSON.parse(localStorage.getItem('favorites') || '[]');
 window.toggleFavorite = function(id, btn) {
   let favs = getFavorites();
@@ -44,35 +37,21 @@ window.toggleFavorite = function(id, btn) {
 };
 window.isFavorite = function(id) { return getFavorites().includes(id); };
 
-// Очистка пути от лишних слешей
-function cleanImagePath(path) {
-  if (!path) return '';
-  return path.replace(/^\//, '');
-}
+function cleanImagePath(path) { return path ? path.replace(/^\//, '') : ''; }
 
-// 4. УНИВЕРСАЛЬНЫЙ РЕНДЕР КАРТОЧКИ
 window.renderCard = function(o, opts = {}) {
   const actions = opts.actions === true;
   const safeMainImage = cleanImagePath(o.image);
   const safeImages = (o.images && o.images.length > 0) ? o.images.map(img => cleanImagePath(img)) : [safeMainImage];
-
   let sliderBtns = '';
   if (safeImages.length > 1) {
     sliderBtns = `<button class="card-slider-btn prev">&#10094;</button><button class="card-slider-btn next">&#10095;</button>`;
   }
-  
   const isFav = isFavorite(o.id) ? 'active' : '';
   const today = new Date().toISOString().split('T')[0];
   const isNew = o.date === today;
   const badgeHtml = isNew ? `<span class="card-badge new">Новинка</span>` : `<span class="card-badge">${o.deal}</span>`;
-
-  const actionsHtml = actions
-    ? `<div style="display: flex; gap: 8px; margin-top: auto;">
-         <a href="tel:+79495044455" class="btn btn-accent" style="flex: 1; padding: 10px; font-size: 0.9rem;">📞 Позвонить</a>
-         <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="flex: 1; padding: 10px; font-size: 0.9rem; background: #0088cc;">✈️ Telegram</a>
-       </div>`
-    : '';
-
+  const actionsHtml = actions ? `<div style="display: flex; gap: 8px; margin-top: auto;"><a href="tel:+79495044455" class="btn btn-accent" style="flex: 1; padding: 10px; font-size: 0.9rem;">📞 Позвонить</a><a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="flex: 1; padding: 10px; font-size: 0.9rem; background: #0088cc;">✈️ Telegram</a></div>` : '';
   const moreBtnStyle = actions ? 'margin-bottom: 12px;' : '';
 
   return `
@@ -98,13 +77,8 @@ window.renderCard = function(o, opts = {}) {
     </article>`;
 };
 
-// 5. ДЕБАУНС
-window.debounce = function(fn, ms) {
-  let t;
-  return function(...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), ms); };
-};
+window.debounce = function(fn, ms) { let t; return function(...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), ms); }; };
 
-// 6. СЛАЙДЕР ДЛЯ КАТАЛОГА
 window.initMiniSliders = function() {
   document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
     if (wrapper.dataset.sliderInitialized) return; 
@@ -115,55 +89,38 @@ window.initMiniSliders = function() {
     const prevBtn = wrapper.querySelector('.prev');
     const nextBtn = wrapper.querySelector('.next');
     if (prevBtn && nextBtn) {
-      prevBtn.addEventListener('click', (e) => {
-        e.preventDefault(); e.stopPropagation();
-        currentIndex = (currentIndex - 1 + images.length) % images.length;
-        imgTag.src = images[currentIndex];
-      });
-      nextBtn.addEventListener('click', (e) => {
-        e.preventDefault(); e.stopPropagation();
-        currentIndex = (currentIndex + 1) % images.length;
-        imgTag.src = images[currentIndex];
-      });
+      prevBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); currentIndex = (currentIndex - 1 + images.length) % images.length; imgTag.src = images[currentIndex]; });
+      nextBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); currentIndex = (currentIndex + 1) % images.length; imgTag.src = images[currentIndex]; });
     }
     wrapper.dataset.sliderInitialized = "true";
   });
 };
 
-// 7. СЛАЙДЕР ДЛЯ ДЕТАЛЬНОЙ КАРТОЧКИ
 window.initDetailGallery = function() {
   const gallery = document.getElementById('object-gallery');
   if (!gallery) return;
   let rawImages = [];
   try { rawImages = JSON.parse(gallery.getAttribute('data-images') || '[]'); } catch(e) {}
   const images = rawImages.map(img => cleanImagePath(img));
-
   if (images && images.length > 1) {
     let currentIndex = 0;
     gallery.innerHTML = `
       <div style="position:relative; width:100%; height:100%;">
         <div class="slider-img" style="width:100%; height:100%; background-size:cover; background-position:center; transition: background-image 0.3s;"></div>
-        <button class="slider-prev" type="button" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; font-size:1.2rem; z-index:10;">&#10094;</button>
-        <button class="slider-next" type="button" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; font-size:1.2rem; z-index:10;">&#10095;</button>
+        <button class="slider-prev" type="button" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; z-index:10;">&#10094;</button>
+        <button class="slider-next" type="button" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; z-index:10;">&#10095;</button>
         <div class="slider-dots" style="position:absolute; bottom:15px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:10;"></div>
       </div>`;
-    
     const imgDiv = gallery.querySelector('.slider-img');
     const dotsContainer = gallery.querySelector('.slider-dots');
     const updateImage = () => {
       imgDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
-      const dots = dotsContainer.querySelectorAll('.dot');
-      dots.forEach((dot, i) => { dot.style.background = i === currentIndex ? '#fff' : 'rgba(255,255,255,0.5)'; });
+      dotsContainer.querySelectorAll('.dot').forEach((dot, i) => { dot.style.background = i === currentIndex ? '#fff' : 'rgba(255,255,255,0.5)'; });
     };
-
     images.forEach((_, i) => {
-      const dot = document.createElement('div');
-      dot.className = 'dot';
-      dot.style.cssText = 'width:12px; height:12px; border-radius:50%; cursor:pointer; border: 1px solid rgba(0,0,0,0.3); transition:background 0.2s;';
-      dot.addEventListener('click', () => { currentIndex = i; updateImage(); });
-      dotsContainer.appendChild(dot);
+      const dot = document.createElement('div'); dot.className = 'dot'; dot.style.cssText = 'width:12px; height:12px; border-radius:50%; cursor:pointer; border: 1px solid rgba(0,0,0,0.3);';
+      dot.addEventListener('click', () => { currentIndex = i; updateImage(); }); dotsContainer.appendChild(dot);
     });
-
     gallery.querySelector('.slider-prev').addEventListener('click', () => { currentIndex = (currentIndex - 1 + images.length) % images.length; updateImage(); });
     gallery.querySelector('.slider-next').addEventListener('click', () => { currentIndex = (currentIndex + 1) % images.length; updateImage(); });
     updateImage();
@@ -172,51 +129,16 @@ window.initDetailGallery = function() {
   }
 };
 
-// 8. БУРГЕР-МЕНЮ, КНОПКА НАВЕРХ И **УБИЙЦА ТОЧЕК**
 document.addEventListener('DOMContentLoaded', () => {
-  // --- УБИЙЦА ТОЧЕК (УДАЛЯЕТ ЛЮБЫЕ ЛЕВЫЕ СИМВОЛЫ В ШАПКЕ) ---
-  const killDot = setInterval(() => {
-    const nav = document.querySelector('.nav');
-    if (!nav) return;
-    
-    // 1. Удаляем любые span, которые не являются полосками бургер-меню
-    nav.querySelectorAll('span').forEach(span => {
-      if (!span.parentElement.classList.contains('mobile-menu-btn')) {
-        span.remove();
-      }
-    });
-    
-    // 2. Удаляем любые текстовые узлы (просто текст), если это точка или ноль
-    nav.childNodes.forEach(node => {
-      if (node.nodeType === 3) { // 3 - это текстовый узел
-        const text = node.textContent.trim();
-        if (text === '.' || text === '0' || text === '') {
-          node.remove();
-        }
-      }
-    });
-  }, 500);
-
   const mobileBtn = document.getElementById('mobile-menu-btn');
   const mainNav = document.getElementById('main-nav');
   if (mobileBtn && mainNav) {
-    mobileBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      mainNav.classList.toggle('show');
-    });
-    document.addEventListener('click', (e) => {
-      if (!mainNav.contains(e.target) && !mobileBtn.contains(e.target)) {
-        mainNav.classList.remove('show');
-      }
-    });
+    mobileBtn.addEventListener('click', (e) => { e.stopPropagation(); mainNav.classList.toggle('show'); });
+    document.addEventListener('click', (e) => { if (!mainNav.contains(e.target) && !mobileBtn.contains(e.target)) mainNav.classList.remove('show'); });
   }
-
   const scrollBtn = document.getElementById('scrollTopBtn');
   if (scrollBtn) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) scrollBtn.style.display = 'flex';
-      else scrollBtn.style.display = 'none';
-    });
+    window.addEventListener('scroll', () => { if (window.scrollY > 300) scrollBtn.style.display = 'flex'; else scrollBtn.style.display = 'none'; });
     scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 });
