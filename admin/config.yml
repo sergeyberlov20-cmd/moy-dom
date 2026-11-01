@@ -21,9 +21,9 @@ collections:
             widget: "list"
             summary: "{{fields.type}} - {{fields.title}}"
             fields:
-              - {label: "Главное фото (обложка)", name: "image", widget: "image"}
-              - {label: "Галерея фото (все фото объекта)", name: "images", widget: "list", field: {label: "Фото", name: "image", widget: "image"}}
-              - {label: "Описание объекта", name: "description", widget: "text", hint: "Распишите подробно: ремонт, инфраструктура, мебель, причины продажи и т.д."}
+              - {label: "Главное фото", name: "image", widget: "image"}
+              - {label: "Галерея фото", name: "images", widget: "list", field: {label: "Фото", name: "image", widget: "image"}}
+              - {label: "Описание", name: "description", widget: "text"}
               - {label: "Тип", name: "type", widget: "select", options: ["Квартира", "Дом", "Офис", "Гараж"]}
               - {label: "Сделка", name: "deal", widget: "select", options: ["Продажа", "Аренда"]}
               - {label: "Заголовок", name: "title", widget: "string"}
