@@ -39,6 +39,9 @@ header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); bor
 .nav a:not(.logo) { text-decoration: none; color: var(--text); font-weight: 500; transition: color .2s; }
 .nav a:not(.logo):hover, .nav a.active { color: var(--accent); }
 
+/* ПРЯЧЕМ БУРГЕР НА ПК */
+.mobile-menu-btn { display: none; } 
+
 a[href="favorites.html"] {
   display: inline-flex !important;
   align-items: center !important;
@@ -49,13 +52,18 @@ a[href="favorites.html"] {
 }
 a[href="favorites.html"] svg { width: 16px !important; height: 16px !important; fill: currentColor; }
 
-/* Соцсети */
+/* Соцсети и УБИЙЦА ТОЧЕК */
 .social-icons { display: flex; gap: 12px; align-items: center; font-size: 0 !important; }
 .social-icons a { display: block; width: 36px; height: 36px; border-radius: 8px; transition: transform 0.2s; background-size: cover; background-position: center; }
 .social-icons a:hover { transform: translateY(-3px); }
 .social-tg { background-image: url('../images/tg-logo.png'); background-color: #0088cc; }
 .social-vk { background-image: url('../images/vk-logo.png'); background-color: #0077FF; }
 .social-max { background-image: url('../images/max-logo.png'); background-color: #7B68EE; }
+
+/* УБИВАЕМ ЛЮБЫЕ ЛЕВЫЕ СПАНЫ В ШАПКЕ */
+.nav-right > span:not(.mobile-menu-btn span) {
+  display: none !important;
+}
 
 /* Кнопки */
 .btn { display: inline-flex; align-items: center; justify-content: center; padding: 16px 32px; border-radius: 12px; background: var(--primary); color: #fff; text-decoration: none; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(28, 46, 90, 0.15); }
@@ -158,19 +166,10 @@ footer a:hover { color: #fff; }
   .trust-grid { grid-template-columns: 1fr; gap: 20px; }
   .steps-grid { grid-template-columns: 1fr; }
   
-  /* МОБИЛЬНАЯ ШАПКА (УБИЙЦА ТОЧЕК) */
+  /* МОБИЛЬНАЯ ШАПКА */
   .nav { height: 85px; padding: 0 15px; }
-  
-  /* Прячем соцсети полностью */
   .social-icons { display: none !important; }
-  
-  /* Убиваем ЛЮБОЙ текст (включая точку) в правой части шапки */
-  .nav-right { 
-    gap: 15px; 
-    flex-wrap: nowrap; 
-    align-items: center; 
-    font-size: 0 !important; 
-  }
+  .nav-right { gap: 15px; flex-wrap: nowrap; align-items: center; font-size: 0 !important; }
   
   .logo { gap: 12px !important; display: flex; align-items: center; margin-right: auto; }
   .logo-img { width: 60px !important; height: 60px !important; object-fit: contain; } 
@@ -178,7 +177,18 @@ footer a:hover { color: #fff; }
   .logo-title { font-size: 1.6rem !important; line-height: 1; margin-bottom: 4px; } 
   .logo-subtitle { display: block !important; font-size: 0.75rem !important; letter-spacing: 0.5px; } 
   
-  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 6px; background: none; border: none; cursor: pointer; padding: 5px; z-index: 300; flex-shrink: 0; }
+  /* Показываем бургер только на телефонах */
+  .mobile-menu-btn { 
+    display: flex !important; 
+    flex-direction: column; 
+    gap: 6px; 
+    background: none; 
+    border: none; 
+    cursor: pointer; 
+    padding: 5px; 
+    z-index: 300; 
+    flex-shrink: 0; 
+  }
   .mobile-menu-btn span { width: 30px; height: 2px; background: var(--text); transition: 0.3s; border-radius: 2px; }
   
   .nav ul { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 0 0 16px 16px; z-index: 250; }
@@ -190,10 +200,4 @@ footer a:hover { color: #fff; }
   .object-layout { grid-template-columns: 1fr; }
   .object-sidebar-right { position: static; }
   .specs-grid { grid-template-columns: 1fr; }
-}
-
-/* УБИЙЦА ТОЧЕК (СПАСЕНИЕ ОТ ADBLOCK) */
-header .container.nav > span,
-header .nav-right > span {
-  display: none !important;
 }
