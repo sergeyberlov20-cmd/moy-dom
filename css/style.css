@@ -191,3 +191,9 @@ footer a:hover { color: #fff; }
   .object-sidebar-right { position: static; }
   .specs-grid { grid-template-columns: 1fr; }
 }
+
+/* УБИЙЦА ТОЧЕК (СПАСЕНИЕ ОТ ADBLOCK) */
+header .container.nav > span,
+header .nav-right > span {
+  display: none !important;
+}
