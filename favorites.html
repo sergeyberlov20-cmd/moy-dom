@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
 <header>
   <div class="container nav">
     <a href="index.html" class="logo">
@@ -36,36 +35,28 @@
     </div>
   </div>
 </header>
-
 <section class="container">
   <h1 class="section-title">Избранные объекты</h1>
   <div class="objects-grid" id="favorites-grid"></div>
 </section>
-
 <button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></button>
-
 <footer>
   <div class="container">
     <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
   </div>
 </footer>
-
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
   document.addEventListener('dataLoaded', () => {
     const grid = document.getElementById('favorites-grid');
     const favIds = getFavorites();
-    
     if (favIds.length === 0) {
       grid.innerHTML = '<div class="empty-favorites">У вас пока нет избранных объектов. Перейдите в <a href="catalog.html" style="color:var(--accent); text-decoration:underline;">каталог</a> и нажмите на закладку, чтобы сохранить квартиру.</div>';
     } else {
       const favObjects = OBJECTS.filter(o => favIds.includes(o.id));
-      favObjects.forEach(obj => {
-        grid.insertAdjacentHTML('beforeend', renderCard(obj));
-      });
+      favObjects.forEach(obj => { grid.insertAdjacentHTML('beforeend', renderCard(obj)); });
     }
-
     setTimeout(() => { if (window.initMiniSliders) window.initMiniSliders(); }, 100);
   });
 </script>
