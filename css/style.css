@@ -205,21 +205,28 @@ footer a:hover { color: #fff; }
   .trust-grid { grid-template-columns: 1fr; gap: 20px; }
   .steps-grid { grid-template-columns: 1fr; }
   
-  /* ИДЕАЛЬНАЯ МОБИЛЬНАЯ ШАПКА (БОЛЬШОЙ ЛОГОТИП И ПОЛНЫЙ ТЕКСТ) */
-  .nav { height: 75px; padding: 0 15px; }
+  /* БОЛЬШОЙ И КРАСИВЫЙ ЛОГОТИП НА МОБИЛЬНЫХ */
+  .nav { height: 85px; padding: 0 15px; }
   
-  .social-icons { display: none !important; } /* Прячем соцсети */
+  .social-icons { display: none !important; }
   
   .nav-right { gap: 15px; flex-wrap: nowrap; align-items: center; }
   
-  .logo { gap: 10px !important; display: flex; align-items: center; margin-right: auto; }
-  .logo-img { width: 48px !important; height: 48px !important; object-fit: contain; } /* Увеличили иконку */
-  .logo-text { display: flex !important; flex-direction: column; justify-content: center; }
-  .logo-title { font-size: 1.3rem !important; line-height: 1.1; margin-bottom: 2px; } /* Увеличили заголовок */
-  .logo-subtitle { display: block !important; font-size: 0.65rem !important; } /* Вернули подзаголовок */
+  .logo { gap: 12px !important; display: flex; align-items: center; margin-right: auto; }
   
-  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 5px; z-index: 300; flex-shrink: 0; }
-  .mobile-menu-btn span { width: 26px; height: 2px; background: var(--text); transition: 0.3s; border-radius: 2px; }
+  /* Увеличиваем иконку до 60px */
+  .logo-img { width: 60px !important; height: 60px !important; object-fit: contain; } 
+  
+  .logo-text { display: flex !important; flex-direction: column; justify-content: center; }
+  
+  /* Увеличиваем текст */
+  .logo-title { font-size: 1.6rem !important; line-height: 1; margin-bottom: 4px; } 
+  
+  /* Подзаголовок стал крупнее и читаемым */
+  .logo-subtitle { display: block !important; font-size: 0.75rem !important; letter-spacing: 0.5px; } 
+  
+  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 6px; background: none; border: none; cursor: pointer; padding: 5px; z-index: 300; flex-shrink: 0; }
+  .mobile-menu-btn span { width: 30px; height: 2px; background: var(--text); transition: 0.3s; border-radius: 2px; }
   
   .nav ul { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 0 0 16px 16px; z-index: 250; }
   .nav ul.show { display: flex; }
