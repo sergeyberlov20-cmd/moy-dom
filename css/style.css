@@ -57,11 +57,54 @@ a[href="favorites.html"] svg { width: 16px !important; height: 16px !important; 
 .social-vk { background-image: url('../images/vk-logo.png'); background-color: #0077FF; }
 .social-max { background-image: url('../images/max-logo.png'); background-color: #7B68EE; }
 
-/* Кнопки */
-.btn { display: inline-block; padding: 14px 28px; border-radius: 10px; background: var(--primary); color: #fff; text-decoration: none; font-weight: 600; border: none; cursor: pointer; transition: all .3s ease; text-align: center; font-size: 1rem; }
-.btn:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(28, 46, 90, 0.2); }
-.btn-accent { background: var(--accent); }
-.btn-accent:hover { background: var(--accent-hover); box-shadow: 0 4px 12px rgba(204, 34, 41, 0.3); }
+/* ПРЕМИАЛЬНЫЕ КНОПКИ */
+.btn { 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center;
+  padding: 16px 32px; 
+  border-radius: 12px; 
+  background: var(--primary); 
+  color: #fff; 
+  text-decoration: none; 
+  font-weight: 600; 
+  font-size: 1rem;
+  border: none; 
+  cursor: pointer; 
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+  box-shadow: 0 4px 15px rgba(28, 46, 90, 0.15);
+  letter-spacing: 0.5px;
+}
+.btn:hover { 
+  background: var(--primary-dark); 
+  transform: translateY(-3px); 
+  box-shadow: 0 8px 25px rgba(28, 46, 90, 0.25); 
+}
+.btn:active {
+  transform: translateY(-1px);
+}
+
+.btn-accent { 
+  background: linear-gradient(135deg, #cc2229 0%, #a81b21 100%); 
+  box-shadow: 0 4px 15px rgba(204, 34, 41, 0.3);
+}
+.btn-accent:hover { 
+  background: linear-gradient(135deg, #a81b21 0%, #8a151b 100%);
+  box-shadow: 0 8px 25px rgba(204, 34, 41, 0.4); 
+}
+
+/* Прозрачная кнопка (для Hero-блока) */
+.btn-outline {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: none;
+}
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
 
 /* HERO */
 .hero { background: linear-gradient(135deg, #1c2e5a 0%, #0f172a 100%); color: #fff; padding: 120px 0; text-align: center; position: relative; overflow: hidden; }
@@ -150,10 +193,11 @@ footer a:hover { color: #fff; }
 .section-title { font-size: 2.2rem; margin: 60px 0 20px; color: var(--primary); font-weight: 900; letter-spacing: -1px; }
 .section-sub { color: var(--muted); margin-bottom: 30px; font-size: 1.1rem; }
 
-/* Адаптив */
+/* АДАПТИВ */
 @media (max-width: 992px) {
   .steps-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
 @media (max-width: 768px) {
   .hero h1 { font-size: 2.2rem; }
   .hero { padding: 80px 0; }
@@ -161,25 +205,29 @@ footer a:hover { color: #fff; }
   .trust-grid { grid-template-columns: 1fr; gap: 20px; }
   .steps-grid { grid-template-columns: 1fr; }
   
-  /* ИСПРАВЛЕНИЕ ШАПКИ НА МОБИЛЬНЫХ */
-  .nav { height: 60px; }
-  .nav-right { gap: 10px !important; position: static; flex-wrap: nowrap; }
-  .logo-img { width: 35px !important; height: 35px !important; object-fit: contain; }
-  .logo-text { display: none; } /* Скрываем текст логотипа, чтобы освободить место */
+  /* ЖЕСТКАЯ ФИКСАЦИЯ МОБИЛЬНОЙ ШАПКИ */
+  .nav { height: 70px; padding: 0 15px; }
+  .nav-right { display: flex; align-items: center; gap: 12px; flex-wrap: nowrap; }
+  
+  .logo { display: flex; align-items: center; gap: 8px; margin-right: auto; }
+  .logo-img { width: 36px !important; height: 36px !important; object-fit: contain; }
+  .logo-text { display: flex !important; flex-direction: column; }
+  .logo-title { font-size: 1.1rem !important; line-height: 1; margin-bottom: 2px; }
+  .logo-subtitle { display: none !important; }
+  
+  .social-icons { display: flex !important; gap: 6px !important; margin-right: 4px; }
+  .social-icons a { width: 26px !important; height: 26px !important; border-radius: 6px !important; }
+  
+  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 0; z-index: 300; flex-shrink: 0; }
+  .mobile-menu-btn span { width: 24px; height: 2px; background: var(--text); transition: 0.3s; border-radius: 2px; }
   
   .nav ul { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 0 0 16px 16px; z-index: 250; }
   .nav ul.show { display: flex; }
   .nav ul li { width: 100%; text-align: center; margin-bottom: 15px; }
   .nav ul a { font-size: 1.1rem; display: block; padding: 10px; }
-  
-  .social-icons { display: flex !important; gap: 6px !important; }
-  .social-icons a { width: 28px !important; height: 28px !important; border-radius: 6px !important; }
-  
-  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 6px; background: none; border: none; cursor: pointer; padding: 0; z-index: 300; margin-left: 5px; }
-  .mobile-menu-btn span { width: 26px; height: 2px; background: var(--text); transition: 0.3s; border-radius: 2px; }
-  
+
   .objects-grid { grid-template-columns: 1fr; }
   .object-layout { grid-template-columns: 1fr; }
   .object-sidebar-right { position: static; }
   .specs-grid { grid-template-columns: 1fr; }
-             }
+                }
