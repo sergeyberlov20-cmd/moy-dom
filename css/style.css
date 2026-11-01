@@ -52,18 +52,13 @@ a[href="favorites.html"] {
 }
 a[href="favorites.html"] svg { width: 16px !important; height: 16px !important; fill: currentColor; }
 
-/* Соцсети и УБИЙЦА ТОЧЕК */
+/* Соцсети */
 .social-icons { display: flex; gap: 12px; align-items: center; font-size: 0 !important; }
 .social-icons a { display: block; width: 36px; height: 36px; border-radius: 8px; transition: transform 0.2s; background-size: cover; background-position: center; }
 .social-icons a:hover { transform: translateY(-3px); }
 .social-tg { background-image: url('../images/tg-logo.png'); background-color: #0088cc; }
 .social-vk { background-image: url('../images/vk-logo.png'); background-color: #0077FF; }
 .social-max { background-image: url('../images/max-logo.png'); background-color: #7B68EE; }
-
-/* УБИВАЕМ ЛЮБЫЕ ЛЕВЫЕ СПАНЫ В ШАПКЕ */
-.nav-right > span:not(.mobile-menu-btn span) {
-  display: none !important;
-}
 
 /* Кнопки */
 .btn { display: inline-flex; align-items: center; justify-content: center; padding: 16px 32px; border-radius: 12px; background: var(--primary); color: #fff; text-decoration: none; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(28, 46, 90, 0.15); }
@@ -166,18 +161,20 @@ footer a:hover { color: #fff; }
   .trust-grid { grid-template-columns: 1fr; gap: 20px; }
   .steps-grid { grid-template-columns: 1fr; }
   
-  /* МОБИЛЬНАЯ ШАПКА */
-  .nav { height: 85px; padding: 0 15px; }
+  /* НАСТРОЙКА МОБИЛЬНОЙ ШАПКИ */
+  .nav { height: 90px; padding: 0 10px; }
   .social-icons { display: none !important; }
-  .nav-right { gap: 15px; flex-wrap: nowrap; align-items: center; font-size: 0 !important; }
+  .nav-right { gap: 8px; flex-wrap: nowrap; align-items: center; }
   
-  .logo { gap: 12px !important; display: flex; align-items: center; margin-right: auto; }
-  .logo-img { width: 60px !important; height: 60px !important; object-fit: contain; } 
-  .logo-text { display: flex !important; flex-direction: column; justify-content: center; }
-  .logo-title { font-size: 1.6rem !important; line-height: 1; margin-bottom: 4px; } 
-  .logo-subtitle { display: block !important; font-size: 0.75rem !important; letter-spacing: 0.5px; } 
+  /* Логотип */
+  .logo { gap: 8px !important; display: flex; align-items: center; margin-right: auto; flex-shrink: 0; }
+  .logo-img { width: 75px !important; height: 75px !important; object-fit: contain; } /* Сделали БОЛЬШЕ */
   
-  /* Показываем бургер только на телефонах */
+  .logo-text { display: flex !important; flex-direction: column; justify-content: center; white-space: nowrap; }
+  .logo-title { font-size: 1.4rem !important; line-height: 1; margin-bottom: 4px; } /* Чуть уменьшили шрифт, чтобы влезло */
+  .logo-subtitle { display: block !important; font-size: 0.65rem !important; letter-spacing: 0.5px; } /* Сделали подзаголовок мельче */
+  
+  /* Бургер */
   .mobile-menu-btn { 
     display: flex !important; 
     flex-direction: column; 
