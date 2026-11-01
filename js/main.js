@@ -15,14 +15,11 @@ window.showToast = function(message, type = 'success') {
     container.className = 'toast-container';
     document.body.appendChild(container);
   }
-
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
   const icon = type === 'success' ? '✅' : '❌';
-  
   toast.innerHTML = `<span class="toast-icon">${icon}</span><span class="toast-message">${message}</span>`;
   container.appendChild(toast);
-
   setTimeout(() => { toast.classList.add('show'); }, 10);
   setTimeout(() => {
     toast.classList.remove('show');
@@ -32,7 +29,6 @@ window.showToast = function(message, type = 'success') {
 
 // 3. ФУНКЦИИ ДЛЯ ИЗБРАННОГО
 window.getFavorites = () => JSON.parse(localStorage.getItem('favorites') || '[]');
-
 window.toggleFavorite = function(id, btn) {
   let favs = getFavorites();
   if (favs.includes(id)) {
@@ -46,10 +42,7 @@ window.toggleFavorite = function(id, btn) {
   }
   localStorage.setItem('favorites', JSON.stringify(favs));
 };
-
-window.isFavorite = function(id) {
-  return getFavorites().includes(id);
-};
+window.isFavorite = function(id) { return getFavorites().includes(id); };
 
 // Очистка пути от лишних слешей
 function cleanImagePath(path) {
@@ -61,10 +54,7 @@ function cleanImagePath(path) {
 window.renderCard = function(o, opts = {}) {
   const actions = opts.actions === true;
   const safeMainImage = cleanImagePath(o.image);
-  
-  const safeImages = (o.images && o.images.length > 0) 
-    ? o.images.map(img => cleanImagePath(img)) 
-    : [safeMainImage];
+  const safeImages = (o.images && o.images.length > 0) ? o.images.map(img => cleanImagePath(img)) : [safeMainImage];
 
   let sliderBtns = '';
   if (safeImages.length > 1) {
@@ -72,12 +62,9 @@ window.renderCard = function(o, opts = {}) {
   }
   
   const isFav = isFavorite(o.id) ? 'active' : '';
-
   const today = new Date().toISOString().split('T')[0];
   const isNew = o.date === today;
-  const badgeHtml = isNew 
-    ? `<span class="card-badge new">Новинка</span>` 
-    : `<span class="card-badge">${o.deal}</span>`;
+  const badgeHtml = isNew ? `<span class="card-badge new">Новинка</span>` : `<span class="card-badge">${o.deal}</span>`;
 
   const actionsHtml = actions
     ? `<div style="display: flex; gap: 8px; margin-top: auto;">
@@ -114,26 +101,19 @@ window.renderCard = function(o, opts = {}) {
 // 5. ДЕБАУНС
 window.debounce = function(fn, ms) {
   let t;
-  return function(...args) {
-    clearTimeout(t);
-    t = setTimeout(() => fn.apply(this, args), ms);
-  };
+  return function(...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), ms); };
 };
 
 // 6. СЛАЙДЕР ДЛЯ КАТАЛОГА
 window.initMiniSliders = function() {
   document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
     if (wrapper.dataset.sliderInitialized) return; 
-    
     const imgTag = wrapper.querySelector('.card-img');
     const images = JSON.parse(wrapper.getAttribute('data-images') || '[]');
     let currentIndex = 0;
-
     if (images.length <= 1) return; 
-
     const prevBtn = wrapper.querySelector('.prev');
     const nextBtn = wrapper.querySelector('.next');
-
     if (prevBtn && nextBtn) {
       prevBtn.addEventListener('click', (e) => {
         e.preventDefault(); e.stopPropagation();
@@ -154,35 +134,26 @@ window.initMiniSliders = function() {
 window.initDetailGallery = function() {
   const gallery = document.getElementById('object-gallery');
   if (!gallery) return;
-
   let rawImages = [];
-  try {
-    rawImages = JSON.parse(gallery.getAttribute('data-images') || '[]');
-  } catch(e) {}
-
+  try { rawImages = JSON.parse(gallery.getAttribute('data-images') || '[]'); } catch(e) {}
   const images = rawImages.map(img => cleanImagePath(img));
 
   if (images && images.length > 1) {
     let currentIndex = 0;
-    
     gallery.innerHTML = `
       <div style="position:relative; width:100%; height:100%;">
         <div class="slider-img" style="width:100%; height:100%; background-size:cover; background-position:center; transition: background-image 0.3s;"></div>
         <button class="slider-prev" type="button" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; font-size:1.2rem; z-index:10;">&#10094;</button>
         <button class="slider-next" type="button" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:44px; height:44px; cursor:pointer; font-size:1.2rem; z-index:10;">&#10095;</button>
         <div class="slider-dots" style="position:absolute; bottom:15px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:10;"></div>
-      </div>
-    `;
+      </div>`;
     
     const imgDiv = gallery.querySelector('.slider-img');
     const dotsContainer = gallery.querySelector('.slider-dots');
-    
     const updateImage = () => {
       imgDiv.style.backgroundImage = `url('${images[currentIndex]}')`;
       const dots = dotsContainer.querySelectorAll('.dot');
-      dots.forEach((dot, i) => {
-        dot.style.background = i === currentIndex ? '#fff' : 'rgba(255,255,255,0.5)';
-      });
+      dots.forEach((dot, i) => { dot.style.background = i === currentIndex ? '#fff' : 'rgba(255,255,255,0.5)'; });
     };
 
     images.forEach((_, i) => {
@@ -193,32 +164,46 @@ window.initDetailGallery = function() {
       dotsContainer.appendChild(dot);
     });
 
-    gallery.querySelector('.slider-prev').addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      updateImage();
-    });
-    gallery.querySelector('.slider-next').addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % images.length;
-      updateImage();
-    });
-
+    gallery.querySelector('.slider-prev').addEventListener('click', () => { currentIndex = (currentIndex - 1 + images.length) % images.length; updateImage(); });
+    gallery.querySelector('.slider-next').addEventListener('click', () => { currentIndex = (currentIndex + 1) % images.length; updateImage(); });
     updateImage();
   } else if (images && images.length === 1) {
     gallery.innerHTML = `<div style="width:100%; height:100%; background-image:url('${images[0]}'); background-size:cover; background-position:center;"></div>`;
   }
 };
 
-// 8. БУРГЕР-МЕНЮ И КНОПКА НАВЕРХ
+// 8. БУРГЕР-МЕНЮ, КНОПКА НАВЕРХ И **УБИЙЦА ТОЧЕК**
 document.addEventListener('DOMContentLoaded', () => {
+  // --- УБИЙЦА ТОЧЕК (УДАЛЯЕТ ЛЮБЫЕ ЛЕВЫЕ СИМВОЛЫ В ШАПКЕ) ---
+  const killDot = setInterval(() => {
+    const nav = document.querySelector('.nav');
+    if (!nav) return;
+    
+    // 1. Удаляем любые span, которые не являются полосками бургер-меню
+    nav.querySelectorAll('span').forEach(span => {
+      if (!span.parentElement.classList.contains('mobile-menu-btn')) {
+        span.remove();
+      }
+    });
+    
+    // 2. Удаляем любые текстовые узлы (просто текст), если это точка или ноль
+    nav.childNodes.forEach(node => {
+      if (node.nodeType === 3) { // 3 - это текстовый узел
+        const text = node.textContent.trim();
+        if (text === '.' || text === '0' || text === '') {
+          node.remove();
+        }
+      }
+    });
+  }, 500);
+
   const mobileBtn = document.getElementById('mobile-menu-btn');
   const mainNav = document.getElementById('main-nav');
-  
   if (mobileBtn && mainNav) {
     mobileBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       mainNav.classList.toggle('show');
     });
-    
     document.addEventListener('click', (e) => {
       if (!mainNav.contains(e.target) && !mobileBtn.contains(e.target)) {
         mainNav.classList.remove('show');
