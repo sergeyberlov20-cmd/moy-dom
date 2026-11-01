@@ -49,8 +49,19 @@ a[href="favorites.html"] {
 }
 a[href="favorites.html"] svg { width: 16px !important; height: 16px !important; fill: currentColor; }
 
-/* Соцсети (font-size: 0 убивает случайные символы) */
-.social-icons { display: flex; gap: 12px; align-items: center; font-size: 0; }
+/* Соцсети и ЯДЕРНАЯ ЗАЩИТА ОТ ТОЧЕК */
+.social-icons { 
+  display: flex; 
+  gap: 12px; 
+  align-items: center; 
+  font-size: 0 !important; /* Убивает любой случайный текст (точки, запятые) */
+}
+.social-icons::after, .social-icons::before, 
+.nav-right::after, .nav-right::before {
+  content: none !important;
+  display: none !important;
+}
+
 .social-icons a { display: block; width: 36px; height: 36px; border-radius: 8px; transition: transform 0.2s; background-size: cover; background-position: center; }
 .social-icons a:hover { transform: translateY(-3px); }
 .social-tg { background-image: url('../images/tg-logo.png'); background-color: #0088cc; }
@@ -178,6 +189,7 @@ footer a:hover { color: #fff; }
   .trust-grid { grid-template-columns: 1fr; gap: 20px; }
   .steps-grid { grid-template-columns: 1fr; }
   
+  /* Мобильная шапка */
   .nav { height: 85px; padding: 0 15px; }
   .social-icons { display: none !important; }
   .nav-right { gap: 15px; flex-wrap: nowrap; align-items: center; }
