@@ -160,9 +160,26 @@ footer a:hover { color: #fff; }
   .hero-buttons { flex-direction: column; }
   .trust-grid { grid-template-columns: 1fr; gap: 20px; }
   .steps-grid { grid-template-columns: 1fr; }
-  .nav ul { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 0 0 16px 16px; }
+  
+  /* ИСПРАВЛЕНИЕ ШАПКИ НА МОБИЛЬНЫХ */
+  .nav { height: 60px; }
+  .nav-right { gap: 10px !important; position: static; flex-wrap: nowrap; }
+  .logo-img { width: 35px !important; height: 35px !important; object-fit: contain; }
+  .logo-text { display: none; } /* Скрываем текст логотипа, чтобы освободить место */
+  
+  .nav ul { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 0 0 16px 16px; z-index: 250; }
   .nav ul.show { display: flex; }
-  .mobile-menu-btn { display: flex; flex-direction: column; gap: 6px; background: none; border: none; cursor: pointer; }
-  .mobile-menu-btn span { width: 26px; height: 2px; background: var(--text); transition: 0.3s; }
+  .nav ul li { width: 100%; text-align: center; margin-bottom: 15px; }
+  .nav ul a { font-size: 1.1rem; display: block; padding: 10px; }
+  
+  .social-icons { display: flex !important; gap: 6px !important; }
+  .social-icons a { width: 28px !important; height: 28px !important; border-radius: 6px !important; }
+  
+  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 6px; background: none; border: none; cursor: pointer; padding: 0; z-index: 300; margin-left: 5px; }
+  .mobile-menu-btn span { width: 26px; height: 2px; background: var(--text); transition: 0.3s; border-radius: 2px; }
+  
   .objects-grid { grid-template-columns: 1fr; }
-}
+  .object-layout { grid-template-columns: 1fr; }
+  .object-sidebar-right { position: static; }
+  .specs-grid { grid-template-columns: 1fr; }
+             }
