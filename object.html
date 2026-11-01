@@ -50,7 +50,6 @@
     </div>
   </div>
 </header>
-
 <div class="container" id="object-container">
   <div id="loader" style="text-align: center; padding: 100px 0; color: var(--muted);">
     <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #e1e3e6; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
@@ -58,9 +57,7 @@
   </div>
 </div>
 <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
-
 <button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></button>
-
 <footer>
   <div class="container">
     <div class="footer-grid">
@@ -72,7 +69,6 @@
     <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
   </div>
 </footer>
-
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
@@ -81,12 +77,10 @@
     const id = Number(urlParams.get('id'));
     const obj = OBJECTS.find(o => o.id === id);
     const container = document.getElementById('object-container');
-
     if (!obj) {
       container.innerHTML = `<div style="text-align: center; padding: 80px 20px;"><h1 class="section-title">Объект не найден</h1><p style="color: var(--muted); margin-bottom: 20px;">Возможно, он уже продан или ссылка устарела.</p><a href="catalog.html" class="btn">Вернуться в каталог</a></div>`;
       return;
     }
-
     document.title = `${obj.title} — ${obj.deal} | Мой Дом`;
     const rawGallery = obj.images && obj.images.length > 0 ? obj.images : [obj.image]; 
     const galleryImages = rawGallery.map(img => img.replace(/^\//, ''));
@@ -94,11 +88,9 @@
     const mapLon = obj.lon || 37.548707;
     let isFav = '';
     try { if (typeof isFavorite === 'function') isFav = isFavorite(obj.id) ? 'active' : ''; } catch(e) {}
-
     const roomsRow  = obj.rooms  > 0 ? `<li><span>Комнат</span><span>${obj.rooms}</span></li>` : '';
     const areaRow   = obj.area   > 0 ? `<li><span>Площадь</span><span>${obj.area} м²</span></li>` : '';
     const floorRow  = (obj.floor > 0 && obj.floors > 0) ? `<li><span>Этаж</span><span>${obj.floor} из ${obj.floors}</span></li>` : '';
-
     container.innerHTML = `
       <div class="object-layout">
         <div class="object-main-left">
