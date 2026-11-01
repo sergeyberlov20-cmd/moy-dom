@@ -3,168 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <meta name="theme-color" content="#1c2e5a">
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
-  
   <title>О компании «Мой Дом» — Мультицентр недвижимости в Мариуполе</title>
   <meta name="description" content="Более 20 лет опыта на рынке недвижимости Мариуполя. Полный комплекс услуг: продажа, аренда, юридическое сопровождение, оценка.">
   <link rel="stylesheet" href="css/style.css">
-  
-  <!-- НОВЫЕ СТИЛИ ДЛЯ ПРЕМИАЛЬНОГО ВИДА -->
   <style>
-    .about-intro {
-      font-size: 1.1rem;
-      color: var(--muted);
-      max-width: 900px;
-      margin-bottom: 40px;
-      line-height: 1.8;
-    }
-
-    /* Цитата руководителя */
-    .director-quote {
-      background: var(--surface);
-      border-left: 5px solid var(--accent);
-      padding: 24px 30px;
-      border-radius: 0 var(--radius) var(--radius) 0;
-      margin: 40px 0 50px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      font-style: italic;
-      font-size: 1.15rem;
-      color: var(--primary);
-      position: relative;
-    }
-    .director-quote::before {
-      content: "“";
-      position: absolute;
-      top: 10px;
-      left: 15px;
-      font-size: 4rem;
-      color: rgba(204, 34, 41, 0.1);
-      font-family: serif;
-    }
-    .director-quote-author {
-      display: block;
-      margin-top: 15px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      font-style: normal;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    /* Плашки услуг */
-    .services-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 50px;
-    }
-    .service-badge {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 12px 20px;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--primary);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .service-badge:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(204, 34, 41, 0.1);
-    }
-
-    /* Зона команды */
-    .team-section {
-      background: #f8f9fa;
-      padding: 50px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 60px;
-    }
-
-    /* Улучшенные карточки команды */
-    .team-card {
-      transition: transform 0.3s, box-shadow 0.3s;
-      border: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-    .team-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
-    }
-    .team-photo {
-      height: 300px;
-      overflow: hidden;
-      background: #dfe7ea;
-      position: relative;
-    }
-    .team-photo img {
-      width: 100%; 
-      height: 100%; 
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-    .team-card:hover .team-photo img {
-      transform: scale(1.06);
-    }
-    
-    /* Карточка: текст и кнопка */
-    .team-card .card-body {
-      text-align: center;
-      padding: 24px 20px;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1; /* Растягиваем тело карточки */
-    }
-    .team-card .card-title {
-      font-size: 1.2rem;
-      margin-bottom: 4px;
-      color: var(--primary);
-    }
-    .team-card .card-meta {
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-    }
-    .team-card .card-desc {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.5;
-      margin-bottom: 20px;
-      flex-grow: 1; /* Текст занимает свободное место, прижимая кнопку вниз */
-    }
-    .btn-contact {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      background: transparent;
-      color: var(--primary);
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: all 0.2s;
-      margin-top: auto; /* Прижимает кнопку к низу */
-    }
-    .btn-contact:hover {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-    }
+    .team-card { transition: transform 0.3s, box-shadow 0.3s; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .team-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
+    .team-photo { height: 300px; overflow: hidden; background: #dfe7ea; position: relative; border-radius: 16px 16px 0 0; }
+    .team-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .team-card:hover .team-photo img { transform: scale(1.06); }
+    .team-card .card-body { text-align: center; padding: 24px 20px; display: flex; flex-direction: column; flex-grow: 1; }
+    .team-card .card-title { font-size: 1.2rem; margin-bottom: 4px; color: var(--primary); }
+    .team-card .card-meta { color: var(--accent); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .team-card .card-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.5; margin-bottom: 20px; flex-grow: 1; }
+    .btn-contact { display: block; width: 100%; padding: 10px; background: transparent; color: var(--primary); border: 2px solid var(--border); border-radius: var(--radius); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; margin-top: auto; }
+    .btn-contact:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .about-intro { font-size: 1.1rem; color: var(--muted); max-width: 900px; margin-bottom: 40px; line-height: 1.8; }
+    .director-quote { background: var(--surface); border-left: 5px solid var(--accent); padding: 24px 30px; border-radius: 0 var(--radius) var(--radius) 0; margin: 40px 0 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); font-style: italic; font-size: 1.15rem; color: var(--primary); position: relative; }
+    .director-quote span { font-size: 4rem; color: rgba(204, 34, 41, 0.1); font-family: serif; position: absolute; top: 10px; left: 15px; }
   </style>
 </head>
 <body>
@@ -172,11 +31,8 @@
 <header>
   <div class="container nav">
     <a href="index.html" class="logo">
-      <img src="images/logo.png" alt="Мой Дом" class="logo-img">
-      <div class="logo-text">
-        <div class="logo-title">Мой<span>Дом</span></div>
-        <div class="logo-subtitle">Мультицентр недвижимости</div>
-      </div>
+      <img src="images/logo.png" alt="Мой Дом" class="logo-img" width="50" height="50">
+      <div class="logo-text"><div class="logo-title">Мой<span>Дом</span></div><div class="logo-subtitle">Мультицентр недвижимости</div></div>
     </a>
     <div class="nav-right">
       <ul id="main-nav">
@@ -185,43 +41,30 @@
         <li><a href="services.html">Услуги</a></li>
         <li><a href="about.html" class="active">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
-        <li>
-          <a href="favorites.html">
-            <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
-            Избранное
-          </a>
-        </li>
+        <li><a href="favorites.html"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg> Избранное</a></li>
       </ul>
-      
       <div class="social-icons">
-        <a href="https://t.me/nevizhimost_mariupol" target="_blank" title="Telegram" class="social-tg"></a>
-        <a href="https://vk.com/moy_dom_mariupol" target="_blank" title="ВКонтакте" class="social-vk"></a>
-        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" title="MAX" class="social-max"></a>
+        <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="social-tg"></a>
+        <a href="https://vk.com/moy_dom_mariupol" target="_blank" class="social-vk"></a>
+        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" class="social-max"></a>
       </div>
-
-      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню"><span></span><span></span><span></span></button>
     </div>
   </div>
 </header>
 
 <section class="container" style="padding-top: 40px;">
-  
   <h1 class="section-title" style="margin-top: 0;">О компании «Мой Дом»</h1>
-  
-  <p class="about-intro">
-    Мы — мультицентр недвижимости в Мариуполе. Более 20 лет опыта. Помогаем жителям города покупать, продавать и арендовать квартиры и дома. Работаем честно, сопровождаем каждую сделку юридически и всегда на связи.
-  </p>
+  <p class="about-intro">Мы — мультицентр недвижимости в Мариуполе. Более 20 лет опыта. Помогаем жителям города покупать, продавать и арендовать квартиры и дома. Работаем честно, сопровождаем каждую сделку юридически и всегда на связи.</p>
 
-  <!-- Цитата для солидности -->
   <div class="director-quote">
+    <span>“</span>
     Наша главная задача — сделать процесс покупки или продажи недвижимости максимально безопасным, комфортным и прозрачным для каждого клиента. Мы ценим доверие и отвечаем за результат.
-    <span class="director-quote-author">— Руководство агентства «Мой Дом»</span>
+    <span style="display: block; margin-top: 15px; font-weight: 700; font-size: 0.9rem; font-style: normal; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; position: static;">— Руководство агентства «Мой Дом»</span>
   </div>
 
   <h2 class="section-title">Наши услуги</h2>
-  <div class="services-badges">
+  <div class="services-badges" style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 50px;">
     <span class="service-badge">✓ Продажа и покупка</span>
     <span class="service-badge">✓ Восстановление документов</span>
     <span class="service-badge">✓ Росреестр</span>
@@ -232,21 +75,15 @@
     <span class="service-badge">✓ Аренда</span>
     <span class="service-badge">✓ Бесплатные консультации</span>
   </div>
-
 </section>
 
-<!-- Блок команды на сером фоне -->
-<div class="team-section">
+<div class="team-section" style="background: #f8f9fa; padding: 50px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 60px;">
   <div class="container">
     <h2 class="section-title" style="margin-top: 0; text-align: center; margin-bottom: 40px;">Наша команда</h2>
     
     <div class="objects-grid">
-      
-      <!-- Карточка 1 -->
       <div class="card team-card">
-        <div class="team-photo">
-          <img src="images/team/team1.jpg" alt="Анна Смирнова">
-        </div>
+        <div class="team-photo"><img src="images/team/team1.webp" alt="Сотрудник 1"></div>
         <div class="card-body">
           <div class="card-title">Анна Смирнова</div>
           <div class="card-meta">Ведущий риелтор</div>
@@ -255,11 +92,8 @@
         </div>
       </div>
 
-      <!-- Карточка 2 -->
       <div class="card team-card">
-        <div class="team-photo">
-          <img src="images/team/team2.jpg" alt="Мария Петрова">
-        </div>
+        <div class="team-photo"><img src="images/team/team2.webp" alt="Сотрудник 2"></div>
         <div class="card-body">
           <div class="card-title">Мария Петрова</div>
           <div class="card-meta">Эксперт по аренде</div>
@@ -268,11 +102,8 @@
         </div>
       </div>
 
-      <!-- Карточка 3 -->
       <div class="card team-card">
-        <div class="team-photo">
-          <img src="images/team/team3.jpg" alt="Екатерина Иванова">
-        </div>
+        <div class="team-photo"><img src="images/team/team3.webp" alt="Сотрудник 3"></div>
         <div class="card-body">
           <div class="card-title">Екатерина Иванова</div>
           <div class="card-meta">Загородная недвижимость</div>
@@ -281,11 +112,8 @@
         </div>
       </div>
 
-      <!-- Карточка 4 (Мужчина) -->
       <div class="card team-card">
-        <div class="team-photo">
-          <img src="images/team/team4.jpg" alt="Алексей Соколов">
-        </div>
+        <div class="team-photo"><img src="images/team/team4.webp" alt="Сотрудник 4"></div>
         <div class="card-body">
           <div class="card-title">Алексей Соколов</div>
           <div class="card-meta">Юрист по недвижимости</div>
@@ -294,11 +122,8 @@
         </div>
       </div>
 
-      <!-- Карточка 5 -->
       <div class="card team-card">
-        <div class="team-photo">
-          <img src="images/team/team5.jpg" alt="Ольга Кузнецова">
-        </div>
+        <div class="team-photo"><img src="images/team/team5.webp" alt="Сотрудник 5"></div>
         <div class="card-body">
           <div class="card-title">Ольга Кузнецова</div>
           <div class="card-meta">Менеджер по клиентам</div>
@@ -307,11 +132,8 @@
         </div>
       </div>
 
-      <!-- Карточка 6 -->
       <div class="card team-card">
-        <div class="team-photo">
-          <img src="images/team/team6.jpg" alt="Елена Попова">
-        </div>
+        <div class="team-photo"><img src="images/team/team6.webp" alt="Сотрудник 6"></div>
         <div class="card-body">
           <div class="card-title">Елена Попова</div>
           <div class="card-meta">Коммерческая недвижимость</div>
@@ -319,48 +141,21 @@
           <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
-<button id="scrollTopBtn" title="Наверх" aria-label="Наверх">
-  <svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
-</button>
-
 <footer>
   <div class="container">
     <div class="footer-grid">
-      <div>
-        <h4>Мультицентр недвижимости «Мой Дом»</h4>
-        <p>Помогаем покупать, продавать и арендовать жильё в Мариуполе.</p>
-      </div>
-      <div>
-        <h4>Контакты</h4>
-        <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li style="margin-bottom: 8px;"><a href="tel:+79495044455" style="color:var(--accent); font-weight:bold;">+7 (949) 504-44-55</a></li>
-          <li style="margin-bottom: 8px; color: #a4b0c3;">г. Мариуполь, пр. Ленина (Мира), 54/46</li>
-        </ul>
-      </div>
-      <div>
-        <h4>Мессенджеры</h4>
-        <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li style="margin-bottom: 8px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">Telegram</a></li>
-          <li style="margin-bottom: 8px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">MAX</a></li>
-          <li><a href="https://vk.com/moy_dom_mariupol" target="_blank" style="color:#a4b0c3; text-decoration:underline;">ВКонтакте</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Документы</h4>
-        <ul style="list-style: none; padding: 0; margin-top: 5px;">
-          <li><a href="privacy.html" style="color:#a4b0c3; text-decoration:underline;">Политика конфиденциальности</a></li>
-        </ul>
-      </div>
+      <div><h4>Мультицентр недвижимости «Мой Дом»</h4><p style="line-height: 1.8;">Помогаем покупать, продавать и арендовать жильё в Мариуполе. Работаем честно и открыто.</p></div>
+      <div><h4>Контакты</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="tel:+79495044455" style="color:#fff; font-weight:bold; font-size: 1.2rem;">+7 (949) 504-44-55</a></li><li style="margin-bottom: 12px;">г. Мариуполь, пр. Ленина (Мира), 54/46</li></ul></div>
+      <div><h4>Мессенджеры</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank">Telegram</a></li><li style="margin-bottom: 12px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank">MAX</a></li><li><a href="https://vk.com/moy_dom_mariupol" target="_blank">ВКонтакте</a></li></ul></div>
+      <div><h4>Документы</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li><a href="privacy.html">Политика конфиденциальности</a></li></ul></div>
     </div>
     <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
   </div>
 </footer>
-
 <script src="js/main.js"></script>
 </body>
 </html>
