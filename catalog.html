@@ -87,7 +87,7 @@
         
         <div class="price-values">
           <span>0 ₽</span>
-          <span id="price-val">До 20 000 000 ₽</span>
+          <span id="price-val">Без ограничений</span>
         </div>
         
         <div class="single-range-slider">
@@ -126,7 +126,22 @@
     const priceVal = document.getElementById('price-val');
     const rangeFill = document.getElementById('range-fill');
     const roomsDropdown = document.getElementById('rooms-dropdown');
-    const MAX_PRICE = 20000000;
+
+    // ДИНАМИЧЕСКИЙ МАКСИМУМ ЦЕНЫ
+    function computeMaxPrice() {
+      let maxPrice = 0;
+      OBJECTS.forEach(o => {
+        const p = Number(o.price);
+        if (!isNaN(p) && p > maxPrice) maxPrice = p;
+      });
+      if (!maxPrice || maxPrice < 1000000) return 20000000;
+      const magnitude = Math.pow(10, Math.floor(Math.log10(maxPrice)) - 1);
+      return Math.ceil(maxPrice / magnitude) * magnitude;
+    }
+
+    const MAX_PRICE = computeMaxPrice();
+    priceRange.max = MAX_PRICE;
+    priceRange.value = MAX_PRICE;
 
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
@@ -144,13 +159,11 @@
 
     function updateSlider() {
       const val = parseInt(priceRange.value);
-      
-      if (val === MAX_PRICE) {
+      if (val >= MAX_PRICE) {
         priceVal.textContent = 'Без ограничений';
       } else {
         priceVal.textContent = 'До ' + formatNum(val) + ' ₽';
       }
-
       const percent = (val / MAX_PRICE) * 100;
       rangeFill.style.width = percent + '%';
     }
@@ -178,14 +191,13 @@
         if (types.length > 0 && !types.includes(o.type)) return false;
         if (deals.length > 0 && !deals.includes(o.deal)) return false;
 
-        // Комнаты применяем только к тем типам, у которых они есть
         const typeHasRooms = o.type !== 'Гараж' && o.type !== 'Земельный участок';
         if (rooms.length > 0 && typeHasRooms) {
           const hasMatchingRoom = rooms.some(r => { const rNum = Number(r); return rNum === 4 ? o.rooms >= 4 : o.rooms === rNum; });
           if (!hasMatchingRoom) return false;
         }
 
-        if (o.price > max) return false;
+        if (max < MAX_PRICE && o.price > max) return false;
         return true;
       });
 
@@ -195,7 +207,6 @@
 
     priceRange.addEventListener('input', () => { updateSlider(); render(); });
 
-    // Тип влияет на состояние "Комнат" — отдельный обработчик
     document.querySelectorAll('.f-type').forEach(el => {
       el.addEventListener('change', () => { updateRoomsDropdownState(); render(); });
     });
