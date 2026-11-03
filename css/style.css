@@ -112,6 +112,7 @@ a[href="favorites.html"] svg { width: 16px !important; height: 16px !important; 
 .filters-bar { display: flex; gap: 12px; margin: 30px 0; flex-wrap: wrap; position: relative; z-index: 150; }
 .filter-dropdown { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 20px; cursor: pointer; user-select: none; display: flex; align-items: center; box-shadow: var(--shadow); }
 .filter-dropdown.active { z-index: 999; border-color: var(--primary); }
+.filter-dropdown.disabled { opacity: 0.45; pointer-events: none; cursor: not-allowed; }
 .filter-title { font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; color: var(--text); }
 .filter-title svg { width: 16px; height: 16px; fill: var(--muted); }
 .filter-content { display: flex; flex-direction: column; gap: 12px; position: absolute; top: calc(100% + 8px); left: 0; min-width: 220px; background: var(--surface); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); padding: 20px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s; border: 1px solid var(--border); }
@@ -119,86 +120,96 @@ a[href="favorites.html"] svg { width: 16px !important; height: 16px !important; 
 .filter-content label { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; cursor: pointer; }
 .filter-content input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
 
-/* Окно цены (Шире и по центру) */
-.price-filter-content {
-  width: 320px;
-  min-width: 320px;
-}
-
 /* =========================================
-   КАСТОМНЫЙ ДВОЙНОЙ СЛАЙДЕР ЦЕНЫ
+   ОДИНОЧНЫЙ СЛАЙДЕР ЦЕНЫ (ОДНА ЛИНИЯ)
    ========================================= */
-.price-slider-container {
-  position: relative;
-  padding: 30px 0 10px;
-  width: 100%;
+.price-filter-content {
+  width: 300px;
+  min-width: 300px;
+  padding: 24px 20px;
 }
 
 .price-values {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
-  font-weight: 600;
-  font-size: 0.85rem; /* Уменьшили шрифт, чтобы влезало */
+  margin-bottom: 16px;
+  font-weight: 700;
+  font-size: 0.9rem;
   color: var(--primary);
-  white-space: nowrap; /* Запрещаем перенос строки */
 }
 
-.slider-track {
+.single-range-slider {
   position: relative;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.range-track-bg {
+  position: absolute;
+  width: 100%;
   height: 4px;
   background: #e5e7eb;
   border-radius: 2px;
-  margin: 0 5px;
+  z-index: 1;
 }
 
-.slider-progress {
+.range-track-fill {
   position: absolute;
-  height: 100%;
+  height: 4px;
   background: var(--accent);
   border-radius: 2px;
+  left: 0;
+  z-index: 2;
 }
 
-.price-slider-container input[type="range"] {
+/* Сам инпут */
+.single-range-slider input[type="range"] {
   position: absolute;
-  top: 26px;
-  width: calc(100% + 10px);
-  left: -5px;
+  width: 100%;
+  height: 20px;
   -webkit-appearance: none;
   appearance: none;
   background: none;
-  pointer-events: none;
+  pointer-events: none; 
   margin: 0;
+  z-index: 3;
 }
 
-.price-slider-container input[type="range"]::-webkit-slider-thumb {
+/* Кружок (thumb) */
+.single-range-slider input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
+  pointer-events: auto; 
   width: 20px;
   height: 20px;
-  border-radius: 50%;
   background: #fff;
-  border: 2px solid var(--accent);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  border: 3px solid var(--accent);
+  border-radius: 50%;
   cursor: pointer;
-  pointer-events: auto;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  position: relative;
+  z-index: 4;
   transition: transform 0.1s;
 }
 
-.price-slider-container input[type="range"]::-moz-range-thumb {
+.single-range-slider input[type="range"]::-moz-range-thumb {
+  pointer-events: auto;
   width: 20px;
   height: 20px;
-  border-radius: 50%;
   background: #fff;
-  border: 2px solid var(--accent);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  border: 3px solid var(--accent);
+  border-radius: 50%;
   cursor: pointer;
-  pointer-events: auto;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  position: relative;
+  z-index: 4;
 }
 
-.price-slider-container input[type="range"]::-webkit-slider-thumb:hover {
+.single-range-slider input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.1);
 }
+/* ========================================= */
 
 /* Footer */
 footer { background: var(--primary-dark); color: #9ca3af; padding: 60px 0 30px; margin-top: 80px; }
@@ -252,10 +263,12 @@ footer a:hover { color: #fff; }
   .filter-content {
     left: auto;
     right: 0;
-    max-width: calc(100vw - 40px); /* Чтобы окно не шире экрана */
+    max-width: calc(100vw - 40px);
   }
   .price-filter-content {
-    width: 300px;
-    min-width: 300px;
+    width: 280px;
+    min-width: 280px;
+    padding: 20px 15px;
   }
+  .price-values { font-size: 0.85rem; }
 }
