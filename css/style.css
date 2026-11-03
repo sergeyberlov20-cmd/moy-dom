@@ -30,13 +30,11 @@ header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); bor
 .nav { display: flex; align-items: center; justify-content: space-between; height: 80px; position: relative; }
 .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 
-/* ЛОГОТИП С УСИЛЕННЫМ СКРУГЛЕНИЕМ */
+/* ЛОГОТИП КАК БЫЛ (БЕЗ ОБРЕЗАНИЯ) */
 .logo-img { 
   height: 50px; 
-  width: 50px; 
-  object-fit: cover; 
-  border-radius: 12px; 
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: auto; 
+  object-fit: contain; 
 }
 
 .logo-text { display: flex; flex-direction: column; }
@@ -160,13 +158,11 @@ footer a:hover { color: #fff; }
   
   .logo { gap: 8px !important; display: flex; align-items: center; margin-right: auto; flex-shrink: 0; }
   
-  /* ЛОГОТИП НА МОБИЛКЕ СО СКРУГЛЕНИЕМ */
+  /* ЛОГОТИП НА МОБИЛКЕ БЕЗ ОБРЕЗАНИЯ */
   .logo-img { 
     height: 45px !important; 
-    width: 45px !important; 
-    object-fit: cover; 
-    border-radius: 10px; 
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    width: auto !important; 
+    object-fit: contain; 
   } 
   
   .logo-text { display: flex !important; flex-direction: column; justify-content: center; white-space: nowrap; }
