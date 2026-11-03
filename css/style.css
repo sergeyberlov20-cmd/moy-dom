@@ -30,19 +30,12 @@ header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); bor
 .nav { display: flex; align-items: center; justify-content: space-between; height: 80px; position: relative; }
 .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 
-/* ЛОГОТИП С ПУЛЬСАЦИЕЙ */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
+/* ЛОГОТИП (БЕЗ ПУЛЬСАЦИИ) */
 .logo-img { 
   height: 50px; 
   width: auto; 
   object-fit: contain; 
   border-radius: 8px; 
-  animation: pulse 2s infinite ease-in-out; /* Включаем пульсацию */
 }
 
 .logo-text { display: flex; flex-direction: column; }
