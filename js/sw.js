@@ -1,14 +1,14 @@
-const CACHE_NAME = 'moydom-v1';
+const CACHE_NAME = 'moydom-v2';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/catalog.html',
-  '/css/style.css',
-  '/js/main.js',
-  '/js/data.js',
-  '/js/data.json',
-  '/images/logo.png',
-  '/images/icon-192.png'
+  './',
+  './index.html',
+  './catalog.html',
+  './css/style.css',
+  './js/main.js',
+  './js/data.js',
+  './js/data.json',
+  './images/logo.png',
+  './images/icon-192.png'
 ];
 
 // Установка кэша
@@ -17,9 +17,26 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
   );
+  self.skipWaiting(); // Заставляет воркер обновиться сразу
 });
 
-// Перехват запросов (сначала ищем в кэше, потом в сети)
+// Активация (удаляем старый кэш)
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cache => {
+          if (cache !== CACHE_NAME) {
+            return caches.delete(cache);
+          }
+        })
+      );
+    })
+  );
+  self.clients.claim(); // Применяем изменения сразу
+});
+
+// Перехват запросов
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
