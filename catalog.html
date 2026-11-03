@@ -64,12 +64,13 @@
       <div class="filter-content">
         <label><input type="checkbox" class="f-type" value="Квартира"> Квартира</label>
         <label><input type="checkbox" class="f-type" value="Дом"> Дом</label>
+        <label><input type="checkbox" class="f-type" value="Земельный участок"> Земельный участок</label>
         <label><input type="checkbox" class="f-type" value="Офис"> Офис</label>
         <label><input type="checkbox" class="f-type" value="Гараж"> Гараж</label>
       </div>
     </div>
     
-    <div class="filter-dropdown">
+    <div class="filter-dropdown" id="rooms-dropdown">
       <div class="filter-title">Комнаты <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
       <div class="filter-content">
         <label><input type="checkbox" class="f-rooms" value="1"> 1 комната</label>
@@ -79,21 +80,22 @@
       </div>
     </div>
     
-    <!-- Окно цены сделано шире (320px) и выровнено по правому краю -->
+    <!-- ОДИН ПОЛЗУНОК ЦЕНЫ -->
     <div class="filter-dropdown" id="price-dropdown">
       <div class="filter-title">Цена <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
       <div class="filter-content price-filter-content">
-        <div class="price-slider-container">
-          <div class="price-values">
-            <span id="price-min-val">0 ₽</span>
-            <span id="price-max-val">15 000 000 ₽</span>
-          </div>
-          <div class="slider-track">
-            <div class="slider-progress" id="slider-progress"></div>
-          </div>
-          <input type="range" id="price-min" min="0" max="15000000" step="100000" value="0">
-          <input type="range" id="price-max" min="0" max="15000000" step="100000" value="15000000">
+        
+        <div class="price-values">
+          <span>0 ₽</span>
+          <span id="price-val">До 20 000 000 ₽</span>
         </div>
+        
+        <div class="single-range-slider">
+          <div class="range-track-bg"></div>
+          <div class="range-track-fill" id="range-fill"></div>
+          <input type="range" id="price-range" min="0" max="20000000" step="100000" value="20000000">
+        </div>
+
       </div>
     </div>
   </div>
@@ -120,16 +122,16 @@
 <script>
   document.addEventListener('dataLoaded', () => {
     const catalog = document.getElementById('catalog');
-    const priceMin = document.getElementById('price-min');
-    const priceMax = document.getElementById('price-max');
-    const priceMinVal = document.getElementById('price-min-val');
-    const priceMaxVal = document.getElementById('price-max-val');
-    const sliderProgress = document.getElementById('slider-progress');
-    const MAX_PRICE = 15000000;
+    const priceRange = document.getElementById('price-range');
+    const priceVal = document.getElementById('price-val');
+    const rangeFill = document.getElementById('range-fill');
+    const roomsDropdown = document.getElementById('rooms-dropdown');
+    const MAX_PRICE = 20000000;
 
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
         e.stopPropagation();
+        if (dropdown.classList.contains('disabled')) return;
         document.querySelectorAll('.filter-dropdown').forEach(d => { if (d !== dropdown) d.classList.remove('active'); });
         dropdown.classList.toggle('active');
       });
@@ -138,41 +140,52 @@
     document.querySelectorAll('.filter-content').forEach(content => { content.addEventListener('click', (e) => e.stopPropagation()); });
 
     function getCheckedValues(className) { return Array.from(document.querySelectorAll(`.${className}:checked`)).map(cb => cb.value); }
+    function formatNum(num) { return new Intl.NumberFormat('ru-RU').format(num); }
 
     function updateSlider() {
-      let minVal = parseInt(priceMin.value);
-      let maxVal = parseInt(priceMax.value);
-
-      if (minVal > maxVal - 100000) {
-        priceMin.value = maxVal - 100000;
-        minVal = maxVal - 100000;
+      const val = parseInt(priceRange.value);
+      
+      if (val === MAX_PRICE) {
+        priceVal.textContent = 'Без ограничений';
+      } else {
+        priceVal.textContent = 'До ' + formatNum(val) + ' ₽';
       }
 
-      priceMinVal.textContent = new Intl.NumberFormat('ru-RU').format(minVal) + ' ₽';
-      priceMaxVal.textContent = new Intl.NumberFormat('ru-RU').format(maxVal) + ' ₽';
+      const percent = (val / MAX_PRICE) * 100;
+      rangeFill.style.width = percent + '%';
+    }
 
-      const leftPercent = (minVal / MAX_PRICE) * 100;
-      const rightPercent = 100 - (maxVal / MAX_PRICE) * 100;
-      
-      sliderProgress.style.left = leftPercent + '%';
-      sliderProgress.style.right = rightPercent + '%';
+    // Блокируем "Комнаты", если выбран только Гараж / Земельный участок
+    function updateRoomsDropdownState() {
+      const types = getCheckedValues('f-type');
+      const noRooms = types.length > 0 && types.every(t => t === 'Гараж' || t === 'Земельный участок');
+      if (noRooms) {
+        roomsDropdown.classList.add('disabled');
+        roomsDropdown.classList.remove('active');
+        document.querySelectorAll('.f-rooms').forEach(cb => { cb.checked = false; });
+      } else {
+        roomsDropdown.classList.remove('disabled');
+      }
     }
 
     function render() {
       const types = getCheckedValues('f-type');
       const deals = getCheckedValues('f-deal');
       const rooms = getCheckedValues('f-rooms');
-      const min = Number(priceMin.value);
-      const max = Number(priceMax.value);
+      const max = Number(priceRange.value);
 
       const filtered = OBJECTS.filter(o => {
         if (types.length > 0 && !types.includes(o.type)) return false;
         if (deals.length > 0 && !deals.includes(o.deal)) return false;
-        if (rooms.length > 0) {
+
+        // Комнаты применяем только к тем типам, у которых они есть
+        const typeHasRooms = o.type !== 'Гараж' && o.type !== 'Земельный участок';
+        if (rooms.length > 0 && typeHasRooms) {
           const hasMatchingRoom = rooms.some(r => { const rNum = Number(r); return rNum === 4 ? o.rooms >= 4 : o.rooms === rNum; });
           if (!hasMatchingRoom) return false;
         }
-        if (o.price < min || o.price > max) return false;
+
+        if (o.price > max) return false;
         return true;
       });
 
@@ -180,12 +193,16 @@
       if (window.initMiniSliders) window.initMiniSliders();
     }
 
-    priceMin.addEventListener('input', () => { updateSlider(); render(); });
-    priceMax.addEventListener('input', () => { updateSlider(); render(); });
+    priceRange.addEventListener('input', () => { updateSlider(); render(); });
 
-    document.querySelectorAll('.f-type, .f-deal, .f-rooms').forEach(el => { el.addEventListener('change', render); });
+    // Тип влияет на состояние "Комнат" — отдельный обработчик
+    document.querySelectorAll('.f-type').forEach(el => {
+      el.addEventListener('change', () => { updateRoomsDropdownState(); render(); });
+    });
+    document.querySelectorAll('.f-deal, .f-rooms').forEach(el => { el.addEventListener('change', render); });
 
     updateSlider();
+    updateRoomsDropdownState();
     render();
   });
 </script>
