@@ -238,4 +238,4 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('appinstalled', () => {
     installBanner.style.transform = 'translateY(100%)';
   });
-});
+}); 
