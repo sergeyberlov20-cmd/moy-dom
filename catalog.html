@@ -93,7 +93,7 @@
         <div class="single-range-slider">
           <div class="range-track-bg"></div>
           <div class="range-track-fill" id="range-fill"></div>
-          <input type="range" id="price-range" min="0" max="20000000" step="100000" value="20000000">
+          <input type="range" id="price-range" min="0" max="500000000" step="100000" value="500000000">
         </div>
 
       </div>
@@ -127,14 +127,20 @@
     const rangeFill = document.getElementById('range-fill');
     const roomsDropdown = document.getElementById('rooms-dropdown');
 
-    // ДИНАМИЧЕСКИЙ МАКСИМУМ ЦЕНЫ
+    // ДИНАМИЧЕСКИЙ МАКСИМУМ ЦЕНЫ (Минимум 500 млн)
     function computeMaxPrice() {
       let maxPrice = 0;
       OBJECTS.forEach(o => {
         const p = Number(o.price);
         if (!isNaN(p) && p > maxPrice) maxPrice = p;
       });
-      if (!maxPrice || maxPrice < 1000000) return 20000000;
+      
+      const BASE_MAX = 500000000; // 500 миллионов
+      
+      // Если объектов дороже 500 млн нет — оставляем 500 млн
+      if (maxPrice <= BASE_MAX) return BASE_MAX;
+
+      // Если есть объект дороже 500 млн, округляем вверх до красивого числа
       const magnitude = Math.pow(10, Math.floor(Math.log10(maxPrice)) - 1);
       return Math.ceil(maxPrice / magnitude) * magnitude;
     }
@@ -159,11 +165,13 @@
 
     function updateSlider() {
       const val = parseInt(priceRange.value);
+      
       if (val >= MAX_PRICE) {
         priceVal.textContent = 'Без ограничений';
       } else {
         priceVal.textContent = 'До ' + formatNum(val) + ' ₽';
       }
+
       const percent = (val / MAX_PRICE) * 100;
       rangeFill.style.width = percent + '%';
     }
@@ -191,12 +199,14 @@
         if (types.length > 0 && !types.includes(o.type)) return false;
         if (deals.length > 0 && !deals.includes(o.deal)) return false;
 
+        // Комнаты применяем только к тем типам, у которых они есть
         const typeHasRooms = o.type !== 'Гараж' && o.type !== 'Земельный участок';
         if (rooms.length > 0 && typeHasRooms) {
           const hasMatchingRoom = rooms.some(r => { const rNum = Number(r); return rNum === 4 ? o.rooms >= 4 : o.rooms === rNum; });
           if (!hasMatchingRoom) return false;
         }
 
+        // Фильтруем по цене только если ползунок не в крайнем правом положении
         if (max < MAX_PRICE && o.price > max) return false;
         return true;
       });
@@ -207,6 +217,7 @@
 
     priceRange.addEventListener('input', () => { updateSlider(); render(); });
 
+    // Тип влияет на состояние "Комнат" — отдельный обработчик
     document.querySelectorAll('.f-type').forEach(el => {
       el.addEventListener('change', () => { updateRoomsDropdownState(); render(); });
     });
