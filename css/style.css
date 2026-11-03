@@ -259,15 +259,40 @@ footer a:hover { color: #fff; }
   .object-sidebar-right { position: static; }
   .specs-grid { grid-template-columns: 1fr; }
 
-  /* ФИКС ВЫПАДАЮЩИХ ОКОН НА МОБИЛКЕ */
+  /* ФИКС ВЕРСТКИ ФИЛЬТРОВ НА МОБИЛКЕ (Сетка 2x2) */
+  .filters-bar { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 10px; 
+    margin: 20px 0; 
+  }
+  .filter-dropdown { 
+    padding: 12px 15px; 
+    justify-content: space-between; 
+    width: 100%;
+  }
+  .filter-title { 
+    width: 100%; 
+    justify-content: space-between; 
+    font-size: 0.95rem;
+  }
   .filter-content {
-    left: auto;
-    right: 0;
+    left: 0;
+    right: auto;
+    width: max-content;
+    min-width: 100%;
     max-width: calc(100vw - 40px);
   }
+  /* Прижимаем выпадашки правой колонки вправо, чтобы не вылезали за экран */
+  .filter-dropdown:nth-child(even) .filter-content {
+    left: auto;
+    right: 0;
+  }
+  
+  /* Специально для цены (она 4-я, прижмется вправо) */
   .price-filter-content {
-    width: 280px;
-    min-width: 280px;
+    width: 280px !important;
+    max-width: calc(100vw - 40px) !important;
     padding: 20px 15px;
   }
   .price-values { font-size: 0.85rem; }
