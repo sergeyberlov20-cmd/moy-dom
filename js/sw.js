@@ -1,14 +1,18 @@
-const CACHE_NAME = 'moydom-v2';
+const CACHE_NAME = 'moydom-v1';
 const urlsToCache = [
-  './',
-  './index.html',
-  './catalog.html',
-  './css/style.css',
-  './js/main.js',
-  './js/data.js',
-  './js/data.json',
-  './images/logo.png',
-  './images/icon-192.png'
+  '/moy-dom/',
+  '/moy-dom/index.html',
+  '/moy-dom/catalog.html',
+  '/moy-dom/services.html',
+  '/moy-dom/about.html',
+  '/moy-dom/contacts.html',
+  '/moy-dom/css/style.css',
+  '/moy-dom/js/main.js',
+  '/moy-dom/js/data.js',
+  '/moy-dom/js/data.json',
+  '/moy-dom/images/logo.png',
+  '/moy-dom/images/icon-192.png',
+  '/moy-dom/images/icon-512.png'
 ];
 
 // Установка кэша
@@ -17,23 +21,6 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
   );
-  self.skipWaiting(); // Заставляет воркер обновиться сразу
-});
-
-// Активация (удаляем старый кэш)
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cache => {
-          if (cache !== CACHE_NAME) {
-            return caches.delete(cache);
-          }
-        })
-      );
-    })
-  );
-  self.clients.claim(); // Применяем изменения сразу
 });
 
 // Перехват запросов
