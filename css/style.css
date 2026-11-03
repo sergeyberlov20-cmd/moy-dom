@@ -29,7 +29,16 @@ body {
 header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 80px; position: relative; }
 .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-.logo-img { height: 50px; width: auto; border-radius: 8px; }
+
+/* ЛОГОТИП С УСИЛЕННЫМ СКРУГЛЕНИЕМ */
+.logo-img { 
+  height: 50px; 
+  width: 50px; 
+  object-fit: cover; 
+  border-radius: 12px; 
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
 .logo-text { display: flex; flex-direction: column; }
 .logo-title { font-weight: 900; font-size: 1.5rem; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1; }
 .logo-title span { color: var(--accent); }
@@ -145,34 +154,26 @@ footer a:hover { color: #fff; }
   .trust-grid { grid-template-columns: 1fr; gap: 20px; }
   .steps-grid { grid-template-columns: 1fr; }
   
-  /* МОБИЛЬНАЯ ШАПКА БЕЗ СОЦСЕТЕЙ */
   .nav { height: 75px; padding: 0 15px; }
   .nav-right { gap: 10px; flex-wrap: nowrap; align-items: center; justify-content: flex-end; }
-  
-  /* Прячем соцсети НАХРЕН */
   .social-icons { display: none !important; }
   
-  /* Логотип как на ПК */
   .logo { gap: 8px !important; display: flex; align-items: center; margin-right: auto; flex-shrink: 0; }
-  .logo-img { height: 45px !important; width: auto !important; border-radius: 8px; } 
+  
+  /* ЛОГОТИП НА МОБИЛКЕ СО СКРУГЛЕНИЕМ */
+  .logo-img { 
+    height: 45px !important; 
+    width: 45px !important; 
+    object-fit: cover; 
+    border-radius: 10px; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  } 
   
   .logo-text { display: flex !important; flex-direction: column; justify-content: center; white-space: nowrap; }
-  
   .logo-title { font-size: 1.4rem !important; line-height: 1; margin-bottom: 2px; } 
   .logo-subtitle { display: block !important; font-size: 0.6rem !important; letter-spacing: 0.5px; } 
   
-  /* Бургер */
-  .mobile-menu-btn { 
-    display: flex !important; 
-    flex-direction: column; 
-    gap: 5px; 
-    background: none; 
-    border: none; 
-    cursor: pointer; 
-    padding: 0; 
-    z-index: 300; 
-    flex-shrink: 0; 
-  }
+  .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 0; z-index: 300; flex-shrink: 0; }
   .mobile-menu-btn span { width: 28px; height: 2px; background: var(--text); transition: 0.3s; border-radius: 2px; }
   
   .nav ul { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 0 0 16px 16px; z-index: 250; }
