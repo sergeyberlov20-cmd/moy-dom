@@ -1,7 +1,7 @@
 {
   "name": "Мой Дом — Мультицентр недвижимости",
   "short_name": "Мой Дом",
-  "start_url": "./",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#f8f9fa",
   "theme_color": "#1c2e5a",
@@ -9,12 +9,14 @@
     {
       "src": "images/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "images/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
