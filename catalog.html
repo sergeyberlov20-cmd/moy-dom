@@ -79,9 +79,10 @@
       </div>
     </div>
     
+    <!-- Окно цены сделано шире (320px) и выровнено по правому краю -->
     <div class="filter-dropdown" id="price-dropdown">
       <div class="filter-title">Цена <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
-      <div class="filter-content" style="min-width: 280px;">
+      <div class="filter-content price-filter-content">
         <div class="price-slider-container">
           <div class="price-values">
             <span id="price-min-val">0 ₽</span>
@@ -126,7 +127,6 @@
     const sliderProgress = document.getElementById('slider-progress');
     const MAX_PRICE = 15000000;
 
-    // Логика открытия/закрытия фильтров
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
         e.stopPropagation();
@@ -139,12 +139,11 @@
 
     function getCheckedValues(className) { return Array.from(document.querySelectorAll(`.${className}:checked`)).map(cb => cb.value); }
 
-    // Обновление визуальной части слайдера
     function updateSlider() {
       let minVal = parseInt(priceMin.value);
       let maxVal = parseInt(priceMax.value);
 
-      if (minVal > maxVal - 100000) { // Минимальный шаг между ползунками
+      if (minVal > maxVal - 100000) {
         priceMin.value = maxVal - 100000;
         minVal = maxVal - 100000;
       }
@@ -181,14 +180,11 @@
       if (window.initMiniSliders) window.initMiniSliders();
     }
 
-    // Слушатели для ползунков
     priceMin.addEventListener('input', () => { updateSlider(); render(); });
     priceMax.addEventListener('input', () => { updateSlider(); render(); });
 
-    // Слушатели для чекбоксов
     document.querySelectorAll('.f-type, .f-deal, .f-rooms').forEach(el => { el.addEventListener('change', render); });
 
-    // Инициализация
     updateSlider();
     render();
   });
