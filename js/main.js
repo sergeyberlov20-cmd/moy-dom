@@ -1,10 +1,13 @@
 // js/main.js
+
+// 1. ФОРМАТИРОВАНИЕ ЦЕНЫ
 const _priceFormatter = new Intl.NumberFormat("ru-RU");
 window.formatPrice = function(price, deal) {
   const formatted = _priceFormatter.format(price) + " ₽";
   return deal === "Аренда" ? formatted + "/мес" : formatted;
 };
 
+// 2. УВЕДОМЛЕНИЯ (TOAST)
 window.showToast = function(message, type = 'success') {
   let container = document.querySelector('.toast-container');
   if (!container) {
@@ -21,6 +24,7 @@ window.showToast = function(message, type = 'success') {
   setTimeout(() => { toast.classList.remove('show'); setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300); }, 4000);
 };
 
+// 3. ФУНКЦИИ ДЛЯ ИЗБРАННОГО
 window.getFavorites = () => JSON.parse(localStorage.getItem('favorites') || '[]');
 window.toggleFavorite = function(id, btn) {
   let favs = getFavorites();
@@ -37,12 +41,18 @@ window.toggleFavorite = function(id, btn) {
 };
 window.isFavorite = function(id) { return getFavorites().includes(id); };
 
-function cleanImagePath(path) { return path ? path.replace(/^\//, '') : ''; }
+// Очистка пути от лишних слешей
+function cleanImagePath(path) {
+  if (!path) return '';
+  return path.replace(/^\//, '');
+}
 
+// 4. УНИВЕРСАЛЬНЫЙ РЕНДЕР КАРТОЧКИ
 window.renderCard = function(o, opts = {}) {
   const actions = opts.actions === true;
   const safeMainImage = cleanImagePath(o.image);
   const safeImages = (o.images && o.images.length > 0) ? o.images.map(img => cleanImagePath(img)) : [safeMainImage];
+
   let sliderBtns = '';
   if (safeImages.length > 1) {
     sliderBtns = `<button class="card-slider-btn prev">&#10094;</button><button class="card-slider-btn next">&#10095;</button>`;
@@ -77,8 +87,13 @@ window.renderCard = function(o, opts = {}) {
     </article>`;
 };
 
-window.debounce = function(fn, ms) { let t; return function(...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), ms); }; };
+// 5. ДЕБАУНС
+window.debounce = function(fn, ms) {
+  let t;
+  return function(...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), ms); };
+};
 
+// 6. СЛАЙДЕР ДЛЯ КАТАЛОГА
 window.initMiniSliders = function() {
   document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
     if (wrapper.dataset.sliderInitialized) return; 
@@ -96,12 +111,14 @@ window.initMiniSliders = function() {
   });
 };
 
+// 7. СЛАЙДЕР ДЛЯ ДЕТАЛЬНОЙ КАРТОЧКИ
 window.initDetailGallery = function() {
   const gallery = document.getElementById('object-gallery');
   if (!gallery) return;
   let rawImages = [];
   try { rawImages = JSON.parse(gallery.getAttribute('data-images') || '[]'); } catch(e) {}
   const images = rawImages.map(img => cleanImagePath(img));
+
   if (images && images.length > 1) {
     let currentIndex = 0;
     gallery.innerHTML = `
@@ -129,6 +146,7 @@ window.initDetailGallery = function() {
   }
 };
 
+// 8. БУРГЕР-МЕНЮ И КНОПКА НАВЕРХ
 document.addEventListener('DOMContentLoaded', () => {
   const mobileBtn = document.getElementById('mobile-menu-btn');
   const mainNav = document.getElementById('main-nav');
@@ -141,4 +159,83 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', () => { if (window.scrollY > 300) scrollBtn.style.display = 'flex'; else scrollBtn.style.display = 'none'; });
     scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
+});
+
+// ==========================================
+// 9. КАСТОМНАЯ ПЛАШКА УСТАНОВКИ PWA
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+  // Создаём плашку динамически, чтобы не дублировать HTML
+  const bannerHTML = `
+    <div id="install-banner" style="
+      position: fixed; bottom: 0; left: 0; right: 0; 
+      background: #fff; box-shadow: 0 -4px 20px rgba(0,0,0,0.15); 
+      padding: 16px 20px; display: flex; align-items: center; 
+      justify-content: space-between; z-index: 9999; 
+      transform: translateY(100%); transition: transform 0.3s ease; 
+      border-top: 1px solid #e5e7eb; border-radius: 16px 16px 0 0;
+      font-family: 'Inter', sans-serif;
+    ">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 28px;">📱</span>
+        <div style="display: flex; flex-direction: column;">
+          <strong style="color: #1c2e5a; font-size: 15px;">Установить «Мой Дом»</strong>
+          <span style="color: #6b7280; font-size: 12px;">Быстрый доступ к каталогу</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button id="install-btn" style="
+          background: #cc2229; color: #fff; border: none; 
+          padding: 10px 20px; border-radius: 8px; font-weight: 600; 
+          cursor: pointer; font-size: 14px;
+        ">Установить</button>
+        <button id="dismiss-btn" style="
+          background: transparent; border: none; font-size: 20px; 
+          cursor: pointer; color: #9ca3af; padding: 4px;
+        ">✕</button>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', bannerHTML);
+
+  const installBanner = document.getElementById('install-banner');
+  const installBtn = document.getElementById('install-btn');
+  const dismissBtn = document.getElementById('dismiss-btn');
+  let deferredPrompt;
+
+  // Ловим событие готовности к установке
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Показываем плашку через 3 секунды после загрузки
+    setTimeout(() => {
+      if (installBanner) installBanner.style.transform = 'translateY(0)';
+    }, 3000);
+  });
+
+  // Обработка кнопки "Установить"
+  if (installBtn) {
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        console.log('PWA установлено');
+      }
+      deferredPrompt = null;
+      installBanner.style.transform = 'translateY(100%)';
+    });
+  }
+
+  // Закрытие плашки
+  if (dismissBtn) {
+    dismissBtn.addEventListener('click', () => {
+      installBanner.style.transform = 'translateY(100%)';
+    });
+  }
+
+  // Скрываем, если приложение уже установлено
+  window.addEventListener('appinstalled', () => {
+    installBanner.style.transform = 'translateY(100%)';
+  });
 });
