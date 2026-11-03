@@ -29,9 +29,7 @@ body {
 header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 80px; position: relative; }
 .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-
 .logo-img { height: 50px; width: auto; object-fit: contain; border-radius: 8px; }
-
 .logo-text { display: flex; flex-direction: column; }
 .logo-title { font-weight: 900; font-size: 1.5rem; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1; }
 .logo-title span { color: var(--accent); }
@@ -121,8 +119,14 @@ a[href="favorites.html"] svg { width: 16px !important; height: 16px !important; 
 .filter-content label { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; cursor: pointer; }
 .filter-content input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
 
+/* Окно цены (Шире и по центру) */
+.price-filter-content {
+  width: 320px;
+  min-width: 320px;
+}
+
 /* =========================================
-   КАСТОМНЫЙ ДВОЙНОЙ СЛАЙДЕР ЦЕНЫ (OZON STYLE)
+   КАСТОМНЫЙ ДВОЙНОЙ СЛАЙДЕР ЦЕНЫ
    ========================================= */
 .price-slider-container {
   position: relative;
@@ -135,8 +139,9 @@ a[href="favorites.html"] svg { width: 16px !important; height: 16px !important; 
   justify-content: space-between;
   margin-bottom: 20px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.85rem; /* Уменьшили шрифт, чтобы влезало */
   color: var(--primary);
+  white-space: nowrap; /* Запрещаем перенос строки */
 }
 
 .slider-track {
@@ -154,20 +159,18 @@ a[href="favorites.html"] svg { width: 16px !important; height: 16px !important; 
   border-radius: 2px;
 }
 
-/* Сами ползунки (инпуты) */
 .price-slider-container input[type="range"] {
   position: absolute;
-  top: 26px; /* Подгоняем под высоту трека */
+  top: 26px;
   width: calc(100% + 10px);
   left: -5px;
   -webkit-appearance: none;
   appearance: none;
   background: none;
-  pointer-events: none; /* Чтобы клики проходили сквозь */
+  pointer-events: none;
   margin: 0;
 }
 
-/* Кружочки (thumb) */
 .price-slider-container input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -178,7 +181,7 @@ a[href="favorites.html"] svg { width: 16px !important; height: 16px !important; 
   border: 2px solid var(--accent);
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   cursor: pointer;
-  pointer-events: auto; /* Возвращаем кликабельность кружочку */
+  pointer-events: auto;
   transition: transform 0.1s;
 }
 
@@ -196,7 +199,6 @@ a[href="favorites.html"] svg { width: 16px !important; height: 16px !important; 
 .price-slider-container input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.1);
 }
-/* ========================================= */
 
 /* Footer */
 footer { background: var(--primary-dark); color: #9ca3af; padding: 60px 0 30px; margin-top: 80px; }
@@ -245,4 +247,15 @@ footer a:hover { color: #fff; }
   .object-layout { grid-template-columns: 1fr; }
   .object-sidebar-right { position: static; }
   .specs-grid { grid-template-columns: 1fr; }
+
+  /* ФИКС ВЫПАДАЮЩИХ ОКОН НА МОБИЛКЕ */
+  .filter-content {
+    left: auto;
+    right: 0;
+    max-width: calc(100vw - 40px); /* Чтобы окно не шире экрана */
+  }
+  .price-filter-content {
+    width: 300px;
+    min-width: 300px;
+  }
 }
