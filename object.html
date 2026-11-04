@@ -104,11 +104,11 @@
         ${obj.address}
       </div>` : '';
 
-    // УМНАЯ КАРТА: Ищем по текстовому адресу (улице), без координат!
+    // УМНАЯ КАРТА: Используем mode=search, чтобы Яндекс сам ставил метку на город или улицу
     const mapSearchQuery = obj.address ? obj.address : 'Мариуполь';
     const mapHtml = `
       <div class="mini-map" style="margin-bottom: 24px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
-        <iframe src="https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(mapSearchQuery)}&z=15" width="100%" height="200" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
+        <iframe src="https://yandex.ru/map-widget/v1/?mode=search&text=${encodeURIComponent(mapSearchQuery)}" width="100%" height="200" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
       </div>`;
 
     // Персональный телефон или дефолтный (поддержка двух номеров)
