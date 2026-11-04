@@ -137,10 +137,8 @@
       
       const BASE_MAX = 500000000; // 500 миллионов
       
-      // Если объектов дороже 500 млн нет — оставляем 500 млн
       if (maxPrice <= BASE_MAX) return BASE_MAX;
 
-      // Если есть объект дороже 500 млн, округляем вверх до красивого числа
       const magnitude = Math.pow(10, Math.floor(Math.log10(maxPrice)) - 1);
       return Math.ceil(maxPrice / magnitude) * magnitude;
     }
@@ -176,7 +174,6 @@
       rangeFill.style.width = percent + '%';
     }
 
-    // Блокируем "Комнаты", если выбран только Гараж / Земельный участок
     function updateRoomsDropdownState() {
       const types = getCheckedValues('f-type');
       const noRooms = types.length > 0 && types.every(t => t === 'Гараж' || t === 'Земельный участок');
@@ -199,14 +196,12 @@
         if (types.length > 0 && !types.includes(o.type)) return false;
         if (deals.length > 0 && !deals.includes(o.deal)) return false;
 
-        // Комнаты применяем только к тем типам, у которых они есть
         const typeHasRooms = o.type !== 'Гараж' && o.type !== 'Земельный участок';
         if (rooms.length > 0 && typeHasRooms) {
           const hasMatchingRoom = rooms.some(r => { const rNum = Number(r); return rNum === 4 ? o.rooms >= 4 : o.rooms === rNum; });
           if (!hasMatchingRoom) return false;
         }
 
-        // Фильтруем по цене только если ползунок не в крайнем правом положении
         if (max < MAX_PRICE && o.price > max) return false;
         return true;
       });
@@ -217,7 +212,6 @@
 
     priceRange.addEventListener('input', () => { updateSlider(); render(); });
 
-    // Тип влияет на состояние "Комнат" — отдельный обработчик
     document.querySelectorAll('.f-type').forEach(el => {
       el.addEventListener('change', () => { updateRoomsDropdownState(); render(); });
     });
