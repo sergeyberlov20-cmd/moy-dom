@@ -1,10 +1,31 @@
 // js/main.js
 
-// 1. ФОРМАТИРОВАНИЕ ЦЕНЫ
-const _priceFormatter = new Intl.NumberFormat("ru-RU");
+// 1. ЗУМЕРСКОЕ ФОРМАТИРОВАНИЕ ЦЕНЫ (СМАЙЛИКИ)
+function toEmojiDigits(numStr) {
+  const emojiMap = {
+    '0': '0️⃣', '1': '1️⃣', '2': '2️⃣', '3': '3️⃣', '4': '4️⃣',
+    '5': '5️⃣', '6': '6️⃣', '7': '7️⃣', '8': '8️⃣', '9': '9️⃣',
+    ',': ',', '.': '.'
+  };
+  return numStr.split('').map(char => emojiMap[char] || char).join('');
+}
+
 window.formatPrice = function(price, deal) {
-  const formatted = _priceFormatter.format(price) + " ₽";
-  return deal === "Аренда" ? formatted + "/мес" : formatted;
+  let displayPrice = '';
+  
+  if (price >= 1000000) {
+    let millions = price / 1000000;
+    // Если число целое (например 4), выводим 4. Если с копейками (4.5), выводим 4,5
+    let formattedNum = millions % 1 === 0 ? millions.toString() : millions.toFixed(1).replace('.', ',');
+    displayPrice = toEmojiDigits(formattedNum) + ' млн. ₽';
+  } else if (price >= 1000) {
+    let thousands = price / 1000;
+    displayPrice = toEmojiDigits(thousands.toString()) + ' тыс. ₽';
+  } else {
+    displayPrice = toEmojiDigits(price.toString()) + ' ₽';
+  }
+  
+  return deal === "Аренда" ? displayPrice + "/мес" : displayPrice;
 };
 
 // 2. УВЕДОМЛЕНИЯ (TOAST)
