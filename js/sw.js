@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moydom-v5';
+const CACHE_NAME = 'moydom-v6';
 const urlsToCache = [
   '/moy-dom/',
   '/moy-dom/index.html',
