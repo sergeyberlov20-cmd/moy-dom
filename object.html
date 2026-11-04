@@ -91,9 +91,25 @@
     const mapLon = obj.lon || 37.548707;
     let isFav = '';
     try { if (typeof isFavorite === 'function') isFav = isFavorite(obj.id) ? 'active' : ''; } catch(e) {}
+    
     const roomsRow  = obj.rooms  > 0 ? `<li><span>Комнат</span><span>${obj.rooms}</span></li>` : '';
     const areaRow   = obj.area   > 0 ? `<li><span>Площадь</span><span>${obj.area} м²</span></li>` : '';
     const floorRow  = (obj.floor > 0 && obj.floors > 0) ? `<li><span>Этаж</span><span>${obj.floor} из ${obj.floors}</span></li>` : '';
+    
+    const addressHtml = obj.address ? `
+      <div style="color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; display: flex; align-items: center; gap: 6px;">
+        <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor; opacity:0.6;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        ${obj.address}
+      </div>` : '';
+
+    const mapHtml = (obj.lat && obj.lon) ? `
+      <div class="mini-map" style="margin-bottom: 24px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
+        <iframe src="https://yandex.ru/map-widget/v1/?ll=${mapLon}%2C${mapLat}&z=16&pt=${mapLon},${mapLat},pm2rdm&l=map" width="100%" height="200" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
+      </div>` : '';
+
+    const phoneStr = obj.phone || '+7 (949) 504-44-55';
+    const phoneClean = phoneStr.replace(/[^0-9+]/g, '');
+
     container.innerHTML = `
       <div class="object-layout">
         <div class="object-main-left">
@@ -110,21 +126,16 @@
               <svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
             </button>
           </div>
-          <div style="color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; display: flex; align-items: center; gap: 6px;">
-            <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor; opacity:0.6;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            ${obj.address}
-          </div>
+          ${addressHtml}
           <div style="font-size: 2.2rem; color: var(--accent); font-weight: 900; margin-bottom: 20px; letter-spacing: -1px;">${formatPrice(obj.price, obj.deal)}</div>
           <ul class="specs-grid">
             <li><span>Тип</span><span>${obj.type}</span></li>
             <li><span>Сделка</span><span>${obj.deal}</span></li>
             ${roomsRow}${areaRow}${floorRow}
           </ul>
-          <div class="mini-map" style="margin-bottom: 24px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
-            <iframe src="https://yandex.ru/map-widget/v1/?ll=${mapLon}%2C${mapLat}&z=16&pt=${mapLon},${mapLat},pm2rdm&l=map" width="100%" height="200" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
-          </div>
+          ${mapHtml}
           <div style="display: flex; flex-direction: column; gap: 10px;">
-            <a href="tel:+79495044455" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">📞 Позвонить</a>
+            <a href="tel:${phoneClean}" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">📞 Позвонить</a>
             <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="width: 100%; padding: 16px; font-size: 1.1rem; background: #0088cc;">✈️ Написать в Telegram</a>
           </div>
           <div class="guarantee-box">
