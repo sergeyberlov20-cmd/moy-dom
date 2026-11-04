@@ -1,30 +1,10 @@
 // js/main.js
 
-// 1. ЗУМЕРСКОЕ ФОРМАТИРОВАНИЕ ЦЕНЫ (СМАЙЛИКИ)
-function toEmojiDigits(numStr) {
-  const emojiMap = {
-    '0': '0️⃣', '1': '1️⃣', '2': '2️⃣', '3': '3️⃣', '4': '4️⃣',
-    '5': '5️⃣', '6': '6️⃣', '7': '7️⃣', '8': '8️⃣', '9': '9️⃣',
-    ',': ',', '.': '.'
-  };
-  return numStr.split('').map(char => emojiMap[char] || char).join('');
-}
-
+// 1. ФОРМАТИРОВАНИЕ ЦЕНЫ
+const _priceFormatter = new Intl.NumberFormat("ru-RU");
 window.formatPrice = function(price, deal) {
-  let displayPrice = '';
-  
-  if (price >= 1000000) {
-    let millions = price / 1000000;
-    let formattedNum = millions % 1 === 0 ? millions.toString() : millions.toFixed(1).replace('.', ',');
-    displayPrice = toEmojiDigits(formattedNum) + ' млн. ₽';
-  } else if (price >= 1000) {
-    let thousands = price / 1000;
-    displayPrice = toEmojiDigits(thousands.toString()) + ' тыс. ₽';
-  } else {
-    displayPrice = toEmojiDigits(price.toString()) + ' ₽';
-  }
-  
-  return deal === "Аренда" ? displayPrice + "/мес" : displayPrice;
+  const formatted = _priceFormatter.format(price) + " ₽";
+  return deal === "Аренда" ? formatted + "/мес" : formatted;
 };
 
 // 2. УВЕДОМЛЕНИЯ (TOAST)
@@ -82,11 +62,21 @@ window.renderCard = function(o, opts = {}) {
   const isNew = o.date === today;
   const badgeHtml = isNew ? `<span class="card-badge new">Новинка</span>` : `<span class="card-badge">${o.deal}</span>`;
   
-  // Персональный телефон или дефолтный
+  // Телефоны (поддержка двух номеров)
   const phoneStr = o.phone || '+7 (949) 504-44-55';
   const phoneClean = phoneStr.replace(/[^0-9+]/g, '');
+  const phone2Str = o.phone2 || '';
+  const phone2Clean = phone2Str.replace(/[^0-9+]/g, '');
 
-  const actionsHtml = actions ? `<div style="display: flex; gap: 8px; margin-top: auto;"><a href="tel:${phoneClean}" class="btn btn-accent" style="flex: 1; padding: 10px; font-size: 0.9rem;">📞 Позвонить</a><a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="flex: 1; padding: 10px; font-size: 0.9rem; background: #0088cc;">✈️ Telegram</a></div>` : '';
+  let actionsHtml = '';
+  if (actions) {
+    actionsHtml = `<div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto;">
+      <a href="tel:${phoneClean}" class="btn btn-accent" style="width: 100%; padding: 10px; font-size: 0.9rem;">📞 ${phoneStr}</a>
+      ${phone2Str ? `<a href="tel:${phone2Clean}" class="btn btn-accent" style="width: 100%; padding: 10px; font-size: 0.9rem;">📞 ${phone2Str}</a>` : ''}
+      <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="width: 100%; padding: 10px; font-size: 0.9rem; background: #0088cc;">✈️ Telegram</a>
+    </div>`;
+  }
+  
   const moreBtnStyle = actions ? 'margin-bottom: 12px;' : '';
   
   // Если адреса нет, не выводим пустую строку
