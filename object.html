@@ -80,15 +80,16 @@
     const id = Number(urlParams.get('id'));
     const obj = OBJECTS.find(o => o.id === id);
     const container = document.getElementById('object-container');
+    
     if (!obj) {
       container.innerHTML = `<div style="text-align: center; padding: 80px 20px;"><h1 class="section-title">Объект не найден</h1><p style="color: var(--muted); margin-bottom: 20px;">Возможно, он уже продан или ссылка устарела.</p><a href="catalog.html" class="btn">Вернуться в каталог</a></div>`;
       return;
     }
+    
     document.title = `${obj.title} — ${obj.deal} | Мой Дом`;
     const rawGallery = obj.images && obj.images.length > 0 ? obj.images : [obj.image]; 
     const galleryImages = rawGallery.map(img => img.replace(/^\//, ''));
-    const mapLat = obj.lat || 47.095000;
-    const mapLon = obj.lon || 37.548707;
+    
     let isFav = '';
     try { if (typeof isFavorite === 'function') isFav = isFavorite(obj.id) ? 'active' : ''; } catch(e) {}
     
@@ -96,19 +97,25 @@
     const areaRow   = obj.area   > 0 ? `<li><span>Площадь</span><span>${obj.area} м²</span></li>` : '';
     const floorRow  = (obj.floor > 0 && obj.floors > 0) ? `<li><span>Этаж</span><span>${obj.floor} из ${obj.floors}</span></li>` : '';
     
+    // Если адрес есть, выводим его
     const addressHtml = obj.address ? `
       <div style="color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; display: flex; align-items: center; gap: 6px;">
         <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor; opacity:0.6;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         ${obj.address}
       </div>` : '';
 
-    const mapHtml = (obj.lat && obj.lon) ? `
+    // УМНАЯ КАРТА: Ищем по текстовому адресу (улице), без координат!
+    const mapSearchQuery = obj.address ? obj.address : 'Мариуполь';
+    const mapHtml = `
       <div class="mini-map" style="margin-bottom: 24px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
-        <iframe src="https://yandex.ru/map-widget/v1/?ll=${mapLon}%2C${mapLat}&z=16&pt=${mapLon},${mapLat},pm2rdm&l=map" width="100%" height="200" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
-      </div>` : '';
+        <iframe src="https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(mapSearchQuery)}&z=15" width="100%" height="200" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
+      </div>`;
 
-    const phoneStr = obj.phone || '+7 (949) 504-44-55';
-    const phoneClean = phoneStr.replace(/[^0-9+]/g, '');
+    // Персональный телефон или дефолтный (поддержка двух номеров)
+    const phoneStr1 = obj.phone || '+7 (949) 504-44-55';
+    const phoneClean1 = phoneStr1.replace(/[^0-9+]/g, '');
+    const phoneStr2 = obj.phone2 || '';
+    const phoneClean2 = phoneStr2.replace(/[^0-9+]/g, '');
 
     container.innerHTML = `
       <div class="object-layout">
@@ -135,7 +142,8 @@
           </ul>
           ${mapHtml}
           <div style="display: flex; flex-direction: column; gap: 10px;">
-            <a href="tel:${phoneClean}" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">📞 Позвонить</a>
+            <a href="tel:${phoneClean1}" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">📞 ${phoneStr1}</a>
+            ${phoneStr2 ? `<a href="tel:${phoneClean2}" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">📞 ${phoneStr2}</a>` : ''}
             <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="width: 100%; padding: 16px; font-size: 1.1rem; background: #0088cc;">✈️ Написать в Telegram</a>
           </div>
           <div class="guarantee-box">
