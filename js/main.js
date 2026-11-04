@@ -15,7 +15,6 @@ window.formatPrice = function(price, deal) {
   
   if (price >= 1000000) {
     let millions = price / 1000000;
-    // Если число целое (например 4), выводим 4. Если с копейками (4.5), выводим 4,5
     let formattedNum = millions % 1 === 0 ? millions.toString() : millions.toFixed(1).replace('.', ',');
     displayPrice = toEmojiDigits(formattedNum) + ' млн. ₽';
   } else if (price >= 1000) {
