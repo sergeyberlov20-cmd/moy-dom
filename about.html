@@ -13,16 +13,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .team-card { transition: transform 0.3s, box-shadow 0.3s; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .team-card { transition: transform 0.3s, box-shadow 0.3s; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); height: 100%; }
     .team-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
-    .team-photo { height: 300px; overflow: hidden; background: #dfe7ea; position: relative; border-radius: 16px 16px 0 0; }
-    .team-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .team-photo { height: 350px; overflow: hidden; background: #dfe7ea; position: relative; border-radius: 16px 16px 0 0; }
+    .team-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 0.5s ease; }
     .team-card:hover .team-photo img { transform: scale(1.06); }
-    .team-card .card-body { text-align: center; padding: 24px 20px; display: flex; flex-direction: column; flex-grow: 1; }
-    .team-card .card-title { font-size: 1.2rem; margin-bottom: 4px; color: var(--primary); }
-    .team-card .card-meta { color: var(--accent); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .team-card .card-body { text-align: left; padding: 24px 20px; display: flex; flex-direction: column; flex-grow: 1; }
+    .team-card .card-title { font-size: 1.15rem; margin-bottom: 4px; color: var(--primary); line-height: 1.3; font-weight: 800; }
+    .team-card .card-meta { color: var(--accent); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
     .team-card .card-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.5; margin-bottom: 20px; flex-grow: 1; }
-    .btn-contact { display: block; width: 100%; padding: 10px; background: transparent; color: var(--primary); border: 2px solid var(--border); border-radius: var(--radius); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; margin-top: auto; }
+    .team-card .card-desc ul { padding-left: 18px; margin-top: 10px; margin-bottom: 0; }
+    .team-card .card-desc li { margin-bottom: 6px; }
+    .btn-contact { display: block; width: 100%; padding: 10px; background: transparent; color: var(--primary); border: 2px solid var(--border); border-radius: var(--radius); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; margin-top: auto; text-align: center; }
     .btn-contact:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
     .about-intro { font-size: 1.1rem; color: var(--muted); max-width: 900px; margin-bottom: 40px; line-height: 1.8; }
     .director-quote { background: var(--surface); border-left: 5px solid var(--accent); padding: 24px 30px; border-radius: 0 var(--radius) var(--radius) 0; margin: 40px 0 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); font-style: italic; font-size: 1.15rem; color: var(--primary); position: relative; }
@@ -79,30 +81,166 @@
   <div class="container">
     <h2 class="section-title" style="margin-top: 0; text-align: center; margin-bottom: 40px;">Наша команда</h2>
     <div class="objects-grid">
+
+      <!-- 1. Топило Александр -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/team1.webp" alt="Сотрудник 1"></div>
-        <div class="card-body"><div class="card-title">Анна Смирнова</div><div class="card-meta">Ведущий риелтор</div><div class="card-desc">Поможет найти идеальную квартиру. Знает рынок Мариуполя наизусть, проведет сделку безопасно и быстро.</div><a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a></div>
+        <div class="team-photo"><img src="images/team/team1.webp" alt="Топило Александр"></div>
+        <div class="card-body">
+          <div class="card-title">Топило Александр Васильевич</div>
+          <div class="card-meta">Руководитель</div>
+          <div class="card-desc">
+            Руководитель ИП Топило мультицентр «Мой Дом». Отвечает за стратегическое развитие компании и контролирует качество услуг.
+            <br><br>
+            Благодаря его опыту, агентство работает честно, прозрачно и с заботой о каждом клиенте.
+          </div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
       </div>
+
+      <!-- 2. Емельянова Наталья -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/team2.webp" alt="Сотрудник 2"></div>
-        <div class="card-body"><div class="card-title">Мария Петрова</div><div class="card-meta">Эксперт по аренде</div><div class="card-desc">Подберет жилье для комфортной жизни или выгодного вложения. Работает с долгосрочной и посуточной арендой.</div><a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a></div>
+        <div class="team-photo"><img src="images/team/team4.webp" alt="Емельянова Наталья"></div>
+        <div class="card-body">
+          <div class="card-title">Емельянова Наталья Анатольевна</div>
+          <div class="card-meta">Менеджер по недвижимости</div>
+          <div class="card-desc">
+            Наталья Анатольевна 26 лет работает в недвижимости. Она помогает клиентам покупать, продавать и арендовать недвижимость, консультирует и сопровождает сделки.
+            <ul>
+              <li>При покупке помогает подобрать объект с учётом бюджета и пожеланий клиента. Обращает внимание на детали, которые стоит уточнить до принятия решения.</li>
+              <li>При продаже помогает подготовить объект к показам, объясняет, какие документы понадобятся, и сопровождает переговоры с покупателем.</li>
+              <li>При аренде помогает подобрать объект или найти арендатора, обсудить условия и подготовиться к подписанию договора.</li>
+              <li>Во время сделки объясняет, в каком порядке действовать и какие вопросы нужно согласовать с другой стороной.</li>
+            </ul>
+            Опыт Натальи Анатольевны особенно ценен, когда клиент впервые покупает или продаёт недвижимость и не знает, с чего начать.
+          </div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
       </div>
+
+      <!-- 3. Налетова Светлана -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/team3.webp" alt="Сотрудник 3"></div>
-        <div class="card-body"><div class="card-title">Екатерина Иванова</div><div class="card-meta">Загородная недвижимость</div><div class="card-desc">Специализируется на домах и участках. Поможет выбрать экологически чистое место для вашей семьи.</div><a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a></div>
+        <div class="team-photo"><img src="images/team/team3.webp" alt="Налетова Светлана"></div>
+        <div class="card-body">
+          <div class="card-title">Налетова Светлана Петровна</div>
+          <div class="card-meta">Менеджер по недвижимости</div>
+          <div class="card-desc">
+            Светлана Петровна занимается продажей недвижимости через Авито. Она помогает собственникам представить свой объект покупателям и ведёт работу с откликами на объявление.
+            <ul>
+              <li>Готовит объявление: уточняет характеристики, подбирает фото и составляет описание.</li>
+              <li>Размещает объявление на Авито и следит за актуальностью данных.</li>
+              <li>Общается с покупателями, отвечает на вопросы и уточняет детали у собственника.</li>
+              <li>Организует показы и согласовывает удобное время.</li>
+              <li>Передаёт обратную связь собственнику о том, чем интересуются покупатели.</li>
+            </ul>
+          </div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
       </div>
+
+      <!-- 4. Кононенко Оксана -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/team4.webp" alt="Сотрудник 4"></div>
-        <div class="card-body"><div class="card-title">Алексей Соколов</div><div class="card-meta">Юрист по недвижимости</div><div class="card-desc">Проверит чистоту сделки, поможет с восстановлением документов и защитит ваши интересы в суде.</div><a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a></div>
+        <div class="team-photo"><img src="images/team/team5.webp" alt="Кононенко Оксана"></div>
+        <div class="card-body">
+          <div class="card-title">Кононенко Оксана Владимировна</div>
+          <div class="card-meta">Менеджер по недвижимости</div>
+          <div class="card-desc">
+            Оксана Владимировна помогает клиентам купить, продать или арендовать недвижимость. Она консультирует по вопросам недвижимости и сопровождает клиентов на этапах сделки.
+            <ul>
+              <li>Покупка: помогает подобрать квартиру, дом или другой объект с учётом бюджета и пожеланий.</li>
+              <li>Продажа: объясняет, с чего начать, как подготовиться к показам и какие документы понадобятся.</li>
+              <li>Аренда: помогает подобрать помещение или найти арендатора, обсудить условия.</li>
+              <li>Сопровождение сделки: объясняет порядок действий и помогает согласовать просмотры и встречи.</li>
+            </ul>
+          </div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
       </div>
+
+      <!-- 5. Тихонина Анна -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/team5.webp" alt="Сотрудник 5"></div>
-        <div class="card-body"><div class="card-title">Ольга Кузнецова</div><div class="card-meta">Менеджер по клиентам</div><div class="card-desc">Всегда на связи. Ответит на любые вопросы, организует показ объекта и поможет с оформлением.</div><a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a></div>
+        <div class="team-photo"><img src="images/team/team8.webp" alt="Тихонина Анна"></div>
+        <div class="card-body">
+          <div class="card-title">Тихонина Анна Владимировна</div>
+          <div class="card-meta">Менеджер по недвижимости</div>
+          <div class="card-desc">
+            Анна Владимировна помогает клиентам с покупкой, продажей и арендой недвижимости. Она уточняет, что важно для клиента, и помогает сориентироваться в следующих шагах.
+            <br><br>
+            Анна Владимировна — молодой специалист. Она быстро усваивает новую информацию и легко вникает в детали каждого запроса.
+          </div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
       </div>
+
+      <!-- 6. Пташков Ярослав -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/team6.webp" alt="Сотрудник 6"></div>
-        <div class="card-body"><div class="card-title">Елена Попова</div><div class="card-meta">Коммерческая недвижимость</div><div class="card-desc">Эксперт по офисам и помещениям под бизнес. Подберет объект с высокой проходимостью и окупаемостью.</div><a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a></div>
+        <div class="team-photo"><img src="images/team/team2.webp" alt="Пташков Ярослав"></div>
+        <div class="card-body">
+          <div class="card-title">Пташков Ярослав Александрович</div>
+          <div class="card-meta">Юрист по недвижимости</div>
+          <div class="card-desc">
+            <ul>
+              <li><strong>Консультации по недвижимости:</strong> разбирает ситуацию клиента, объясняет, какие документы имеют значение и какие шаги можно предпринять.</li>
+              <li><strong>Вопросы наследства:</strong> помогает разобраться, если не хватает документов на квартиру, дом или участок, либо возник спор между наследниками.</li>
+              <li><strong>Сопровождение дела в суде:</strong> помогает определить, какие документы и доказательства нужны, объясняет, как проходит разбирательство, и сопровождает клиента.</li>
+            </ul>
+          </div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
       </div>
+
+      <!-- 7. Ващенко Сергей -->
+      <div class="card team-card">
+        <div class="team-photo"><img src="images/team/team7.webp" alt="Ващенко Сергей"></div>
+        <div class="card-body">
+          <div class="card-title">Ващенко Сергей Александрович</div>
+          <div class="card-meta">Менеджер по недвижимости</div>
+          <div class="card-desc">
+            <ul>
+              <li>Помогает клиентам продать, купить или арендовать недвижимость.</li>
+              <li>Консультирует по вопросам недвижимости и сопровождает сделки.</li>
+            </ul>
+            У Сергея Александровича большой опыт работы с недвижимостью. С клиентами он общается деликатно и вежливо.
+          </div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
+      </div>
+
+      <!-- 8. Кормина Юлия -->
+      <div class="card team-card">
+        <div class="team-photo"><img src="images/team/team9.webp" alt="Кормина Юлия"></div>
+        <div class="card-body">
+          <div class="card-title">Кормина Юлия Александровна</div>
+          <div class="card-meta">Оценщик</div>
+          <div class="card-desc">
+            <ul>
+              <li>Оценивает движимое имущество, например автомобили и оборудование.</li>
+              <li>Оценивает жилую и коммерческую недвижимость.</li>
+              <li>Проводит оценку предприятий.</li>
+            </ul>
+            Юлия Александровна — грамотный специалист, который вежливо общается с клиентами.
+          </div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
+      </div>
+
+      <!-- 9. Лохвицкая Елена -->
+      <div class="card team-card">
+        <div class="team-photo"><img src="images/team/team6.webp" alt="Лохвицкая Елена"></div>
+        <div class="card-body">
+          <div class="card-title">Лохвицкая Елена Владимировна</div>
+          <div class="card-meta">Менеджер по недвижимости</div>
+          <div class="card-desc">
+            <ul>
+              <li>Помогает продать, купить или арендовать недвижимость.</li>
+              <li>Консультирует клиентов и сопровождает сделки.</li>
+              <li>Помогает восстановить утраченные документы.</li>
+              <li>Сопровождает наследственные дела у нотариуса и в суде, помогает собрать и восстановить нужные документы.</li>
+            </ul>
+          </div>
+          <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -119,5 +257,4 @@
 </footer>
 <script src="js/main.js"></script>
 </body>
-</html>
- 
+          </html>
