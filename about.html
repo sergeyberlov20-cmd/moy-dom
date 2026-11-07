@@ -13,10 +13,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <style>
+    /* ОБНОВЛЕННЫЕ СТИЛИ ДЛЯ ФОТО КОМАНДЫ */
     .team-card { transition: transform 0.3s, box-shadow 0.3s; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); height: 100%; }
     .team-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
-    .team-photo { height: 350px; overflow: hidden; background: #dfe7ea; position: relative; border-radius: 16px 16px 0 0; }
-    .team-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 0.5s ease; }
+    
+    /* Увеличили высоту с 350px до 420px */
+    .team-photo { height: 420px; overflow: hidden; background: #dfe7ea; position: relative; border-radius: 16px 16px 0 0; }
+    /* Сдвинули фокус на 25% сверху, чтобы было видно и лицо, и туловище */
+    .team-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; transition: transform 0.5s ease; }
+    
     .team-card:hover .team-photo img { transform: scale(1.06); }
     .team-card .card-body { text-align: left; padding: 24px 20px; display: flex; flex-direction: column; flex-grow: 1; }
     .team-card .card-title { font-size: 1.15rem; margin-bottom: 4px; color: var(--primary); line-height: 1.3; font-weight: 800; }
@@ -171,7 +176,7 @@
         </div>
       </div>
 
-      <!-- 6. Пташков Ярослав (перемещен на 6 место) -->
+      <!-- 6. Пташков Ярослав -->
       <div class="card team-card">
         <div class="team-photo"><img src="images/team/5.webp" alt="Пташков Ярослав"></div>
         <div class="card-body">
@@ -224,7 +229,7 @@
         </div>
       </div>
 
-      <!-- 9. Ващенко Сергей (перемещен в самый низ) -->
+      <!-- 9. Ващенко Сергей (в самом низу) -->
       <div class="card team-card">
         <div class="team-photo"><img src="images/team/7.webp" alt="Ващенко Сергей"></div>
         <div class="card-body">
