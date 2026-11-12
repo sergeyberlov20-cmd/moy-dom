@@ -19,26 +19,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    /* ОБНОВЛЕННЫЕ СТИЛИ ДЛЯ БЛОКА ПАРТНЕРОВ */
-    .partners-section { padding: 70px 0; background: #f8f9fa; } /* Чуть светлее фон для контраста с белыми карточками */
+    /* СТАТИЧНЫЕ СТИЛИ ДЛЯ БЛОКА ПАРТНЕРОВ (БЕЗ ЭФФЕКТОВ) */
+    .partners-section { padding: 70px 0; background: #f8f9fa; } 
     .partners-title { text-align: center; font-size: 1.6rem; color: var(--primary); font-weight: 800; margin-bottom: 40px; }
     .partners-grid { 
         display: flex; 
         flex-wrap: wrap; 
         justify-content: center; 
         align-items: center; 
-        gap: 50px; /* Увеличили отступы между логотипами */
+        gap: 50px; 
         max-width: 1000px;
         margin: 0 auto;
     }
     .partners-grid img { 
-        max-width: 150px; /* Чуть увеличили размер */
+        max-width: 150px; 
         max-height: 80px; 
         object-fit: contain; 
-        transition: transform 0.3s ease; 
-    }
-    .partners-grid img:hover { 
-        transform: scale(1.08); /* Легкое увеличение при наведении вместо смены цвета */
+        /* Никаких transition, hover и cursor: pointer */
     }
     @media (max-width: 768px) {
         .partners-grid { gap: 30px; }
@@ -114,7 +111,7 @@
   <div class="objects-grid" id="featured"></div>
 </section>
 
-<!-- БЛОК ПАРТНЕРОВ -->
+<!-- БЛОК ПАРТНЕРОВ (БЕЗ ССЫЛОК И ЭФФЕКТОВ) -->
 <section class="partners-section">
   <div class="container">
     <h2 class="partners-title">Нам доверяют</h2>
