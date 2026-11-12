@@ -16,7 +16,7 @@
     .team-card { transition: transform 0.3s, box-shadow 0.3s; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); height: 100%; background: #fff; }
     .team-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
     
-    /* УВЕЛИЧИЛИ ВЫСОТУ И СДВИНУЛИ ФОКУС */
+    /* БАЗОВЫЕ СТИЛИ (ОКСАНА И ОСТАЛЬНЫЕ) */
     .team-photo { 
         height: 480px; 
         position: relative; 
@@ -31,6 +31,13 @@
         object-fit: cover; 
         object-position: center 25%; 
         transition: transform 0.5s ease;
+    }
+
+    /* СПЕЦИАЛЬНЫЙ КЛАСС ДЛЯ АННЫ И СВЕТЛАНЫ (ЧТОБЫ ОТДАЛИТЬ) */
+    .team-photo img.zoom-out { 
+        object-fit: contain; 
+        background: #f4f6f8; /* Аккуратный светлый фон вместо резких полос */
+        object-position: center; 
     }
     
     .team-card:hover .team-photo img { transform: scale(1.05); }
@@ -132,11 +139,9 @@
         </div>
       </div>
 
-      <!-- 2. Емельянова Наталья (ОТДАЛЕНА) -->
+      <!-- 2. Емельянова Наталья -->
       <div class="card team-card">
-        <div class="team-photo" style="background: #e9edf2;">
-            <img src="images/team/8.webp" alt="Емельянова Наталья" style="object-fit: contain;">
-        </div>
+        <div class="team-photo"><img src="images/team/8.webp" alt="Емельянова Наталья"></div>
         <div class="card-body">
           <div class="card-title">Емельянова Наталья Анатольевна</div>
           <div class="card-meta">Менеджер по недвижимости</div>
@@ -154,9 +159,9 @@
         </div>
       </div>
 
-      <!-- 3. Налетова Светлана -->
+      <!-- 3. Налетова Светлана (ОТДАЛЕНА) -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/9.webp" alt="Налетова Светлана"></div>
+        <div class="team-photo"><img src="images/team/9.webp" alt="Налетова Светлана" class="zoom-out"></div>
         <div class="card-body">
           <div class="card-title">Налетова Светлана Петровна</div>
           <div class="card-meta">Менеджер по недвижимости</div>
@@ -174,11 +179,9 @@
         </div>
       </div>
 
-      <!-- 4. Кононенко Оксана (ОТДАЛЕНА) -->
+      <!-- 4. Кононенко Оксана (ВЕРНУЛИ БЕЗ ПОЛОС) -->
       <div class="card team-card">
-        <div class="team-photo" style="background: #e9edf2;">
-            <img src="images/team/6.webp" alt="Кононенко Оксана" style="object-fit: contain;">
-        </div>
+        <div class="team-photo"><img src="images/team/6.webp" alt="Кононенко Оксана"></div>
         <div class="card-body">
           <div class="card-title">Кононенко Оксана Владимировна</div>
           <div class="card-meta">Менеджер по недвижимости</div>
@@ -195,9 +198,9 @@
         </div>
       </div>
 
-      <!-- 5. Тихонина Анна -->
+      <!-- 5. Тихонина Анна (ОТДАЛЕНА) -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/4.webp" alt="Тихонина Анна"></div>
+        <div class="team-photo"><img src="images/team/4.webp" alt="Тихонина Анна" class="zoom-out"></div>
         <div class="card-body">
           <div class="card-title">Тихонина Анна Владимировна</div>
           <div class="card-meta">Менеджер по недвижимости</div>
