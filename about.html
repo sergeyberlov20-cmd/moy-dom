@@ -16,9 +16,9 @@
     .team-card { transition: transform 0.3s, box-shadow 0.3s; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); height: 100%; background: #fff; }
     .team-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
     
-    /* БАЗОВЫЕ СТИЛИ (ОКСАНА И ОСТАЛЬНЫЕ) */
+    /* СТИЛИ ДЛЯ ФОТО */
     .team-photo { 
-        height: 480px; 
+        height: 500px; /* Увеличили высоту, чтобы люди стали чуть меньше */
         position: relative; 
         border-radius: 16px 16px 0 0; 
         overflow: hidden;
@@ -29,15 +29,8 @@
         width: 100%; 
         height: 100%; 
         object-fit: cover; 
-        object-position: center 25%; 
+        object-position: center 15%; /* Базовый фокус чуть выше центра */
         transition: transform 0.5s ease;
-    }
-
-    /* СПЕЦИАЛЬНЫЙ КЛАСС ДЛЯ АННЫ И СВЕТЛАНЫ (ЧТОБЫ ОТДАЛИТЬ) */
-    .team-photo img.zoom-out { 
-        object-fit: contain; 
-        background: #f4f6f8; /* Аккуратный светлый фон вместо резких полос */
-        object-position: center; 
     }
     
     .team-card:hover .team-photo img { transform: scale(1.05); }
@@ -159,9 +152,9 @@
         </div>
       </div>
 
-      <!-- 3. Налетова Светлана (ОТДАЛЕНА) -->
+      <!-- 3. Налетова Светлана -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/9.webp" alt="Налетова Светлана" class="zoom-out"></div>
+        <div class="team-photo"><img src="images/team/9.webp" alt="Налетова Светлана"></div>
         <div class="card-body">
           <div class="card-title">Налетова Светлана Петровна</div>
           <div class="card-meta">Менеджер по недвижимости</div>
@@ -179,9 +172,9 @@
         </div>
       </div>
 
-      <!-- 4. Кононенко Оксана (ВЕРНУЛИ БЕЗ ПОЛОС) -->
+      <!-- 4. Кононенко Оксана (Отдалена) -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/6.webp" alt="Кононенко Оксана"></div>
+        <div class="team-photo"><img src="images/team/6.webp" alt="Кононенко Оксана" style="object-position: center 35%;"></div>
         <div class="card-body">
           <div class="card-title">Кононенко Оксана Владимировна</div>
           <div class="card-meta">Менеджер по недвижимости</div>
@@ -198,9 +191,9 @@
         </div>
       </div>
 
-      <!-- 5. Тихонина Анна (ОТДАЛЕНА) -->
+      <!-- 5. Тихонина Анна (Убраны полосы) -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/4.webp" alt="Тихонина Анна" class="zoom-out"></div>
+        <div class="team-photo"><img src="images/team/4.webp" alt="Тихонина Анна" style="object-position: center 5%;"></div>
         <div class="card-body">
           <div class="card-title">Тихонина Анна Владимировна</div>
           <div class="card-meta">Менеджер по недвижимости</div>
