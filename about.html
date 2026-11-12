@@ -13,18 +13,32 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .team-card { transition: transform 0.3s, box-shadow 0.3s; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); height: 100%; }
+    .team-card { transition: transform 0.3s, box-shadow 0.3s; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); height: 100%; background: #fff; }
     .team-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
     
-    .team-photo { height: 420px; overflow: hidden; background: #dfe7ea; position: relative; border-radius: 16px 16px 0 0; }
-    .team-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; transition: transform 0.5s ease; }
+    /* ОБНОВЛЕННЫЕ СТИЛИ: УВЕЛИЧИЛИ ВЫСОТУ И СДВИНУЛИ ФОКУС */
+    .team-photo { 
+        height: 460px; /* Увеличили высоту, чтобы фото "отдалилось" */
+        position: relative; 
+        border-radius: 16px 16px 0 0; 
+        overflow: hidden;
+        background: #dfe7ea;
+    }
     
-    .team-card:hover .team-photo img { transform: scale(1.06); }
+    .team-photo img { 
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+        object-position: center 15%; /* Сдвинули фокус вниз, чтобы не резало макушки */
+        transition: transform 0.5s ease;
+    }
+    
+    .team-card:hover .team-photo img { transform: scale(1.05); }
+    
     .team-card .card-body { text-align: left; padding: 24px 20px; display: flex; flex-direction: column; flex-grow: 1; }
     .team-card .card-title { font-size: 1.15rem; margin-bottom: 4px; color: var(--primary); line-height: 1.3; font-weight: 800; }
     .team-card .card-meta { color: var(--accent); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
     
-    /* ГЛОБАЛЬНЫЙ ФИКС ШРИФТОВ */
     .team-card .card-desc { 
         font-size: 0.9rem; 
         color: var(--muted); 
@@ -34,24 +48,16 @@
         font-family: 'Inter', sans-serif;
     }
     
-    /* Жестко фиксируем размер шрифта для всех элементов внутри описания */
     .team-card .card-desc * { 
         font-size: 0.9rem !important; 
         font-family: 'Inter', sans-serif !important;
         line-height: 1.6 !important;
-        font-weight: 400 !important; /* Убираем жирность везде */
-        color: var(--muted) !important; /* Одинаковый цвет */
+        font-weight: 400 !important;
+        color: var(--muted) !important;
     }
 
-    .team-card .card-desc ul { 
-        padding-left: 20px; 
-        margin-top: 12px; 
-        margin-bottom: 12px; 
-    }
-    
-    .team-card .card-desc li { 
-        margin-bottom: 8px; 
-    }
+    .team-card .card-desc ul { padding-left: 20px; margin-top: 12px; margin-bottom: 12px; }
+    .team-card .card-desc li { margin-bottom: 8px; }
     
     .btn-contact { display: block; width: 100%; padding: 10px; background: transparent; color: var(--primary); border: 2px solid var(--border); border-radius: var(--radius); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; margin-top: auto; text-align: center; }
     .btn-contact:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
@@ -113,7 +119,7 @@
 
       <!-- 1. Топило Александр -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/1.webp" alt="Топило Александр" style="object-fit: contain; background: #dfe7ea;"></div>
+        <div class="team-photo"><img src="images/team/1.webp" alt="Топило Александр"></div>
         <div class="card-body">
           <div class="card-title">Топило Александр Васильевич</div>
           <div class="card-meta">Основатель и директор</div>
@@ -202,15 +208,15 @@
 
       <!-- 6. Пташков Ярослав -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/5.webp" alt="Пташков Ярослав" style="object-fit: contain; background: #dfe7ea;"></div>
+        <div class="team-photo"><img src="images/team/5.webp" alt="Пташков Ярослав"></div>
         <div class="card-body">
           <div class="card-title">Пташков Ярослав Александрович</div>
           <div class="card-meta">Юрист по недвижимости</div>
           <div class="card-desc">
             <ul>
-              <li><strong style="font-weight: 400 !important;">Консультации по недвижимости:</strong> разбирает ситуацию клиента, объясняет, какие документы имеют значение и какие шаги можно предпринять.</li>
-              <li><strong style="font-weight: 400 !important;">Вопросы наследства:</strong> помогает разобраться, если не хватает документов на квартиру, дом или участок, либо возник спор между наследниками.</li>
-              <li><strong style="font-weight: 400 !important;">Сопровождение дела в суде:</strong> помогает определить, какие документы и доказательства нужны, объясняет, как проходит разбирательство, и сопровождает клиента.</li>
+              <li>Консультации по недвижимости: разбирает ситуацию клиента, объясняет, какие документы имеют значение и какие шаги можно предпринять.</li>
+              <li>Вопросы наследства: помогает разобраться, если не хватает документов на квартиру, дом или участок, либо возник спор между наследниками.</li>
+              <li>Сопровождение дела в суде: помогает определить, какие документы и доказательства нужны, объясняет, как проходит разбирательство, и сопровождает клиента.</li>
             </ul>
           </div>
           <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn-contact">Написать</a>
@@ -237,7 +243,7 @@
 
       <!-- 8. Лохвицкая Елена -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/2.webp" alt="Лохвицкая Елена" style="object-position: center 20%;"></div>
+        <div class="team-photo"><img src="images/team/2.webp" alt="Лохвицкая Елена"></div>
         <div class="card-body">
           <div class="card-title">Лохвицкая Елена Владимировна</div>
           <div class="card-meta">Менеджер по недвижимости</div>
@@ -255,7 +261,7 @@
 
       <!-- 9. Ващенко Сергей -->
       <div class="card team-card">
-        <div class="team-photo"><img src="images/team/7.webp" alt="Ващенко Сергей" style="object-position: center 20%;"></div>
+        <div class="team-photo"><img src="images/team/7.webp" alt="Ващенко Сергей"></div>
         <div class="card-body">
           <div class="card-title">Ващенко Сергей Александрович</div>
           <div class="card-meta">Менеджер по недвижимости</div>
