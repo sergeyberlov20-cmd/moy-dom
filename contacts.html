@@ -65,13 +65,21 @@
     <div class="contact-card">
       <h2>Оставить заявку</h2>
       <p>Заполните форму, и мы перезвоним вам в течение 15 минут.</p>
-      <form id="contact-form">
+      
+      <!-- НАЧАЛО ФОРМЫ -->
+      <form id="contact-form" action="https://formspree.io/f/xaeejkvb" method="POST">
+        
+        <!-- СКРЫТОЕ ПОЛЕ ДЛЯ ТЕМЫ СООБЩЕНИЯ В ТЕЛЕГРАМ И НА ПОЧТЕ -->
+        <input type="hidden" name="_subject" value="🔥 Новая заявка с сайта Мой Дом">
+        
         <div class="form-group"><label for="name">Ваше имя</label><input type="text" id="name" name="name" required placeholder="Иван Иванов"></div>
         <div class="form-group"><label for="phone">Телефон</label><input type="tel" id="phone" name="phone" required placeholder="+7 (949) 504-44-55"></div>
         <div class="form-group"><label for="message">Комментарий (необязательно)</label><textarea id="message" name="message" rows="4" placeholder="Какой объект вас интересует?"></textarea></div>
         <div class="checkbox-group"><input type="checkbox" id="agree" name="agree" required><label for="agree">Я согласен на обработку персональных данных и с <a href="privacy.html">политикой конфиденциальности</a>.</label></div>
         <button type="submit" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">Отправить заявку</button>
       </form>
+      <!-- КОНЕЦ ФОРМЫ -->
+
     </div>
     <div>
       <div class="contact-card" style="margin-bottom: 30px;">
@@ -110,7 +118,7 @@
     btn.textContent = 'Отправка...';
     btn.disabled = true;
     try {
-      const response = await fetch('https://formspree.io/f/xaeejkvb', { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+      const response = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
       if (response.ok) { showToast('Спасибо! Заявка отправлена. Мы свяжемся с вами.', 'success'); form.reset(); } else { showToast('Ошибка отправки. Пожалуйста, позвоните нам.', 'error'); }
     } catch (error) { showToast('Ошибка сети. Попробуйте позже.', 'error'); } finally { btn.textContent = originalText; btn.disabled = false; }
   });
