@@ -4,29 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#1c2e5a">
+  <link rel="canonical" href="https://dom-mc.ru/catalog.html" />
   <link rel="manifest" href="manifest.json">
-  
   <link rel="icon" type="image/png" href="images/icon-192.png?v=2">
   <link rel="apple-touch-icon" href="images/icon-192.png">
-  
   <title>Каталог недвижимости в Мариуполе — Мой Дом</title>
   <meta name="description" content="Актуальный каталог квартир, домов и коммерческой недвижимости в Мариуполе.">
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
 <header>
   <div class="container nav">
     <a href="index.html" class="logo">
       <img src="images/logo.png" alt="Мой Дом" class="logo-img" width="50" height="50">
-      <div class="logo-text">
-        <div class="logo-title">Мой<span>Дом</span></div>
-        <div class="logo-subtitle">Мультицентр недвижимости</div>
-      </div>
+      <div class="logo-text"><div class="logo-title">Мой<span>Дом</span></div><div class="logo-subtitle">Мультицентр недвижимости</div></div>
     </a>
     <div class="nav-right">
       <ul id="main-nav">
@@ -34,11 +28,12 @@
         <li><a href="catalog.html" class="active">Каталог</a></li>
         <li><a href="services.html">Услуги</a></li>
         <li><a href="about.html">О нас</a></li>
+        <li><a href="blog.html">Блог</a></li>
         <li><a href="contacts.html">Контакты</a></li>
         <li><a href="favorites.html"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg> Избранное</a></li>
       </ul>
       <div class="social-icons">
-        <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="social-tg"></a>
+        <a href="https://t.me/nedvizhimost_mariupol" target="_blank" class="social-tg"></a>
         <a href="https://vk.com/moy_dom_mariupol" target="_blank" class="social-vk"></a>
         <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" class="social-max"></a>
       </div>
@@ -46,7 +41,6 @@
     </div>
   </div>
 </header>
-
 <section class="container">
   <h1 class="section-title">Каталог объектов</h1>
   
@@ -80,43 +74,36 @@
       </div>
     </div>
     
-    <!-- ОДИН ПОЛЗУНОК ЦЕНЫ -->
     <div class="filter-dropdown" id="price-dropdown">
       <div class="filter-title">Цена <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
       <div class="filter-content price-filter-content">
-        
         <div class="price-values">
           <span>0 ₽</span>
           <span id="price-val">Без ограничений</span>
         </div>
-        
         <div class="single-range-slider">
           <div class="range-track-bg"></div>
           <div class="range-track-fill" id="range-fill"></div>
           <input type="range" id="price-range" min="0" max="500000000" step="100000" value="500000000">
         </div>
-
       </div>
     </div>
   </div>
   
   <div class="objects-grid" id="catalog"></div>
 </section>
-
 <button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></button>
-
 <footer>
   <div class="container">
     <div class="footer-grid">
       <div><h4>Мультицентр недвижимости «Мой Дом»</h4><p style="line-height: 1.8;">Помогаем покупать, продавать и арендовать жильё в Мариуполе. Работаем честно и открыто.</p></div>
       <div><h4>Контакты</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="tel:+79495044455" style="color:#fff; font-weight:bold; font-size: 1.2rem;">+7 (949) 504-44-55</a></li><li style="margin-bottom: 12px;">г. Мариуполь, пр. Ленина (Мира), 54/46</li></ul></div>
-      <div><h4>Мессенджеры</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank">Telegram</a></li><li style="margin-bottom: 12px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank">MAX</a></li><li><a href="https://vk.com/moy_dom_mariupol" target="_blank">ВКонтакте</a></li></ul></div>
+      <div><h4>Мессенджеры</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="https://t.me/nedvizhimost_mariupol" target="_blank">Telegram</a></li><li style="margin-bottom: 12px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank">MAX</a></li><li><a href="https://vk.com/moy_dom_mariupol" target="_blank">ВКонтакте</a></li></ul></div>
       <div><h4>Документы</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li><a href="privacy.html">Политика конфиденциальности</a></li></ul></div>
     </div>
     <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
   </div>
 </footer>
-
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
@@ -127,18 +114,14 @@
     const rangeFill = document.getElementById('range-fill');
     const roomsDropdown = document.getElementById('rooms-dropdown');
 
-    // ДИНАМИЧЕСКИЙ МАКСИМУМ ЦЕНЫ (Минимум 500 млн)
     function computeMaxPrice() {
       let maxPrice = 0;
       OBJECTS.forEach(o => {
         const p = Number(o.price);
         if (!isNaN(p) && p > maxPrice) maxPrice = p;
       });
-      
-      const BASE_MAX = 500000000; // 500 миллионов
-      
+      const BASE_MAX = 500000000;
       if (maxPrice <= BASE_MAX) return BASE_MAX;
-
       const magnitude = Math.pow(10, Math.floor(Math.log10(maxPrice)) - 1);
       return Math.ceil(maxPrice / magnitude) * magnitude;
     }
@@ -163,13 +146,11 @@
 
     function updateSlider() {
       const val = parseInt(priceRange.value);
-      
       if (val >= MAX_PRICE) {
         priceVal.textContent = 'Без ограничений';
       } else {
         priceVal.textContent = 'До ' + formatNum(val) + ' ₽';
       }
-
       const percent = (val / MAX_PRICE) * 100;
       rangeFill.style.width = percent + '%';
     }
@@ -195,13 +176,11 @@
       const filtered = OBJECTS.filter(o => {
         if (types.length > 0 && !types.includes(o.type)) return false;
         if (deals.length > 0 && !deals.includes(o.deal)) return false;
-
         const typeHasRooms = o.type !== 'Гараж' && o.type !== 'Земельный участок';
         if (rooms.length > 0 && typeHasRooms) {
           const hasMatchingRoom = rooms.some(r => { const rNum = Number(r); return rNum === 4 ? o.rooms >= 4 : o.rooms === rNum; });
           if (!hasMatchingRoom) return false;
         }
-
         if (max < MAX_PRICE && o.price > max) return false;
         return true;
       });
@@ -211,10 +190,7 @@
     }
 
     priceRange.addEventListener('input', () => { updateSlider(); render(); });
-
-    document.querySelectorAll('.f-type').forEach(el => {
-      el.addEventListener('change', () => { updateRoomsDropdownState(); render(); });
-    });
+    document.querySelectorAll('.f-type').forEach(el => { el.addEventListener('change', () => { updateRoomsDropdownState(); render(); }); });
     document.querySelectorAll('.f-deal, .f-rooms').forEach(el => { el.addEventListener('change', render); });
 
     updateSlider();
