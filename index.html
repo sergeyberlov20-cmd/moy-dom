@@ -23,6 +23,24 @@
         .partners-grid { gap: 30px; }
         .partners-grid img { max-width: 110px; max-height: 60px; }
     }
+
+    /* Блок блога на главной */
+    .blog-preview-section { margin-top: 40px; }
+    .blog-preview-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .blog-preview-head .section-title { margin-bottom: 0; }
+    .blog-preview-all { font-size: 0.95rem; font-weight: 800; color: var(--accent); text-decoration: none; white-space: nowrap; }
+    .blog-preview-all:hover { text-decoration: underline; }
+    .blog-preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .blog-mini { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); text-decoration: none; transition: transform .3s, box-shadow .3s; }
+    .blog-mini:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+    .blog-mini-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 0.75rem; color: var(--muted); margin-bottom: 10px; }
+    .blog-mini-tag { background: rgba(204, 34, 41, 0.08); color: var(--accent); font-weight: 800; padding: 3px 8px; border-radius: 5px; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.4px; }
+    .blog-mini-tag.green { background: rgba(16, 185, 129, 0.1); color: #0f9d6f; }
+    .blog-mini-title { font-size: 1rem; font-weight: 800; color: var(--primary); line-height: 1.35; margin-bottom: 8px; }
+    .blog-mini-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.5; flex-grow: 1; margin-bottom: 14px; }
+    .blog-mini-more { font-size: 0.85rem; font-weight: 800; color: var(--accent); }
+    @media (max-width: 992px) { .blog-preview-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 650px) { .blog-preview-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -37,8 +55,8 @@
         <li><a href="index.html" class="active">Главная</a></li>
         <li><a href="catalog.html">Каталог</a></li>
         <li><a href="services.html">Услуги</a></li>
-        <li><a href="about.html">О нас</a></li>
         <li><a href="blog.html">Блог</a></li>
+        <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
         <li><a href="favorites.html"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg> Избранное</a></li>
       </ul>
@@ -74,6 +92,34 @@
       <div class="trust-item"><h3>1000+</h3><p>Проведенных сделок</p></div>
       <div class="trust-item"><h3>100%</h3><p>Юридическая чистота</p></div>
     </div>
+  </div>
+</section>
+
+<section class="container blog-preview-section">
+  <div class="blog-preview-head">
+    <h2 class="section-title">Блог</h2>
+    <a href="blog.html" class="blog-preview-all">Все материалы →</a>
+  </div>
+  <p class="section-sub">Что происходит на рынке недвижимости Мариуполя</p>
+  <div class="blog-preview-grid">
+    <a class="blog-mini" href="blog-kompensacionnye-kvartiry.html">
+      <div class="blog-mini-meta"><span class="blog-mini-tag">Главное</span><time datetime="2026-10-29">29 октября 2026</time></div>
+      <div class="blog-mini-title">В Мариуполе завершают распределение компенсационных квартир</div>
+      <div class="blog-mini-desc">4,1 тыс. человек уже получили жильё, ещё 600 квартир в оформлении. Выплата повышена до 70 тыс. ₽/м².</div>
+      <span class="blog-mini-more">Читать →</span>
+    </a>
+    <a class="blog-mini" href="blog-ceny-na-novostroyki.html">
+      <div class="blog-mini-meta"><span class="blog-mini-tag">Цены</span><time datetime="2026-07-28">28 июля 2026</time></div>
+      <div class="blog-mini-title">Мариуполь — лидер России по росту цен на новостройки</div>
+      <div class="blog-mini-desc">+36,3% за год: метр подорожал с 141,8 до 193,9 тыс. ₽. Предложение выросло в семь раз.</div>
+      <span class="blog-mini-more">Читать →</span>
+    </a>
+    <a class="blog-mini" href="blog-proverki-pered-sdelkoy.html">
+      <div class="blog-mini-meta"><span class="blog-mini-tag green">Разбор</span><time datetime="2026-11-17">17 ноября 2026</time></div>
+      <div class="blog-mini-title">Покупаете квартиру в Мариуполе: пять проверок до задатка</div>
+      <div class="blog-mini-desc">ЕГРН, основания права, долги и жильцы, техническое состояние дома, документы БТИ.</div>
+      <span class="blog-mini-more">Читать →</span>
+    </a>
   </div>
 </section>
 
