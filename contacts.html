@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#1c2e5a">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="images/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Мой Дом">
   <link rel="canonical" href="https://dom-mc.ru/contacts.html" />
   <link rel="icon" type="image/png" href="images/icon-192.png">
   <title>Контакты — Мой Дом | Агентство недвижимости в Мариуполе</title>
@@ -116,5 +122,6 @@
     } catch (error) { showToast('Ошибка сети. Попробуйте позже.', 'error'); } finally { btn.textContent = originalText; btn.disabled = false; }
   });
 </script>
+<script src="js/install.js" defer></script>
 </body>
 </html>

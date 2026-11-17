@@ -1,32 +1,91 @@
-const CACHE_NAME = 'moydom-v80';
-const urlsToCache = [
-  '/moy-dom/',
-  '/moy-dom/index.html',
-  '/moy-dom/catalog.html',
-  '/moy-dom/services.html',
-  '/moy-dom/about.html',
-  '/moy-dom/contacts.html',
-  '/moy-dom/blog.html',
-  '/moy-dom/css/style.css',
-  '/moy-dom/js/main.js',
-  '/moy-dom/js/data.js',
-  '/moy-dom/js/data.json',
-  '/moy-dom/images/logo.png',
-  '/moy-dom/images/icon-192.png',
-  '/moy-dom/images/icon-512.png'
+/* Service worker «Мой Дом»
+   Работает и на dom-mc.ru, и на github.io/moy-dom — все пути относительные. */
+
+const VERSION = 'v81';
+const STATIC_CACHE = 'moydom-static-' + VERSION;
+const PAGE_CACHE = 'moydom-pages-' + VERSION;
+
+const PRECACHE = [
+  './',
+  './index.html',
+  './catalog.html',
+  './services.html',
+  './about.html',
+  './contacts.html',
+  './blog.html',
+  './favorites.html',
+  './privacy.html',
+  './css/style.css',
+  './js/main.js',
+  './js/data.js',
+  './js/data.json',
+  './manifest.json',
+  './images/logo.png',
+  './images/icon-192.png',
+  './images/icon-512.png'
 ];
 
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
-  );
+const abs = (u) => new URL(u, self.registration.scope).href;
+
+self.addEventListener('install', (event) => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(STATIC_CACHE);
+    await Promise.all(
+      PRECACHE.map((u) => cache.add(new Request(abs(u), { cache: 'reload' })).catch(() => {}))
+    );
+    await self.skipWaiting();
+  })());
 });
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      if (response) return response;
-      return fetch(event.request);
-    })
-  );
+self.addEventListener('activate', (event) => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(
+      keys
+        .filter((k) => k !== STATIC_CACHE && k !== PAGE_CACHE)
+        .map((k) => caches.delete(k))
+    );
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener('fetch', (event) => {
+  const req = event.request;
+  if (req.method !== 'GET') return;
+
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return; // шрифты и внешние ресурсы — напрямую
+
+  const isHTML = req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html');
+
+  // Страницы: сначала сеть (чтобы правки были сразу видны), кэш — только офлайн
+  if (isHTML) {
+    event.respondWith((async () => {
+      try {
+        const res = await fetch(req);
+        if (res && res.ok) {
+          const cache = await caches.open(PAGE_CACHE);
+          cache.put(req, res.clone());
+        }
+        return res;
+      } catch (e) {
+        const cached = await caches.match(req, { ignoreSearch: true });
+        return cached || (await caches.match(abs('./index.html'))) || Response.error();
+      }
+    })());
+    return;
+  }
+
+  // Статика: из кэша + фоновое обновление
+  event.respondWith((async () => {
+    const cache = await caches.open(STATIC_CACHE);
+    const cached = await cache.match(req);
+    const network = fetch(req)
+      .then((res) => {
+        if (res && res.ok) cache.put(req, res.clone());
+        return res;
+      })
+      .catch(() => null);
+    return cached || (await network) || Response.error();
+  })());
 });
