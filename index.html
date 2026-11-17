@@ -4,39 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#1c2e5a">
-  
-  <!-- ПОДКЛЮЧЕНИЕ PWA -->
+  <link rel="canonical" href="https://dom-mc.ru/" />
   <link rel="manifest" href="manifest.json">
-  
-  <!-- ИКОНКА ДЛЯ ВКЛАДКИ (с защитой от кэша) -->
   <link rel="icon" type="image/png" href="images/icon-192.png?v=2">
   <link rel="apple-touch-icon" href="images/icon-192.png">
-  
-  <title>Мой Дом — Мультицентр недвижимости в Мариуполе</title>
-  <meta name="description" content="Эксперты по недвижимости в Мариуполе. Более 20 лет опыта. Продажа, аренда, юридическое сопровождение.">
+  <title>Недвижимость, оценка и документы в Мариуполе — Мой Дом</title>
+  <meta name="description" content="Поможем продать или купить квартиру, оценить недвижимость и разобраться с документами в Мариуполе. Более 20 лет опыта.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    /* СТАТИЧНЫЕ СТИЛИ ДЛЯ БЛОКА ПАРТНЕРОВ (БЕЗ ЭФФЕКТОВ) */
     .partners-section { padding: 70px 0; background: #f8f9fa; } 
     .partners-title { text-align: center; font-size: 1.6rem; color: var(--primary); font-weight: 800; margin-bottom: 40px; }
-    .partners-grid { 
-        display: flex; 
-        flex-wrap: wrap; 
-        justify-content: center; 
-        align-items: center; 
-        gap: 50px; 
-        max-width: 1000px;
-        margin: 0 auto;
-    }
-    .partners-grid img { 
-        max-width: 150px; 
-        max-height: 80px; 
-        object-fit: contain; 
-        /* Никаких transition, hover и cursor: pointer */
-    }
+    .partners-grid { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 50px; max-width: 1000px; margin: 0 auto; }
+    .partners-grid img { max-width: 150px; max-height: 80px; object-fit: contain; }
     @media (max-width: 768px) {
         .partners-grid { gap: 30px; }
         .partners-grid img { max-width: 110px; max-height: 60px; }
@@ -44,15 +26,11 @@
   </style>
 </head>
 <body>
-
 <header>
   <div class="container nav">
     <a href="index.html" class="logo">
       <img src="images/logo.png" alt="Мой Дом" class="logo-img" width="50" height="50">
-      <div class="logo-text">
-        <div class="logo-title">Мой<span>Дом</span></div>
-        <div class="logo-subtitle">Мультицентр недвижимости</div>
-      </div>
+      <div class="logo-text"><div class="logo-title">Мой<span>Дом</span></div><div class="logo-subtitle">Мультицентр недвижимости</div></div>
     </a>
     <div class="nav-right">
       <ul id="main-nav">
@@ -60,11 +38,12 @@
         <li><a href="catalog.html">Каталог</a></li>
         <li><a href="services.html">Услуги</a></li>
         <li><a href="about.html">О нас</a></li>
+        <li><a href="blog.html">Блог</a></li>
         <li><a href="contacts.html">Контакты</a></li>
         <li><a href="favorites.html"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg> Избранное</a></li>
       </ul>
       <div class="social-icons">
-        <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="social-tg"></a>
+        <a href="https://t.me/nedvizhimost_mariupol" target="_blank" class="social-tg"></a>
         <a href="https://vk.com/moy_dom_mariupol" target="_blank" class="social-vk"></a>
         <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" class="social-max"></a>
       </div>
@@ -75,11 +54,15 @@
 
 <section class="hero">
   <div class="container">
-    <h1>Ваш идеальный дом<br>в Мариуполе</h1>
-    <p>Более 20 лет помогаем находить лучшие объекты, сопровождаем сделки "под ключ" и гарантируем юридическую безопасность.</p>
+    <h1>Недвижимость, оценка и документы в Мариуполе</h1>
+    <p>Поможем продать или купить квартиру, оценить недвижимость и разобраться с документами.</p>
     <div class="hero-buttons">
-      <a href="catalog.html" class="btn btn-accent" style="font-size: 1.1rem;">Смотреть объекты</a>
-      <a href="contacts.html" class="btn btn-outline" style="font-size: 1.1rem;">Получить консультацию</a>
+      <a href="tel:+79495044455" class="btn btn-accent" style="font-size: 1.1rem;">Позвонить</a>
+      <a href="services.html" class="btn btn-outline" style="font-size: 1.1rem;">Посмотреть услуги</a>
+    </div>
+    <div style="margin-top: 30px; font-size: 1rem; opacity: 0.9; display: flex; align-items: center; justify-content: center; gap: 8px;">
+      <svg viewBox="0 0 24 24" style="width:20px; height:20px; fill:currentColor;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      г. Мариуполь, пр. Ленина (Мира), 54/46 (ориентир — Драмтеатр)
     </div>
   </div>
 </section>
@@ -111,7 +94,6 @@
   <div class="objects-grid" id="featured"></div>
 </section>
 
-<!-- БЛОК ПАРТНЕРОВ (БЕЗ ССЫЛОК И ЭФФЕКТОВ) -->
 <section class="partners-section">
   <div class="container">
     <h2 class="partners-title">Нам доверяют</h2>
@@ -137,7 +119,7 @@
     <div class="footer-grid">
       <div><h4>Мультицентр недвижимости «Мой Дом»</h4><p style="line-height: 1.8;">Помогаем покупать, продавать и арендовать жильё в Мариуполе. Работаем честно и открыто.</p></div>
       <div><h4>Контакты</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="tel:+79495044455" style="color:#fff; font-weight:bold; font-size: 1.2rem;">+7 (949) 504-44-55</a></li><li style="margin-bottom: 12px;">г. Мариуполь, пр. Ленина (Мира), 54/46</li></ul></div>
-      <div><h4>Мессенджеры</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank">Telegram</a></li><li style="margin-bottom: 12px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank">MAX</a></li><li><a href="https://vk.com/moy_dom_mariupol" target="_blank">ВКонтакте</a></li></ul></div>
+      <div><h4>Мессенджеры</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="https://t.me/nedvizhimost_mariupol" target="_blank">Telegram</a></li><li style="margin-bottom: 12px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank">MAX</a></li><li><a href="https://vk.com/moy_dom_mariupol" target="_blank">ВКонтакте</a></li></ul></div>
       <div><h4>Документы</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li><a href="privacy.html">Политика конфиденциальности</a></li></ul></div>
     </div>
     <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
@@ -147,7 +129,6 @@
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  // Загрузка объектов и слайдеров
   document.addEventListener('dataLoaded', () => {
     const featured = document.getElementById('featured');
     OBJECTS.slice(0, 3).forEach(obj => {
@@ -156,7 +137,6 @@
     setTimeout(() => { if (window.initMiniSliders) window.initMiniSliders(); }, 200);
   });
 
-  // Регистрация Service Worker для PWA
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
       .then(reg => console.log('PWA: Service Worker работает'))
