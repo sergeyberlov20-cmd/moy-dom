@@ -71,6 +71,16 @@
       .blog-lead h2 { font-size: 1.2rem; }
       .blog-cta { padding: 24px 22px; }
     }
+
+    /* Фильтр и пагинация блога */
+    .blog-filter { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+    .blog-chip { background: #fff; border: 1px solid var(--border); color: var(--primary); font-family: inherit; font-size: 0.85rem; font-weight: 700; padding: 8px 16px; border-radius: 999px; cursor: pointer; transition: all .2s; }
+    .blog-chip:hover { border-color: var(--accent); color: var(--accent); }
+    .blog-chip.is-active { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .blog-empty { color: var(--muted); font-size: 1rem; padding: 20px 0 30px; }
+    .blog-more-wrap { text-align: center; margin: 6px 0 30px; }
+    .blog-more { background: #fff; border: 2px solid var(--primary); color: var(--primary); font-family: inherit; font-size: 0.95rem; font-weight: 800; padding: 12px 28px; border-radius: 12px; cursor: pointer; transition: all .2s; }
+    .blog-more:hover { background: var(--primary); color: #fff; }
 </style>
 </head>
 <body>
@@ -113,8 +123,17 @@
     </div>
   </article>
 
+  <div class="blog-filter" id="blogFilter">
+    <button type="button" class="blog-chip is-active" data-filter="all">Все</button>
+    <button type="button" class="blog-chip" data-filter="Цены">Цены</button>
+    <button type="button" class="blog-chip" data-filter="Ипотека">Ипотека</button>
+    <button type="button" class="blog-chip" data-filter="Строительство">Строительство</button>
+    <button type="button" class="blog-chip" data-filter="ЖКХ">ЖКХ</button>
+    <button type="button" class="blog-chip" data-filter="Рынок">Рынок</button>
+  </div>
+
   <div class="blog-grid">
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Рынок">
       <a class="blog-card-img" href="blog-proverki-pered-sdelkoy.html"><img src="images/4/1.webp" alt="Пять проверок до задатка — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag green">Разбор «Мой Дом»</span><time datetime="2026-11-17">17 ноября 2026</time></div>
@@ -123,7 +142,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-proverki-pered-sdelkoy.html">Читать полностью</a><a class="blog-source" href="contacts.html">Мультицентр недвижимости «Мой Дом» <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Ипотека">
       <a class="blog-card-img" href="blog-ipoteka-8-procentov-krym.html"><img src="images/32/1.webp" alt="Ипотека 8% в Крыму — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag ">Ипотека</span><time datetime="2026-11-06">6 ноября 2026</time></div>
@@ -132,7 +151,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-ipoteka-8-procentov-krym.html">Читать полностью</a><a class="blog-source" href="https://ria.ru/20261106/ipoteka-2129788379.html" target="_blank" rel="noopener">РИА Новости <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Ипотека">
       <a class="blog-card-img" href="blog-semeynaya-ipoteka-2026.html"><img src="images/13/1.webp" alt="Семейная ипотека — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag ">Ипотека</span><time datetime="2026-10-23">23 октября 2026</time></div>
@@ -141,7 +160,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-semeynaya-ipoteka-2026.html">Читать полностью</a><a class="blog-source" href="https://realty.ria.ru/20261023/ipoteka-2126191105.html" target="_blank" rel="noopener">РИА Недвижимость <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="ЖКХ">
       <a class="blog-card-img" href="blog-tarify-zhkh-dnr.html"><img src="images/9/1.webp" alt="Тарифы ЖКХ — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag ">ЖКХ</span><time datetime="2026-10-02">2 октября 2026</time></div>
@@ -150,7 +169,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-tarify-zhkh-dnr.html">Читать полностью</a><a class="blog-source" href="https://dan-news.ru/official/chto-izmenilos-v-tarifah-na-uslugi-zhkh-v-dnr-s-1-oktjabrja/" target="_blank" rel="noopener">Донецкое агентство новостей <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="ЖКХ">
       <a class="blog-card-img" href="blog-tarif-na-tko.html"><img src="images/12/1.webp" alt="Тариф на ТКО — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag ">ЖКХ</span><time datetime="2026-09-24">24 сентября 2026</time></div>
@@ -159,7 +178,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-tarif-na-tko.html">Читать полностью</a><a class="blog-source" href="https://dan-news.ru/official/plata-za-vyvoz-tko-v-dnr-izmenitsja-s-1-oktjabrja/" target="_blank" rel="noopener">Донецкое агентство новостей <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Строительство">
       <a class="blog-card-img" href="blog-krt-v-gorodah-dnr.html"><img src="images/2/1.webp" alt="Проекты КРТ в ДНР — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag green">Строительство</span><time datetime="2026-08-05">5 августа 2026</time></div>
@@ -168,7 +187,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-krt-v-gorodah-dnr.html">Читать полностью</a><a class="blog-source" href="https://realty.ria.ru/20260805/proekty-2109114560.html" target="_blank" rel="noopener">РИА Недвижимость <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Цены">
       <a class="blog-card-img" href="blog-ceny-na-novostroyki.html"><img src="images/10/1.webp" alt="Рост цен на новостройки — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag ">Цены</span><time datetime="2026-07-28">28 июля 2026</time></div>
@@ -177,7 +196,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-ceny-na-novostroyki.html">Читать полностью</a><a class="blog-source" href="https://realty.ria.ru/20260728/mariupol-2107257887.html" target="_blank" rel="noopener">РИА Недвижимость <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Строительство">
       <a class="blog-card-img" href="blog-peterburg-vosstanovlenie-mariupolya.html"><img src="images/18/1.webp" alt="Петербург и Мариуполь — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag ">Город</span><time datetime="2026-07-03">3 июля 2026</time></div>
@@ -186,7 +205,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-peterburg-vosstanovlenie-mariupolya.html">Читать полностью</a><a class="blog-source" href="https://ria.ru/20260703/peterburg-2102468367.html" target="_blank" rel="noopener">РИА Новости <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Строительство">
       <a class="blog-card-img" href="blog-vtb-17-mlrd-lugansk.html"><img src="images/31/1.webp" alt="17 млрд на ЖК в Луганске — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag green">Строительство</span><time datetime="2026-06-19">19 июня 2026</time></div>
@@ -195,7 +214,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-vtb-17-mlrd-lugansk.html">Читать полностью</a><a class="blog-source" href="https://realty.ria.ru/20260619/vtb-2099842852.html" target="_blank" rel="noopener">РИА Недвижимость <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Ипотека">
       <a class="blog-card-img" href="blog-usloviya-ipoteki-2-procenta.html"><img src="images/6/1.webp" alt="Ипотека 2% без изменений — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag ">Ипотека</span><time datetime="2026-05-18">18 мая 2026</time></div>
@@ -204,7 +223,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-usloviya-ipoteki-2-procenta.html">Читать полностью</a><a class="blog-source" href="https://ria.ru/20260518/ipoteka-2093049848.html" target="_blank" rel="noopener">РИА Новости <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Строительство">
       <a class="blog-card-img" href="blog-3-mln-kvadratov-v-stroyke.html"><img src="images/22/1.webp" alt="3 млн кв. м в стройке — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag green">Строительство</span><time datetime="2026-03-25">25 марта 2026</time></div>
@@ -213,7 +232,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-3-mln-kvadratov-v-stroyke.html">Читать полностью</a><a class="blog-source" href="https://realty.ria.ru/20260325/rossija-2082875583.html" target="_blank" rel="noopener">РИА Недвижимость <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Строительство">
       <a class="blog-card-img" href="blog-dom-na-84-kvartiry.html"><img src="images/29/1.webp" alt="Новый дом на 84 квартиры — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag green">Новостройки</span><time datetime="2026-01-13">13 января 2026</time></div>
@@ -222,7 +241,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-dom-na-84-kvartiry.html">Читать полностью</a><a class="blog-source" href="https://realty.ria.ru/20260113/mariupol-2067638837.html" target="_blank" rel="noopener">РИА Недвижимость <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Цены">
       <a class="blog-card-img" href="blog-prognoz-cen-2026.html"><img src="images/19/1.webp" alt="Прогноз цен на 2026 — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag ">Цены</span><time datetime="2025-12-25">25 декабря 2025</time></div>
@@ -231,7 +250,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-prognoz-cen-2026.html">Читать полностью</a><a class="blog-source" href="https://realty.ria.ru/20251225/regiony-2064246235.html" target="_blank" rel="noopener">РИА Недвижимость <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Рынок">
       <a class="blog-card-img" href="blog-pushilin-o-cenah.html"><img src="images/36/1.webp" alt="Цены в ДНР — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag ">Рынок</span><time datetime="2025-11-28">28 ноября 2025</time></div>
@@ -240,7 +259,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-pushilin-o-cenah.html">Читать полностью</a><a class="blog-source" href="https://ria.ru/20251128/dnr-2058239498.html" target="_blank" rel="noopener">РИА Новости <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Ипотека">
       <a class="blog-card-img" href="blog-vtb-semeynaya-ipoteka-regiony.html"><img src="images/21/1.webp" alt="Комбинированная ипотека — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag ">Ипотека</span><time datetime="2025-09-11">11 сентября 2025</time></div>
@@ -249,7 +268,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-vtb-semeynaya-ipoteka-regiony.html">Читать полностью</a><a class="blog-source" href="https://realty.ria.ru/20250911/vtb-2041109699.html" target="_blank" rel="noopener">РИА Недвижимость <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Строительство">
       <a class="blog-card-img" href="blog-polovina-stroyki-dnr.html"><img src="images/28/1.webp" alt="Половина стройки — ДНР — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag green">Строительство</span><time datetime="2025-06-19">19 июня 2025</time></div>
@@ -258,7 +277,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-polovina-stroyki-dnr.html">Читать полностью</a><a class="blog-source" href="https://realty.ria.ru/20250619/dnr-2023852768.html" target="_blank" rel="noopener">РИА Недвижимость <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Рынок">
       <a class="blog-card-img" href="blog-pokupateli-iz-drugih-regionov.html"><img src="images/33/1.webp" alt="Кто покупает жильё — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag ">Спрос</span><time datetime="2025-04-24">24 апреля 2025</time></div>
@@ -267,7 +286,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-pokupateli-iz-drugih-regionov.html">Читать полностью</a><a class="blog-source" href="https://realty.ria.ru/20250424/developery-2012963219.html" target="_blank" rel="noopener">РИА Недвижимость <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Ипотека">
       <a class="blog-card-img" href="blog-lgotnaya-ipoteka.html"><img src="images/11/1.webp" alt="Льготная ипотека 2% — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag ">Ипотека</span><time datetime="2025-03-05">5 марта 2025</time></div>
@@ -276,7 +295,7 @@
         <div class="blog-links"><a class="blog-read" href="blog-lgotnaya-ipoteka.html">Читать полностью</a><a class="blog-source" href="https://ria.ru/20250305/ipoteka-2003252481.html" target="_blank" rel="noopener">РИА Новости <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H3v18h18v-7h-2v5H5V5z"/></svg></a></div>
       </div>
     </article>
-    <article class="blog-card">
+    <article class="blog-card" data-cat="Строительство">
       <a class="blog-card-img" href="blog-novostroyki-doneck-ipoteka.html"><img src="images/5/1.webp" alt="Новостройки под ипотеку — Мариуполь" loading="lazy"></a>
       <div class="blog-card-body">
         <div class="blog-meta"><span class="blog-tag green">Строительство</span><time datetime="2024-06-27">27 июня 2024</time></div>
@@ -286,6 +305,9 @@
       </div>
     </article>
   </div>
+
+  <p class="blog-empty" id="blogEmpty" style="display:none">По этой рубрике пока нет материалов — выберите другую.</p>
+  <div class="blog-more-wrap"><button type="button" class="blog-more" id="blogMore">Показать ещё</button></div>
 
   <p class="blog-note">Подборка подготовлена мультицентром недвижимости «Мой Дом». Новости — краткие обзоры открытых публикаций СМИ, полные тексты доступны по ссылкам на источники (РИА Недвижимость, РИА Новости, Донецкое агентство новостей). Иллюстрации — фото объектов из архива агентства. Материалы не являются инвестиционной рекомендацией.</p>
 
@@ -311,6 +333,41 @@
 </footer>
 <script src="js/main.js"></script>
 <script src="js/install.js" defer></script>
+
+<script>
+(function () {
+  var grid = document.querySelector('.blog-grid');
+  if (!grid) return;
+  var cards = [].slice.call(grid.querySelectorAll('.blog-card'));
+  var more = document.getElementById('blogMore');
+  var empty = document.getElementById('blogEmpty');
+  var filter = document.getElementById('blogFilter');
+  if (!more || !empty || !filter) return;
+  var PER = 9, shown = PER, cat = 'all';
+
+  function apply() {
+    var list = cards.filter(function (c) { return cat === 'all' || c.getAttribute('data-cat') === cat; });
+    cards.forEach(function (c) { c.style.display = 'none'; });
+    list.slice(0, shown).forEach(function (c) { c.style.display = ''; });
+    var rest = list.length - shown;
+    if (rest > 0) { more.style.display = ''; more.textContent = 'Показать ещё (' + rest + ')'; }
+    else { more.style.display = 'none'; }
+    empty.style.display = list.length ? 'none' : '';
+  }
+
+  filter.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.blog-chip') : null;
+    if (!b) return;
+    [].forEach.call(filter.querySelectorAll('.blog-chip'), function (x) { x.classList.toggle('is-active', x === b); });
+    cat = b.getAttribute('data-filter');
+    shown = PER;
+    apply();
+  });
+
+  more.addEventListener('click', function () { shown += PER; apply(); });
+  apply();
+})();
+</script>
 </body>
 </html>
 

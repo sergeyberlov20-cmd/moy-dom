@@ -68,6 +68,16 @@
     .post-cover { display: block; width: 100%; height: 340px; object-fit: cover; border-radius: 12px; background: #e9edf5; }
     .post-figure figcaption { font-size: 0.78rem; color: var(--muted); margin-top: 8px; }
     @media (max-width: 768px) { .post-cover { height: 210px; } }
+
+    .post-related { margin: 34px 0 6px; }
+    .post-related h2 { font-size: 1.3rem; color: var(--primary); font-weight: 800; margin-bottom: 16px; }
+    .post-related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .post-related-item { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; text-decoration: none; box-shadow: var(--shadow); transition: transform .3s, box-shadow .3s; }
+    .post-related-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .post-related-img { display: block; height: 110px; background: #e9edf5; }
+    .post-related-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .post-related-title { padding: 12px 14px; font-size: .88rem; font-weight: 700; color: var(--primary); line-height: 1.35; }
+    @media (max-width: 700px) { .post-related-grid { grid-template-columns: 1fr; } .post-related-img { height: 150px; } }
 </style>
 </head>
 <body>
@@ -125,6 +135,24 @@
 
     <div class="post-source">Источник: <a href="https://realty.ria.ru/20250424/developery-2012963219.html" target="_blank" rel="noopener">РИА Недвижимость</a>, 24 апреля 2025</div>
   </article>
+
+  <div class="post-related">
+    <h2>Читайте также</h2>
+    <div class="post-related-grid">
+      <a class="post-related-item" href="blog-proverki-pered-sdelkoy.html">
+        <span class="post-related-img"><img src="images/4/1.webp" alt="" loading="lazy"></span>
+        <span class="post-related-title">Покупаете квартиру в Мариуполе: пять проверок до задатка</span>
+      </a>
+      <a class="post-related-item" href="blog-ipoteka-8-procentov-krym.html">
+        <span class="post-related-img"><img src="images/32/1.webp" alt="" loading="lazy"></span>
+        <span class="post-related-title">Льготная ипотека под 8% расширена на Крым и Севастополь</span>
+      </a>
+      <a class="post-related-item" href="blog-kompensacionnye-kvartiry.html">
+        <span class="post-related-img"><img src="images/3/1.webp" alt="" loading="lazy"></span>
+        <span class="post-related-title">В Мариуполе завершают распределение компенсационных квартир</span>
+      </a>
+    </div>
+  </div>
 
   <div class="post-bottom"><a class="post-back" href="blog.html">← Все материалы блога</a></div>
 </section>
