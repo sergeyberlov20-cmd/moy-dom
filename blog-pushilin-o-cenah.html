@@ -59,7 +59,12 @@
       .post-lead { font-size: 1.02rem; }
       .post-cta { padding: 24px 22px; }
     }
-  </style>
+  
+    .post-figure { margin: 0 0 24px; }
+    .post-cover { display: block; width: 100%; height: 340px; object-fit: cover; border-radius: 12px; background: #e9edf5; }
+    .post-figure figcaption { font-size: 0.78rem; color: var(--muted); margin-top: 8px; }
+    @media (max-width: 768px) { .post-cover { height: 210px; } }
+</style>
 </head>
 <body>
 <header>
@@ -87,21 +92,23 @@
     </div>
   </div>
 </header>
-
 <section class="container post-wrap">
   <nav class="post-crumbs"><a href="index.html">Главная</a> / <a href="blog.html">Блог</a> / <span>Цены в ДНР</span></nav>
 
   <article class="post">
     <div class="post-meta"><span class="post-tag ">Рынок</span><time datetime="2025-11-28">28 ноября 2025</time></div>
     <h1 class="post-title">Пушилин: цены на жильё в ДНР завышены из-за дефицита</h1>
+    <figure class="post-figure">
+      <img class="post-cover" src="images/36/1.webp" alt="Цены в ДНР — Мариуполь" loading="lazy">
+      <figcaption>Фото: архив «Мой Дом»</figcaption>
+    </figure>
     <p class="post-lead">Глава ДНР Денис Пушилин признал, что цены на жильё в республике остаются завышенными из-за дефицита, и заявил, что власти принимают исчерпывающие меры, чтобы насытить рынок.</p>
     <div class="post-facts">
       <div class="post-fact"><b>26</b><span>застройщиков работают в ДНР (данные Минстроя)</span></div>
       <div class="post-fact"><b>753 тыс. м²</b><span>жилья — план стройки и восстановления на 2025 год</span></div>
       <div class="post-fact"><b>75–80%</b><span>сделок с новостройками Мариуполя — ипотечные</span></div>
     </div>
-    <div class="post-body">
-<h2>Прямая цитата</h2>
+    <div class="post-body"><h2>Прямая цитата</h2>
 <blockquote>«Цены слишком высоки, чтобы говорить о доступности для наших граждан. Исходя из этого и предпринимаются все исчерпывающие меры для того, чтобы насытить рынок. Потому что эти цены обусловлены дефицитом. Жилья не хватает, очень долгое время оно не вводилось в эксплуатацию».</blockquote>
 <p>Денис Пушилин, глава ДНР</p>
 <h2>Свободного жилья становится меньше</h2>
@@ -111,20 +118,13 @@
 <p>Показательная деталь: первое построенное жильё уже распродано полностью.</p>
 <h2>Что это значит для покупателя</h2>
 <p>Официальное признание дефицита — сигнал, что ждать снижения цен в обозримой перспективе не стоит. Пока предложение не догонит спрос, рынок остаётся «рынком продавца»: торг есть, но дисконта в 30–40%, как бывает на падающем рынке, ожидать не нужно.</p>
-<p>Практический вывод: если объект подходит по расположению и цене — лучше выходить на сделку, а торг строить на результатах проверки документов и технического состояния, а не на ожидании «просадки» рынка.</p>
-</div>
+<p>Практический вывод: если объект подходит по расположению и цене — лучше выходить на сделку, а торг строить на результатах проверки документов и технического состояния, а не на ожидании «просадки» рынка.</p></div>
 
     <div class="post-source">Источник: <a href="https://ria.ru/20251128/dnr-2058239498.html" target="_blank" rel="noopener">РИА Новости</a>, 28 ноября 2025</div>
   </article>
 
   <div class="post-bottom"><a class="post-back" href="blog.html">← Все материалы блога</a></div>
-
-  <div class="post-cta">
-    <div><h3>Нужна помощь с этим объектом?</h3><p>Позвоните — подскажем по документам, цене и срокам сделки в Мариуполе.</p></div>
-    <a href="tel:+79495044455" class="btn btn-accent" style="padding: 14px 28px; font-size: 1.05rem;">📞 +7 949 504-44-55</a>
-  </div>
 </section>
-
 <button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></button>
 <footer>
   <div class="container">
@@ -140,3 +140,4 @@
 <script src="js/main.js"></script>
 </body>
 </html>
+

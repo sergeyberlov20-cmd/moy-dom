@@ -59,7 +59,12 @@
       .post-lead { font-size: 1.02rem; }
       .post-cta { padding: 24px 22px; }
     }
-  </style>
+  
+    .post-figure { margin: 0 0 24px; }
+    .post-cover { display: block; width: 100%; height: 340px; object-fit: cover; border-radius: 12px; background: #e9edf5; }
+    .post-figure figcaption { font-size: 0.78rem; color: var(--muted); margin-top: 8px; }
+    @media (max-width: 768px) { .post-cover { height: 210px; } }
+</style>
 </head>
 <body>
 <header>
@@ -87,21 +92,23 @@
     </div>
   </div>
 </header>
-
 <section class="container post-wrap">
   <nav class="post-crumbs"><a href="index.html">Главная</a> / <a href="blog.html">Блог</a> / <span>Пять проверок до задатка</span></nav>
 
   <article class="post">
     <div class="post-meta"><span class="post-tag green">Разбор «Мой Дом»</span><time datetime="2026-11-17">17 ноября 2026</time></div>
     <h1 class="post-title">Покупаете квартиру в Мариуполе: пять проверок до задатка</h1>
+    <figure class="post-figure">
+      <img class="post-cover" src="images/4/1.webp" alt="Пять проверок до задатка — Мариуполь" loading="lazy">
+      <figcaption>Фото: архив «Мой Дом»</figcaption>
+    </figure>
     <p class="post-lead">Пять проверок, которые мы делаем до внесения задатка. Они закрывают основную часть рисков при покупке квартиры в Мариуполе — и на вторичном рынке, и в новостройке.</p>
     <div class="post-facts">
       <div class="post-fact"><b>5</b><span>проверок до внесения задатка</span></div>
       <div class="post-fact"><b>1 день</b><span>нужен на запрос выписки из ЕГРН</span></div>
       <div class="post-fact"><b>0 ₽</b><span>стоит консультация по вашему объекту</span></div>
     </div>
-    <div class="post-body">
-<h2>1. Выписка из ЕГРН</h2>
+    <div class="post-body"><h2>1. Выписка из ЕГРН</h2>
 <p>Заказываем свежую выписку на объект и проверяем собственника. Смотрим обременения, аресты, ипотеку, доли несовершеннолетних. Если продавец показывает «выписку месячной давности» — заказываем заново: сведения меняются.</p>
 <h2>2. Основания права</h2>
 <p>Как квартира досталась продавцу: договор купли-продажи, наследство, приватизация, дарение. Каждое основание несёт свой риск. Наследство — возможные претензии других наследников; приватизация — неучтённые участники; дарение — попытка скрыть сделку от третьих лиц.</p>
@@ -118,20 +125,13 @@
   <li>Регистрация права — в Росреестре, с вашим участием или по доверенности.</li>
   <li>Передача ключей — по акту приёма-передачи с показаниями счётчиков.</li>
 </ul>
-<p>Если вы только присматриваетесь к объекту — пришлите адрес и цену: скажем, завышена ли стоимость относительно рынка и какие вопросы задать продавцу первыми.</p>
-</div>
+<p>Если вы только присматриваетесь к объекту — пришлите адрес и цену: скажем, завышена ли стоимость относительно рынка и какие вопросы задать продавцу первыми.</p></div>
 
     <div class="post-source">Источник: <a href="contacts.html">Мультицентр недвижимости «Мой Дом»</a>, 17 ноября 2026</div>
   </article>
 
   <div class="post-bottom"><a class="post-back" href="blog.html">← Все материалы блога</a></div>
-
-  <div class="post-cta">
-    <div><h3>Нужна помощь с этим объектом?</h3><p>Позвоните — подскажем по документам, цене и срокам сделки в Мариуполе.</p></div>
-    <a href="tel:+79495044455" class="btn btn-accent" style="padding: 14px 28px; font-size: 1.05rem;">📞 +7 949 504-44-55</a>
-  </div>
 </section>
-
 <button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></button>
 <footer>
   <div class="container">
@@ -147,3 +147,4 @@
 <script src="js/main.js"></script>
 </body>
 </html>
+

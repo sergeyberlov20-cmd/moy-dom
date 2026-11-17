@@ -59,7 +59,12 @@
       .post-lead { font-size: 1.02rem; }
       .post-cta { padding: 24px 22px; }
     }
-  </style>
+  
+    .post-figure { margin: 0 0 24px; }
+    .post-cover { display: block; width: 100%; height: 340px; object-fit: cover; border-radius: 12px; background: #e9edf5; }
+    .post-figure figcaption { font-size: 0.78rem; color: var(--muted); margin-top: 8px; }
+    @media (max-width: 768px) { .post-cover { height: 210px; } }
+</style>
 </head>
 <body>
 <header>
@@ -87,21 +92,23 @@
     </div>
   </div>
 </header>
-
 <section class="container post-wrap">
   <nav class="post-crumbs"><a href="index.html">Главная</a> / <a href="blog.html">Блог</a> / <span>Рост цен на новостройки</span></nav>
 
   <article class="post">
     <div class="post-meta"><span class="post-tag ">Цены</span><time datetime="2026-07-28">28 июля 2026</time></div>
     <h1 class="post-title">Мариуполь — лидер России по росту цен на новостройки</h1>
+    <figure class="post-figure">
+      <img class="post-cover" src="images/10/1.webp" alt="Рост цен на новостройки — Мариуполь" loading="lazy">
+      <figcaption>Фото: архив «Мой Дом»</figcaption>
+    </figure>
     <p class="post-lead">Средняя цена квадратного метра в новостройках Мариуполя за год выросла на 36,3% и достигла 193,9 тыс. рублей. Это самый высокий рост среди курортных городов России, которые сравнивали аналитики.</p>
     <div class="post-facts">
       <div class="post-fact"><b>+36,3%</b><span>рост цены метра в новостройках за год</span></div>
       <div class="post-fact"><b>193,9 тыс. ₽</b><span>средняя цена кв. м (было 141,8 тыс.)</span></div>
       <div class="post-fact"><b>×7</b><span>выросло предложение — до 3,9 тыс. лотов</span></div>
     </div>
-    <div class="post-body">
-<h2>Цифры по городам</h2>
+    <div class="post-body"><h2>Цифры по городам</h2>
 <ul>
   <li><strong>Мариуполь</strong> — +36,3%: с 141,8 до 193,9 тыс. ₽ за кв. м.</li>
   <li>Новороссийск — +19,5%, до 246,7 тыс. ₽.</li>
@@ -116,20 +123,13 @@
 <h2>Что это значит для покупателя</h2>
 <p>Метр за год подорожал на 52 тыс. рублей — откладывать сделку дорого. Если бюджет ограничен, разумно смотреть готовое жильё на вторичном рынке или объекты, где продавец готов к торгу и быстрой сделке: мы подбираем такие варианты под конкретную задачу и сумму.</p>
 <h2>Как не переплатить</h2>
-<p>Сравнивайте не только цену за метр, но и реальную стоимость владения: состояние дома, коммуникации, долги по ЖКХ, будущие расходы на ремонт. Мы считаем эту «полную стоимость» до того, как вы вносите задаток.</p>
-</div>
+<p>Сравнивайте не только цену за метр, но и реальную стоимость владения: состояние дома, коммуникации, долги по ЖКХ, будущие расходы на ремонт. Мы считаем эту «полную стоимость» до того, как вы вносите задаток.</p></div>
 
     <div class="post-source">Источник: <a href="https://realty.ria.ru/20260728/mariupol-2107257887.html" target="_blank" rel="noopener">РИА Недвижимость</a>, 28 июля 2026</div>
   </article>
 
   <div class="post-bottom"><a class="post-back" href="blog.html">← Все материалы блога</a></div>
-
-  <div class="post-cta">
-    <div><h3>Нужна помощь с этим объектом?</h3><p>Позвоните — подскажем по документам, цене и срокам сделки в Мариуполе.</p></div>
-    <a href="tel:+79495044455" class="btn btn-accent" style="padding: 14px 28px; font-size: 1.05rem;">📞 +7 949 504-44-55</a>
-  </div>
 </section>
-
 <button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></button>
 <footer>
   <div class="container">
@@ -145,3 +145,4 @@
 <script src="js/main.js"></script>
 </body>
 </html>
+

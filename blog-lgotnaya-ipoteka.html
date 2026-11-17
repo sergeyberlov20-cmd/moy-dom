@@ -59,7 +59,12 @@
       .post-lead { font-size: 1.02rem; }
       .post-cta { padding: 24px 22px; }
     }
-  </style>
+  
+    .post-figure { margin: 0 0 24px; }
+    .post-cover { display: block; width: 100%; height: 340px; object-fit: cover; border-radius: 12px; background: #e9edf5; }
+    .post-figure figcaption { font-size: 0.78rem; color: var(--muted); margin-top: 8px; }
+    @media (max-width: 768px) { .post-cover { height: 210px; } }
+</style>
 </head>
 <body>
 <header>
@@ -87,13 +92,16 @@
     </div>
   </div>
 </header>
-
 <section class="container post-wrap">
   <nav class="post-crumbs"><a href="index.html">Главная</a> / <a href="blog.html">Блог</a> / <span>Льготная ипотека 2%</span></nav>
 
   <article class="post">
     <div class="post-meta"><span class="post-tag ">Ипотека</span><time datetime="2025-03-05">5 марта 2025</time></div>
     <h1 class="post-title">Льготная ипотека новых регионов: 2% годовых до 6 млн рублей</h1>
+    <figure class="post-figure">
+      <img class="post-cover" src="images/11/1.webp" alt="Льготная ипотека 2% — Мариуполь" loading="lazy">
+      <figcaption>Фото: архив «Мой Дом»</figcaption>
+    </figure>
     <p class="post-lead">Купить жильё в новых регионах можно по льготной ипотеке под 2% годовых: первоначальный взнос — от 10%, максимальная сумма кредита — 6 млн рублей, срок — от 15 до 30 лет.</p>
     <div class="post-facts">
       <div class="post-fact"><b>2%</b><span>ставка по льготной ипотеке</span></div>
@@ -101,8 +109,7 @@
       <div class="post-fact"><b>6 млн ₽</b><span>максимальная сумма кредита</span></div>
       <div class="post-fact"><b>15–30 лет</b><span>срок кредитования</span></div>
     </div>
-    <div class="post-body">
-<h2>Условия программы</h2>
+    <div class="post-body"><h2>Условия программы</h2>
 <ul>
   <li>Ставка — 2% годовых.</li>
   <li>Первоначальный взнос — от 10% стоимости жилья.</li>
@@ -123,20 +130,13 @@
 <h2>Сколько это в деньгах</h2>
 <p>Пример от экспертов: семья с доходом 80 тыс. рублей в месяц покупает квартиру за 4 млн рублей. При первоначальном взносе 600 тыс. и сроке 25 лет ежемесячный платёж составит около 16 тыс. рублей — примерно 20% семейного дохода.</p>
 <h2>Поможем посчитать</h2>
-<p>Подберём объект, который проходит по программе, посчитаем платёж под ваш взнос и доход и проверим документы застройщика или продавца до подписания кредитного договора.</p>
-</div>
+<p>Подберём объект, который проходит по программе, посчитаем платёж под ваш взнос и доход и проверим документы застройщика или продавца до подписания кредитного договора.</p></div>
 
     <div class="post-source">Источник: <a href="https://ria.ru/20250305/ipoteka-2003252481.html" target="_blank" rel="noopener">РИА Новости</a>, 5 марта 2025</div>
   </article>
 
   <div class="post-bottom"><a class="post-back" href="blog.html">← Все материалы блога</a></div>
-
-  <div class="post-cta">
-    <div><h3>Нужна помощь с этим объектом?</h3><p>Позвоните — подскажем по документам, цене и срокам сделки в Мариуполе.</p></div>
-    <a href="tel:+79495044455" class="btn btn-accent" style="padding: 14px 28px; font-size: 1.05rem;">📞 +7 949 504-44-55</a>
-  </div>
 </section>
-
 <button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></button>
 <footer>
   <div class="container">
@@ -152,3 +152,4 @@
 <script src="js/main.js"></script>
 </body>
 </html>
+

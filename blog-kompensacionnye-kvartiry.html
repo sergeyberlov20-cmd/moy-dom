@@ -59,7 +59,12 @@
       .post-lead { font-size: 1.02rem; }
       .post-cta { padding: 24px 22px; }
     }
-  </style>
+  
+    .post-figure { margin: 0 0 24px; }
+    .post-cover { display: block; width: 100%; height: 340px; object-fit: cover; border-radius: 12px; background: #e9edf5; }
+    .post-figure figcaption { font-size: 0.78rem; color: var(--muted); margin-top: 8px; }
+    @media (max-width: 768px) { .post-cover { height: 210px; } }
+</style>
 </head>
 <body>
 <header>
@@ -87,13 +92,16 @@
     </div>
   </div>
 </header>
-
 <section class="container post-wrap">
   <nav class="post-crumbs"><a href="index.html">Главная</a> / <a href="blog.html">Блог</a> / <span>Компенсационные квартиры</span></nav>
 
   <article class="post">
     <div class="post-meta"><span class="post-tag ">Главное</span><time datetime="2026-10-29">29 октября 2026</time></div>
     <h1 class="post-title">В Мариуполе завершают распределение компенсационных квартир</h1>
+    <figure class="post-figure">
+      <img class="post-cover" src="images/3/1.webp" alt="Компенсационные квартиры — Мариуполь" loading="lazy">
+      <figcaption>Фото: архив «Мой Дом»</figcaption>
+    </figure>
     <p class="post-lead">Компенсационные квартиры в Мариуполе распределили уже среди 4,1 тыс. человек, утративших жильё из-за боевых действий. Основную работу планируют завершить в октябре–ноябре, отдельные случаи могут остаться на декабрь.</p>
     <div class="post-facts">
       <div class="post-fact"><b>4,1 тыс.</b><span>человек получили компенсационные квартиры</span></div>
@@ -101,8 +109,7 @@
       <div class="post-fact"><b>600</b><span>квартир находятся на стадии оформления</span></div>
       <div class="post-fact"><b>70 тыс. ₽</b><span>за кв. м — размер денежной компенсации</span></div>
     </div>
-    <div class="post-body">
-<h2>Что сообщил глава города</h2>
+    <div class="post-body"><h2>Что сообщил глава города</h2>
 <p>О ходе программы во время прямого эфира рассказал глава муниципалитета Антон Кольцов. По его словам, работа по распределению компенсационных квартир выходит на финиш: «Мы приближаемся, действительно, к финалу именно в части распределения компенсационных квартир».</p>
 <p>Документы подписаны с более чем 3,5 тыс. граждан, которые стояли в очереди. Ещё около 600 квартир находится на распределении — люди уже подтвердили предложенные варианты, идёт оформление бумаг.</p>
 <h2>Сроки</h2>
@@ -116,20 +123,13 @@
 <p>Сейчас размер денежной выплаты повышен до 70 тыс. рублей за квадратный метр.</p>
 <h2>Что это значит для рынка</h2>
 <p>Завершение распределения снимает часть отложенного спроса: люди, которые годами ждали квадратные метры, наконец получают жильё. Для остальных покупателей это означает, что конкуренция за готовые квартиры в городе постепенно смещается в сторону вторичного рынка и аренды — а значит, проверять документы и торговаться нужно особенно внимательно.</p>
-<p>Если вы стоите в очереди и хотите понять, как соотносится предложенная квартира с рыночной ценой похожих объектов, — позвоните нам, поможем оценить вариант.</p>
-</div>
+<p>Если вы стоите в очереди и хотите понять, как соотносится предложенная квартира с рыночной ценой похожих объектов, — позвоните нам, поможем оценить вариант.</p></div>
 
     <div class="post-source">Источник: <a href="https://dan-news.ru/obschestvo/v-mariupole-zavershajut-raspredelenie-kompensacionnyh-kvartir/" target="_blank" rel="noopener">Донецкое агентство новостей</a>, 29 октября 2026</div>
   </article>
 
   <div class="post-bottom"><a class="post-back" href="blog.html">← Все материалы блога</a></div>
-
-  <div class="post-cta">
-    <div><h3>Нужна помощь с этим объектом?</h3><p>Позвоните — подскажем по документам, цене и срокам сделки в Мариуполе.</p></div>
-    <a href="tel:+79495044455" class="btn btn-accent" style="padding: 14px 28px; font-size: 1.05rem;">📞 +7 949 504-44-55</a>
-  </div>
 </section>
-
 <button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></button>
 <footer>
   <div class="container">
@@ -145,3 +145,4 @@
 <script src="js/main.js"></script>
 </body>
 </html>
+
