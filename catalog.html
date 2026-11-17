@@ -18,6 +18,32 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .catalog-tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 16px 0 8px; }
+    .catalog-search-wrap { position: relative; flex: 1 1 320px; min-width: 240px; }
+    .catalog-search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; fill: #9ca3af; pointer-events: none; }
+    .catalog-search-wrap input { width: 100%; padding: 13px 16px 13px 42px; border: 1px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 0.95rem; color: var(--text); background: #fff; outline: none; transition: border-color .2s, box-shadow .2s; }
+    .catalog-search-wrap input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(28, 46, 90, 0.08); }
+    .catalog-sort-wrap { display: inline-flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--muted); }
+    .catalog-sort-wrap select { padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px; background: #fff; font-family: inherit; font-size: 0.9rem; color: var(--primary); font-weight: 600; cursor: pointer; outline: none; }
+    .catalog-sort-wrap select:focus { border-color: var(--primary); }
+    @media (max-width: 650px) { .catalog-tools { flex-direction: column; align-items: stretch; } .catalog-sort-wrap { justify-content: space-between; } }
+  </style>
+
+  <!-- Open Graph / соцсети -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Мой Дом">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:title" content="Каталог недвижимости в Мариуполе — Мой Дом">
+  <meta property="og:description" content="Актуальный каталог квартир, домов и коммерческой недвижимости в Мариуполе.">
+  <meta property="og:url" content="https://dom-mc.ru/catalog.html">
+  <meta property="og:image" content="https://dom-mc.ru/images/og-cover.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Каталог недвижимости в Мариуполе — Мой Дом">
+  <meta name="twitter:description" content="Актуальный каталог квартир, домов и коммерческой недвижимости в Мариуполе.">
+  <meta name="twitter:image" content="https://dom-mc.ru/images/og-cover.png">
 </head>
 <body>
 <header>
@@ -92,6 +118,23 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="catalog-tools">
+    <div class="catalog-search-wrap">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 9.5 5a4.5 4.5 0 0 1 0 9z"/></svg>
+      <input type="search" id="catalog-search" placeholder="Поиск: район, улица, название" autocomplete="off">
+    </div>
+    <label class="catalog-sort-wrap">
+      <span>Сортировка</span>
+      <select id="catalog-sort">
+        <option value="default">По умолчанию</option>
+        <option value="price-asc">Цена: сначала дешёвые</option>
+        <option value="price-desc">Цена: сначала дорогие</option>
+        <option value="area-desc">Площадь: больше</option>
+        <option value="date-desc">Сначала новые</option>
+      </select>
+    </label>
   </div>
   
   <div class="objects-grid" id="catalog"></div>
@@ -177,7 +220,10 @@
       const rooms = getCheckedValues('f-rooms');
       const max = Number(priceRange.value);
 
-      const filtered = OBJECTS.filter(o => {
+      const q = (document.getElementById('catalog-search').value || '').trim().toLowerCase();
+      const sort = document.getElementById('catalog-sort').value;
+
+      let filtered = OBJECTS.filter(o => {
         if (types.length > 0 && !types.includes(o.type)) return false;
         if (deals.length > 0 && !deals.includes(o.deal)) return false;
         const typeHasRooms = o.type !== 'Гараж' && o.type !== 'Земельный участок';
@@ -186,16 +232,27 @@
           if (!hasMatchingRoom) return false;
         }
         if (max < MAX_PRICE && o.price > max) return false;
+        if (q) {
+          const hay = [(o.title || ''), (o.address || ''), (o.type || ''), (o.deal || ''), (o.description || '')].join(' ').toLowerCase();
+          if (hay.indexOf(q) === -1) return false;
+        }
         return true;
       });
 
-      catalog.innerHTML = filtered.length ? filtered.map(o => renderCard(o, { actions: true })).join('') : '<p style="padding:40px 0;color:#818c99;font-size:1.1rem;">Объектов не найдено. Попробуйте изменить фильтры.</p>';
+      if (sort === 'price-asc') filtered = filtered.slice().sort((a, b) => a.price - b.price);
+      else if (sort === 'price-desc') filtered = filtered.slice().sort((a, b) => b.price - a.price);
+      else if (sort === 'area-desc') filtered = filtered.slice().sort((a, b) => (b.area || 0) - (a.area || 0));
+      else if (sort === 'date-desc') filtered = filtered.slice().sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+
+      catalog.innerHTML = filtered.length ? filtered.map(o => renderCard(o, { actions: true })).join('') : '<p style="padding:40px 0;color:#818c99;font-size:1.1rem;">Ничего не найдено. Попробуйте изменить фильтры или очистить поиск.</p>';
       if (window.initMiniSliders) window.initMiniSliders();
     }
 
     priceRange.addEventListener('input', () => { updateSlider(); render(); });
     document.querySelectorAll('.f-type').forEach(el => { el.addEventListener('change', () => { updateRoomsDropdownState(); render(); }); });
     document.querySelectorAll('.f-deal, .f-rooms').forEach(el => { el.addEventListener('change', render); });
+    document.getElementById('catalog-search').addEventListener('input', render);
+    document.getElementById('catalog-sort').addEventListener('change', render);
 
     updateSlider();
     updateRoomsDropdownState();
