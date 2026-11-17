@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moydom-v26';
+const CACHE_NAME = 'moydom-v80';
 const urlsToCache = [
   '/moy-dom/',
   '/moy-dom/index.html',
@@ -6,6 +6,7 @@ const urlsToCache = [
   '/moy-dom/services.html',
   '/moy-dom/about.html',
   '/moy-dom/contacts.html',
+  '/moy-dom/blog.html',
   '/moy-dom/css/style.css',
   '/moy-dom/js/main.js',
   '/moy-dom/js/data.js',
@@ -15,23 +16,17 @@ const urlsToCache = [
   '/moy-dom/images/icon-512.png'
 ];
 
-// Установка кэша
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
 });
 
-// Перехват запросов
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      })
+    caches.match(event.request).then(response => {
+      if (response) return response;
+      return fetch(event.request);
+    })
   );
 });
