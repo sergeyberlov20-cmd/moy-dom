@@ -3,6 +3,7 @@ import { handleLead, handleEvent } from './leads.js';
 import { handleTelegram, dailyDigest, tgSetup, tgTest, tgDiag, tgProfile } from './bot.js';
 import { remindStale } from './remind.js';
 import { releaseScheduled, postRelease } from './release.js';
+import { reviewsDry, updateYandexReviews } from './reviews.js';
 import { ghDiag } from './diag.js';
 import {
   adminLogin, adminVerify, adminLogout, adminMe,
@@ -19,6 +20,20 @@ const RT = [
   ['/api/tg/profile', 'GET', tgProfile],
   ['/api/diag/gh', 'GET', ghDiag],
   ['/api/post/release', 'GET', postRelease],
+  ['/api/reviews/update', 'GET', async (request, env) => {
+    const key = new URL(request.url).searchParams.get('key') || '';
+    if (!env.WEBHOOK_SECRET || key !== env.WEBHOOK_SECRET) return json({ ok: false, error: 'forbidden' }, 403);
+    try {
+      return json(await updateYandexReviews(env));
+    } catch (e) {
+      return json({ ok: false, error: String((e && e.message) || e) }, 500);
+    }
+  }],
+  ['/api/reviews/dry', 'GET', async (request, env) => {
+    const key = new URL(request.url).searchParams.get('key') || '';
+    if (!env.WEBHOOK_SECRET || key !== env.WEBHOOK_SECRET) return json({ ok: false, error: 'forbidden' }, 403);
+    return json(await reviewsDry());
+  }],
   ['/api/admin/login', 'POST', adminLogin],
   ['/api/admin/verify', 'POST', adminVerify],
   ['/api/admin/logout', 'POST', adminLogout],

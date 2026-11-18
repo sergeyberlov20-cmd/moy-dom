@@ -206,7 +206,7 @@ export async function updateYandexReviews(env) {
   const dataSame = oldText === dataJsText;
   if (!dataSame) {
     await ghPut(env, 'js/reviews.js', textToBase64(dataJsText),
-      'Бот: отзывы с Яндекс.Карт — ' + fresh.length + ' шт.');
+      'Бот: отзывы с Яндекс.Карт — ' + fresh.length + ' шт.', oldFile ? oldFile.sha : undefined);
   }
 
   let htmlUpdated = false;
@@ -238,3 +238,24 @@ export async function updateYandexReviews(env) {
     htmlUpdated: htmlUpdated
   };
 }
+
+/* Диагностика: что сейчас отдаёт Яндекс (без записи в репозиторий) */
+export async function reviewsDry() {
+  const t0 = Date.now();
+  try {
+    const got = await fetchReviews();
+    const list = normalize(got.raw);
+    return {
+      ok: list.length > 0,
+      pages: got.pages,
+      raw: got.raw.length,
+      reviews: list.length,
+      ratingsCount: got.ratingsCount,
+      ms: Date.now() - t0,
+      first: list.length ? { author: list[0].author, date: list[0].date, rating: list[0].rating } : null
+    };
+  } catch (e) {
+    return { ok: false, error: String((e && e.message) || e), ms: Date.now() - t0 };
+  }
+}
+
