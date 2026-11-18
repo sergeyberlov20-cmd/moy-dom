@@ -98,6 +98,9 @@ export async function handleTelegram(request, env) {
     '📊 Статистика': '/stats',
     '➕ Добавить объект': '/add',
     '✍️ Написать в блог': '/post',
+    '🔗 Пригласить': '/invite',
+    '👥 Люди': '/botstats',
+    '♻️ Сброс': '/reset',
     '🌐 Открыть сайт': '/site'
   };
   const cmd = BTN[msg.text.trim()] || (parts[0] || '').toLowerCase();
@@ -112,7 +115,7 @@ export async function handleTelegram(request, env) {
       '/done 12 — закрыть заявку, /id — ваш Telegram ID,\n' +
       '/invite — ссылка-приглашение (только у вас),\n' +
       '/botstats — кто пользуется ботом (только у вас),\n' +
-      '/admins — кто имеет доступ, /adduser 123 — добавить по ID.',
+      '/reset — сбросить незаконченный диалог.',
       MAIN_KB);
     return new Response('ok');
   }
@@ -169,6 +172,16 @@ export async function handleTelegram(request, env) {
 
   if (cmd === '/post') {
     await startPost(env, msg.chat.id, fromId);
+    return new Response('ok');
+  }
+
+  if (cmd === '/reset') {
+    await dropState(env, fromId);
+    await dropPostState(env, fromId);
+    await tgSend(env, msg.chat.id,
+      '♻️ <b>Состояние сброшено</b>\n\n' +
+      'Незаконченные «Добавить объект» и «Написать в блог» закрыты — бот снова слушает команды и не считает ваши сообщения ответами диалога.',
+      MAIN_KB);
     return new Response('ok');
   }
 

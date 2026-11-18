@@ -34,7 +34,11 @@ export const DATE_KB = {
 
 export async function startPost(env, chatId, uid) {
   await putPostState(env, uid, { step: 'title' });
-  await tgSend(env, chatId, '✍️ <b>Новый пост в блог</b>\n\nШаг 1 из 4 — пришлите <b>заголовок</b>.', CANCEL_KB);
+  await tgSend(env, chatId,
+    '✍️ <b>Новый пост в блог</b>\n\n' +
+    'Шаг 1 из 4 — пришлите <b>заголовок</b>.\n\n' +
+    '💡 Дальше текст можно сразу с датой: <code>Текст поста | 2026-12-01</code> — тогда шаг с датой пропустится.',
+    CANCEL_KB);
 }
 
 export function postSummary(st) {

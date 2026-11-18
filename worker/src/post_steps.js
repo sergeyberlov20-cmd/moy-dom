@@ -3,6 +3,8 @@
  */
 import { tgSend } from './lib.js';
 import { getPostState, putPostState, CANCEL_KB, CONFIRM_KB, DATE_KB, postSummary } from './post.js';
+import { parsePostLine } from './quickparse.js';
+import { dateText } from './postutil.js';
 
 export async function handlePostMessage(env, msg, uid) {
   const chatId = msg.chat.id;
@@ -23,6 +25,24 @@ export async function handlePostMessage(env, msg, uid) {
   }
 
   if (st.step === 'text') {
+    // быстрый ввод: Текст поста | дата
+    const quick = parsePostLine(text);
+    if (quick) {
+      if (quick.error === 'text') {
+        await tgSend(env, chatId, 'Текст слишком короткий (меньше 30 символов). Пришлите полный текст.', CANCEL_KB);
+        return;
+      }
+      st.text = quick.text;
+      st.date = quick.date;
+      st.preDate = true;
+      st.step = 'photo';
+      await putPostState(env, uid, st);
+      await tgSend(env, chatId,
+        '⚡ <b>Текст и дата приняты</b> (' + dateText(quick.date) + ')\n\n' +
+        'Осталось фото: пришлите картинку или /skip', CANCEL_KB);
+      return;
+    }
+
     if (text.length < 30) {
       await tgSend(env, chatId, 'Текст слишком короткий (меньше 30 символов). Пришлите полный текст.', CANCEL_KB);
       return;
@@ -45,8 +65,12 @@ export async function handlePostMessage(env, msg, uid) {
       await tgSend(env, chatId, 'Нужна картинка (как фото или файлом) или «/skip».', CANCEL_KB);
       return;
     }
-    st.step = 'date';
+    st.step = st.preDate ? 'confirm' : 'date';
     await putPostState(env, uid, st);
+    if (st.step === 'confirm') {
+      await tgSend(env, chatId, postSummary(st), CONFIRM_KB);
+      return;
+    }
     await tgSend(env, chatId, 'Шаг 4 из 4 — <b>когда публиковать?</b>\nВыберите кнопку или пришлите дату вида <code>2026-12-01</code>.', DATE_KB);
     return;
   }

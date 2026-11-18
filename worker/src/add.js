@@ -1,5 +1,6 @@
 import { esc, tgApi, tgSend } from './lib.js';
 import { addObjectToCatalog, bytesToBase64 } from './github.js';
+import { parseObjectLine } from './quickparse.js';
 
 const TYPES = ['Квартира', 'Дом', 'Земельный участок', 'Офис', 'Гараж'];
 const DEALS = ['Продажа', 'Аренда'];
@@ -29,7 +30,11 @@ function kbRows(list, prefix) {
 
 export async function startAdd(env, chatId, uid) {
   await putState(env, uid, { step: 'type' });
-  await tgSend(env, chatId, '➕ <b>Новый объект</b>\nШаг 1/7 — тип недвижимости:', kbRows(TYPES, 'add:type:'));
+  await tgSend(env, chatId,
+    '➕ <b>Новый объект</b>\nШаг 1/7 — тип недвижимости:\n\n' +
+    '💡 После выбора типа и сделки можно всё сразу одной строкой:\n' +
+    '<code>Название | Цена | Адрес | Комнаты Площадь</code>',
+    kbRows(TYPES, 'add:type:'));
 }
 
 function summary(st) {
@@ -134,13 +139,44 @@ export async function handleAddMessage(env, msg, uid) {
   const text = (msg.text || '').trim();
 
   if (st.step === 'title') {
+    // быстрый ввод: Название | Цена | Адрес | Комнаты Площадь
+    const quick = parseObjectLine(text);
+    if (quick) {
+      if (quick.error === 'title') { await tgSend(env, chatId, 'Название — от 5 до 120 символов. Проверьте первый блок.'); return; }
+      if (quick.error === 'price') { await tgSend(env, chatId, 'Цена должна быть числом от 1 000 ₽. Проверьте второй блок.'); return; }
+      if (quick.error === 'address') { await tgSend(env, chatId, 'Адрес — минимум 3 символа. Проверьте третий блок.'); return; }
+
+      st.title = quick.title;
+      st.price = quick.price;
+      st.address = quick.address;
+      st.rooms = quick.rooms;
+      st.area = quick.area;
+      st.step = 'photo';
+      await putState(env, uid, st);
+      await tgSend(env, chatId,
+        '⚡ <b>Заполнил одной строкой</b>\n\n' +
+        esc(quick.title) + '\n' + Number(quick.price).toLocaleString('ru-RU') + ' ₽\n' + esc(quick.address) +
+        (quick.rooms ? '\nКомнат: ' + quick.rooms + (quick.area ? ', площадь: ' + quick.area + ' м²' : '') : '') +
+        '\n\nОсталось фото: пришлите картинку или /skip');
+      return;
+    }
+    if (text.indexOf('|') >= 0) {
+      await tgSend(env, chatId,
+        'Не разобрал строку. Формат:\n<code>Название | Цена | Адрес | Комнаты Площадь</code>\n' +
+        'Например: <code>2-комнатная в центре | 4500000 | г. Мариуполь, пр. Ленина 54 | 2 46</code>\n\n' +
+        'Или пришлите только название — спрошу остальное по шагам.');
+      return;
+    }
+
     if (text.length < 5 || text.length > 120) {
       await tgSend(env, chatId, 'Название — от 5 до 120 символов. Пришлите ещё раз.');
       return;
     }
     st.title = text; st.step = 'price';
     await putState(env, uid, st);
-    await tgSend(env, chatId, 'Шаг 4/7 — <b>цена</b> в рублях (только цифры).\nНапример: 4500000');
+    await tgSend(env, chatId,
+      'Шаг 4/7 — <b>цена</b> в рублях (только цифры).\nНапример: 4500000\n\n' +
+      '💡 Можно было одной строкой: <code>Название | Цена | Адрес | Комнаты Площадь</code>');
     return;
   }
 
