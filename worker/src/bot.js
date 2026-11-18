@@ -2,6 +2,7 @@ import { json, esc, tgApi, tgSend, tgNotify, isAdmin, adminIds, allAdminIds, ext
 import { startAdd, handleAddCallback, handleAddMessage, dropState } from './add.js';
 import { startPost, handlePostCallback, isPosting, dropPostState } from './post.js';
 import { handlePostMessage } from './post_steps.js';
+import { createInvite, acceptInvite } from './invite.js';
 import { metrikaSummary } from './remind.js';
 
 const STATUS_RU = { new: 'новая', inwork: 'в работе', done: 'закрыта', spam: 'спам' };
@@ -41,6 +42,23 @@ export async function handleTelegram(request, env) {
   const fromId = msg.from ? msg.from.id : 0;
   const allowed = await isAllowedAdmin(env, fromId);
   if (!allowed) {
+    // вход по ссылке-приглашению: /start inv_XXXX
+    const im = (msg.text || '').trim().match(/^\/start\s+inv_(\S+)/i);
+    if (im) {
+      const res = await acceptInvite(env, im[1], fromId);
+      if (res.ok) {
+        await tgSend(env, msg.chat.id,
+          '✅ <b>Доступ открыт</b>\n\n' +
+          'Здравствуйте! Теперь вам доступны заявки с сайта, каталог и блог.\n' +
+          'Код для входа в панель заявок будет приходить сюда же.\n\n' +
+          'Кнопки внизу — меню.', MAIN_KB);
+      } else {
+        await tgSend(env, msg.chat.id,
+          '⚠️ Ссылка-приглашение недействительна или уже использована.\n\n' +
+          'Попросите новую у владельца или отправьте /id — он добавит вас вручную.');
+      }
+      return new Response('ok');
+    }
     // любому человеку можно узнать свой ID, чтобы владелец добавил его в список
     const t = (msg.text || '').trim().toLowerCase();
     if (msg.text && (t === '/id' || t === '/start' || t === 'id')) {
@@ -88,7 +106,8 @@ export async function handleTelegram(request, env) {
       '/leads — заявки, /stats — сводка,\n' +
       '/add — новый объект, /post — пост в блог,\n' +
       '/done 12 — закрыть заявку, /id — ваш Telegram ID,\n' +
-      '/admins — кто имеет доступ, /adduser 123 — добавить человека.',
+      '/invite — ссылка-приглашение для коллеги,\n' +
+      '/admins — кто имеет доступ, /adduser 123 — добавить по ID.',
       MAIN_KB);
     return new Response('ok');
   }
@@ -163,6 +182,31 @@ export async function handleTelegram(request, env) {
     }
     await env.DB.prepare('UPDATE leads SET status = ? WHERE id = ?').bind('done', id).run();
     await tgSend(env, msg.chat.id, '✅ Заявка №' + id + ' закрыта.');
+    return new Response('ok');
+  }
+
+  if (cmd === '/invite') {
+    if (!isAdmin(env, fromId)) {
+      await tgSend(env, msg.chat.id, '⛔ Приглашения создаёт только владелец.');
+      return new Response('ok');
+    }
+    const code = await createInvite(env, fromId);
+    const botUser = env.BOT_USERNAME || 'MoyDom_Mariupol_bot';
+    const tgLink = 'https://t.me/' + botUser + '?start=inv_' + code;
+    const pageLink = 'https://dom-mc.ru/admin/join.html?c=' + code;
+    await tgSend(env, msg.chat.id,
+      '🔗 <b>Ссылка-приглашение</b>\n\n' +
+      'Код: <code>' + code + '</code> — действует 24 часа, одноразовый.\n\n' +
+      'Человек открывает ссылку → нажимает <b>Start</b> у бота → доступ выдан автоматически.\n\n' +
+      'Красивая страница: ' + pageLink + '\n' +
+      'Сразу в Telegram: ' + tgLink + '\n\n' +
+      'Внутри будет: заявки, статистика, объекты, блог и код входа в панель.',
+      {
+        inline_keyboard: [
+          [{ text: '📨 Отправить приглашение', url: 'https://t.me/share/url?url=' + encodeURIComponent(pageLink) + '&text=' + encodeURIComponent('Доступ к панели агентства «Мой Дом»') }],
+          [{ text: 'Открыть страницу приглашения', url: pageLink }]
+        ]
+      });
     return new Response('ok');
   }
 
