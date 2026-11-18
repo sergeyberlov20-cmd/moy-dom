@@ -108,6 +108,60 @@
     }
     
     document.title = `${obj.title} — ${obj.deal} | Мой Дом`;
+
+    /* SEO карточки: canonical, description и OG под конкретный объект */
+    (function () {
+      try {
+        const SITE = 'https://dom-mc.ru';
+        const url = SITE + '/object.html?id=' + obj.id;
+        let canon = document.querySelector('link[rel="canonical"]');
+        if (!canon) { canon = document.createElement('link'); canon.rel = 'canonical'; document.head.appendChild(canon); }
+        canon.setAttribute('href', url);
+
+        const cover = (rawGallery && rawGallery[0] ? String(rawGallery[0]).replace(/^\//, '') : 'images/logo.png');
+        const desc = [obj.title, obj.deal, obj.address, obj.price ? Math.round(obj.price).toLocaleString('ru-RU') + ' ₽' : '']
+          .filter(Boolean).join(' · ').slice(0, 300);
+
+        const setMeta = (key, content, isProp) => {
+          const sel = (isProp ? 'meta[property="' : 'meta[name="') + key + '"]';
+          let el = document.querySelector(sel);
+          if (!el) {
+            el = document.createElement('meta');
+            el.setAttribute(isProp ? 'property' : 'name', key);
+            document.head.appendChild(el);
+          }
+          el.setAttribute('content', content);
+        };
+
+        setMeta('description', desc);
+        setMeta('og:type', 'product', true);
+        setMeta('og:title', document.title, true);
+        setMeta('og:description', desc, true);
+        setMeta('og:url', url, true);
+        setMeta('og:image', SITE + '/' + cover, true);
+
+        const ld = document.createElement('script');
+        ld.type = 'application/ld+json';
+        ld.textContent = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: obj.title,
+          description: (obj.description || desc).slice(0, 500),
+          image: [SITE + '/' + cover],
+          category: obj.type,
+          url: url,
+          offers: {
+            '@type': 'Offer',
+            price: Number(obj.price) || 0,
+            priceCurrency: 'RUB',
+            availability: 'https://schema.org/InStock',
+            url: url,
+            seller: { '@type': 'RealEstateAgent', name: 'Мультицентр недвижимости «Мой Дом»', telephone: '+7-949-504-44-55' }
+          }
+        });
+        document.head.appendChild(ld);
+      } catch (e) { /* SEO-блок не критичен */ }
+    })();
     const rawGallery = obj.images && obj.images.length > 0 ? obj.images : [obj.image]; 
     const galleryImages = rawGallery.map(img => img.replace(/^\//, ''));
     
