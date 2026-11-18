@@ -256,6 +256,15 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
 .price-reset { background: none; border: none; padding: 0; font: inherit; font-size: 0.85rem; font-weight: 700; color: var(--accent); cursor: pointer; }
 .price-reset:hover { text-decoration: underline; }
 
+/* Мобильный каталог: компактнее отступы, чтобы объект был ближе к фильтрам */
+@media (max-width: 768px) {
+  .section-title { margin: 26px 0 12px; }
+  .filters-bar { margin: 12px 0 10px; gap: 8px; }
+  .filter-dropdown { padding: 9px 14px; }
+  .catalog-tools { margin: 10px 0 0; gap: 8px; }
+  .objects-grid { margin: 14px 0 28px; gap: 18px; }
+  .catalog-tools .catalog-sort-wrap { margin-bottom: 0; }
+}
 /* Кнопка «Наверх» — светлая, «под сайт», с аккуратной тонкой стрелкой */
 #scrollTopBtn {
   position: fixed;
