@@ -188,3 +188,65 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 });
+
+/* ===== Заставка запуска (PWA): фирменный экран вместо белой вспышки ===== */
+(function () {
+  try {
+    var scriptUrl = (document.currentScript && document.currentScript.src) || '';
+    var base = scriptUrl.replace(/js\/main\.js.*$/, '');
+    var logo = base + 'images/logo.png';
+    var standalone = false;
+    try { standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true; } catch (e) {}
+    var seen = '';
+    try { seen = sessionStorage.getItem('moydom_splash') || ''; } catch (e) {}
+    if (seen === '1' && !standalone) return;
+
+    var css = document.createElement('style');
+    css.id = 'md-splash-css';
+    css.textContent = [
+      '#mdSplash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;',
+      'background:radial-gradient(circle at 50% 32%,#2a4373 0%,rgba(0,0,0,0) 62%),linear-gradient(160deg,#243b6b 0%,#1c2e5a 45%,#0f172a 100%);',
+      'opacity:1;transition:opacity .45s ease}',
+      '#mdSplash.md-hide{opacity:0;pointer-events:none}',
+      '#mdSplash .md-badge{width:98px;height:98px;border-radius:28px;background:#fff;display:flex;align-items:center;justify-content:center;',
+      'box-shadow:0 18px 44px rgba(0,0,0,.32);animation:mdPop .75s cubic-bezier(.2,.9,.3,1.25) both}',
+      '#mdSplash .md-badge img{width:62px;height:auto;display:block}',
+      '#mdSplash .md-name{font-family:Inter,-apple-system,Segoe UI,Roboto,sans-serif;font-weight:900;font-size:1.55rem;letter-spacing:.5px;',
+      'color:#fff;text-transform:uppercase;animation:mdUp .6s ease .12s both}',
+      '#mdSplash .md-name span{color:#ff4048}',
+      '#mdSplash .md-sub{font-family:Inter,sans-serif;font-size:.7rem;letter-spacing:2.4px;text-transform:uppercase;',
+      'color:rgba(255,255,255,.55);margin-top:-8px;animation:mdUp .6s ease .2s both}',
+      '#mdSplash .md-line{width:136px;height:3px;border-radius:3px;background:rgba(255,255,255,.16);overflow:hidden;margin-top:10px}',
+      '#mdSplash .md-line i{display:block;height:100%;width:42%;border-radius:3px;background:linear-gradient(90deg,#cc2229,#ff6b6f);animation:mdRun 1.15s ease-in-out infinite}',
+      '@keyframes mdPop{from{transform:scale(.72);opacity:0}to{transform:scale(1);opacity:1}}',
+      '@keyframes mdUp{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}',
+      '@keyframes mdRun{0%{transform:translateX(-130%)}100%{transform:translateX(330%)}}',
+      '@media (prefers-reduced-motion: reduce){#mdSplash *{animation:none!important}}'
+    ].join('');
+    document.head.appendChild(css);
+
+    var el = document.createElement('div');
+    el.id = 'mdSplash';
+    el.setAttribute('aria-hidden', 'true');
+    el.innerHTML =
+      '<div class="md-badge"><img src="' + logo + '" alt=""></div>' +
+      '<div class="md-name">Мой<span>Дом</span></div>' +
+      '<div class="md-sub">Мультицентр недвижимости</div>' +
+      '<div class="md-line"><i></i></div>';
+    (document.body || document.documentElement).appendChild(el);
+    try { sessionStorage.setItem('moydom_splash', '1'); } catch (e) {}
+
+    var started = Date.now(), done = false;
+    function hide() {
+      if (done) return;
+      done = true;
+      setTimeout(function () {
+        el.classList.add('md-hide');
+        setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 500);
+      }, Math.max(0, 520 - (Date.now() - started)));
+    }
+    if (document.readyState === 'complete') hide();
+    else window.addEventListener('load', hide, { once: true });
+    setTimeout(hide, 2600);
+  } catch (e) { /* заставка не критична для сайта */ }
+})();

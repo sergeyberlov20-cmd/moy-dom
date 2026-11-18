@@ -10,7 +10,7 @@
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
   "orientation": "any",
-  "background_color": "#f8f9fa",
+  "background_color": "#1c2e5a",
   "theme_color": "#1c2e5a",
   "categories": ["business", "lifestyle"],
   "icons": [
