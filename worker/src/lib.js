@@ -80,7 +80,7 @@ const tgSend = (env, chatId, text, reply_markup) =>
 
 /* Постоянная клавиатура внизу чата — как в приложении */
 /* Команды, которые должны срабатывать даже во время диалога /add или /post */
-const DIALOG_COMMANDS = ['/cancel', '/reset', '/post', '/add', '/start', '/help', '/leads', '/stats', '/site', '/id', '/done', '/admins', '/adduser', '/deluser', '/invite', '/botstats', '/reviews'];
+const DIALOG_COMMANDS = ['/cancel', '/reset', '/post', '/add', '/start', '/help', '/leads', '/stats', '/site', '/id', '/done', '/admins', '/adduser', '/deluser', '/invite', '/botstats', '/reviews', '/price', '/sold'];
 
 export function isDialogCommand(text) {
   const t = String(text || '').trim().toLowerCase();
@@ -141,6 +141,16 @@ async function setExtraAdmins(env, list) {
   return clean;
 }
 
+/* Удалить сообщение бота (чтобы чат не зарастал шагами диалога) */
+async function tgDelete(env, chatId, messageId) {
+  if (!env.BOT_TOKEN || !chatId || !messageId) return null;
+  try {
+    return await tgApi(env, 'deleteMessage', { chat_id: chatId, message_id: messageId });
+  } catch (e) {
+    return null;
+  }
+}
+
 const MAIN_KB = {
   keyboard: [
     [{ text: '📋 Заявки' }, { text: '📊 Статистика' }],
@@ -161,4 +171,4 @@ const NAV_KB = {
   ]]
 };
 
-export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, tgNotify, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, EVENT_TYPES, MAIN_KB, NAV_KB };
+export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, tgNotify, tgDelete, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, EVENT_TYPES, MAIN_KB, NAV_KB };

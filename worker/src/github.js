@@ -131,6 +131,51 @@ function publicAddress(addr) {
   return s.replace(/\s{2,}/g, ' ').replace(/[,;]\s*$/, '').trim();
 }
 
+/* Меняет цену объекта в каталоге */
+export async function setObjectPrice(env, id, price) {
+  const dataPath = env.DATA_FILE || 'js/data.json';
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const file = await ghGet(env, dataPath);
+    if (!file) throw new Error('каталог не найден');
+    const json = JSON.parse(base64ToText(file.content));
+    const list = Array.isArray(json) ? json : json.objects;
+    const obj = list.find((o) => Number(o.id) === Number(id));
+    if (!obj) throw new Error('объект №' + id + ' не найден');
+    const old = obj.price;
+    obj.price = Number(price);
+    try {
+      await ghPut(env, dataPath, textToBase64(JSON.stringify(json, null, 2) + '\n'),
+        'Бот: цена объекта #' + id + ' — ' + Number(price).toLocaleString('ru-RU') + ' ₽', file.sha);
+      return { id: Number(id), title: obj.title, old: old, price: Number(price) };
+    } catch (e) {
+      if (attempt === 3) throw e;
+      await new Promise((r) => setTimeout(r, 400));
+    }
+  }
+}
+
+/* Снимает объект с публикации (удаляет из каталога, фото остаются на диске) */
+export async function removeObjectFromCatalog(env, id) {
+  const dataPath = env.DATA_FILE || 'js/data.json';
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const file = await ghGet(env, dataPath);
+    if (!file) throw new Error('каталог не найден');
+    const json = JSON.parse(base64ToText(file.content));
+    const list = Array.isArray(json) ? json : json.objects;
+    const idx = list.findIndex((o) => Number(o.id) === Number(id));
+    if (idx < 0) throw new Error('объект №' + id + ' не найден');
+    const removed = list.splice(idx, 1)[0];
+    try {
+      await ghPut(env, dataPath, textToBase64(JSON.stringify(json, null, 2) + '\n'),
+        'Бот: объект #' + id + ' снят с публикации — ' + removed.title, file.sha);
+      return { id: Number(id), title: removed.title, left: list.length };
+    } catch (e) {
+      if (attempt === 3) throw e;
+      await new Promise((r) => setTimeout(r, 400));
+    }
+  }
+}
+
 /**
  * Добавляет объект в каталог (js/data.json) и, если есть фото, коммитит его в images/uploads.
  * Возвращает созданный объект.

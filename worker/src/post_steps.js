@@ -20,7 +20,7 @@ export async function handlePostMessage(env, msg, uid) {
     st.title = text;
     st.step = 'text';
     await putPostState(env, uid, st);
-    await promptPost(env, chatId, st);
+    await promptPost(env, chatId, uid, st);
     return;
   }
 
@@ -50,7 +50,7 @@ export async function handlePostMessage(env, msg, uid) {
     st.text = text.slice(0, 5000);
     st.step = 'photo';
     await putPostState(env, uid, st);
-    await promptPost(env, chatId, st);
+    await promptPost(env, chatId, uid, st);
     return;
   }
 
@@ -67,7 +67,7 @@ export async function handlePostMessage(env, msg, uid) {
     }
     st.step = st.preDate ? 'confirm' : 'date';
     await putPostState(env, uid, st);
-    await promptPost(env, chatId, st);
+    await promptPost(env, chatId, uid, st);
     return;
   }
 

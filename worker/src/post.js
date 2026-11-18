@@ -1,7 +1,7 @@
 /**
  * Диалог «написать пост в блог»: состояние, старт, публикация.
  */
-import { tgApi, tgSend } from './lib.js';
+import { tgApi, tgSend, tgDelete, MAIN_KB } from './lib.js';
 import { publishPost } from './publish.js';
 import { dateText } from './postutil.js';
 
@@ -40,12 +40,17 @@ export const DATE_KB = {
 };
 
 export async function startPost(env, chatId, uid) {
-  await putPostState(env, uid, { step: 'title' });
-  await tgSend(env, chatId,
+  const st = { step: 'title' };
+  await putPostState(env, uid, st);
+  const r = await tgSend(env, chatId,
     '✍️ <b>Новый пост в блог</b>\n\n' +
     'Шаг 1 из 4 — пришлите <b>заголовок</b>.\n\n' +
     '💡 Дальше текст можно сразу с датой: <code>Текст поста | 2026-12-01</code> — тогда шаг с датой пропустится.',
     CANCEL_KB);
+  if (r && r.result && r.result.message_id) {
+    st._pm = r.result.message_id;
+    await putPostState(env, uid, st);
+  }
 }
 
 export function postSummary(st) {
@@ -59,22 +64,28 @@ export function postSummary(st) {
 }
 
 /* Показать вопрос текущего шага поста (и при «Назад») */
-export async function promptPost(env, chatId, st) {
+export async function promptPost(env, chatId, uid, st) {
+  let r;
   if (st.step === 'text') {
-    return tgSend(env, chatId,
+    r = await tgSend(env, chatId,
       'Шаг 2 из 4 — пришлите <b>текст поста</b>.\nАбзацы разделяйте пустой строкой; первый абзац станет вступлением.\n\n' +
       '💡 Можно сразу с датой: <code>Текст поста | 2026-12-01</code>', BACK_KB);
+  } else if (st.step === 'photo') {
+    r = await tgSend(env, chatId, 'Шаг 3 из 4 — <b>фото</b> для поста.\nОтправьте картинку или напишите «/skip».', BACK_KB);
+  } else if (st.step === 'date') {
+    r = await tgSend(env, chatId, 'Шаг 4 из 4 — <b>когда публиковать?</b>\nВыберите кнопку или пришлите дату вида <code>2026-12-01</code>.', DATE_KB);
+  } else if (st.step === 'confirm') {
+    r = await tgSend(env, chatId, postSummary(st), CONFIRM_KB);
+  } else {
+    r = await tgSend(env, chatId, 'Шаг 1 из 4 — пришлите <b>заголовок</b>.', CANCEL_KB);
   }
-  if (st.step === 'photo') {
-    return tgSend(env, chatId, 'Шаг 3 из 4 — <b>фото</b> для поста.\nОтправьте картинку или напишите «/skip».', BACK_KB);
-  }
-  if (st.step === 'date') {
-    return tgSend(env, chatId, 'Шаг 4 из 4 — <b>когда публиковать?</b>\nВыберите кнопку или пришлите дату вида <code>2026-12-01</code>.', DATE_KB);
-  }
-  if (st.step === 'confirm') {
-    return tgSend(env, chatId, postSummary(st), CONFIRM_KB);
-  }
-  return tgSend(env, chatId, 'Шаг 1 из 4 — пришлите <b>заголовок</b>.', CANCEL_KB);
+
+  // чат не зарастает: удаляем предыдущий шаг
+  const prev = st._pm;
+  if (r && r.result && r.result.message_id) st._pm = r.result.message_id;
+  if (prev && prev !== st._pm) await tgDelete(env, chatId, prev);
+  if (uid) await putPostState(env, uid, st);
+  return r;
 }
 
 export async function handlePostCallback(env, query) {
@@ -84,9 +95,10 @@ export async function handlePostCallback(env, query) {
   const st = await getPostState(env, uid);
 
   if (data === 'post:cancel') {
+    if (st && st._pm) await tgDelete(env, chatId, st._pm);
     await dropPostState(env, uid);
     await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id, text: 'Отменено' });
-    await tgSend(env, chatId, '❌ Публикация отменена.');
+    await tgSend(env, chatId, '❌ Публикация отменена.', MAIN_KB);
     return new Response('ok');
   }
 
@@ -106,7 +118,7 @@ export async function handlePostCallback(env, query) {
 
     await putPostState(env, uid, st);
     await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id, text: 'Назад' });
-    await promptPost(env, chatId, st);
+    await promptPost(env, chatId, uid, st);
     return new Response('ok');
   }
 
@@ -148,16 +160,17 @@ export async function handlePostCallback(env, query) {
 
     try {
       const res = await publishPost(env, draft);
+      if (st._pm) await tgDelete(env, chatId, st._pm);
       await dropPostState(env, uid);
       await tgSend(env, chatId,
         (res.published ? '✅ <b>Пост опубликован</b>' : '🕒 <b>Пост запланирован на ' + dateText(res.date) + '</b>') +
-        '\n\n' + res.url + (res.published ? '' : '\n\nВыйдет в блоге сам в этот день.'));
+        '\n\n' + res.url + (res.published ? '' : '\n\nВыйдет в блоге сам в этот день.'), MAIN_KB);
     } catch (e) {
       const m = String((e && e.message) || e);
       const hint = m.indexOf('403') >= 0
         ? '\n\nУ токена GitHub нет права на запись (Contents: Read and write). Исправьте права токена и запустите deploy.ps1.'
         : '';
-      await tgSend(env, chatId, '⚠️ Не удалось опубликовать: ' + m + hint);
+      await tgSend(env, chatId, '⚠️ Не удалось опубликовать: ' + m + hint, MAIN_KB);
     }
     return new Response('ok');
   }

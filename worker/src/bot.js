@@ -4,6 +4,7 @@ import { startPost, handlePostCallback, isPosting, dropPostState } from './post.
 import { handlePostMessage } from './post_steps.js';
 import { createInvite, acceptInvite } from './invite.js';
 import { updateYandexReviews } from './reviews.js';
+import { setObjectPrice, removeObjectFromCatalog } from './github.js';
 import { touchBotUser, botStatsText, botUsersLine } from './botstats.js';
 import { metrikaSummary } from './remind.js';
 
@@ -38,6 +39,24 @@ export async function handleTelegram(request, env) {
     }
     if (d.indexOf('add:') === 0) return await handleAddCallback(env, update.callback_query);
     if (d.indexOf('post:') === 0) return await handlePostCallback(env, update.callback_query);
+
+    if (d.indexOf('sold:') === 0) {
+      if (d === 'sold:no') {
+        await tgApi(env, 'answerCallbackQuery', { callback_query_id: update.callback_query.id, text: 'Отменено' });
+        return new Response('ok');
+      }
+      const objId = Number(d.split(':')[1]);
+      try {
+        const r = await removeObjectFromCatalog(env, objId);
+        await tgApi(env, 'answerCallbackQuery', { callback_query_id: update.callback_query.id, text: 'Снят с публикации' });
+        await tgSend(env, update.callback_query.message.chat.id,
+          '✅ <b>Снят с публикации</b>\n\n' + esc(r.title) + '\nВ каталоге осталось объектов: ' + r.left +
+          '\nЧерез 1–2 минуты сайт обновится.', MAIN_KB);
+      } catch (e) {
+        await tgSend(env, update.callback_query.message.chat.id, '⚠️ Не получилось: ' + esc(String((e && e.message) || e)));
+      }
+      return new Response('ok');
+    }
     return await handleCallback(update.callback_query, env, true);
   }
 
@@ -114,6 +133,7 @@ export async function handleTelegram(request, env) {
       '/leads — заявки, /stats — сводка,\n' +
       '/add — новый объект, /post — пост в блог,\n' +
       '/done 12 — закрыть заявку, /id — ваш Telegram ID,\n' +
+      '/price 52 4300000 — новая цена, /sold 52 — снять объект,\n' +
       '/invite — ссылка-приглашение (только у вас),\n' +
       '/botstats — кто пользуется ботом (только у вас),\n' +
       '/reviews — обновить отзывы с Яндекс.Карт (только у вас),\n' +
@@ -131,7 +151,7 @@ export async function handleTelegram(request, env) {
     const filter = arg && STATUSES.includes(arg) ? arg : '';
     const stmt = env.DB.prepare(
       'SELECT id, created_at, name, phone, message, page, status FROM leads' +
-      (filter ? ' WHERE status = ?' : '') + ' ORDER BY id DESC LIMIT 10'
+      (filter ? ' WHERE status = ?' : '') + ' ORDER BY id DESC LIMIT 8'
     );
     const rows = filter ? await stmt.bind(filter).all() : await stmt.bind().all();
     const list = rows.results || [];
@@ -139,16 +159,28 @@ export async function handleTelegram(request, env) {
       await tgSend(env, msg.chat.id, 'Пока заявок нет 🙂', MAIN_KB);
       return new Response('ok');
     }
+
+    // одно сообщение вместо десяти
+    let total = 0;
+    const lines = [];
+    const buttons = [];
     for (const r of list) {
-      await tgSend(env, msg.chat.id,
-        '📄 <b>№' + r.id + '</b> · ' + (STATUS_RU[r.status] || r.status) + '\n' +
-        '👤 ' + esc(r.name || '—') + '\n' +
-        '📞 <a href="tel:' + esc(String(r.phone).replace(/[^\d+]/g, '')) + '">' + esc(r.phone) + '</a>\n' +
-        (r.message ? '💬 ' + esc(r.message) + '\n' : '') +
-        '🌐 ' + esc(r.page || '—') + '\n' +
-        '🕒 ' + esc(r.created_at) + ' UTC', KB(r.id));
+      let block = '📄 <b>№' + r.id + '</b> · ' + (STATUS_RU[r.status] || r.status) + '\n' +
+        '👤 ' + esc(r.name || '—') + ' · <a href="tel:' + esc(String(r.phone).replace(/[^\d+]/g, '')) + '">' + esc(r.phone) + '</a>' +
+        (r.message ? '\n💬 ' + esc(String(r.message).slice(0, 160)) : '') +
+        '\n🕒 ' + esc(r.created_at) + ' UTC' + (r.page ? ' · ' + esc(String(r.page).slice(0, 40)) : '');
+      if (total + block.length > 3300) break;
+      total += block.length + 2;
+      lines.push(block);
+      buttons.push([
+        { text: '📞 №' + r.id, callback_data: 'st:' + r.id + ':inwork' },
+        { text: '✅ №' + r.id, callback_data: 'st:' + r.id + ':done' }
+      ]);
     }
-    await tgSend(env, msg.chat.id, 'Показаны последние ' + list.length + ' заявок.', MAIN_KB);
+
+    await tgSend(env, msg.chat.id,
+      '📋 <b>Заявки</b>' + (filter ? ' · ' + (STATUS_RU[filter] || filter) : '') + '\n\n' + lines.join('\n\n'),
+      buttons.length ? { inline_keyboard: buttons } : MAIN_KB);
     return new Response('ok');
   }
 
@@ -232,6 +264,43 @@ export async function handleTelegram(request, env) {
     } catch (e) {
       await tgSend(env, msg.chat.id, '⚠️ Ошибка обновления: ' + esc(String((e && e.message) || e)));
     }
+    return new Response('ok');
+  }
+
+  if (cmd === '/price') {
+    if (!isAdmin(env, fromId)) { await tgSend(env, msg.chat.id, '⛔ Менять цену может только владелец.'); return new Response('ok'); }
+    const id = Number(arg);
+    const price = Number(parts[2]);
+    if (!id || !price || price < 1000) {
+      await tgSend(env, msg.chat.id, 'Формат: <code>/price 52 4300000</code>\nНомер объекта — из карточки или из сообщения о публикации.', MAIN_KB);
+      return new Response('ok');
+    }
+    try {
+      const r = await setObjectPrice(env, id, price);
+      await tgSend(env, msg.chat.id,
+        '💰 <b>Цена обновлена</b>\n\n' + esc(r.title) + '\n' +
+        Number(r.old).toLocaleString('ru-RU') + ' ₽ → <b>' + Number(r.price).toLocaleString('ru-RU') + ' ₽</b>\n\n' +
+        'https://dom-mc.ru/object.html?id=' + r.id + '\nЧерез 1–2 минуты появится на сайте.', MAIN_KB);
+    } catch (e) {
+      await tgSend(env, msg.chat.id, '⚠️ Не получилось: ' + esc(String((e && e.message) || e)));
+    }
+    return new Response('ok');
+  }
+
+  if (cmd === '/sold') {
+    if (!isAdmin(env, fromId)) { await tgSend(env, msg.chat.id, '⛔ Снимать объекты может только владелец.'); return new Response('ok'); }
+    const id = Number(arg);
+    if (!id) {
+      await tgSend(env, msg.chat.id, 'Формат: <code>/sold 52</code> — снимет объект с публикации.', MAIN_KB);
+      return new Response('ok');
+    }
+    await tgSend(env, msg.chat.id,
+      '❓ Снять объект <b>№' + id + '</b> с публикации?\n\n' +
+      'Он исчезнет из каталога, фото останутся на диске. Вернуть можно только повторным добавлением.',
+      { inline_keyboard: [[
+        { text: '✅ Да, снять', callback_data: 'sold:' + id },
+        { text: '❌ Отмена', callback_data: 'sold:no' }
+      ]] });
     return new Response('ok');
   }
 

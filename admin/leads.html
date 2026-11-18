@@ -341,8 +341,15 @@
       let mk = '';
       if (m && !m.error) mk = '<br>Яндекс.Метрика (7 дн.): визиты <b>' + (m.visits || 0) + '</b> · посетители <b>' + (m.users || 0) + '</b>';
       else if (m && m.error) mk = '<br>Метрика: ' + esc(m.error);
+
+      const src = (s.sources || []).slice(0, 5).map(function (x) {
+        const t = String(x.src || '').replace(/^https?:\/\//, '').slice(0, 40);
+        return esc(t) + ' — <b>' + x.n + '</b>';
+      }).join(' · ');
+      const srcLine = src ? '<br>Откуда заявки (30 дн.): ' + src : '';
+
       $('#app-msg').innerHTML = 'Сегодня заявок: <b>' + (s.today || 0) + '</b> · просмотры (7д): <b>' + (ev.pageview || 0) +
-        '</b> · клики «позвонить»: <b>' + (ev.tel_click || 0) + '</b>' + mk + '<br>Топ страниц: ' + esc(top);
+        '</b> · клики «позвонить»: <b>' + (ev.tel_click || 0) + '</b>' + mk + srcLine + '<br>Топ страниц: ' + esc(top);
       $('#app-msg').className = 'msg';
     } catch (e) {}
   }

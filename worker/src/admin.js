@@ -147,6 +147,16 @@ export async function adminStats(request, env) {
   ).all();
   const today = await env.DB.prepare("SELECT COUNT(*) AS n FROM leads WHERE date(created_at) = date('now')").first();
 
+  // откуда приходят заявки: utm → реферер → прямой заход
+  let sources = [];
+  try {
+    const s = await env.DB.prepare(
+      "SELECT COALESCE(NULLIF(utm, ''), NULLIF(referrer, ''), 'прямой заход') AS src, COUNT(*) AS n " +
+      "FROM leads WHERE created_at >= date('now','-29 days') GROUP BY src ORDER BY n DESC LIMIT 8"
+    ).all();
+    sources = s.results || [];
+  } catch (e) { sources = []; }
+
   return json({
     ok: true,
     today: today ? today.n : 0,
@@ -154,6 +164,7 @@ export async function adminStats(request, env) {
     events: (events.results || []).reduce((acc, r) => { acc[r.type] = r.n; return acc; }, {}),
     topPages: pages.results || [],
     topLeadPages: leadPages.results || [],
+    sources: sources,
     metrika: await metrikaSummary(env, 7)
   }, 200, corsHeaders(request, env));
 }

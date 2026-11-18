@@ -1,4 +1,4 @@
-import { esc, tgApi, tgSend } from './lib.js';
+import { esc, tgApi, tgSend, tgDelete, MAIN_KB } from './lib.js';
 import { addObjectToCatalog, bytesToBase64 } from './github.js';
 import { parseObjectLine } from './quickparse.js';
 
@@ -37,43 +37,50 @@ const ADD_KB = {
 
 const PREV_STEP = {
   deal: 'type', title: 'deal', price: 'title',
-  address: 'price', rooms: 'address', photo: 'rooms', confirm: 'photo'
+  address: 'price', rooms: 'address', desc: 'rooms', photo: 'desc', confirm: 'photo'
 };
 
 /* показать вопрос текущего шага (используется и при «Назад») */
-async function promptFor(env, chatId, st) {
+async function promptFor(env, chatId, uid, st) {
   const texts = {
-    type: '➕ <b>Новый объект</b>\nШаг 1/7 — тип недвижимости:',
-    deal: 'Шаг 2/7 — сделка:',
-    title: 'Шаг 3/7 — <b>название</b> объекта.\nНапример: «2-комнатная квартира в центре, 46 м²»\n\n' +
+    type: '➕ <b>Новый объект</b>\nШаг 1/8 — тип недвижимости:',
+    deal: 'Шаг 2/8 — сделка:',
+    title: 'Шаг 3/8 — <b>название</b> объекта.\nНапример: «2-комнатная квартира в центре, 46 м²»\n\n' +
       '💡 Или сразу одной строкой: <code>Название | Цена | Адрес | Комнаты Площадь</code>',
-    price: 'Шаг 4/7 — <b>цена</b> в рублях (только цифры).\nНапример: 4500000',
-    address: 'Шаг 5/7 — <b>адрес</b>: район и улица, без номера дома.\nНапример: г. Мариуполь, ул. Варганова',
-    rooms: 'Шаг 6/7 — <b>комнаты и площадь</b> через пробел.\nНапример: <code>2 46</code>\nДля участка или гаража отправьте «-»',
-    photo: 'Шаг 7/7 — <b>фото</b> объекта.\nОтправьте картинку или напишите /skip'
+    price: 'Шаг 4/8 — <b>цена</b> в рублях (только цифры).\nНапример: 4500000',
+    address: 'Шаг 5/8 — <b>адрес</b>: район и улица, без номера дома.\nНапример: г. Мариуполь, ул. Варганова',
+    rooms: 'Шаг 6/8 — <b>комнаты и площадь</b> через пробел.\nНапример: <code>2 46</code>\nДля участка или гаража отправьте «-»',
+    desc: 'Шаг 7/8 — <b>описание</b> объекта.\nРасскажите про ремонт, удобства, документы, двор — как клиенту.\nМожно несколько абзацев (до 1500 символов).\nЕсли описание не нужно — /skip',
+    photo: 'Шаг 8/8 — <b>фото</b> объекта.\nОтправьте картинку или напишите /skip'
   };
 
-  if (st.step === 'type') return tgSend(env, chatId, texts.type, kbRows(TYPES, 'add:type:'));
-  if (st.step === 'deal') return tgSend(env, chatId, texts.deal, kbRows(DEALS, 'add:deal:'));
-  if (st.step === 'confirm') {
-    return tgSend(env, chatId, summary(st), {
+  var r;
+  if (st.step === 'type') r = await tgSend(env, chatId, texts.type, kbRows(TYPES, 'add:type:'));
+  else if (st.step === 'deal') r = await tgSend(env, chatId, texts.deal, kbRows(DEALS, 'add:deal:'));
+  else if (st.step === 'confirm') {
+    r = await tgSend(env, chatId, summary(st), {
       inline_keyboard: [
         [{ text: '✅ Опубликовать', callback_data: 'add:publish' }],
         [{ text: '⬅️ Назад', callback_data: 'add:back' }],
         [{ text: '❌ Отмена', callback_data: 'add:cancel' }]
       ]
     });
+  } else {
+    r = await tgSend(env, chatId, texts[st.step] || '…', ADD_KB);
   }
-  return tgSend(env, chatId, texts[st.step] || '…', ADD_KB);
+
+  // чат не зарастает: удаляем предыдущий шаг, оставляем только текущий
+  const prev = st._pm;
+  if (r && r.result && r.result.message_id) st._pm = r.result.message_id;
+  if (prev && prev !== st._pm) await tgDelete(env, chatId, prev);
+  if (uid) await putState(env, uid, st);
+  return r;
 }
 
 export async function startAdd(env, chatId, uid) {
-  await putState(env, uid, { step: 'type' });
-  await tgSend(env, chatId,
-    '➕ <b>Новый объект</b>\nШаг 1/7 — тип недвижимости:\n\n' +
-    '💡 После выбора типа и сделки можно всё сразу одной строкой:\n' +
-    '<code>Название | Цена | Адрес | Комнаты Площадь</code>',
-    kbRows(TYPES, 'add:type:'));
+  const st = { step: 'type' };
+  await putState(env, uid, st);
+  await promptFor(env, chatId, uid, st);
 }
 
 function summary(st) {
@@ -84,6 +91,7 @@ function summary(st) {
     'Цена: <b>' + Number(st.price).toLocaleString('ru-RU') + ' ₽</b>\n' +
     'Адрес: ' + esc(st.address) + '\n' +
     (st.rooms ? 'Комнат: ' + st.rooms + (st.area ? ', площадь: ' + st.area + ' м²' : '') + '\n' : '') +
+    'Описание: ' + (st.description ? 'есть, ' + st.description.length + ' симв.' : 'нет') + '\n' +
     'Фото: ' + (st.photoFileId ? 'есть ✅' : 'нет');
 }
 
@@ -97,7 +105,8 @@ export async function handleAddCallback(env, query) {
   if (data === 'add:cancel') {
     await dropState(env, uid);
     await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id, text: 'Отменено' });
-    await tgSend(env, chatId, '❌ Добавление отменено.');
+    if (st && st._pm) await tgDelete(env, chatId, st._pm);
+    await tgSend(env, chatId, '❌ Добавление отменено.', MAIN_KB);
     return new Response('ok');
   }
 
@@ -118,7 +127,7 @@ export async function handleAddCallback(env, query) {
     if (prev === 'photo') st.photoFileId = '';
     await putState(env, uid, st);
     await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id, text: 'Назад' });
-    await promptFor(env, chatId, st);
+    await promptFor(env, chatId, uid, st);
     return new Response('ok');
   }
 
@@ -127,7 +136,7 @@ export async function handleAddCallback(env, query) {
     st.step = 'deal';
     await putState(env, uid, st);
     await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id, text: st.type });
-    await tgSend(env, chatId, 'Шаг 2/7 — сделка:', kbRows(DEALS, 'add:deal:'));
+    await promptFor(env, chatId, uid, st);
     return new Response('ok');
   }
 
@@ -136,7 +145,7 @@ export async function handleAddCallback(env, query) {
     st.step = 'title';
     await putState(env, uid, st);
     await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id, text: st.deal });
-    await tgSend(env, chatId, 'Шаг 3/7 — напишите <b>название</b> объекта.\nНапример: «2-комнатная квартира в центре, 46 м²»');
+    await promptFor(env, chatId, uid, st);
     return new Response('ok');
   }
 
@@ -154,7 +163,7 @@ async function publish(env, chatId, uid, st, query) {
 
   const draft = {
     type: st.type, deal: st.deal, title: st.title, price: st.price,
-    address: st.address, rooms: st.rooms, area: st.area, description: ''
+    address: st.address, rooms: st.rooms, area: st.area, description: st.description || ''
   };
 
   if (st.photoFileId) {
@@ -172,15 +181,16 @@ async function publish(env, chatId, uid, st, query) {
 
   try {
     const obj = await addObjectToCatalog(env, draft);
+    if (st._pm) await tgDelete(env, chatId, st._pm);
     await dropState(env, uid);
     await tgSend(env, chatId,
       '✅ <b>Объект №' + obj.id + ' в каталоге</b>\n\n' +
       esc(obj.title) + '\n' + Number(obj.price).toLocaleString('ru-RU') + ' ₽\n\n' +
-      'Через 1–2 минуты появится на сайте:\nhttps://dom-mc.ru/object.html?id=' + obj.id);
+      'Через 1–2 минуты появится на сайте:\nhttps://dom-mc.ru/object.html?id=' + obj.id, MAIN_KB);
   } catch (e) {
     await putState(env, uid, st);
     await tgSend(env, chatId, '⚠️ Не удалось опубликовать: ' + esc(String((e && e.message) || e)) +
-      '\n\nПроверьте GITHUB_TOKEN (права Contents: Read and write) и начните заново: /add');
+      '\n\nПроверьте GITHUB_TOKEN (права Contents: Read and write) и начните заново: /add', MAIN_KB);
   }
   return new Response('ok');
 }
@@ -213,7 +223,8 @@ export async function handleAddMessage(env, msg, uid) {
         '⚡ <b>Заполнил одной строкой</b>\n\n' +
         esc(quick.title) + '\n' + Number(quick.price).toLocaleString('ru-RU') + ' ₽\n' + esc(quick.address) +
         (quick.rooms ? '\nКомнат: ' + quick.rooms + (quick.area ? ', площадь: ' + quick.area + ' м²' : '') : '') +
-        '\n\nОсталось фото: пришлите картинку или /skip', ADD_KB);
+        '\n\nОсталось фото: пришлите картинку или /skip\n' +
+        '(описание пропущено — его можно не добавлять)', ADD_KB);
       return;
     }
     if (text.indexOf('|') >= 0) {
@@ -230,7 +241,7 @@ export async function handleAddMessage(env, msg, uid) {
     }
     st.title = text; st.step = 'price';
     await putState(env, uid, st);
-    await promptFor(env, chatId, st);
+    await promptFor(env, chatId, uid, st);
     return;
   }
 
@@ -242,7 +253,7 @@ export async function handleAddMessage(env, msg, uid) {
     }
     st.price = n; st.step = 'address';
     await putState(env, uid, st);
-    await promptFor(env, chatId, st);
+    await promptFor(env, chatId, uid, st);
     return;
   }
 
@@ -250,7 +261,7 @@ export async function handleAddMessage(env, msg, uid) {
     if (text.length < 3) { await tgSend(env, chatId, 'Адрес слишком короткий, пришлите ещё раз.', ADD_KB); return; }
     st.address = text; st.step = 'rooms';
     await putState(env, uid, st);
-    await promptFor(env, chatId, st);
+    await promptFor(env, chatId, uid, st);
     return;
   }
 
@@ -261,9 +272,25 @@ export async function handleAddMessage(env, msg, uid) {
       st.rooms = p[0] || 0;
       st.area = p[1] || 0;
     }
+    st.step = 'desc';
+    await putState(env, uid, st);
+    await promptFor(env, chatId, uid, st);
+    return;
+  }
+
+  if (st.step === 'desc') {
+    if (text === '/skip' || text.toLowerCase() === 'skip') {
+      st.description = '';
+    } else if (text.length < 20) {
+      await tgSend(env, chatId,
+        'Описание слишком короткое — минимум 20 символов.\nНапишите пару предложений или отправьте /skip', ADD_KB);
+      return;
+    } else {
+      st.description = text.slice(0, 1500);
+    }
     st.step = 'photo';
     await putState(env, uid, st);
-    await promptFor(env, chatId, st);
+    await promptFor(env, chatId, uid, st);
     return;
   }
 
@@ -279,7 +306,7 @@ export async function handleAddMessage(env, msg, uid) {
     }
     st.step = 'confirm';
     await putState(env, uid, st);
-    await promptFor(env, chatId, st);
+    await promptFor(env, chatId, uid, st);
     return;
   }
 }
