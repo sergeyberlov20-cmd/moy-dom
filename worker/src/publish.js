@@ -18,9 +18,9 @@ export async function publishPost(env, draft) {
     slug = baseSlug + '-' + n;
   }
 
-  // 2. фото
-  let imgRel = '../images/logo.png';
-  let imgAbs = SITE + '/images/logo.png';
+  // 2. фото (или брендовая заглушка)
+  let imgRel = '../images/blog/placeholder.webp';
+  let imgAbs = SITE + '/images/blog/placeholder.webp';
   if (draft.photoBase64) {
     const ext = (draft.photoExt || 'jpg').toLowerCase();
     await ghPut(env, 'images/blog/' + slug + '.' + ext, draft.photoBase64, 'Бот: фото для поста ' + slug);
