@@ -247,6 +247,35 @@ export async function tgTest(request, env) {
   return json({ ok: !!(r && r.ok), response: r });
 }
 
+/** GET /api/tg/profile?key=<WEBHOOK_SECRET> — описание бота и меню команд */
+export async function tgProfile(request, env) {
+  if (!setupAllowed(request, env)) return json({ ok: false, error: 'forbidden' }, 403);
+
+  const commands = [
+    { command: 'leads', description: 'Заявки с сайта' },
+    { command: 'stats', description: 'Сводка за 7 дней' },
+    { command: 'add', description: 'Добавить объект в каталог' },
+    { command: 'site', description: 'Открыть сайт' },
+    { command: 'help', description: 'Помощь' }
+  ];
+
+  const results = {
+    setMyCommands: await tgApi(env, 'setMyCommands', { commands: commands }),
+    setMyName: await tgApi(env, 'setMyName', { name: 'Мой Дом — заявки' }),
+    setMyDescription: await tgApi(env, 'setMyDescription', {
+      description: 'Панель агентства недвижимости «Мой Дом»: заявки с сайта dom-mc.ru, статистика и добавление объектов в каталог.'
+    }),
+    setMyShortDescription: await tgApi(env, 'setMyShortDescription', {
+      short_description: 'Заявки и объекты агентства «Мой Дом», Мариуполь'
+    })
+  };
+
+  const done = {};
+  for (const k of Object.keys(results)) done[k] = !!(results[k] && results[k].ok);
+
+  return json({ ok: Object.keys(done).some((k) => done[k]), done: done, raw: results });
+}
+
 /** GET /api/tg/diag?key=<WEBHOOK_SECRET> — состояние бота */
 export async function tgDiag(request, env) {
   if (!setupAllowed(request, env)) return json({ ok: false, error: 'forbidden' }, 403);
