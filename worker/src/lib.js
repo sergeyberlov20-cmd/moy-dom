@@ -82,6 +82,15 @@ const isAdmin = (env, userId) =>
   String(env.ADMIN_IDS || '').split(',').map((s) => s.trim()).includes(String(userId));
 
 /* Постоянная клавиатура внизу чата — как в приложении */
+/* Команды, которые должны срабатывать даже во время диалога /add или /post */
+const DIALOG_COMMANDS = ['/cancel', '/post', '/add', '/start', '/help', '/leads', '/stats', '/site', '/id', '/done'];
+
+export function isDialogCommand(text) {
+  const t = String(text || '').trim().toLowerCase();
+  if (t.charAt(0) !== '/') return false;
+  return DIALOG_COMMANDS.indexOf(t.split(/\s+/)[0]) >= 0;
+}
+
 const MAIN_KB = {
   keyboard: [
     [{ text: '📋 Заявки' }, { text: '📊 Статистика' }],

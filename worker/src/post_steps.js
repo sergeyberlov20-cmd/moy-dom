@@ -2,7 +2,7 @@
  * Шаги диалога поста: заголовок → текст → фото → дата.
  */
 import { tgSend } from './lib.js';
-import { getPostState, putPostState, CANCEL_KB, DATE_KB, postSummary } from './post.js';
+import { getPostState, putPostState, CANCEL_KB, CONFIRM_KB, DATE_KB, postSummary } from './post.js';
 
 export async function handlePostMessage(env, msg, uid) {
   const chatId = msg.chat.id;
@@ -65,12 +65,24 @@ export async function handlePostMessage(env, msg, uid) {
     st.date = iso;
     st.step = 'confirm';
     await putPostState(env, uid, st);
-    await tgSend(env, chatId, postSummary(st), {
-      inline_keyboard: [[
-        { text: '✅ Опубликовать', callback_data: 'post:publish' },
-        { text: '❌ Отмена', callback_data: 'post:cancel' }
-      ]]
-    });
+    await tgSend(env, chatId, postSummary(st), CONFIRM_KB);
+    return;
+  }
+
+  if (st.step === 'confirm') {
+    let iso = '';
+    if (/^\d{4}-\d{2}-\d{2}$/.test(text)) iso = text;
+    else {
+      const m = text.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+      if (m) iso = m[3] + '-' + m[2] + '-' + m[1];
+    }
+    if (!iso || isNaN(new Date(iso).getTime())) {
+      await tgSend(env, chatId, 'Нажмите «✅ Опубликовать» или пришлите другую дату: <code>2026-12-01</code>', CONFIRM_KB);
+      return;
+    }
+    st.date = iso;
+    await putPostState(env, uid, st);
+    await tgSend(env, chatId, postSummary(st), CONFIRM_KB);
     return;
   }
 }

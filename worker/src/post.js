@@ -18,6 +18,12 @@ export const dropPostState = (env, uid) => env.KV.delete(key(uid));
 export const isPosting = async (env, uid) => !!(await env.KV.get(key(uid)));
 
 export const CANCEL_KB = { inline_keyboard: [[{ text: '❌ Отмена', callback_data: 'post:cancel' }]] };
+export const CONFIRM_KB = {
+  inline_keyboard: [[
+    { text: '✅ Опубликовать', callback_data: 'post:publish' },
+    { text: '❌ Отмена', callback_data: 'post:cancel' }
+  ]]
+};
 export const DATE_KB = {
   inline_keyboard: [
     [{ text: 'Сегодня', callback_data: 'post:date:0' }, { text: 'Завтра', callback_data: 'post:date:1' }],

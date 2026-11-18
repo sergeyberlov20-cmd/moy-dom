@@ -1,4 +1,4 @@
-import { json, esc, tgApi, tgSend, isAdmin, STATUSES, MAIN_KB, NAV_KB } from './lib.js';
+import { json, esc, tgApi, tgSend, isAdmin, STATUSES, MAIN_KB, NAV_KB, isDialogCommand } from './lib.js';
 import { startAdd, handleAddCallback, handleAddMessage, dropState } from './add.js';
 import { startPost, handlePostCallback, isPosting, dropPostState } from './post.js';
 import { handlePostMessage } from './post_steps.js';
@@ -42,15 +42,14 @@ export async function handleTelegram(request, env) {
   }
 
   // текст/фото внутри диалогов: добавление объекта или пост в блог
-  if (await isPosting(env, fromId)) {
+  // команды (/cancel, /post и т.п.) обрабатываем как команды, а не как ответ диалога
+  const dialogCmd = !!msg.text && isDialogCommand(msg.text);
+
+  if (!dialogCmd && (await isPosting(env, fromId))) {
     await handlePostMessage(env, msg, fromId);
     return new Response('ok');
   }
-  if (msg.text && (await isAdding(env, fromId))) {
-    await handleAddMessage(env, msg, fromId);
-    return new Response('ok');
-  }
-  if (msg.photo && (await isAdding(env, fromId))) {
+  if (!dialogCmd && (await isAdding(env, fromId))) {
     await handleAddMessage(env, msg, fromId);
     return new Response('ok');
   }
