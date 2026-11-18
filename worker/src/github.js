@@ -60,6 +60,38 @@ export function base64ToText(b64) {
 }
 
 /**
+ * Проверка доступа: читает репозиторий и файл каталога.
+ * Возвращает права (push) и количество объектов — по ним видно, рабочий ли токен.
+ */
+export async function ghCheck(env) {
+  const repoRes = await fetch(API + '/repos/' + env.GITHUB_REPO, { headers: headers(env) });
+  let info = null;
+  try { info = await repoRes.json(); } catch (e) { info = null; }
+
+  const file = await ghGet(env, env.DATA_FILE || 'js/data.json');
+  let objects = null;
+  if (file) {
+    try {
+      const j = JSON.parse(base64ToText(file.content));
+      const list = Array.isArray(j) ? j : j.objects || [];
+      objects = list.length;
+    } catch (e) { objects = 'ошибка разбора'; }
+  }
+
+  return {
+    ok: repoRes.ok && !!file,
+    repo: env.GITHUB_REPO,
+    branch: env.GITHUB_BRANCH || 'main',
+    repoStatus: repoRes.status,
+    repoMessage: info && info.message ? info.message : null,
+    push: info && info.permissions ? !!info.permissions.push : null,
+    file: !!file,
+    fileSha: file ? file.sha : null,
+    objects: objects
+  };
+}
+
+/**
  * Добавляет объект в каталог (js/data.json) и, если есть фото, коммитит его в images/uploads.
  * Возвращает созданный объект.
  */
