@@ -6,7 +6,7 @@ import { releaseScheduled, postRelease } from './release.js';
 import { ghDiag } from './diag.js';
 import {
   adminLogin, adminVerify, adminLogout, adminMe,
-  adminLeads, adminUpdateLead, adminStats, adminExport
+  adminLeads, adminUpdateLead, adminStats, adminExport, adminBotStats
 } from './admin.js';
 
 const RT = [
@@ -26,6 +26,7 @@ const RT = [
   ['/api/admin/leads', 'GET', adminLeads],
   ['/api/admin/lead', 'POST', adminUpdateLead],
   ['/api/admin/stats', 'GET', adminStats],
+  ['/api/admin/botstats', 'GET', adminBotStats],
   ['/api/admin/export', 'GET', adminExport]
 ];
 

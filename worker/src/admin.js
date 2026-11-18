@@ -100,6 +100,35 @@ export async function adminUpdateLead(request, env) {
   return json({ ok: true }, 200, corsHeaders(request, env));
 }
 
+/* ---------- кто пользуется ботом (для панели) ---------- */
+export async function adminBotStats(request, env) {
+  if (!(await requireAdmin(request, env))) return json({ ok: false, error: 'auth' }, 401, corsHeaders(request, env));
+
+  const total = await env.DB.prepare('SELECT COUNT(*) AS n, SUM(allowed) AS a FROM bot_users').first();
+  const today = await env.DB.prepare("SELECT COUNT(*) AS n FROM bot_users WHERE date(last_seen) = date('now')").first();
+  const week = await env.DB.prepare("SELECT COUNT(*) AS n FROM bot_users WHERE last_seen >= datetime('now','-6 days')").first();
+  const list = await env.DB.prepare(
+    'SELECT user_id, name, username, messages, commands, allowed, first_seen, last_seen ' +
+    'FROM bot_users ORDER BY last_seen DESC LIMIT 25'
+  ).all();
+
+  let invites = 0;
+  try {
+    const r = await env.KV.list({ prefix: 'invite:', limit: 1000 });
+    invites = (r.keys || []).length;
+  } catch (e) { invites = 0; }
+
+  return json({
+    ok: true,
+    total: total ? total.n : 0,
+    withAccess: total ? (total.a || 0) : 0,
+    today: today ? today.n : 0,
+    week: week ? week.n : 0,
+    activeInvites: invites,
+    users: list.results || []
+  }, 200, corsHeaders(request, env));
+}
+
 /* ---------- статистика ---------- */
 export async function adminStats(request, env) {
   if (!(await requireAdmin(request, env))) return json({ ok: false, error: 'auth' }, 401, corsHeaders(request, env));

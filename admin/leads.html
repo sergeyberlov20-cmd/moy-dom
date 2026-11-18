@@ -77,6 +77,39 @@
     .chip { border-radius: 999px; }
     .chip.active { background: var(--primary); border-color: var(--primary); }
     th { background: #fafbfe; }
+
+    /* Блок «Пользуются ботом» */
+    .bot-box {
+      margin: 0 0 18px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      box-shadow: 0 6px 22px rgba(15, 23, 42, .06);
+      padding: 4px 18px;
+    }
+    .bot-box summary {
+      cursor: pointer; padding: 14px 0; font-weight: 800; color: var(--primary);
+      list-style: none; display: flex; align-items: center; gap: 10px;
+    }
+    .bot-box summary::-webkit-details-marker { display: none; }
+    .bot-box summary::after { content: '▾'; margin-left: auto; color: #9aa3b2; transition: transform .2s; }
+    .bot-box[open] summary::after { transform: rotate(180deg); }
+    .bot-badge {
+      background: rgba(28, 46, 90, .08); color: var(--primary);
+      border-radius: 999px; padding: 2px 10px; font-size: .82rem; font-weight: 700;
+    }
+    .bot-row {
+      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+      padding: 10px 0; border-top: 1px solid #eef0f5; font-size: .92rem;
+    }
+    .bot-row:first-child { border-top: 0; }
+    .bot-row .who { font-weight: 700; color: var(--primary); }
+    .bot-row .un { color: #6b7280; }
+    .bot-row .meta { color: #9aa3b2; font-size: .84rem; margin-left: auto; }
+    .bot-no { color: var(--accent); font-weight: 800; }
+    .bot-yes { color: #0f9d6f; font-weight: 800; }
+    .bot-totals { display: flex; gap: 18px; flex-wrap: wrap; padding: 6px 0 12px; font-size: .9rem; color: #4b5563; }
+    .bot-totals b { color: var(--primary); }
   </style>
 </head>
 <body>
@@ -113,6 +146,12 @@
 
   <section id="app-view" hidden>
     <div class="stats" id="stats"></div>
+
+    <details class="bot-box" id="bot-box">
+      <summary>👥 Пользуются ботом <span id="bot-badge" class="bot-badge"></span></summary>
+      <div id="bot-users"></div>
+    </details>
+
     <div class="filters" id="filters">
       <button class="chip active" data-status="">Все</button>
       <button class="chip" data-status="new">Новые</button>
@@ -214,6 +253,40 @@
     return String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   }
 
+  async function loadBotStats() {
+    try {
+      const r = await api('/api/admin/botstats');
+      const b = await r.json();
+      if (!b.ok) return;
+
+      $('#bot-badge').textContent = (b.total || 0) + ' чел. · ' + (b.week || 0) + ' за 7 дней';
+
+      const totals = '<div class="bot-totals">' +
+        '<span>Всего писавших: <b>' + (b.total || 0) + '</b></span>' +
+        '<span>С доступом: <b>' + (b.withAccess || 0) + '</b></span>' +
+        '<span>Сегодня: <b>' + (b.today || 0) + '</b></span>' +
+        '<span>За 7 дней: <b>' + (b.week || 0) + '</b></span>' +
+        '<span>Активных приглашений: <b>' + (b.activeInvites || 0) + '</b></span>' +
+        '</div>';
+
+      const users = (b.users || []).map(function (u) {
+        const mark = u.allowed
+          ? '<span class="bot-yes">есть доступ</span>'
+          : '<span class="bot-no">нет доступа</span>';
+        return '<div class="bot-row">' +
+          '<span class="who">' + esc(u.name || 'без имени') + '</span>' +
+          (u.username ? '<span class="un">' + esc(u.username) + '</span>' : '') +
+          '<span class="un">ID ' + esc(u.user_id) + '</span>' +
+          mark +
+          '<span class="meta">сообщений ' + (u.messages || 0) + ' · команд ' + (u.commands || 0) +
+          ' · был ' + esc(u.last_seen) + ' UTC</span>' +
+          '</div>';
+      }).join('');
+
+      $('#bot-users').innerHTML = totals + (users || '<div class="bot-row">Пока никто не писал боту.</div>');
+    } catch (e) {}
+  }
+
   async function load() {
     const q = statusFilter ? '?status=' + encodeURIComponent(statusFilter) : '';
     const r = await api('/api/admin/leads' + q);
@@ -221,6 +294,7 @@
     renderStats(data);
     renderRows(data.leads || []);
     await loadStats();
+    await loadBotStats();
   }
 
   function renderStats(data) {

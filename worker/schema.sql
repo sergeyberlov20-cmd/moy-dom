@@ -31,3 +31,18 @@ CREATE TABLE IF NOT EXISTS events (
 
 CREATE INDEX IF NOT EXISTS idx_events_created ON events (created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_events_type    ON events (type);
+
+-- Кто пользуется ботом: активность и наличие доступа (для /botstats)
+CREATE TABLE IF NOT EXISTS bot_users (
+  user_id    TEXT PRIMARY KEY,
+  name       TEXT,
+  username   TEXT,
+  messages   INTEGER NOT NULL DEFAULT 0,
+  commands   INTEGER NOT NULL DEFAULT 0,
+  allowed    INTEGER NOT NULL DEFAULT 0,
+  first_seen TEXT,
+  last_seen  TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_bot_users_last ON bot_users (last_seen);
+

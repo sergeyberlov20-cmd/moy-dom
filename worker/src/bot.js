@@ -3,6 +3,7 @@ import { startAdd, handleAddCallback, handleAddMessage, dropState } from './add.
 import { startPost, handlePostCallback, isPosting, dropPostState } from './post.js';
 import { handlePostMessage } from './post_steps.js';
 import { createInvite, acceptInvite } from './invite.js';
+import { touchBotUser, botStatsText, botUsersLine } from './botstats.js';
 import { metrikaSummary } from './remind.js';
 
 const STATUS_RU = { new: 'новая', inwork: 'в работе', done: 'закрыта', spam: 'спам' };
@@ -28,7 +29,9 @@ export async function handleTelegram(request, env) {
   if (update.callback_query) {
     const d = update.callback_query.data || '';
     const cbFrom = update.callback_query.from ? update.callback_query.from.id : 0;
-    if (!(await isAllowedAdmin(env, cbFrom))) {
+    const cbAllowed = await isAllowedAdmin(env, cbFrom);
+    await touchBotUser(env, update.callback_query.from, { allowed: cbAllowed });
+    if (!cbAllowed) {
       await tgApi(env, 'answerCallbackQuery', { callback_query_id: update.callback_query.id, text: 'Нет доступа', show_alert: true });
       return new Response('ok');
     }
@@ -41,6 +44,7 @@ export async function handleTelegram(request, env) {
   if (!msg) return new Response('ok');
   const fromId = msg.from ? msg.from.id : 0;
   const allowed = await isAllowedAdmin(env, fromId);
+  await touchBotUser(env, msg.from, { allowed: allowed, command: !!(msg.text && msg.text.charAt(0) === '/') });
   if (!allowed) {
     // вход по ссылке-приглашению: /start inv_XXXX
     const im = (msg.text || '').trim().match(/^\/start\s+inv_(\S+)/i);
@@ -106,7 +110,8 @@ export async function handleTelegram(request, env) {
       '/leads — заявки, /stats — сводка,\n' +
       '/add — новый объект, /post — пост в блог,\n' +
       '/done 12 — закрыть заявку, /id — ваш Telegram ID,\n' +
-      '/invite — ссылка-приглашение для коллеги,\n' +
+      '/invite — ссылка-приглашение (только у вас),\n' +
+      '/botstats — кто пользуется ботом (только у вас),\n' +
       '/admins — кто имеет доступ, /adduser 123 — добавить по ID.',
       MAIN_KB);
     return new Response('ok');
@@ -185,9 +190,18 @@ export async function handleTelegram(request, env) {
     return new Response('ok');
   }
 
+  if (cmd === '/botstats') {
+    if (!isAdmin(env, fromId)) {
+      await tgSend(env, msg.chat.id, '⛔ Статистику по людям видит только владелец аккаунта.');
+      return new Response('ok');
+    }
+    await tgSend(env, msg.chat.id, await botStatsText(env), MAIN_KB);
+    return new Response('ok');
+  }
+
   if (cmd === '/invite') {
     if (!isAdmin(env, fromId)) {
-      await tgSend(env, msg.chat.id, '⛔ Приглашения создаёт только владелец.');
+      await tgSend(env, msg.chat.id, '⛔ Ссылки-приглашения создаёт только владелец аккаунта.');
       return new Response('ok');
     }
     const code = await createInvite(env, fromId);
@@ -316,11 +330,15 @@ export async function statsText(env) {
     }
   } catch (e) {}
 
+  let botLine = '';
+  try { botLine = await botUsersLine(env); } catch (e) { botLine = ''; }
+
   return '📊 <b>Сводка за 7 дней</b>\n\n' +
     'Заявок сегодня: <b>' + (t ? t.n : 0) + '</b>\n' +
     'Заявок за 7 дней: <b>' + (w ? w.n : 0) + '</b>\n' +
     'Новых (не обработано): <b>' + (fresh ? fresh.n : 0) + '</b>\n' +
     'Кликов «позвонить»: <b>' + (tel ? tel.n : 0) + '</b>\n' +
+    botLine +
     metrika +
     '\n<b>Топ страниц:</b>\n' + top;
 }

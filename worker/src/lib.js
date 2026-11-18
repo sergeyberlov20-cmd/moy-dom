@@ -80,7 +80,7 @@ const tgSend = (env, chatId, text, reply_markup) =>
 
 /* Постоянная клавиатура внизу чата — как в приложении */
 /* Команды, которые должны срабатывать даже во время диалога /add или /post */
-const DIALOG_COMMANDS = ['/cancel', '/post', '/add', '/start', '/help', '/leads', '/stats', '/site', '/id', '/done', '/admins', '/adduser', '/deluser', '/invite'];
+const DIALOG_COMMANDS = ['/cancel', '/post', '/add', '/start', '/help', '/leads', '/stats', '/site', '/id', '/done', '/admins', '/adduser', '/deluser', '/invite', '/botstats'];
 
 export function isDialogCommand(text) {
   const t = String(text || '').trim().toLowerCase();
