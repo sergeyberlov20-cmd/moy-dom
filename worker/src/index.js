@@ -1,6 +1,6 @@
 import { json, corsPreflight } from './lib.js';
 import { handleLead, handleEvent } from './leads.js';
-import { handleTelegram, dailyDigest } from './bot.js';
+import { handleTelegram, dailyDigest, tgSetup, tgTest, tgDiag } from './bot.js';
 import {
   adminLogin, adminVerify, adminLogout, adminMe,
   adminLeads, adminUpdateLead, adminStats, adminExport
@@ -10,6 +10,9 @@ const RT = [
   ['/api/lead', 'POST', handleLead],
   ['/api/event', 'POST', handleEvent],
   ['/api/tg/webhook', 'POST', handleTelegram],
+  ['/api/tg/setup', 'GET', tgSetup],
+  ['/api/tg/test', 'GET', tgTest],
+  ['/api/tg/diag', 'GET', tgDiag],
   ['/api/admin/login', 'POST', adminLogin],
   ['/api/admin/verify', 'POST', adminVerify],
   ['/api/admin/logout', 'POST', adminLogout],

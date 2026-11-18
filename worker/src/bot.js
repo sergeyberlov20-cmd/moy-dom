@@ -1,4 +1,4 @@
-import { esc, tgApi, tgSend, isAdmin, STATUSES } from './lib.js';
+import { json, esc, tgApi, tgSend, isAdmin, STATUSES } from './lib.js';
 
 const STATUS_RU = { new: 'новая', inwork: 'в работе', done: 'закрыта', spam: 'спам' };
 const KB = (id) => ({
@@ -154,3 +154,56 @@ export async function dailyDigest(env) {
   if (!env.BOT_TOKEN || !env.TG_CHAT_ID) return;
   await tgSend(env, env.TG_CHAT_ID, await statsText(env));
 }
+
+/* ---------- сервисные ручки (вызываются извне РФ через воркер) ---------- */
+function setupAllowed(request, env) {
+  const key = new URL(request.url).searchParams.get('key') || '';
+  return !!env.WEBHOOK_SECRET && key === env.WEBHOOK_SECRET;
+}
+
+/** GET /api/tg/setup?key=<WEBHOOK_SECRET> — ставит вебхук бота на этот воркер */
+export async function tgSetup(request, env) {
+  if (!setupAllowed(request, env)) return json({ ok: false, error: 'forbidden' }, 403);
+  const base = new URL(request.url).origin;
+
+  const set = await tgApi(env, 'setWebhook', {
+    url: base + '/api/tg/webhook',
+    secret_token: env.WEBHOOK_SECRET,
+    drop_pending_updates: true,
+    allowed_updates: ['message', 'callback_query']
+  });
+  const info = await tgApi(env, 'getWebhookInfo', {});
+  return json({
+    ok: !!(set && set.ok),
+    webhook: base + '/api/tg/webhook',
+    setWebhook: set,
+    info: info ? info.result : null
+  });
+}
+
+/** GET /api/tg/test?key=<WEBHOOK_SECRET> — тестовое сообщение в чат */
+export async function tgTest(request, env) {
+  if (!setupAllowed(request, env)) return json({ ok: false, error: 'forbidden' }, 403);
+  const r = await tgSend(env, env.TG_CHAT_ID,
+    '✅ <b>Проверка связи</b>\nБот «Мой Дом» на связи. Сюда будут приходить заявки с сайта.');
+  return json({ ok: !!(r && r.ok), response: r });
+}
+
+/** GET /api/tg/diag?key=<WEBHOOK_SECRET> — состояние бота */
+export async function tgDiag(request, env) {
+  if (!setupAllowed(request, env)) return json({ ok: false, error: 'forbidden' }, 403);
+  const me = await tgApi(env, 'getMe', {});
+  const info = await tgApi(env, 'getWebhookInfo', {});
+  const hook = info && info.result ? {
+    url: info.result.url, pending: info.result.pending_update_count,
+    last_error: info.result.last_error_message || null, last_error_date: info.result.last_error_date || null
+  } : null;
+  return json({
+    ok: !!(me && me.ok),
+    bot: me && me.result ? { id: me.result.id, username: me.result.username } : null,
+    webhook: hook,
+    admins: String(env.ADMIN_IDS || '').split(',').map((s) => s.trim()).filter(Boolean),
+    chat: env.TG_CHAT_ID || null
+  });
+}
+
