@@ -1,25 +1,6 @@
 {
   "objects": [
     {
-      "id": 52,
-      "type": "Квартира",
-      "deal": "Продажа",
-      "title": "Тестовая квартира из бота",
-      "price": 4500000,
-      "address": "г. Мариуполь, ул. Тестовая, 1",
-      "phone": "+7 (949) 504-44-55",
-      "rooms": 2,
-      "area": 46,
-      "floor": 0,
-      "floors": 0,
-      "image": "images/logo.png",
-      "images": [
-        "images/logo.png"
-      ],
-      "description": "",
-      "date": "2026-11-18"
-    },
-    {
       "id": 2,
       "type": "Дом",
       "deal": "Продажа",
