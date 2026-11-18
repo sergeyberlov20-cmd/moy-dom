@@ -127,4 +127,10 @@
        <lastmod>2026-11-27T09:00:00+00:00</lastmod>
        <priority>0.6400</priority>
   </url>
+  <url>
+       <loc>https://dom-mc.ru/reviews/</loc>
+       <lastmod>2026-11-18T12:00:00+00:00</lastmod>
+       <changefreq>monthly</changefreq>
+       <priority>0.7500</priority>
+  </url>
 </urlset>

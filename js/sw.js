@@ -1,7 +1,7 @@
 /* Service worker «Мой Дом»
    Работает и на dom-mc.ru, и на github.io/moy-dom — все пути относительные. */
 
-const VERSION = 'v96';
+const VERSION = 'v97';
 const STATIC_CACHE = 'moydom-static-' + VERSION;
 const PAGE_CACHE = 'moydom-pages-' + VERSION;
 
@@ -13,11 +13,13 @@ const PRECACHE = [
   './about.html',
   './contacts.html',
   './blog/index.html',
+  './reviews/index.html',
   './favorites.html',
   './privacy.html',
   './css/style.css',
   './js/main.js',
   './js/data.js',
+  './js/reviews.js',
   './js/data.json',
   './manifest.json',
   './images/logo.png',
