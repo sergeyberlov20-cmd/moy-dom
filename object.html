@@ -119,7 +119,7 @@
     (function () {
       try {
         const SITE = 'https://dom-mc.ru';
-        const url = SITE + '/object.html?id=' + obj.id;
+        const url = SITE + '/objects/' + obj.id + '.html';
         let canon = document.querySelector('link[rel="canonical"]');
         if (!canon) { canon = document.createElement('link'); canon.rel = 'canonical'; document.head.appendChild(canon); }
         canon.setAttribute('href', url);

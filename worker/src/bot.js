@@ -4,7 +4,8 @@ import { startPost, handlePostCallback, isPosting, dropPostState } from './post.
 import { handlePostMessage } from './post_steps.js';
 import { createInvite, acceptInvite } from './invite.js';
 import { updateYandexReviews } from './reviews.js';
-import { setObjectPrice, removeObjectFromCatalog } from './github.js';
+import { setObjectPrice, removeObjectFromCatalog, loadCatalog, ghGet, ghDelete } from './github.js';
+import { saveObjectPage, pingIndexNow } from './objectrender.js';
 import { touchBotUser, botStatsText, botUsersLine } from './botstats.js';
 import { metrikaSummary } from './remind.js';
 
@@ -48,6 +49,15 @@ export async function handleTelegram(request, env) {
       const objId = Number(d.split(':')[1]);
       try {
         const r = await removeObjectFromCatalog(env, objId);
+
+        // убираем статическую страницу объекта и сообщаем поисковикам
+        try {
+          const path = 'objects/' + objId + '.html';
+          const f = await ghGet(env, path);
+          if (f) await ghDelete(env, path, 'Бот: объект #' + objId + ' снят — страница удалена', f.sha);
+          await pingIndexNow(['https://dom-mc.ru/catalog.html']);
+        } catch (e) { /* не критично */ }
+
         await tgApi(env, 'answerCallbackQuery', { callback_query_id: update.callback_query.id, text: 'Снят с публикации' });
         await tgSend(env, update.callback_query.message.chat.id,
           '✅ <b>Снят с публикации</b>\n\n' + esc(r.title) + '\nВ каталоге осталось объектов: ' + r.left +
@@ -277,10 +287,22 @@ export async function handleTelegram(request, env) {
     }
     try {
       const r = await setObjectPrice(env, id, price);
+      // обновляем статическую страницу объекта и сообщаем поисковикам
+      let pageUrl = 'https://dom-mc.ru/objects/' + id + '.html';
+      try {
+        const all = await loadCatalog(env);
+        const obj = (all || []).find((o) => Number(o.id) === Number(id));
+        if (obj) {
+          const page = await saveObjectPage(env, obj, all, 'Бот: новая цена объекта #' + id);
+          if (page && page.url) pageUrl = page.url;
+          await pingIndexNow([pageUrl]);
+        }
+      } catch (e) { /* не критично */ }
+
       await tgSend(env, msg.chat.id,
         '💰 <b>Цена обновлена</b>\n\n' + esc(r.title) + '\n' +
         Number(r.old).toLocaleString('ru-RU') + ' ₽ → <b>' + Number(r.price).toLocaleString('ru-RU') + ' ₽</b>\n\n' +
-        'https://dom-mc.ru/object.html?id=' + r.id + '\nЧерез 1–2 минуты появится на сайте.', MAIN_KB);
+        pageUrl + '\nЧерез 1–2 минуты появится на сайте.', MAIN_KB);
     } catch (e) {
       await tgSend(env, msg.chat.id, '⚠️ Не получилось: ' + esc(String((e && e.message) || e)));
     }

@@ -102,7 +102,7 @@ window.renderCard = function(o, opts = {}) {
         <div class="card-price">${formatPrice(o.price, o.deal)}</div>
         <div class="card-title">${o.title}</div>
         ${addressHtml}
-        <a href="object.html?id=${o.id}" class="btn" style="${moreBtnStyle} margin-top: auto;">Подробнее</a>
+        <a href="objects/${o.id}.html" class="btn" style="${moreBtnStyle} margin-top: auto;">Подробнее</a>
         ${actionsHtml}
       </div>
     </article>`;

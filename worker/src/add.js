@@ -1,5 +1,6 @@
 import { esc, tgApi, tgSend, tgDelete, MAIN_KB } from './lib.js';
-import { addObjectToCatalog, bytesToBase64 } from './github.js';
+import { addObjectToCatalog, bytesToBase64, loadCatalog } from './github.js';
+import { saveObjectPage, pingIndexNow } from './objectrender.js';
 import { parseObjectLine } from './quickparse.js';
 
 const TYPES = ['Квартира', 'Дом', 'Земельный участок', 'Офис', 'Гараж'];
@@ -181,12 +182,23 @@ async function publish(env, chatId, uid, st, query) {
 
   try {
     const obj = await addObjectToCatalog(env, draft);
+
+    // статическая страница объекта + пинг поисковикам
+    let pageUrl = 'https://dom-mc.ru/objects/' + obj.id + '.html';
+    try {
+      const all = await loadCatalog(env);
+      const page = await saveObjectPage(env, obj, all, 'Бот: страница объекта #' + obj.id);
+      if (page && page.url) pageUrl = page.url;
+      await pingIndexNow([pageUrl, 'https://dom-mc.ru/catalog.html']);
+    } catch (e) { /* страница не критична для публикации */ }
+
     if (st._pm) await tgDelete(env, chatId, st._pm);
     await dropState(env, uid);
     await tgSend(env, chatId,
       '✅ <b>Объект №' + obj.id + ' в каталоге</b>\n\n' +
       esc(obj.title) + '\n' + Number(obj.price).toLocaleString('ru-RU') + ' ₽\n\n' +
-      'Через 1–2 минуты появится на сайте:\nhttps://dom-mc.ru/object.html?id=' + obj.id, MAIN_KB);
+      'Страница объекта:\n' + pageUrl +
+      '\n\nЧерез 1–2 минуты появится на сайте.', MAIN_KB);
   } catch (e) {
     await putState(env, uid, st);
     await tgSend(env, chatId, '⚠️ Не удалось опубликовать: ' + esc(String((e && e.message) || e)) +

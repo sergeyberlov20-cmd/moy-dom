@@ -230,3 +230,20 @@ export async function addObjectToCatalog(env, draft) {
   }
   throw new Error('не удалось обновить каталог');
 }
+/** Читает каталог объектов (js/data.json) */
+export async function loadCatalog(env) {
+  const file = await ghGet(env, env.DATA_FILE || 'js/data.json');
+  if (!file) return [];
+  const json = JSON.parse(base64ToText(file.content));
+  return Array.isArray(json) ? json : (json.objects || []);
+}
+/** Удаляет файл из репозитория */
+export async function ghDelete(env, path, message, sha) {
+  const r = await fetch(API + '/repos/' + env.GITHUB_REPO + '/contents/' + path, {
+    method: 'DELETE',
+    headers: headers(env, true),
+    body: JSON.stringify({ message: message, sha: sha, branch: env.GITHUB_BRANCH || 'main' })
+  });
+  if (!r.ok) throw new Error('gh delete ' + path + ' ' + r.status);
+  return r.json();
+}
