@@ -2,7 +2,7 @@
  * Шаги диалога поста: заголовок → текст → фото → дата.
  */
 import { tgSend } from './lib.js';
-import { getPostState, putPostState, CANCEL_KB, CONFIRM_KB, DATE_KB, postSummary } from './post.js';
+import { getPostState, putPostState, CANCEL_KB, CONFIRM_KB, DATE_KB, postSummary, promptPost } from './post.js';
 import { parsePostLine } from './quickparse.js';
 import { dateText } from './postutil.js';
 
@@ -20,7 +20,7 @@ export async function handlePostMessage(env, msg, uid) {
     st.title = text;
     st.step = 'text';
     await putPostState(env, uid, st);
-    await tgSend(env, chatId, 'Шаг 2 из 4 — пришлите <b>текст поста</b>.\nАбзацы разделяйте пустой строкой; первый абзац станет вступлением.', CANCEL_KB);
+    await promptPost(env, chatId, st);
     return;
   }
 
@@ -50,7 +50,7 @@ export async function handlePostMessage(env, msg, uid) {
     st.text = text.slice(0, 5000);
     st.step = 'photo';
     await putPostState(env, uid, st);
-    await tgSend(env, chatId, 'Шаг 3 из 4 — <b>фото</b> для поста.\nОтправьте картинку или напишите «/skip».', CANCEL_KB);
+    await promptPost(env, chatId, st);
     return;
   }
 
@@ -67,11 +67,7 @@ export async function handlePostMessage(env, msg, uid) {
     }
     st.step = st.preDate ? 'confirm' : 'date';
     await putPostState(env, uid, st);
-    if (st.step === 'confirm') {
-      await tgSend(env, chatId, postSummary(st), CONFIRM_KB);
-      return;
-    }
-    await tgSend(env, chatId, 'Шаг 4 из 4 — <b>когда публиковать?</b>\nВыберите кнопку или пришлите дату вида <code>2026-12-01</code>.', DATE_KB);
+    await promptPost(env, chatId, st);
     return;
   }
 

@@ -28,6 +28,45 @@ function kbRows(list, prefix) {
   return { inline_keyboard: rows };
 }
 
+const ADD_KB = {
+  inline_keyboard: [
+    [{ text: '⬅️ Назад', callback_data: 'add:back' }],
+    [{ text: '❌ Отмена', callback_data: 'add:cancel' }]
+  ]
+};
+
+const PREV_STEP = {
+  deal: 'type', title: 'deal', price: 'title',
+  address: 'price', rooms: 'address', photo: 'rooms', confirm: 'photo'
+};
+
+/* показать вопрос текущего шага (используется и при «Назад») */
+async function promptFor(env, chatId, st) {
+  const texts = {
+    type: '➕ <b>Новый объект</b>\nШаг 1/7 — тип недвижимости:',
+    deal: 'Шаг 2/7 — сделка:',
+    title: 'Шаг 3/7 — <b>название</b> объекта.\nНапример: «2-комнатная квартира в центре, 46 м²»\n\n' +
+      '💡 Или сразу одной строкой: <code>Название | Цена | Адрес | Комнаты Площадь</code>',
+    price: 'Шаг 4/7 — <b>цена</b> в рублях (только цифры).\nНапример: 4500000',
+    address: 'Шаг 5/7 — <b>адрес</b> (район, улица).\nНапример: г. Мариуполь, ул. Варганова',
+    rooms: 'Шаг 6/7 — <b>комнаты и площадь</b> через пробел.\nНапример: <code>2 46</code>\nДля участка или гаража отправьте «-»',
+    photo: 'Шаг 7/7 — <b>фото</b> объекта.\nОтправьте картинку или напишите /skip'
+  };
+
+  if (st.step === 'type') return tgSend(env, chatId, texts.type, kbRows(TYPES, 'add:type:'));
+  if (st.step === 'deal') return tgSend(env, chatId, texts.deal, kbRows(DEALS, 'add:deal:'));
+  if (st.step === 'confirm') {
+    return tgSend(env, chatId, summary(st), {
+      inline_keyboard: [
+        [{ text: '✅ Опубликовать', callback_data: 'add:publish' }],
+        [{ text: '⬅️ Назад', callback_data: 'add:back' }],
+        [{ text: '❌ Отмена', callback_data: 'add:cancel' }]
+      ]
+    });
+  }
+  return tgSend(env, chatId, texts[st.step] || '…', ADD_KB);
+}
+
 export async function startAdd(env, chatId, uid) {
   await putState(env, uid, { step: 'type' });
   await tgSend(env, chatId,
@@ -64,6 +103,22 @@ export async function handleAddCallback(env, query) {
 
   if (!st) {
     await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id, text: 'Сессия истекла, начните заново: /add' });
+    return new Response('ok');
+  }
+
+  if (data === 'add:back') {
+    const prev = PREV_STEP[st.step] || 'type';
+    st.step = prev;
+    // если заполняли одной строкой — возвращаемся к названию и чистим разобранное
+    if (st.fast && (prev === 'title' || prev === 'rooms')) {
+      st.step = 'title';
+      delete st.title; delete st.price; delete st.address; delete st.rooms; delete st.area;
+      delete st.fast;
+    }
+    if (prev === 'photo') st.photoFileId = '';
+    await putState(env, uid, st);
+    await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id, text: 'Назад' });
+    await promptFor(env, chatId, st);
     return new Response('ok');
   }
 
@@ -151,13 +206,14 @@ export async function handleAddMessage(env, msg, uid) {
       st.address = quick.address;
       st.rooms = quick.rooms;
       st.area = quick.area;
+      st.fast = 1;
       st.step = 'photo';
       await putState(env, uid, st);
       await tgSend(env, chatId,
         '⚡ <b>Заполнил одной строкой</b>\n\n' +
         esc(quick.title) + '\n' + Number(quick.price).toLocaleString('ru-RU') + ' ₽\n' + esc(quick.address) +
         (quick.rooms ? '\nКомнат: ' + quick.rooms + (quick.area ? ', площадь: ' + quick.area + ' м²' : '') : '') +
-        '\n\nОсталось фото: пришлите картинку или /skip');
+        '\n\nОсталось фото: пришлите картинку или /skip', ADD_KB);
       return;
     }
     if (text.indexOf('|') >= 0) {
@@ -174,29 +230,27 @@ export async function handleAddMessage(env, msg, uid) {
     }
     st.title = text; st.step = 'price';
     await putState(env, uid, st);
-    await tgSend(env, chatId,
-      'Шаг 4/7 — <b>цена</b> в рублях (только цифры).\nНапример: 4500000\n\n' +
-      '💡 Можно было одной строкой: <code>Название | Цена | Адрес | Комнаты Площадь</code>');
+    await promptFor(env, chatId, st);
     return;
   }
 
   if (st.step === 'price') {
     const n = Number(text.replace(/[^\d]/g, ''));
     if (!n || n < 1000 || n > 2000000000) {
-      await tgSend(env, chatId, 'Цену пришлите числом, например 4500000');
+      await tgSend(env, chatId, 'Цену пришлите числом, например 4500000', ADD_KB);
       return;
     }
     st.price = n; st.step = 'address';
     await putState(env, uid, st);
-    await tgSend(env, chatId, 'Шаг 5/7 — <b>адрес</b> (район, улица).\nНапример: г. Мариуполь, ул. Варганова');
+    await promptFor(env, chatId, st);
     return;
   }
 
   if (st.step === 'address') {
-    if (text.length < 3) { await tgSend(env, chatId, 'Адрес слишком короткий, пришлите ещё раз.'); return; }
+    if (text.length < 3) { await tgSend(env, chatId, 'Адрес слишком короткий, пришлите ещё раз.', ADD_KB); return; }
     st.address = text; st.step = 'rooms';
     await putState(env, uid, st);
-    await tgSend(env, chatId, 'Шаг 6/7 — <b>комнаты и площадь</b> через пробел.\nНапример: <code>2 46</code>\nДля участка или гаража отправьте «-»');
+    await promptFor(env, chatId, st);
     return;
   }
 
@@ -209,7 +263,7 @@ export async function handleAddMessage(env, msg, uid) {
     }
     st.step = 'photo';
     await putState(env, uid, st);
-    await tgSend(env, chatId, 'Шаг 7/7 — <b>фото</b> объекта.\nОтправьте картинку как фото или напишите /skip');
+    await promptFor(env, chatId, st);
     return;
   }
 
@@ -220,17 +274,12 @@ export async function handleAddMessage(env, msg, uid) {
     } else if (text === '/skip' || text.toLowerCase() === 'skip') {
       st.photoFileId = '';
     } else {
-      await tgSend(env, chatId, 'Нужна фотография (именно фото, не файлом) или /skip');
+      await tgSend(env, chatId, 'Нужна фотография (именно фото, не файлом) или /skip', ADD_KB);
       return;
     }
     st.step = 'confirm';
     await putState(env, uid, st);
-    await tgSend(env, chatId, summary(st), {
-      inline_keyboard: [[
-        { text: '✅ Опубликовать', callback_data: 'add:publish' },
-        { text: '❌ Отмена', callback_data: 'add:cancel' }
-      ]]
-    });
+    await promptFor(env, chatId, st);
     return;
   }
 }

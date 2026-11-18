@@ -18,11 +18,18 @@ export const dropPostState = (env, uid) => env.KV.delete(key(uid));
 export const isPosting = async (env, uid) => !!(await env.KV.get(key(uid)));
 
 export const CANCEL_KB = { inline_keyboard: [[{ text: '❌ Отмена', callback_data: 'post:cancel' }]] };
+export const BACK_KB = {
+  inline_keyboard: [
+    [{ text: '⬅️ Назад', callback_data: 'post:back' }],
+    [{ text: '❌ Отмена', callback_data: 'post:cancel' }]
+  ]
+};
 export const CONFIRM_KB = {
-  inline_keyboard: [[
-    { text: '✅ Опубликовать', callback_data: 'post:publish' },
-    { text: '❌ Отмена', callback_data: 'post:cancel' }
-  ]]
+  inline_keyboard: [
+    [{ text: '✅ Опубликовать', callback_data: 'post:publish' }],
+    [{ text: '⬅️ Назад', callback_data: 'post:back' }],
+    [{ text: '❌ Отмена', callback_data: 'post:cancel' }]
+  ]
 };
 export const DATE_KB = {
   inline_keyboard: [
@@ -51,6 +58,25 @@ export function postSummary(st) {
     'Дата: <b>' + dateText(st.date) + '</b>' + (st.date > today ? ' — выйдет в этот день' : ' — сразу');
 }
 
+/* Показать вопрос текущего шага поста (и при «Назад») */
+export async function promptPost(env, chatId, st) {
+  if (st.step === 'text') {
+    return tgSend(env, chatId,
+      'Шаг 2 из 4 — пришлите <b>текст поста</b>.\nАбзацы разделяйте пустой строкой; первый абзац станет вступлением.\n\n' +
+      '💡 Можно сразу с датой: <code>Текст поста | 2026-12-01</code>', BACK_KB);
+  }
+  if (st.step === 'photo') {
+    return tgSend(env, chatId, 'Шаг 3 из 4 — <b>фото</b> для поста.\nОтправьте картинку или напишите «/skip».', BACK_KB);
+  }
+  if (st.step === 'date') {
+    return tgSend(env, chatId, 'Шаг 4 из 4 — <b>когда публиковать?</b>\nВыберите кнопку или пришлите дату вида <code>2026-12-01</code>.', DATE_KB);
+  }
+  if (st.step === 'confirm') {
+    return tgSend(env, chatId, postSummary(st), CONFIRM_KB);
+  }
+  return tgSend(env, chatId, 'Шаг 1 из 4 — пришлите <b>заголовок</b>.', CANCEL_KB);
+}
+
 export async function handlePostCallback(env, query) {
   const uid = query.from ? query.from.id : 0;
   const chatId = query.message ? query.message.chat.id : uid;
@@ -66,6 +92,21 @@ export async function handlePostCallback(env, query) {
 
   if (!st) {
     await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id, text: 'Сессия истекла: /post' });
+    return new Response('ok');
+  }
+
+  if (data === 'post:back') {
+    let prev = { text: 'title', photo: 'text', date: 'photo', confirm: 'date' }[st.step] || 'title';
+    if (st.step === 'confirm' && st.preDate) prev = 'photo';
+
+    st.step = prev;
+    if (prev === 'title') { delete st.title; }
+    if (prev === 'text') { delete st.text; delete st.preDate; }
+    if (prev === 'photo') { st.photoFileId = ''; }
+
+    await putPostState(env, uid, st);
+    await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id, text: 'Назад' });
+    await promptPost(env, chatId, st);
     return new Response('ok');
   }
 
