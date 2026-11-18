@@ -111,9 +111,9 @@
         <p>Что пишут клиенты на Яндекс.Картах — как есть, без правок. Ниже все отзывы и наши ответы на них.</p>
       </div>
       <div class="rev-score">
-        <div class="rev-score-num">5,0</div>
+        <div class="rev-score-num" id="revScoreNum">5,0</div>
         <div class="rev-stars">★★★★★</div>
-        <div class="rev-score-sub">57 отзывов · 63 оценки<br>Яндекс.Карты</div>
+        <div class="rev-score-sub" id="revScoreSub">57 отзывов · 63 оценки<br>Яндекс.Карты</div>
       </div>
     </div>
     <div class="rev-actions">
@@ -201,6 +201,11 @@
     grid.innerHTML = R.slice(0, shown).map(card).join('');
     if (more) more.hidden = shown >= R.length;
   }
+
+  var scoreNum = document.getElementById('revScoreNum');
+  var scoreSub = document.getElementById('revScoreSub');
+  if (scoreNum) scoreNum.textContent = Number(M.rating || 5).toFixed(1).replace('.', ',');
+  if (scoreSub) scoreSub.innerHTML = (M.reviews || R.length) + ' отзывов · ' + (M.ratingsCount || '') + ' оценок<br>Яндекс.Карты';
 
   if (sum) {
     sum.innerHTML = '<div>Оценка <b>' + Number(M.rating || 5).toFixed(1).replace('.', ',') + '</b> из 5 · ' +

@@ -3,6 +3,7 @@ import { startAdd, handleAddCallback, handleAddMessage, dropState } from './add.
 import { startPost, handlePostCallback, isPosting, dropPostState } from './post.js';
 import { handlePostMessage } from './post_steps.js';
 import { createInvite, acceptInvite } from './invite.js';
+import { updateYandexReviews } from './reviews.js';
 import { touchBotUser, botStatsText, botUsersLine } from './botstats.js';
 import { metrikaSummary } from './remind.js';
 
@@ -115,6 +116,7 @@ export async function handleTelegram(request, env) {
       '/done 12 — закрыть заявку, /id — ваш Telegram ID,\n' +
       '/invite — ссылка-приглашение (только у вас),\n' +
       '/botstats — кто пользуется ботом (только у вас),\n' +
+      '/reviews — обновить отзывы с Яндекс.Карт (только у вас),\n' +
       '/reset — сбросить незаконченный диалог.',
       MAIN_KB);
     return new Response('ok');
@@ -200,6 +202,36 @@ export async function handleTelegram(request, env) {
     }
     await env.DB.prepare('UPDATE leads SET status = ? WHERE id = ?').bind('done', id).run();
     await tgSend(env, msg.chat.id, '✅ Заявка №' + id + ' закрыта.');
+    return new Response('ok');
+  }
+
+  if (cmd === '/reviews') {
+    if (!isAdmin(env, fromId)) {
+      await tgSend(env, msg.chat.id, '⛔ Обновление отзывов доступно только владельцу аккаунта.');
+      return new Response('ok');
+    }
+    await tgSend(env, msg.chat.id, '⏳ Забираю отзывы с Яндекс.Карт…');
+    try {
+      const r = await updateYandexReviews(env);
+      if (!r.ok) {
+        await tgSend(env, msg.chat.id, '⚠️ Не получилось: ' + esc(String(r.error || 'неизвестная ошибка')) +
+          '\n\nПопробуйте позже или проверьте страницу: https://dom-mc.ru/reviews/');
+        return new Response('ok');
+      }
+      const added = r.added > 0
+        ? 'Новых отзывов: <b>' + r.added + '</b>\n' + r.newOnes.map((x) => '• ' + esc(x)).join('\n') + '\n'
+        : 'Новых отзывов нет — всё как было.\n';
+      const touched = (r.dataUpdated || r.htmlUpdated) ? 'файлы обновлены' : 'изменений нет, коммит не делал';
+      await tgSend(env, msg.chat.id,
+        '⭐ <b>Отзывы обновлены</b>\n\n' +
+        'Всего: <b>' + r.total + '</b> (было ' + r.before + ')\n' +
+        'Оценок на Картах: ' + (r.ratingsCount || '—') + '\n' +
+        added +
+        '\nСтраница: https://dom-mc.ru/reviews/\n' +
+        'Статус: ' + touched + ' · сайт отдаст свежую версию через 1–2 минуты.', MAIN_KB);
+    } catch (e) {
+      await tgSend(env, msg.chat.id, '⚠️ Ошибка обновления: ' + esc(String((e && e.message) || e)));
+    }
     return new Response('ok');
   }
 
