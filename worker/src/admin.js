@@ -1,4 +1,4 @@
-import { json, clean, corsHeaders, randomHex, ipHash, rateLimited, readJson, tgSend, STATUSES } from './lib.js';
+import { json, clean, corsHeaders, randomHex, ipHash, rateLimited, readJson, tgSend, allAdminIds, STATUSES } from './lib.js';
 import { metrikaSummary } from './remind.js';
 
 const SESSION_TTL = 60 * 60 * 24 * 30; // 30 дней
@@ -9,7 +9,7 @@ export async function adminLogin(request, env) {
   if (await rateLimited(env, 'login:' + iph, 30)) {
     return json({ ok: false, error: 'too_many' }, 429, corsHeaders(request, env));
   }
-  const admins = String(env.ADMIN_IDS || '').split(',').map((s) => s.trim()).filter(Boolean);
+  const admins = await allAdminIds(env);
   if (!admins.length || !env.BOT_TOKEN) {
     return json({ ok: false, error: 'not_configured' }, 503, corsHeaders(request, env));
   }

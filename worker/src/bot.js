@@ -1,4 +1,4 @@
-import { json, esc, tgApi, tgSend, isAdmin, STATUSES, MAIN_KB, NAV_KB, isDialogCommand } from './lib.js';
+import { json, esc, tgApi, tgSend, tgNotify, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, MAIN_KB, NAV_KB, isDialogCommand } from './lib.js';
 import { startAdd, handleAddCallback, handleAddMessage, dropState } from './add.js';
 import { startPost, handlePostCallback, isPosting, dropPostState } from './post.js';
 import { handlePostMessage } from './post_steps.js';
@@ -26,17 +26,31 @@ export async function handleTelegram(request, env) {
 
   if (update.callback_query) {
     const d = update.callback_query.data || '';
+    const cbFrom = update.callback_query.from ? update.callback_query.from.id : 0;
+    if (!(await isAllowedAdmin(env, cbFrom))) {
+      await tgApi(env, 'answerCallbackQuery', { callback_query_id: update.callback_query.id, text: 'Нет доступа', show_alert: true });
+      return new Response('ok');
+    }
     if (d.indexOf('add:') === 0) return await handleAddCallback(env, update.callback_query);
     if (d.indexOf('post:') === 0) return await handlePostCallback(env, update.callback_query);
-    return await handleCallback(update.callback_query, env);
+    return await handleCallback(update.callback_query, env, true);
   }
 
   const msg = update.message;
   if (!msg) return new Response('ok');
   const fromId = msg.from ? msg.from.id : 0;
-  if (!isAdmin(env, fromId)) {
+  const allowed = await isAllowedAdmin(env, fromId);
+  if (!allowed) {
+    // любому человеку можно узнать свой ID, чтобы владелец добавил его в список
+    const t = (msg.text || '').trim().toLowerCase();
+    if (msg.text && (t === '/id' || t === '/start' || t === 'id')) {
+      await tgSend(env, msg.chat.id,
+        '🆔 Ваш Telegram ID: <code>' + fromId + '</code>\n\n' +
+        'Передайте этот номер владельцу агентства — он добавит вас в бот, и здесь появятся заявки, объекты и блог.');
+      return new Response('ok');
+    }
     if (msg.text) {
-      await tgSend(env, msg.chat.id, '🤖 Служебный бот агентства «Мой Дом».\nЗаявки — на сайте <b>dom-mc.ru</b>, звонки — +7 949 504-44-55.');
+      await tgSend(env, msg.chat.id, '🤖 Служебный бот агентства «Мой Дом».\nЗаявки — на сайте <b>dom-mc.ru</b>, звонки — +7 949 504-44-55.\n\nЕсли вас должны подключить к панели — отправьте /id.');
     }
     return new Response('ok');
   }
@@ -73,7 +87,8 @@ export async function handleTelegram(request, env) {
       'Пользуйтесь кнопками внизу — или командами:\n' +
       '/leads — заявки, /stats — сводка,\n' +
       '/add — новый объект, /post — пост в блог,\n' +
-      '/done 12 — закрыть заявку, /id — ваш Telegram ID.',
+      '/done 12 — закрыть заявку, /id — ваш Telegram ID,\n' +
+      '/admins — кто имеет доступ, /adduser 123 — добавить человека.',
       MAIN_KB);
     return new Response('ok');
   }
@@ -151,15 +166,59 @@ export async function handleTelegram(request, env) {
     return new Response('ok');
   }
 
+  if (cmd === '/admins') {
+    const base = adminIds(env);
+    const extra = await extraAdminIds(env);
+    await tgSend(env, msg.chat.id,
+      '👥 <b>Кто имеет доступ</b>\n\n' +
+      'В настройках (ADMIN_IDS): ' + (base.length ? base.map((x) => '<code>' + x + '</code>').join(', ') : '—') + '\n' +
+      'Добавлены из бота: ' + (extra.length ? extra.map((x) => '<code>' + x + '</code>').join(', ') : '—') + '\n\n' +
+      'Добавить: <code>/adduser 123456789</code>\nУбрать: <code>/deluser 123456789</code>', MAIN_KB);
+    return new Response('ok');
+  }
+
+  if (cmd === '/adduser' || cmd === '/deluser') {
+    if (!isAdmin(env, fromId)) {
+      await tgSend(env, msg.chat.id, '⛔ Управлять доступом может только владелец.');
+      return new Response('ok');
+    }
+    const id = String(arg || '').replace(/[^\d]/g, '');
+    if (!id || id.length < 5) {
+      await tgSend(env, msg.chat.id, 'Пришлите номер так: <code>' + cmd + ' 123456789</code>\nID человек узнаёт в боте командой /id.', MAIN_KB);
+      return new Response('ok');
+    }
+    let extra = await extraAdminIds(env);
+    if (cmd === '/adduser') {
+      if (adminIds(env).indexOf(id) >= 0 || extra.indexOf(id) >= 0) {
+        await tgSend(env, msg.chat.id, 'Этот ID уже в списке.', MAIN_KB);
+        return new Response('ok');
+      }
+      extra = await setExtraAdmins(env, extra.concat([id]));
+      await tgSend(env, msg.chat.id,
+        '✅ Добавлен доступ для <code>' + id + '</code>.\n\n' +
+        'Пусть человек откроет бота и отправит /start — появится меню.\n' +
+        'Код входа в панель заявок теперь приходит и ему.\n\n' +
+        'Всего с доступом: <b>' + extra.length + '</b> (плюс ' + adminIds(env).length + ' из настроек).', MAIN_KB);
+    } else {
+      if (adminIds(env).indexOf(id) >= 0) {
+        await tgSend(env, msg.chat.id, 'Этот ID прописан в настройках (ADMIN_IDS) — из бота его не убрать, нужно менять wrangler.toml.', MAIN_KB);
+        return new Response('ok');
+      }
+      extra = await setExtraAdmins(env, extra.filter((x) => x !== id));
+      await tgSend(env, msg.chat.id, '✅ Доступ для <code>' + id + '</code> закрыт.', MAIN_KB);
+    }
+    return new Response('ok');
+  }
+
   await tgSend(env, msg.chat.id, 'Неизвестная команда. Список: /help', MAIN_KB);
   return new Response('ok');
 }
 
 /* ---------- кнопки под заявкой ---------- */
-async function handleCallback(query, env) {
+async function handleCallback(query, env, allowed) {
   const fromId = query.from ? query.from.id : 0;
   const data = query.data || '';
-  if (!isAdmin(env, fromId)) {
+  if (!allowed && !(await isAllowedAdmin(env, fromId))) {
     await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id, text: 'Нет доступа', show_alert: true });
     return new Response('ok');
   }
@@ -224,8 +283,8 @@ export async function statsText(env) {
 
 /* ---------- ежедневная сводка по cron ---------- */
 export async function dailyDigest(env) {
-  if (!env.BOT_TOKEN || !env.TG_CHAT_ID) return;
-  await tgSend(env, env.TG_CHAT_ID, await statsText(env), MAIN_KB);
+  if (!env.BOT_TOKEN || !env.ADMIN_IDS) return;
+  await tgNotify(env, await statsText(env), MAIN_KB);
 }
 
 /* ---------- сервисные ручки (вызываются извне РФ через воркер) ---------- */
@@ -254,14 +313,14 @@ export async function tgSetup(request, env) {
   });
 }
 
-/** GET /api/tg/test?key=<WEBHOOK_SECRET> — тестовое сообщение в чат */
+/** GET /api/tg/test?key=<WEBHOOK_SECRET> — тестовое сообщение всем владельцам */
 export async function tgTest(request, env) {
   if (!setupAllowed(request, env)) return json({ ok: false, error: 'forbidden' }, 403);
-  const r = await tgSend(env, env.TG_CHAT_ID,
+  const rs = await tgNotify(env,
     '✅ <b>Проверка связи</b>\nБот «Мой Дом» на связи. Сюда будут приходить заявки с сайта.\n\n' +
     'Кнопки внизу — меню. Если их не видно, отправьте /start.',
     MAIN_KB);
-  return json({ ok: !!(r && r.ok), response: r });
+  return json({ ok: rs.some((r) => r && r.ok), sent: rs.length, response: rs });
 }
 
 /** GET /api/tg/profile?key=<WEBHOOK_SECRET> — описание бота и меню команд */
@@ -307,7 +366,9 @@ export async function tgDiag(request, env) {
     ok: !!(me && me.ok),
     bot: me && me.result ? { id: me.result.id, username: me.result.username } : null,
     webhook: hook,
-    admins: String(env.ADMIN_IDS || '').split(',').map((s) => s.trim()).filter(Boolean),
+    admins: await allAdminIds(env),
+    adminsFromSettings: adminIds(env),
+    adminsAddedInBot: await extraAdminIds(env),
     chat: env.TG_CHAT_ID || null
   });
 }

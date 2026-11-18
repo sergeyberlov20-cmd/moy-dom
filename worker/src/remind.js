@@ -1,8 +1,8 @@
-import { esc, tgSend, MAIN_KB } from './lib.js';
+import { esc, tgNotify, MAIN_KB } from './lib.js';
 
 /* Напоминание о заявках, которые висят «новыми» дольше 30 минут */
 export async function remindStale(env) {
-  if (!env.BOT_TOKEN || !env.TG_CHAT_ID) return;
+  if (!env.BOT_TOKEN || !env.ADMIN_IDS) return;
 
   const rows = await env.DB.prepare(
     "SELECT id, name, phone FROM leads " +
@@ -17,7 +17,7 @@ export async function remindStale(env) {
     list.map((r) => '• №' + r.id + ' — ' + esc(r.name || 'без имени') + ', ' + esc(r.phone)).join('\n') +
     '\n\nПанель: https://dom-mc.ru/admin/leads.html';
 
-  await tgSend(env, env.TG_CHAT_ID, text, MAIN_KB);
+  await tgNotify(env, text, MAIN_KB);
 
   const ids = list.map((r) => r.id);
   const marks = ids.map(() => '?').join(',');

@@ -78,17 +78,63 @@ const tgSend = (env, chatId, text, reply_markup) =>
     chat_id: chatId, text, parse_mode: 'HTML', reply_markup, disable_web_page_preview: true
   });
 
-const isAdmin = (env, userId) =>
-  String(env.ADMIN_IDS || '').split(',').map((s) => s.trim()).includes(String(userId));
-
 /* Постоянная клавиатура внизу чата — как в приложении */
 /* Команды, которые должны срабатывать даже во время диалога /add или /post */
-const DIALOG_COMMANDS = ['/cancel', '/post', '/add', '/start', '/help', '/leads', '/stats', '/site', '/id', '/done'];
+const DIALOG_COMMANDS = ['/cancel', '/post', '/add', '/start', '/help', '/leads', '/stats', '/site', '/id', '/done', '/admins', '/adduser', '/deluser'];
 
 export function isDialogCommand(text) {
   const t = String(text || '').trim().toLowerCase();
   if (t.charAt(0) !== '/') return false;
   return DIALOG_COMMANDS.indexOf(t.split(/\s+/)[0]) >= 0;
+}
+
+/* Список владельцев бота: ADMIN_IDS, иначе TG_CHAT_ID (оба могут быть через запятую) */
+const adminIds = (env) => {
+  const raw = String(env.ADMIN_IDS || env.TG_CHAT_ID || '');
+  return raw.split(',').map((s) => s.trim()).filter(Boolean);
+};
+
+const isAdmin = (env, userId) => adminIds(env).indexOf(String(userId)) >= 0;
+
+/* Отправить сообщение всем владельцам сразу (новые заявки, сводки, напоминания) */
+async function tgNotify(env, text, kb) {
+  if (!env.BOT_TOKEN) return [];
+  const out = [];
+  for (const id of adminIds(env)) {
+    try {
+      out.push(await tgSend(env, id, text, kb));
+    } catch (e) {
+      out.push({ ok: false, error: String((e && e.message) || e) });
+    }
+  }
+  return out;
+}
+
+/* Дополнительные владельцы, добавленные из бота (хранятся в KV, без деплоя) */
+const EXTRA_ADMINS_KEY = 'admins:extra';
+
+async function extraAdminIds(env) {
+  try {
+    const s = await env.KV.get(EXTRA_ADMINS_KEY);
+    return s ? s.split(',').map((x) => x.trim()).filter(Boolean) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+async function allAdminIds(env) {
+  const list = adminIds(env).concat(await extraAdminIds(env));
+  return list.filter((v, i, a) => a.indexOf(v) === i);
+}
+
+async function isAllowedAdmin(env, userId) {
+  return (await allAdminIds(env)).indexOf(String(userId)) >= 0;
+}
+
+async function setExtraAdmins(env, list) {
+  const clean = list.filter((v, i, a) => v && a.indexOf(v) === i);
+  await env.KV.put(EXTRA_ADMINS_KEY, clean.join(','));
+  return clean;
 }
 
 const MAIN_KB = {
@@ -110,4 +156,4 @@ const NAV_KB = {
   ]]
 };
 
-export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, isAdmin, STATUSES, EVENT_TYPES, MAIN_KB, NAV_KB };
+export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, tgNotify, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, EVENT_TYPES, MAIN_KB, NAV_KB };

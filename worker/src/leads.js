@@ -1,4 +1,4 @@
-import { json, esc, clean, corsHeaders, ipHash, rateLimited, readJson, tgSend } from './lib.js';
+import { json, esc, clean, corsHeaders, ipHash, rateLimited, readJson, tgNotify, adminIds } from './lib.js';
 
 /* ---------- заявка с сайта ---------- */
 export async function handleLead(request, env) {
@@ -32,7 +32,7 @@ export async function handleLead(request, env) {
 
   const id = res.meta && res.meta.last_row_id ? res.meta.last_row_id : 0;
 
-  if (env.BOT_TOKEN && env.TG_CHAT_ID && id) {
+  if (env.BOT_TOKEN && adminIds(env).length && id) {
     const text =
       '🔔 <b>Новая заявка №' + id + '</b>\n' +
       '👤 ' + esc(name || '—') + '\n' +
@@ -41,7 +41,7 @@ export async function handleLead(request, env) {
       '🌐 ' + esc(page || '—') + '\n' +
       (referrer ? '↩️ ' + esc(referrer) + '\n' : '') +
       '🕒 ' + new Date().toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
-    await tgSend(env, env.TG_CHAT_ID, text, {
+    await tgNotify(env, text, {
       inline_keyboard: [[
         { text: '📞 В работе', callback_data: 'st:' + id + ':inwork' },
         { text: '✅ Готово', callback_data: 'st:' + id + ':done' }
