@@ -1,12 +1,11 @@
-/* Отзывы с Яндекс.Карт — обновлено 18 ноября 2026 г. */
+/* Отзывы с Яндекс.Карт — обновлено 18 ноября 2026 */
 window.REVIEWS_META = {
   "rating": 5,
-  "ratingAvg": 4.9,
   "reviews": 57,
   "ratingsCount": 63,
   "url": "https://yandex.ru/maps/org/moy_dom/98286514548/reviews/",
   "orgUrl": "https://yandex.ru/maps/org/moy_dom/98286514548/",
-  "updated": "18 ноября 2026 г."
+  "updated": "18 ноября 2026"
 };
 
 window.REVIEWS = [
