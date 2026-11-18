@@ -1,4 +1,4 @@
-import { esc, tgSend } from './lib.js';
+import { esc, tgSend, MAIN_KB } from './lib.js';
 
 /* Напоминание о заявках, которые висят «новыми» дольше 30 минут */
 export async function remindStale(env) {
@@ -17,7 +17,7 @@ export async function remindStale(env) {
     list.map((r) => '• №' + r.id + ' — ' + esc(r.name || 'без имени') + ', ' + esc(r.phone)).join('\n') +
     '\n\nПанель: https://dom-mc.ru/admin/leads.html';
 
-  await tgSend(env, env.TG_CHAT_ID, text);
+  await tgSend(env, env.TG_CHAT_ID, text, MAIN_KB);
 
   const ids = list.map((r) => r.id);
   const marks = ids.map(() => '?').join(',');

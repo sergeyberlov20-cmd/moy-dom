@@ -68,7 +68,7 @@ export async function handleTelegram(request, env) {
   }
 
   if (cmd === '/id') {
-    await tgSend(env, msg.chat.id, 'Ваш ID: <code>' + fromId + '</code>\nЧат: <code>' + msg.chat.id + '</code>');
+    await tgSend(env, msg.chat.id, 'Ваш ID: <code>' + fromId + '</code>\nЧат: <code>' + msg.chat.id + '</code>', MAIN_KB);
     return new Response('ok');
   }
 
@@ -81,7 +81,7 @@ export async function handleTelegram(request, env) {
     const rows = filter ? await stmt.bind(filter).all() : await stmt.bind().all();
     const list = rows.results || [];
     if (!list.length) {
-      await tgSend(env, msg.chat.id, 'Пока заявок нет 🙂', NAV_KB);
+      await tgSend(env, msg.chat.id, 'Пока заявок нет 🙂', MAIN_KB);
       return new Response('ok');
     }
     for (const r of list) {
@@ -93,7 +93,7 @@ export async function handleTelegram(request, env) {
         '🌐 ' + esc(r.page || '—') + '\n' +
         '🕒 ' + esc(r.created_at) + ' UTC', KB(r.id));
     }
-    await tgSend(env, msg.chat.id, 'Показаны последние ' + list.length + ' заявок.', NAV_KB);
+    await tgSend(env, msg.chat.id, 'Показаны последние ' + list.length + ' заявок.', MAIN_KB);
     return new Response('ok');
   }
 
@@ -134,7 +134,7 @@ export async function handleTelegram(request, env) {
     return new Response('ok');
   }
 
-  await tgSend(env, msg.chat.id, 'Неизвестная команда. Список: /help');
+  await tgSend(env, msg.chat.id, 'Неизвестная команда. Список: /help', MAIN_KB);
   return new Response('ok');
 }
 
@@ -208,7 +208,7 @@ export async function statsText(env) {
 /* ---------- ежедневная сводка по cron ---------- */
 export async function dailyDigest(env) {
   if (!env.BOT_TOKEN || !env.TG_CHAT_ID) return;
-  await tgSend(env, env.TG_CHAT_ID, await statsText(env));
+  await tgSend(env, env.TG_CHAT_ID, await statsText(env), MAIN_KB);
 }
 
 /* ---------- сервисные ручки (вызываются извне РФ через воркер) ---------- */
