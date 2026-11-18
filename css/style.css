@@ -26,7 +26,7 @@ body {
 .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
 /* Header */
-header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; }
+header { background: #ffffff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 80px; position: relative; }
 .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .logo-img { height: 46px; width: auto; object-fit: contain; transition: transform .25s ease; }
@@ -226,10 +226,44 @@ footer a:hover { color: #fff; }
 .section-title { font-size: 2.2rem; margin: 60px 0 20px; color: var(--primary); font-weight: 900; }
 .section-sub { color: var(--muted); margin-bottom: 30px; font-size: 1.1rem; }
 
-/* На телефоне в услугах остаётся только нижняя панель «Позвонить» — встроенная кнопка скрыта, чтобы номер не дублировался */
+/* Мобильная шапка: меню всегда видно (прокручиваемая строка), без «бургер»-скрытия */
+@media (max-width: 768px) {
+  .nav { height: auto !important; flex-wrap: wrap; padding: 10px 15px 0 !important; row-gap: 6px; }
+  .nav-right { width: 100%; }
+  .nav ul#main-nav {
+    display: flex !important;
+    position: static !important;
+    width: 100%;
+    padding: 0 0 10px !important;
+    margin: 0;
+    gap: 16px;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav ul#main-nav::-webkit-scrollbar { display: none; }
+  .nav ul#main-nav li { width: auto !important; margin: 0 !important; text-align: left !important; }
+  .nav ul#main-nav a { font-size: 0.95rem !important; padding: 4px 0 !important; white-space: nowrap; display: inline-flex; align-items: center; }
+  .nav-right .mobile-menu-btn { display: none !important; }
+}
 @media (max-width: 820px) {
   .action-buttons { display: none !important; }
 }
+
+/* Фильтр цены: «от» и «до» */
+.price-inputs { display: flex; gap: 8px; }
+.price-field { display: flex; align-items: center; gap: 6px; flex: 1 1 0; min-width: 0; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; }
+.price-field span { font-size: 0.85rem; color: var(--muted); flex: 0 0 auto; }
+.price-field input { width: 100%; min-width: 0; border: none; outline: none; background: transparent; font: inherit; font-size: 0.9rem; color: var(--text); }
+.price-field input::placeholder { color: #b6bcc8; }
+.price-field input::-webkit-outer-spin-button, .price-field input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.price-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
+.price-reset { background: none; border: none; padding: 0; font: inherit; font-size: 0.85rem; font-weight: 700; color: var(--accent); cursor: pointer; }
+.price-reset:hover { text-decoration: underline; }
 
 /* АДАПТИВ (МОБИЛКА) */
 @media (max-width: 768px) {

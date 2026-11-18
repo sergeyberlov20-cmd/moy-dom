@@ -107,14 +107,12 @@
     <div class="filter-dropdown" id="price-dropdown">
       <div class="filter-title">Цена <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
       <div class="filter-content price-filter-content">
-        <div class="price-values">
-          <span>0 ₽</span>
-          <span id="price-val">Без ограничений</span>
+        <div class="price-inputs">
+          <label class="price-field"><span>от</span><input type="number" id="price-min" inputmode="numeric" placeholder="0" min="0" step="50000"></label>
+          <label class="price-field"><span>до</span><input type="number" id="price-max" inputmode="numeric" placeholder="без ограничений" min="0" step="50000"></label>
         </div>
-        <div class="single-range-slider">
-          <div class="range-track-bg"></div>
-          <div class="range-track-fill" id="range-fill"></div>
-          <input type="range" id="price-range" min="0" max="500000000" step="100000" value="500000000">
+        <div class="price-actions">
+          <button type="button" class="price-reset" id="price-reset">Сбросить</button>
         </div>
       </div>
     </div>
@@ -156,26 +154,17 @@
 <script>
   document.addEventListener('dataLoaded', () => {
     const catalog = document.getElementById('catalog');
-    const priceRange = document.getElementById('price-range');
-    const priceVal = document.getElementById('price-val');
-    const rangeFill = document.getElementById('range-fill');
+    const priceMinEl = document.getElementById('price-min');
+    const priceMaxEl = document.getElementById('price-max');
+    const priceReset = document.getElementById('price-reset');
     const roomsDropdown = document.getElementById('rooms-dropdown');
 
-    function computeMaxPrice() {
-      let maxPrice = 0;
-      OBJECTS.forEach(o => {
-        const p = Number(o.price);
-        if (!isNaN(p) && p > maxPrice) maxPrice = p;
-      });
-      const BASE_MAX = 500000000;
-      if (maxPrice <= BASE_MAX) return BASE_MAX;
-      const magnitude = Math.pow(10, Math.floor(Math.log10(maxPrice)) - 1);
-      return Math.ceil(maxPrice / magnitude) * magnitude;
+    function numVal(el) {
+      const v = Number(String(el.value).replace(/[^0-9.]/g, ''));
+      return isFinite(v) && v > 0 ? v : 0;
     }
-
-    const MAX_PRICE = computeMaxPrice();
-    priceRange.max = MAX_PRICE;
-    priceRange.value = MAX_PRICE;
+    function getMinPrice() { return numVal(priceMinEl); }
+    function getMaxPrice() { const v = numVal(priceMaxEl); return v > 0 ? v : Infinity; }
 
     document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
       dropdown.querySelector('.filter-title').addEventListener('click', (e) => {
@@ -190,17 +179,6 @@
 
     function getCheckedValues(className) { return Array.from(document.querySelectorAll(`.${className}:checked`)).map(cb => cb.value); }
     function formatNum(num) { return new Intl.NumberFormat('ru-RU').format(num); }
-
-    function updateSlider() {
-      const val = parseInt(priceRange.value);
-      if (val >= MAX_PRICE) {
-        priceVal.textContent = 'Без ограничений';
-      } else {
-        priceVal.textContent = 'До ' + formatNum(val) + ' ₽';
-      }
-      const percent = (val / MAX_PRICE) * 100;
-      rangeFill.style.width = percent + '%';
-    }
 
     function updateRoomsDropdownState() {
       const types = getCheckedValues('f-type');
@@ -218,7 +196,8 @@
       const types = getCheckedValues('f-type');
       const deals = getCheckedValues('f-deal');
       const rooms = getCheckedValues('f-rooms');
-      const max = Number(priceRange.value);
+      const max = getMaxPrice();
+      const min = getMinPrice();
 
       const q = (document.getElementById('catalog-search').value || '').trim().toLowerCase();
       const sort = document.getElementById('catalog-sort').value;
@@ -231,7 +210,8 @@
           const hasMatchingRoom = rooms.some(r => { const rNum = Number(r); return rNum === 4 ? o.rooms >= 4 : o.rooms === rNum; });
           if (!hasMatchingRoom) return false;
         }
-        if (max < MAX_PRICE && o.price > max) return false;
+        if (min > 0 && Number(o.price) < min) return false;
+        if (max !== Infinity && Number(o.price) > max) return false;
         if (q) {
           const hay = [(o.title || ''), (o.address || ''), (o.type || ''), (o.deal || ''), (o.description || '')].join(' ').toLowerCase();
           if (hay.indexOf(q) === -1) return false;
@@ -248,13 +228,21 @@
       if (window.initMiniSliders) window.initMiniSliders();
     }
 
-    priceRange.addEventListener('input', () => { updateSlider(); render(); });
+    priceMinEl.addEventListener('input', render);
+    priceMaxEl.addEventListener('input', render);
+    priceMinEl.addEventListener('change', render);
+    priceMaxEl.addEventListener('change', render);
+    priceReset.addEventListener('click', (e) => {
+      e.stopPropagation();
+      priceMinEl.value = '';
+      priceMaxEl.value = '';
+      render();
+    });
     document.querySelectorAll('.f-type').forEach(el => { el.addEventListener('change', () => { updateRoomsDropdownState(); render(); }); });
     document.querySelectorAll('.f-deal, .f-rooms').forEach(el => { el.addEventListener('change', render); });
     document.getElementById('catalog-search').addEventListener('input', render);
     document.getElementById('catalog-sort').addEventListener('change', render);
 
-    updateSlider();
     updateRoomsDropdownState();
     render();
   });
