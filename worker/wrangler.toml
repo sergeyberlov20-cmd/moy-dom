@@ -1,0 +1,43 @@
+# Cloudflare Worker для заявок и мини-админки «Мой Дом»
+# Деплой: см. worker/README.md
+name = "moydom-leads"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+
+# --- База (SQLite) ---
+# Создать: npx wrangler d1 create moydom
+# Затем вставить сюда database_id из вывода команды
+[[d1_databases]]
+binding = "DB"
+database_name = "moydom"
+database_id = "ВСТАВЬ_DATABASE_ID"
+
+# --- KV для кодов входа и лимитов ---
+# Создать: npx wrangler kv namespace create KV
+[[kv_namespaces]]
+binding = "KV"
+id = "ВСТАВЬ_KV_ID"
+
+[vars]
+# Откуда разрешены запросы с сайта (через запятую)
+SITE_ORIGIN = "https://dom-mc.ru,https://sergeyberlov20-cmd.github.io"
+# ID владельцев в Telegram (через запятую) — кому можно всё
+ADMIN_IDS = "000000000"
+# Чат для уведомлений о заявках (обычно = ваш ID)
+TG_CHAT_ID = "000000000"
+# Секретный путь вебхука бота
+WEBHOOK_PATH = "/api/tg/webhook"
+# Номер счётчика Яндекс.Метрики (для сводок; можно оставить пустым)
+METRIKA_COUNTER_ID = ""
+
+[triggers]
+# Ежедневная сводка в Telegram в 06:00 UTC (09:00 МСК)
+crons = ["0 6 * * *"]
+
+[observability]
+enabled = true
+
+# Секреты (не в файле!):
+#   npx wrangler secret put BOT_TOKEN        — токен бота от @BotFather
+#   npx wrangler secret put WEBHOOK_SECRET   — любая строка, тот же в URL вебхука
+#   npx wrangler secret put METRIKA_TOKEN    — OAuth-токен Метрики (необязательно)
