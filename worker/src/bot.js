@@ -1,4 +1,4 @@
-import { json, esc, tgApi, tgSend, tgNotify, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, MAIN_KB, NAV_KB, isDialogCommand } from './lib.js';
+import { json, esc, tgApi, tgSend, tgNotify, tgPurge, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, MAIN_KB, NAV_KB, isDialogCommand } from './lib.js';
 import { startAdd, handleAddCallback, handleAddMessage, dropState } from './add.js';
 import { startPost, handlePostCallback, isPosting, dropPostState } from './post.js';
 import { handlePostMessage } from './post_steps.js';
@@ -222,10 +222,16 @@ export async function handleTelegram(request, env) {
   if (cmd === '/reset') {
     await dropState(env, fromId);
     await dropPostState(env, fromId);
+
+    // чистим сам чат: удаляем сообщения бота, затем присылаем одно с меню
+    let deleted = 0;
+    try { deleted = await tgPurge(env, msg.chat.id); } catch (e) { deleted = 0; }
+
     await tgSend(env, msg.chat.id,
-      '♻️ <b>Состояние сброшено</b>\n\n' +
-      'Незаконченные «Добавить объект» и «Написать в блог» закрыты — бот снова слушает команды и не считает ваши сообщения ответами диалога.',
-      MAIN_KB);
+      '♻️ <b>Готово</b>\n\n' +
+      (deleted ? 'Удалено сообщений: <b>' + deleted + '</b>\n' : '') +
+      'Незаконченные диалоги закрыты, чат чистый.\n' +
+      'Дальше работаем с нуля — кнопки внизу.', MAIN_KB);
     return new Response('ok');
   }
 

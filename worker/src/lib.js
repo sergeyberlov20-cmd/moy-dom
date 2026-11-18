@@ -73,10 +73,43 @@ async function tgApi(env, method, payload) {
   try { return await r.json(); } catch (e) { return null; }
 }
 
-const tgSend = (env, chatId, text, reply_markup) =>
-  tgApi(env, 'sendMessage', {
+const tgSend = async (env, chatId, text, reply_markup) => {
+  const r = await tgApi(env, 'sendMessage', {
     chat_id: chatId, text, parse_mode: 'HTML', reply_markup, disable_web_page_preview: true
   });
+  // запоминаем id своих сообщений, чтобы «Сброс» мог почистить чат
+  try {
+    if (r && r.ok && r.result && r.result.message_id && env.KV && /^-?\d+$/.test(String(chatId))) {
+      const key = 'msgs:' + chatId;
+      const raw = await env.KV.get(key);
+      const list = raw ? JSON.parse(raw) : [];
+      list.push(r.result.message_id);
+      const tail = list.slice(-80);
+      await env.KV.put(key, JSON.stringify(tail), { expirationTtl: 60 * 60 * 48 });
+    }
+  } catch (e) { /* учёт не критичен */ }
+  return r;
+};
+
+/** Удаляет все свои сообщения в чате (в пределах 48 часов) */
+async function tgPurge(env, chatId) {
+  const key = 'msgs:' + chatId;
+  let ids = [];
+  try {
+    const raw = await env.KV.get(key);
+    ids = raw ? JSON.parse(raw) : [];
+  } catch (e) { ids = []; }
+
+  let deleted = 0;
+  for (const id of ids.slice(-80)) {
+    try {
+      const r = await tgApi(env, 'deleteMessage', { chat_id: chatId, message_id: id });
+      if (r && r.ok) deleted++;
+    } catch (e) { /* старое сообщение — пропускаем */ }
+  }
+  try { await env.KV.delete(key); } catch (e) {}
+  return deleted;
+}
 
 /* Постоянная клавиатура внизу чата — как в приложении */
 /* Команды, которые должны срабатывать даже во время диалога /add или /post */
@@ -171,4 +204,4 @@ const NAV_KB = {
   ]]
 };
 
-export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, tgNotify, tgDelete, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, EVENT_TYPES, MAIN_KB, NAV_KB };
+export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, tgNotify, tgDelete, tgPurge, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, EVENT_TYPES, MAIN_KB, NAV_KB };
