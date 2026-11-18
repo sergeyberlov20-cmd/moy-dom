@@ -1,55 +1,51 @@
-# Публикация воркера: берёт секреты из worker\.dev.vars и деплоит.
-# Запуск:  cd C:\Users\nice\Desktop\moy-dom-repo\worker
-#          powershell -ExecutionPolicy Bypass -File .\deploy.ps1
+# Publish the worker: reads secrets from worker\.dev.vars, uploads them, deploys.
+# Usage: powershell -ExecutionPolicy Bypass -File .\deploy.ps1
 $ErrorActionPreference = 'Stop'
 
 $file = Join-Path $PSScriptRoot '.dev.vars'
-if (-not (Test-Path $file)) {
-    Write-Host "Нет файла $file — создайте его и впишите BOT_TOKEN." -ForegroundColor Red
-    exit 1
+if (-not (Test-Path -LiteralPath $file)) { Write-Host "Missing file: $file"; exit 1 }
+
+$vars = @{}
+foreach ($line in (Get-Content -LiteralPath $file)) {
+    $t = $line.Trim()
+    if (-not $t) { continue }
+    if ($t.StartsWith('#')) { continue }
+    $i = $t.IndexOf('=')
+    if ($i -lt 1) { continue }
+    $k = $t.Substring(0, $i).Trim()
+    $v = $t.Substring($i + 1).Trim().Trim('"').Trim("'")
+    if ($k -and $v) { $vars[$k] = $v }
 }
 
-$vars = [ordered]@{}
-Get-Content -LiteralPath $file -Encoding UTF8 | ForEach-Object {
-    $line = $_.Trim()
-    if (-not $line -or $line.StartsWith('#')) { return }
-    $i = $line.IndexOf('=')
-    if ($i -lt 1) { return }
-    $k = $line.Substring(0, $i).Trim()
-    $v = $line.Substring($i + 1).Trim().Trim('"').Trim("'")
-    if ($k) { $vars[$k] = $v }
+if (-not $vars.ContainsKey('BOT_TOKEN') -or -not $vars['BOT_TOKEN']) {
+    Write-Host 'BOT_TOKEN is empty in worker\.dev.vars'; exit 1
 }
 
-if (-not $vars['BOT_TOKEN']) {
-    Write-Host 'Впишите BOT_TOKEN в worker\.dev.vars (строка "BOT_TOKEN=...")' -ForegroundColor Red
-    exit 1
-}
-
-$json = ($vars.GetEnumerator() | ForEach-Object { '"' + $_.Key + '":"' + ($_.Value -replace '\\', '\\' -replace '"', '\"') + '"' }) -join ','
-$json = '{' + $json + '}'
 $tmp = Join-Path $env:TEMP 'moydom-secrets.json'
-[IO.File]::WriteAllText($tmp, $json, (New-Object System.Text.UTF8Encoding($false)))
+$obj = @{}
+foreach ($k in $vars.Keys) { $obj[$k] = $vars[$k] }
+[IO.File]::WriteAllText($tmp, ($obj | ConvertTo-Json -Compress), (New-Object System.Text.UTF8Encoding($false)))
 
-Write-Host '→ Загружаю секреты в Cloudflare...' -ForegroundColor Cyan
 Push-Location $PSScriptRoot
 try {
+    Write-Host '[1/3] Uploading secrets...'
     & npx wrangler secret bulk $tmp
     if ($LASTEXITCODE -ne 0) {
-        Write-Host '  bulk не сработал — пробую по одному...' -ForegroundColor Yellow
+        Write-Host '[1/3] bulk failed, trying one by one...'
         foreach ($k in $vars.Keys) {
-            if ($vars[$k]) {
-                $vars[$k] | & npx wrangler secret put $k
-                if ($LASTEXITCODE -ne 0) { throw "Не удалось записать секрет $k" }
-            }
+            $vars[$k] | & npx wrangler secret put $k
+            if ($LASTEXITCODE -ne 0) { throw "secret put failed for $k" }
         }
     }
-    Write-Host '→ Публикую воркер...' -ForegroundColor Cyan
+    Write-Host '[2/3] Deploying worker...'
     & npx wrangler deploy
-    if ($LASTEXITCODE -ne 0) { throw 'wrangler deploy завершился с ошибкой' }
+    if ($LASTEXITCODE -ne 0) { throw 'wrangler deploy failed' }
+    Write-Host '[3/3] Done.'
     Write-Host ''
-    Write-Host 'Готово. Теперь откройте в браузере:' -ForegroundColor Green
+    Write-Host 'Open in browser:'
     Write-Host ('  https://moydom-leads.sergeyberlov20.workers.dev/api/tg/setup?key=' + $vars['WEBHOOK_SECRET'])
     Write-Host ('  https://moydom-leads.sergeyberlov20.workers.dev/api/tg/test?key=' + $vars['WEBHOOK_SECRET'])
+    Write-Host ('  https://moydom-leads.sergeyberlov20.workers.dev/api/tg/diag?key=' + $vars['WEBHOOK_SECRET'])
 }
 finally {
     Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
