@@ -3,6 +3,10 @@
 name = "moydom-leads"
 main = "src/index.js"
 compatibility_date = "2026-11-01"
+# публикуем на технический адрес *.workers.dev (домен сайта не трогаем)
+workers_dev = true
+# preview-адреса не нужны
+preview_urls = false
 
 # --- База (SQLite) ---
 # Создать: npx wrangler d1 create moydom
@@ -10,13 +14,13 @@ compatibility_date = "2026-11-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "moydom"
-database_id = "ВСТАВЬ_DATABASE_ID"
+database_id = "6d2dd9e2-d1bb-4fbf-bb33-84973175fbb1"
 
 # --- KV для кодов входа и лимитов ---
 # Создать: npx wrangler kv namespace create KV
 [[kv_namespaces]]
 binding = "KV"
-id = "ВСТАВЬ_KV_ID"
+id = "c75e97de41594c23bf7caefe66c84354"
 
 [vars]
 # Откуда разрешены запросы с сайта (через запятую)
