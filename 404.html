@@ -42,8 +42,8 @@
       <ul id="main-nav">
         <li><a href="index.html">Главная</a></li>
         <li><a href="catalog.html">Каталог</a></li>
-        <li><a href="services.html">Услуги</a></li>
-        <li><a href="blog.html">Блог</a></li>
+        <li><a href="services/index.html">Услуги</a></li>
+        <li><a href="blog/index.html">Блог</a></li>
         <li><a href="about.html">О нас</a></li>
         <li><a href="contacts.html">Контакты</a></li>
         <li><a href="favorites.html"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg> Избранное</a></li>
@@ -69,8 +69,8 @@
     </div>
     <div class="e404-links">
       <a href="index.html">На главную</a>
-      <a href="services.html">Услуги</a>
-      <a href="blog.html">Блог</a>
+      <a href="services/index.html">Услуги</a>
+      <a href="blog/index.html">Блог</a>
       <a href="about.html">О нас</a>
       <a href="contacts.html">Контакты</a>
     </div>
@@ -92,5 +92,17 @@
 <script src="js/main.js"></script>
 <script src="js/install.js" defer></script>
 <script src="js/mobile-bar.js" defer></script>
+<script>
+/* Редиректы со старых адресов: страницы разложены по папкам /blog и /services */
+(function () {
+  var p = location.pathname.replace(/\/+$/, ''), m;
+  if (p === '/blog.html') { location.replace('/blog/' + location.search); return; }
+  if (p === '/services.html') { location.replace('/services/' + location.search); return; }
+  m = p.match(/\/uslugi-(\d+)\.html$/);
+  if (m) { location.replace('/services/uslugi-' + m[1] + '.html' + location.search); return; }
+  m = p.match(/\/(blog-[a-z0-9\-]+)\.html$/);
+  if (m) { location.replace('/blog/' + m[1] + '.html' + location.search); return; }
+})();
+</script>
 </body>
 </html>
