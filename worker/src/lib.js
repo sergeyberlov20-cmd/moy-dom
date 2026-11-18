@@ -47,8 +47,13 @@ async function ipHash(request) {
 async function rateLimited(env, key, ttl) {
   if (!env.KV) return false;
   const k = 'rl:' + key;
-  if (await env.KV.get(k)) return true;
-  await env.KV.put(k, '1', { expirationTtl: ttl });
+  try {
+    if (await env.KV.get(k)) return true;
+    // KV не принимает expirationTtl меньше 60 секунд
+    await env.KV.put(k, '1', { expirationTtl: Math.max(60, Number(ttl) || 60) });
+  } catch (e) {
+    return false; // хранилище недоступно — не блокируем заявку
+  }
   return false;
 }
 

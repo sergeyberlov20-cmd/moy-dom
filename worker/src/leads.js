@@ -17,7 +17,7 @@ export async function handleLead(request, env) {
   }
 
   const iph = await ipHash(request);
-  if (await rateLimited(env, 'lead:' + iph, 20)) {
+  if (await rateLimited(env, 'lead:' + iph, 60)) {
     return json({ ok: false, error: 'too_many' }, 429, corsHeaders(request, env));
   }
 
@@ -60,7 +60,6 @@ export async function handleEvent(request, env) {
     return json({ ok: false, error: 'bad_request' }, 400, corsHeaders(request, env));
   }
   const iph = await ipHash(request);
-  if (await rateLimited(env, 'ev:' + iph, 3)) return json({ ok: true }, 200, corsHeaders(request, env));
 
   await env.DB.prepare(
     'INSERT INTO events (type, page, meta, ip_hash) VALUES (?, ?, ?, ?)'
