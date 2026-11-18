@@ -42,7 +42,8 @@ header { background: #ffffff; border-bottom: 1px solid var(--border); position: 
 
 .mobile-menu-btn { display: none; } 
 
-a[href="favorites.html"] {
+/* «Избранное»: селектор по окончанию href — работает и из подпапок (../favorites.html) */
+a[href$="favorites.html"] {
   display: inline-flex !important;
   align-items: center !important;
   gap: 6px !important;
@@ -50,7 +51,10 @@ a[href="favorites.html"] {
   color: var(--accent) !important;
   font-weight: 600 !important;
 }
-a[href="favorites.html"] svg { width: 16px !important; height: 16px !important; fill: currentColor; }
+a[href$="favorites.html"] svg { width: 16px !important; height: 16px !important; fill: currentColor; }
+
+/* Любая иконка внутри меню не должна раздуваться (страховка от «огромной закладки») */
+.nav ul a svg, .nav ul svg { width: 16px !important; height: 16px !important; max-width: 16px !important; max-height: 16px !important; flex: 0 0 auto; }
 
 /* Соцсети */
 .social-icons { display: flex; gap: 12px; align-items: center; }
@@ -260,6 +264,10 @@ footer a:hover { color: #fff; }
 .price-field span { font-size: 0.85rem; color: var(--muted); flex: 0 0 auto; }
 .price-field input { width: 100%; min-width: 0; border: none; outline: none; background: transparent; font: inherit; font-size: 0.9rem; color: var(--text); }
 .price-field input::placeholder { color: #b6bcc8; }
+/* Поля цены: убираем стрелки-спиннеры у number-инпутов */
+input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .price-field input::-webkit-outer-spin-button, .price-field input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .price-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
 .price-reset { background: none; border: none; padding: 0; font: inherit; font-size: 0.85rem; font-weight: 700; color: var(--accent); cursor: pointer; }
