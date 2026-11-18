@@ -2,6 +2,7 @@ import { json, corsPreflight } from './lib.js';
 import { handleLead, handleEvent } from './leads.js';
 import { handleTelegram, dailyDigest, tgSetup, tgTest, tgDiag, tgProfile } from './bot.js';
 import { remindStale } from './remind.js';
+import { releaseScheduled, postRelease } from './release.js';
 import { ghDiag } from './diag.js';
 import {
   adminLogin, adminVerify, adminLogout, adminMe,
@@ -17,6 +18,7 @@ const RT = [
   ['/api/tg/diag', 'GET', tgDiag],
   ['/api/tg/profile', 'GET', tgProfile],
   ['/api/diag/gh', 'GET', ghDiag],
+  ['/api/post/release', 'GET', postRelease],
   ['/api/admin/login', 'POST', adminLogin],
   ['/api/admin/verify', 'POST', adminVerify],
   ['/api/admin/logout', 'POST', adminLogout],
@@ -49,7 +51,11 @@ export default {
 
   async scheduled(controller, env, ctx) {
     const cron = (controller && controller.cron) || '';
-    if (cron === '0 6 * * *') ctx.waitUntil(dailyDigest(env));
-    else ctx.waitUntil(remindStale(env));
+    if (cron === '0 6 * * *') {
+      ctx.waitUntil(releaseScheduled(env).catch(() => null));
+      ctx.waitUntil(dailyDigest(env));
+    } else {
+      ctx.waitUntil(remindStale(env));
+    }
   }
 };

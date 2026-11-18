@@ -85,7 +85,8 @@ const isAdmin = (env, userId) =>
 const MAIN_KB = {
   keyboard: [
     [{ text: '📋 Заявки' }, { text: '📊 Статистика' }],
-    [{ text: '➕ Добавить объект' }, { text: '🌐 Открыть сайт' }]
+    [{ text: '➕ Добавить объект' }, { text: '✍️ Написать в блог' }],
+    [{ text: '🌐 Открыть сайт' }]
   ],
   resize_keyboard: true,
   is_persistent: true

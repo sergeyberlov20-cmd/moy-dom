@@ -14,7 +14,7 @@ function headers(env, json) {
   return h;
 }
 
-async function ghGet(env, path) {
+export async function ghGet(env, path) {
   const branch = env.GITHUB_BRANCH || 'main';
   const r = await fetch(API + '/repos/' + env.GITHUB_REPO + '/contents/' + path + '?ref=' + branch, { headers: headers(env) });
   if (r.status === 404) return null;
@@ -22,7 +22,7 @@ async function ghGet(env, path) {
   return r.json();
 }
 
-async function ghPut(env, path, base64, message, sha) {
+export async function ghPut(env, path, base64, message, sha) {
   const body = { message: message, content: base64, branch: env.GITHUB_BRANCH || 'main' };
   if (sha) body.sha = sha;
   const r = await fetch(API + '/repos/' + env.GITHUB_REPO + '/contents/' + path, {

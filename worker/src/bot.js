@@ -1,5 +1,7 @@
 import { json, esc, tgApi, tgSend, isAdmin, STATUSES, MAIN_KB, NAV_KB } from './lib.js';
 import { startAdd, handleAddCallback, handleAddMessage, dropState } from './add.js';
+import { startPost, handlePostCallback, isPosting, dropPostState } from './post.js';
+import { handlePostMessage } from './post_steps.js';
 import { metrikaSummary } from './remind.js';
 
 const STATUS_RU = { new: 'новая', inwork: 'в работе', done: 'закрыта', spam: 'спам' };
@@ -25,6 +27,7 @@ export async function handleTelegram(request, env) {
   if (update.callback_query) {
     const d = update.callback_query.data || '';
     if (d.indexOf('add:') === 0) return await handleAddCallback(env, update.callback_query);
+    if (d.indexOf('post:') === 0) return await handlePostCallback(env, update.callback_query);
     return await handleCallback(update.callback_query, env);
   }
 
@@ -38,8 +41,16 @@ export async function handleTelegram(request, env) {
     return new Response('ok');
   }
 
-  // фото или текст внутри диалога добавления объекта
-  if (msg.photo || (msg.text && (await isAdding(env, fromId)))) {
+  // текст/фото внутри диалогов: добавление объекта или пост в блог
+  if (await isPosting(env, fromId)) {
+    await handlePostMessage(env, msg, fromId);
+    return new Response('ok');
+  }
+  if (msg.text && (await isAdding(env, fromId))) {
+    await handleAddMessage(env, msg, fromId);
+    return new Response('ok');
+  }
+  if (msg.photo && (await isAdding(env, fromId))) {
     await handleAddMessage(env, msg, fromId);
     return new Response('ok');
   }
@@ -51,6 +62,7 @@ export async function handleTelegram(request, env) {
     '📋 Заявки': '/leads',
     '📊 Статистика': '/stats',
     '➕ Добавить объект': '/add',
+    '✍️ Написать в блог': '/post',
     '🌐 Открыть сайт': '/site'
   };
   const cmd = BTN[msg.text.trim()] || (parts[0] || '').toLowerCase();
@@ -61,8 +73,8 @@ export async function handleTelegram(request, env) {
       '👋 <b>Панель агентства «Мой Дом»</b>\n\n' +
       'Пользуйтесь кнопками внизу — или командами:\n' +
       '/leads — заявки, /stats — сводка,\n' +
-      '/add — новый объект, /done 12 — закрыть заявку,\n' +
-      '/id — ваш Telegram ID.',
+      '/add — новый объект, /post — пост в блог,\n' +
+      '/done 12 — закрыть заявку, /id — ваш Telegram ID.',
       MAIN_KB);
     return new Response('ok');
   }
@@ -117,9 +129,15 @@ export async function handleTelegram(request, env) {
     return new Response('ok');
   }
 
+  if (cmd === '/post') {
+    await startPost(env, msg.chat.id, fromId);
+    return new Response('ok');
+  }
+
   if (cmd === '/cancel') {
     await dropState(env, fromId);
-    await tgSend(env, msg.chat.id, '❌ Отменено.');
+    await dropPostState(env, fromId);
+    await tgSend(env, msg.chat.id, '❌ Отменено.', MAIN_KB);
     return new Response('ok');
   }
 
@@ -255,6 +273,7 @@ export async function tgProfile(request, env) {
     { command: 'leads', description: 'Заявки с сайта' },
     { command: 'stats', description: 'Сводка за 7 дней' },
     { command: 'add', description: 'Добавить объект в каталог' },
+    { command: 'post', description: 'Написать пост в блог' },
     { command: 'site', description: 'Открыть сайт' },
     { command: 'help', description: 'Помощь' }
   ];
