@@ -184,8 +184,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const scrollBtn = document.getElementById('scrollTopBtn');
   if (scrollBtn) {
-    window.addEventListener('scroll', () => { if (window.scrollY > 300) scrollBtn.style.display = 'flex'; else scrollBtn.style.display = 'none'; });
-    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    const toggleScrollBtn = () => {
+      scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+    };
+    window.addEventListener('scroll', toggleScrollBtn, { passive: true });
+    toggleScrollBtn(); // если страница открылась уже прокрученной
+    scrollBtn.addEventListener('click', () => {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
   }
 });
 
