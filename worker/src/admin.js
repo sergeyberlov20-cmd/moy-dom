@@ -1,4 +1,5 @@
 import { json, clean, corsHeaders, randomHex, ipHash, rateLimited, readJson, tgSend, STATUSES } from './lib.js';
+import { metrikaSummary } from './remind.js';
 
 const SESSION_TTL = 60 * 60 * 24 * 30; // 30 дней
 
@@ -123,7 +124,8 @@ export async function adminStats(request, env) {
     leadsByDay: days.results || [],
     events: (events.results || []).reduce((acc, r) => { acc[r.type] = r.n; return acc; }, {}),
     topPages: pages.results || [],
-    topLeadPages: leadPages.results || []
+    topLeadPages: leadPages.results || [],
+    metrika: await metrikaSummary(env, 7)
   }, 200, corsHeaders(request, env));
 }
 

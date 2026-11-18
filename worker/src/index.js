@@ -1,6 +1,7 @@
 import { json, corsPreflight } from './lib.js';
 import { handleLead, handleEvent } from './leads.js';
 import { handleTelegram, dailyDigest, tgSetup, tgTest, tgDiag } from './bot.js';
+import { remindStale } from './remind.js';
 import {
   adminLogin, adminVerify, adminLogout, adminMe,
   adminLeads, adminUpdateLead, adminStats, adminExport
@@ -43,7 +44,9 @@ export default {
     return json({ ok: false, error: 'not_found' }, 404);
   },
 
-  async scheduled(event, env, ctx) {
-    ctx.waitUntil(dailyDigest(env));
+  async scheduled(controller, env, ctx) {
+    const cron = (controller && controller.cron) || '';
+    if (cron === '0 6 * * *') ctx.waitUntil(dailyDigest(env));
+    else ctx.waitUntil(remindStale(env));
   }
 };

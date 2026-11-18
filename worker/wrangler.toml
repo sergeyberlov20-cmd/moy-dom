@@ -33,10 +33,15 @@ TG_CHAT_ID = "8240330397"
 WEBHOOK_PATH = "/api/tg/webhook"
 # Номер счётчика Яндекс.Метрики (для сводок; можно оставить пустым)
 METRIKA_COUNTER_ID = ""
+# Репозиторий для команды /add (фото + каталог)
+GITHUB_REPO = "sergeyberlov20-cmd/moy-dom"
+GITHUB_BRANCH = "main"
+DATA_FILE = "js/data.json"
+OBJECT_PHONE = "+7 (949) 504-44-55"
 
 [triggers]
-# Ежедневная сводка в Telegram в 06:00 UTC (09:00 МСК)
-crons = ["0 6 * * *"]
+# 09:00 МСК — сводка, каждые 15 минут — напоминания о необработанных заявках
+crons = ["0 6 * * *", "*/15 * * * *"]
 
 [observability]
 enabled = true

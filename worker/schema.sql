@@ -1,18 +1,20 @@
 -- Схема D1 для «Мой Дом»
--- Применить: npx wrangler d1 execute moydom --file=./schema.sql --remote
+-- Применить (новая база):  npx wrangler d1 execute moydom --file=./schema.sql --remote
+-- Обновить существующую:   npx wrangler d1 execute moydom --command "ALTER TABLE leads ADD COLUMN reminded_at TEXT" --remote
 
 CREATE TABLE IF NOT EXISTS leads (
-  id         INTEGER PRIMARY KEY AUTOINCREMENT,
-  created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  name       TEXT,
-  phone      TEXT NOT NULL,
-  message    TEXT,
-  page       TEXT,
-  referrer   TEXT,
-  utm        TEXT,
-  ip_hash    TEXT,
-  status     TEXT NOT NULL DEFAULT 'new',   -- new | inwork | done | spam
-  note       TEXT
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+  name         TEXT,
+  phone        TEXT NOT NULL,
+  message      TEXT,
+  page         TEXT,
+  referrer     TEXT,
+  utm          TEXT,
+  ip_hash      TEXT,
+  status       TEXT NOT NULL DEFAULT 'new',   -- new | inwork | done | spam
+  note         TEXT,
+  reminded_at  TEXT                            -- когда отправляли напоминание
 );
 
 CREATE INDEX IF NOT EXISTS idx_leads_created ON leads (created_at DESC);

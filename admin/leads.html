@@ -60,6 +60,24 @@
       th:nth-child(5), td:nth-child(5), th:nth-child(6), td:nth-child(6) { display: none; }
     }
   </style>
+  <style>
+    /* Приведение панели к стилю сайта */
+    body { background: #f8f9fa; }
+    header.ph { background: #fff; }
+    .ph-hero { background: linear-gradient(140deg, #243b6b 0%, #1c2e5a 55%, #0f172a 100%); color: #fff; }
+    .ph-hero .wrap { padding: 26px 18px 24px; }
+    .ph-hero h1 { font-size: 1.75rem; font-weight: 900; letter-spacing: -.2px; margin: 0 0 6px; }
+    .ph-hero p { color: rgba(255, 255, 255, .72); margin: 0; font-size: .95rem; }
+    .card, .table-wrap, .stat { border-radius: 16px; border-color: #e5e7eb; box-shadow: 0 6px 22px rgba(15, 23, 42, .06); }
+    .card h1 { font-size: 1.35rem; }
+    .btn { border-radius: 12px; }
+    .btn.primary { background: linear-gradient(135deg, #cc2229 0%, #a81b21 100%); border-color: #cc2229; box-shadow: 0 6px 16px rgba(204, 34, 41, .25); }
+    .btn.primary:hover { background: linear-gradient(135deg, #a81b21 0%, #8a151b 100%); }
+    .stat b { font-size: 1.7rem; color: var(--primary); }
+    .chip { border-radius: 999px; }
+    .chip.active { background: var(--primary); border-color: var(--primary); }
+    th { background: #fafbfe; }
+  </style>
 </head>
 <body>
 <header class="ph">
@@ -72,13 +90,20 @@
   </div>
 </header>
 
+<div class="ph-hero">
+  <div class="wrap">
+    <h1>Панель заявок</h1>
+    <p>Заявки с сайта dom-mc.ru — обработка, статусы и статистика</p>
+  </div>
+</div>
+
 <main class="wrap">
   <section id="login-view">
     <div class="card">
       <h1>Вход в панель</h1>
       <p>Код придёт в Telegram владельцу. Действует 5 минут.</p>
       <div class="row">
-        <button class="btn" id="get-code">Получить код</button>
+        <button class="btn primary" id="get-code">Получить код</button>
         <input type="text" id="code" maxlength="6" inputmode="numeric" placeholder="6 цифр" autocomplete="one-time-code" hidden>
         <button class="btn ghost" id="send-code" hidden>Войти</button>
       </div>
@@ -238,8 +263,12 @@
       const s = await r.json();
       const ev = s.events || {};
       const top = (s.topPages || []).map((p) => (p.page || '/') + ' — ' + p.n).join(', ') || 'нет данных';
+      const m = s.metrika;
+      let mk = '';
+      if (m && !m.error) mk = '<br>Яндекс.Метрика (7 дн.): визиты <b>' + (m.visits || 0) + '</b> · посетители <b>' + (m.users || 0) + '</b>';
+      else if (m && m.error) mk = '<br>Метрика: ' + esc(m.error);
       $('#app-msg').innerHTML = 'Сегодня заявок: <b>' + (s.today || 0) + '</b> · просмотры (7д): <b>' + (ev.pageview || 0) +
-        '</b> · клики «позвонить»: <b>' + (ev.tel_click || 0) + '</b><br>Топ страниц: ' + esc(top);
+        '</b> · клики «позвонить»: <b>' + (ev.tel_click || 0) + '</b>' + mk + '<br>Топ страниц: ' + esc(top);
       $('#app-msg').className = 'msg';
     } catch (e) {}
   }

@@ -1,4 +1,6 @@
 import { json, esc, tgApi, tgSend, isAdmin, STATUSES } from './lib.js';
+import { startAdd, handleAddCallback, handleAddMessage, dropState } from './add.js';
+import { metrikaSummary } from './remind.js';
 
 const STATUS_RU = { new: 'новая', inwork: 'в работе', done: 'закрыта', spam: 'спам' };
 const KB = (id) => ({
@@ -7,6 +9,8 @@ const KB = (id) => ({
     { text: '✅ Готово', callback_data: 'st:' + id + ':done' }
   ]]
 });
+
+const isAdding = async (env, uid) => !!(await env.KV.get('add:' + uid));
 
 /* ---------- вебхук бота ---------- */
 export async function handleTelegram(request, env) {
@@ -18,16 +22,29 @@ export async function handleTelegram(request, env) {
   let update = null;
   try { update = await request.json(); } catch (e) { return new Response('bad', { status: 400 }); }
 
-  if (update.callback_query) return await handleCallback(update.callback_query, env);
+  if (update.callback_query) {
+    const d = update.callback_query.data || '';
+    if (d.indexOf('add:') === 0) return await handleAddCallback(env, update.callback_query);
+    return await handleCallback(update.callback_query, env);
+  }
 
   const msg = update.message;
-  if (!msg || !msg.text) return new Response('ok');
+  if (!msg) return new Response('ok');
   const fromId = msg.from ? msg.from.id : 0;
-
   if (!isAdmin(env, fromId)) {
-    await tgSend(env, msg.chat.id, '🤖 Служебный бот агентства «Мой Дом».\nЗаявки — на сайте <b>dom-mc.ru</b>, звонки — +7 949 504-44-55.');
+    if (msg.text) {
+      await tgSend(env, msg.chat.id, '🤖 Служебный бот агентства «Мой Дом».\nЗаявки — на сайте <b>dom-mc.ru</b>, звонки — +7 949 504-44-55.');
+    }
     return new Response('ok');
   }
+
+  // фото или текст внутри диалога добавления объекта
+  if (msg.photo || (msg.text && (await isAdding(env, fromId)))) {
+    await handleAddMessage(env, msg, fromId);
+    return new Response('ok');
+  }
+
+  if (!msg.text) return new Response('ok');
 
   const parts = msg.text.trim().split(/\s+/);
   const cmd = (parts[0] || '').toLowerCase();
@@ -40,6 +57,7 @@ export async function handleTelegram(request, env) {
       '/leads new — только новые\n' +
       '/stats — сводка за 7 дней\n' +
       '/done 12 — закрыть заявку №12\n' +
+      '/add — добавить объект в каталог (с фото)\n' +
       '/id — ваш Telegram ID\n\n' +
       'Под каждой заявкой есть кнопки.');
     return new Response('ok');
@@ -76,6 +94,17 @@ export async function handleTelegram(request, env) {
 
   if (cmd === '/stats') {
     await tgSend(env, msg.chat.id, await statsText(env));
+    return new Response('ok');
+  }
+
+  if (cmd === '/add') {
+    await startAdd(env, msg.chat.id, fromId);
+    return new Response('ok');
+  }
+
+  if (cmd === '/cancel') {
+    await dropState(env, fromId);
+    await tgSend(env, msg.chat.id, '❌ Отменено.');
     return new Response('ok');
   }
 
@@ -141,12 +170,24 @@ export async function statsText(env) {
 
   const top = (pages.results || []).map((p) => '• ' + esc(p.page || '/') + ' — ' + p.n).join('\n') || '• пока нет данных';
 
+  let metrika = '';
+  try {
+    const m = await metrikaSummary(env, 7);
+    if (m && !m.error) {
+      metrika = '\n📈 <b>Яндекс.Метрика, 7 дней</b>\n' +
+        'Визиты: <b>' + m.visits + '</b> · посетители: <b>' + m.users + '</b> · просмотры: <b>' + m.pageviews + '</b>\n';
+    } else if (m && m.error) {
+      metrika = '\n📈 Метрика: ' + esc(m.error) + '\n';
+    }
+  } catch (e) {}
+
   return '📊 <b>Сводка за 7 дней</b>\n\n' +
     'Заявок сегодня: <b>' + (t ? t.n : 0) + '</b>\n' +
     'Заявок за 7 дней: <b>' + (w ? w.n : 0) + '</b>\n' +
     'Новых (не обработано): <b>' + (fresh ? fresh.n : 0) + '</b>\n' +
-    'Кликов «позвонить»: <b>' + (tel ? tel.n : 0) + '</b>\n\n' +
-    '<b>Топ страниц:</b>\n' + top;
+    'Кликов «позвонить»: <b>' + (tel ? tel.n : 0) + '</b>\n' +
+    metrika +
+    '\n<b>Топ страниц:</b>\n' + top;
 }
 
 /* ---------- ежедневная сводка по cron ---------- */
