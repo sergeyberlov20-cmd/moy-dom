@@ -60,9 +60,37 @@ export function base64ToText(b64) {
 }
 
 /**
- * Проверка доступа: читает репозиторий и файл каталога.
- * Возвращает права (push) и количество объектов — по ним видно, рабочий ли токен.
+ * Пробная запись в служебный файл _diag/write-test.txt.
+ * Нужна, чтобы отличить «токен только читает» от «права на запись есть»:
+ * поле permissions.push в метаданных репозитория врёт для fine-grained токенов.
  */
+export async function ghWriteCheck(env) {
+  const body = {
+    message: 'проверка прав на запись (можно удалить)',
+    content: bytesToBase64(new TextEncoder().encode('ok ' + new Date().toISOString())),
+    branch: env.GITHUB_BRANCH || 'main'
+  };
+
+  const cur = await ghGet(env, '_diag/write-test.txt');
+  if (cur) body.sha = cur.sha;
+
+  const r = await fetch(API + '/repos/' + env.GITHUB_REPO + '/contents/_diag/write-test.txt', {
+    method: 'PUT',
+    headers: headers(env, true),
+    body: JSON.stringify(body)
+  });
+
+  let msg = null;
+  try { const j = await r.json(); msg = j.message || null; } catch (e) { msg = null; }
+
+  return {
+    ok: r.ok,
+    status: r.status,
+    message: msg,
+    hint: r.ok ? null : (r.status === 403 ? 'У токена нет права Contents: Read and write — исправьте в настройках токена' : null)
+  };
+}
+
 export async function ghCheck(env) {
   const repoRes = await fetch(API + '/repos/' + env.GITHUB_REPO, { headers: headers(env) });
   let info = null;

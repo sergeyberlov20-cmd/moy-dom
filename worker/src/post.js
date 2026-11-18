@@ -102,7 +102,11 @@ export async function handlePostCallback(env, query) {
         (res.published ? '✅ <b>Пост опубликован</b>' : '🕒 <b>Пост запланирован на ' + dateText(res.date) + '</b>') +
         '\n\n' + res.url + (res.published ? '' : '\n\nВыйдет в блоге сам в этот день.'));
     } catch (e) {
-      await tgSend(env, chatId, '⚠️ Не удалось опубликовать: ' + String((e && e.message) || e));
+      const m = String((e && e.message) || e);
+      const hint = m.indexOf('403') >= 0
+        ? '\n\nУ токена GitHub нет права на запись (Contents: Read and write). Исправьте права токена и запустите deploy.ps1.'
+        : '';
+      await tgSend(env, chatId, '⚠️ Не удалось опубликовать: ' + m + hint);
     }
     return new Response('ok');
   }
