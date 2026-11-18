@@ -120,6 +120,18 @@ export async function ghCheck(env) {
 }
 
 /**
+ * Публичный адрес объекта: только район и улица, без номера дома и участка.
+ * Правило проекта: точные адреса объектов на сайте не публикуем.
+ */
+function publicAddress(addr) {
+  let s = String(addr == null ? '' : addr).trim();
+  if (!s) return '';
+  s = s.replace(/[,;]?\s*(?:д\.?|дом|уч\.?|участок)\s*\d+[а-яa-z]?(?:\s*[\/-]\s*\d+[а-яa-z]?)?\s*$/i, '');
+  s = s.replace(/[,;]\s*\d+[а-яa-z]?(?:\s*[\/-]\s*\d+[а-яa-z]?)?\s*$/, '');
+  return s.replace(/\s{2,}/g, ' ').replace(/[,;]\s*$/, '').trim();
+}
+
+/**
  * Добавляет объект в каталог (js/data.json) и, если есть фото, коммитит его в images/uploads.
  * Возвращает созданный объект.
  */
@@ -148,7 +160,7 @@ export async function addObjectToCatalog(env, draft) {
       deal: draft.deal,
       title: draft.title,
       price: Number(draft.price) || 0,
-      address: draft.address || '',
+      address: publicAddress(draft.address),
       phone: env.OBJECT_PHONE || '+7 (949) 504-44-55',
       rooms: Number(draft.rooms) || 0,
       area: Number(draft.area) || 0,

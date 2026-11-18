@@ -79,11 +79,13 @@ window.renderCard = function(o, opts = {}) {
   
   const moreBtnStyle = actions ? 'margin-bottom: 12px;' : '';
   
-  // Если адреса нет, не выводим пустую строку
-  const addressHtml = o.address ? `
+  // Если адреса нет, не выводим пустую строку.
+  // Адрес показываем без номера дома — правило проекта.
+  const publicAddr = (window.publicAddress ? window.publicAddress(o.address) : o.address);
+  const addressHtml = publicAddr ? `
     <div class="card-meta">
       <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor; opacity:0.6;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-      ${o.address}
+      ${publicAddr}
     </div>` : '';
 
   return `
