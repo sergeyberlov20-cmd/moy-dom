@@ -133,4 +133,40 @@
        <changefreq>monthly</changefreq>
        <priority>0.7500</priority>
   </url>
+  <url>
+       <loc>https://dom-mc.ru/rayony/</loc>
+       <lastmod>2026-11-18T12:00:00+00:00</lastmod>
+       <changefreq>weekly</changefreq>
+       <priority>0.7000</priority>
+  </url>
+  <url>
+       <loc>https://dom-mc.ru/rayony/primorsky.html</loc>
+       <lastmod>2026-11-18T12:00:00+00:00</lastmod>
+       <changefreq>weekly</changefreq>
+       <priority>0.7000</priority>
+  </url>
+  <url>
+       <loc>https://dom-mc.ru/rayony/ordzhonikidzevsky.html</loc>
+       <lastmod>2026-11-18T12:00:00+00:00</lastmod>
+       <changefreq>weekly</changefreq>
+       <priority>0.7000</priority>
+  </url>
+  <url>
+       <loc>https://dom-mc.ru/rayony/ilichevsky.html</loc>
+       <lastmod>2026-11-18T12:00:00+00:00</lastmod>
+       <changefreq>weekly</changefreq>
+       <priority>0.7000</priority>
+  </url>
+  <url>
+       <loc>https://dom-mc.ru/rayony/more-i-prigorod.html</loc>
+       <lastmod>2026-11-18T12:00:00+00:00</lastmod>
+       <changefreq>weekly</changefreq>
+       <priority>0.7000</priority>
+  </url>
+  <url>
+       <loc>https://dom-mc.ru/rayony/oblast.html</loc>
+       <lastmod>2026-11-18T12:00:00+00:00</lastmod>
+       <changefreq>weekly</changefreq>
+       <priority>0.7000</priority>
+  </url>
 </urlset>

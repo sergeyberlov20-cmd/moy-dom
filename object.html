@@ -13,9 +13,8 @@
   <link rel="apple-touch-icon" href="images/icon-192.png">
   <title>Объект — Мой Дом</title>
   <meta name="description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-400-cyrillic.woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/style.css">
   <style>
     .object-layout { display: grid; grid-template-columns: 1fr 400px; gap: 30px; margin: 40px 0; align-items: start; }
@@ -82,6 +81,11 @@
   </div>
 </div>
 <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
+<section class="container" id="similar-section" style="display: none; margin: 10px auto 50px;">
+  <h2 class="section-title" style="font-size: 1.5rem;">Похожие объекты</h2>
+  <p class="section-sub">Похожие по типу и цене — чтобы было с чем сравнить</p>
+  <div class="objects-grid" id="similar-grid"></div>
+</section>
 <button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V6"/><path d="M5.6 12.4L12 6l6.4 6.4"/></svg></button>
 <footer>
   <div class="container">
@@ -240,6 +244,33 @@
         </div>
       </div>`;
     if (window.initDetailGallery) { window.initDetailGallery(); }
+
+    // Похожие объекты: тот же тип и сделка, близкая цена
+    try {
+      const sec = document.getElementById('similar-section');
+      const grid = document.getElementById('similar-grid');
+      if (sec && grid && Array.isArray(OBJECTS) && window.renderCard) {
+        const base = Number(obj.price) || 0;
+        const scored = OBJECTS
+          .filter((x) => x.id !== obj.id && x.deal === obj.deal)
+          .map((x) => {
+            const p = Number(x.price) || 0;
+            let score = Math.abs(p - base);
+            if (x.type === obj.type) score = score * 0.35;          // тот же тип — приоритет
+            if (String(x.address).split(',')[0] === String(obj.address).split(',')[0]) score *= 0.8;
+            return { x: x, score: score };
+          })
+          .sort((a, b) => a.score - b.score)
+          .slice(0, 4)
+          .map((s) => s.x);
+
+        if (scored.length) {
+          grid.innerHTML = scored.map((x) => window.renderCard(x, { actions: true })).join('');
+          if (window.initMiniSliders) window.initMiniSliders();
+          sec.style.display = '';
+        }
+      }
+    } catch (e) { /* похожие объекты не критичны */ }
   });
 </script>
 <script src="js/install.js" defer></script>

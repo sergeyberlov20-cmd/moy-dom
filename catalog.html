@@ -14,9 +14,8 @@
   <link rel="apple-touch-icon" href="images/icon-192.png">
   <title>Каталог недвижимости в Мариуполе — Мой Дом</title>
   <meta name="description" content="Актуальный каталог квартир, домов и коммерческой недвижимости в Мариуполе.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-400-cyrillic.woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/style.css">
   <style>
     .catalog-tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 16px 0 8px; }
@@ -137,6 +136,7 @@
     </label>
   </div>
   
+  <div class="container" style="margin: 26px auto 0;"><div style="font-size:.9rem;color:var(--muted);margin-bottom:10px;">Или выберите район:</div><div style="margin-bottom:6px;"><a href="rayony/primorsky.html" style="display:inline-block;padding:9px 16px;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--primary);font-weight:700;font-size:.88rem;text-decoration:none;margin:0 8px 8px 0;">Приморском районе Мариуполя</a><a href="rayony/ordzhonikidzevsky.html" style="display:inline-block;padding:9px 16px;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--primary);font-weight:700;font-size:.88rem;text-decoration:none;margin:0 8px 8px 0;">Орджоникидзевском районе Мариуполя</a><a href="rayony/ilichevsky.html" style="display:inline-block;padding:9px 16px;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--primary);font-weight:700;font-size:.88rem;text-decoration:none;margin:0 8px 8px 0;">Ильичёвском районе Мариуполя</a><a href="rayony/more-i-prigorod.html" style="display:inline-block;padding:9px 16px;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--primary);font-weight:700;font-size:.88rem;text-decoration:none;margin:0 8px 8px 0;">Дома и участки у моря</a><a href="rayony/oblast.html" style="display:inline-block;padding:9px 16px;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--primary);font-weight:700;font-size:.88rem;text-decoration:none;margin:0 8px 8px 0;">пригороде и области</a></div></div>
   <div class="objects-grid" id="catalog"></div>
 </section>
 <button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V6"/><path d="M5.6 12.4L12 6l6.4 6.4"/></svg></button>
@@ -182,6 +182,47 @@
 
     function getCheckedValues(className) { return Array.from(document.querySelectorAll(`.${className}:checked`)).map(cb => cb.value); }
     function formatNum(num) { return new Intl.NumberFormat('ru-RU').format(num); }
+
+    /* ---------- ссылки с фильтрами: ?q=&type=&deal=&rooms=&min=&max=&sort= ---------- */
+    function applyFromUrl() {
+      const p = new URLSearchParams(location.search);
+      const q = p.get('q');
+      if (q) document.getElementById('catalog-search').value = q;
+
+      const setChecks = (cls, param) => {
+        const v = p.get(param);
+        if (!v) return;
+        const want = v.split(',').map(s => s.trim()).filter(Boolean);
+        document.querySelectorAll('.' + cls).forEach(cb => { cb.checked = want.indexOf(cb.value) >= 0; });
+      };
+      setChecks('f-type', 'type');
+      setChecks('f-deal', 'deal');
+      setChecks('f-rooms', 'rooms');
+
+      if (p.get('min')) priceMinEl.value = p.get('min');
+      if (p.get('max')) priceMaxEl.value = p.get('max');
+
+      const sortParam = p.get('sort');
+      if (sortParam) {
+        const sel = document.getElementById('catalog-sort');
+        if (Array.prototype.some.call(sel.options, o => o.value === sortParam)) sel.value = sortParam;
+      }
+    }
+
+    function syncUrl() {
+      const p = new URLSearchParams();
+      const q = document.getElementById('catalog-search').value.trim();
+      if (q) p.set('q', q);
+      const types = getCheckedValues('f-type'); if (types.length) p.set('type', types.join(','));
+      const deals = getCheckedValues('f-deal'); if (deals.length) p.set('deal', deals.join(','));
+      const rooms = getCheckedValues('f-rooms'); if (rooms.length) p.set('rooms', rooms.join(','));
+      const min = getMinPrice(); if (min) p.set('min', String(min));
+      const max = getMaxPrice(); if (isFinite(max)) p.set('max', String(max));
+      const sort = document.getElementById('catalog-sort').value;
+      if (sort && sort !== 'default') p.set('sort', sort);
+      const qs = p.toString();
+      try { history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '')); } catch (e) {}
+    }
 
     function updateRoomsDropdownState() {
       const types = getCheckedValues('f-type');
@@ -229,6 +270,7 @@
 
       catalog.innerHTML = filtered.length ? filtered.map(o => renderCard(o, { actions: true })).join('') : '<p style="padding:40px 0;color:#818c99;font-size:1.1rem;">Ничего не найдено. Попробуйте изменить фильтры или очистить поиск.</p>';
       if (window.initMiniSliders) window.initMiniSliders();
+      syncUrl();
     }
 
     priceMinEl.addEventListener('input', render);
@@ -246,6 +288,7 @@
     document.getElementById('catalog-search').addEventListener('input', render);
     document.getElementById('catalog-sort').addEventListener('change', render);
 
+    applyFromUrl();
     updateRoomsDropdownState();
     render();
   });
