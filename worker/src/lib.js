@@ -133,6 +133,10 @@ async function isAllowedAdmin(env, userId) {
 
 async function setExtraAdmins(env, list) {
   const clean = list.filter((v, i, a) => v && a.indexOf(v) === i);
+  if (!clean.length) {
+    await env.KV.delete(EXTRA_ADMINS_KEY);
+    return clean;
+  }
   await env.KV.put(EXTRA_ADMINS_KEY, clean.join(','));
   return clean;
 }
