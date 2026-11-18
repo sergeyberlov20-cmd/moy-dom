@@ -77,6 +77,9 @@ https://api.telegram.org/bot<BOT_TOKEN>/setWebhook?url=<WORKER_URL>/api/tg/webho
 | `/leads new` | только новые |
 | `/stats` | сводка за 7 дней |
 | `/done 12` | закрыть заявку №12 |
+| `/add` | добавить объект в каталог (с фото) |
+| `/post` | написать пост в блог (можно на будущую дату) |
+| `/cancel` | отменить текущий диалог |
 | `/id` | ваш Telegram ID |
 
 Кнопки под заявкой: **📞 В работе** / **✅ Готово**.
@@ -89,7 +92,29 @@ https://api.telegram.org/bot<BOT_TOKEN>/setWebhook?url=<WORKER_URL>/api/tg/webho
 - **Защита**: заявки не чаще 1 раза в 20 секунд с IP; honeypot-поле; вход только по коду из бота;
   сессия 30 дней в KV; всё, кроме `/api/lead` и `/api/event`, требует `Authorization: Bearer <token>`.
 
-## Важно
+## Токен GitHub (для /add и /post)
+
+Боту нужно право **писать в репозиторий** — он коммитит фото, `js/data.json`, страницы блога.
+Рекомендуется **fine-grained token** (доступ только к одному репозиторию):
+
+1. https://github.com/settings/personal-access-tokens/new
+2. Token name: `moydom-bot`; Expiration: 1 year
+3. Repository access -> **Only select repositories** -> `sergeyberlov20-cmd/moy-dom`
+4. Permissions -> Repository permissions -> **Contents = Read and write**
+5. Generate token -> скопировать `github_pat_...`
+
+Положить в `worker/.dev.vars`: `GITHUB_TOKEN=github_pat_...` и проверить:
+
+```powershell
+cd worker
+powershell -ExecutionPolicy Bypass -File .\check-token.ps1
+```
+
+Скрипт делает реальную пробную запись и удаляет её. Нужен результат `RESULT: OK`.
+Только после этого — `deploy.ps1` (он загрузит токен в Cloudflare как секрет).
+
+Проверка на стороне воркера: `GET /api/diag/gh?key=<WEBHOOK_SECRET>&write=1`
+(поле `write.ok` должно быть `true`).
 
 - **Не коммитьте** `BOT_TOKEN` и `WEBHOOK_SECRET` в репозиторий — только через `wrangler secret`.
 - `ADMIN_IDS` обязателен: без него бот не пустит никого (и код входа не отправит).
