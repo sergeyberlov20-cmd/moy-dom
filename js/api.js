@@ -1,8 +1,7 @@
 /* Мост «сайт → API заявок» (Cloudflare Worker).
-   После деплоя воркера вставь его адрес в BASE — сайт начнёт отправлять
-   заявки в свою базу + Telegram, а Formspree останется резервом. */
+   Заявки уходят в свою базу + Telegram, Formspree остаётся резервом. */
 (function () {
-  var BASE = ''; // например: 'https://moydom-leads.example.workers.dev'
+  var BASE = 'https://moydom-leads.sergeyberlov20.workers.dev';
 
   window.MD_API = BASE;
 
