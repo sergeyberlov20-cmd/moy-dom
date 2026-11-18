@@ -1,4 +1,4 @@
-import { json, esc, tgApi, tgSend, isAdmin, STATUSES } from './lib.js';
+import { json, esc, tgApi, tgSend, isAdmin, STATUSES, MAIN_KB, NAV_KB } from './lib.js';
 import { startAdd, handleAddCallback, handleAddMessage, dropState } from './add.js';
 import { metrikaSummary } from './remind.js';
 
@@ -47,19 +47,23 @@ export async function handleTelegram(request, env) {
   if (!msg.text) return new Response('ok');
 
   const parts = msg.text.trim().split(/\s+/);
-  const cmd = (parts[0] || '').toLowerCase();
+  const BTN = {
+    '📋 Заявки': '/leads',
+    '📊 Статистика': '/stats',
+    '➕ Добавить объект': '/add',
+    '🌐 Открыть сайт': '/site'
+  };
+  const cmd = BTN[msg.text.trim()] || (parts[0] || '').toLowerCase();
   const arg = parts[1];
 
   if (cmd === '/start' || cmd === '/help') {
     await tgSend(env, msg.chat.id,
-      '🤖 <b>Панель заявок «Мой Дом»</b>\n\n' +
-      '/leads — последние 10 заявок\n' +
-      '/leads new — только новые\n' +
-      '/stats — сводка за 7 дней\n' +
-      '/done 12 — закрыть заявку №12\n' +
-      '/add — добавить объект в каталог (с фото)\n' +
-      '/id — ваш Telegram ID\n\n' +
-      'Под каждой заявкой есть кнопки.');
+      '👋 <b>Панель агентства «Мой Дом»</b>\n\n' +
+      'Пользуйтесь кнопками внизу — или командами:\n' +
+      '/leads — заявки, /stats — сводка,\n' +
+      '/add — новый объект, /done 12 — закрыть заявку,\n' +
+      '/id — ваш Telegram ID.',
+      MAIN_KB);
     return new Response('ok');
   }
 
@@ -77,7 +81,7 @@ export async function handleTelegram(request, env) {
     const rows = filter ? await stmt.bind(filter).all() : await stmt.bind().all();
     const list = rows.results || [];
     if (!list.length) {
-      await tgSend(env, msg.chat.id, 'Заявок пока нет.');
+      await tgSend(env, msg.chat.id, 'Пока заявок нет 🙂', NAV_KB);
       return new Response('ok');
     }
     for (const r of list) {
@@ -89,11 +93,22 @@ export async function handleTelegram(request, env) {
         '🌐 ' + esc(r.page || '—') + '\n' +
         '🕒 ' + esc(r.created_at) + ' UTC', KB(r.id));
     }
+    await tgSend(env, msg.chat.id, 'Показаны последние ' + list.length + ' заявок.', NAV_KB);
     return new Response('ok');
   }
 
   if (cmd === '/stats') {
-    await tgSend(env, msg.chat.id, await statsText(env));
+    await tgSend(env, msg.chat.id, await statsText(env), NAV_KB);
+    return new Response('ok');
+  }
+
+  if (cmd === '/site') {
+    await tgSend(env, msg.chat.id, '🌐 <b>Сайт агентства</b>', {
+      inline_keyboard: [
+        [{ text: 'Открыть dom-mc.ru', url: 'https://dom-mc.ru/' }],
+        [{ text: 'Панель заявок', url: 'https://dom-mc.ru/admin/leads.html' }]
+      ]
+    });
     return new Response('ok');
   }
 
@@ -226,7 +241,9 @@ export async function tgSetup(request, env) {
 export async function tgTest(request, env) {
   if (!setupAllowed(request, env)) return json({ ok: false, error: 'forbidden' }, 403);
   const r = await tgSend(env, env.TG_CHAT_ID,
-    '✅ <b>Проверка связи</b>\nБот «Мой Дом» на связи. Сюда будут приходить заявки с сайта.');
+    '✅ <b>Проверка связи</b>\nБот «Мой Дом» на связи. Сюда будут приходить заявки с сайта.\n\n' +
+    'Кнопки внизу — меню. Если их не видно, отправьте /start.',
+    MAIN_KB);
   return json({ ok: !!(r && r.ok), response: r });
 }
 

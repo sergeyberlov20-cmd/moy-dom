@@ -81,4 +81,23 @@ const tgSend = (env, chatId, text, reply_markup) =>
 const isAdmin = (env, userId) =>
   String(env.ADMIN_IDS || '').split(',').map((s) => s.trim()).includes(String(userId));
 
-export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, isAdmin, STATUSES, EVENT_TYPES };
+/* Постоянная клавиатура внизу чата — как в приложении */
+const MAIN_KB = {
+  keyboard: [
+    [{ text: '📋 Заявки' }, { text: '📊 Статистика' }],
+    [{ text: '➕ Добавить объект' }, { text: '🌐 Открыть сайт' }]
+  ],
+  resize_keyboard: true,
+  is_persistent: true
+};
+
+/* Кнопки под сообщениями со списками/сводкой */
+const NAV_KB = {
+  inline_keyboard: [[
+    { text: '🔄 Обновить', callback_data: 'nav:refresh' },
+    { text: '📋 Заявки', callback_data: 'nav:leads' },
+    { text: '📊 Статистика', callback_data: 'nav:stats' }
+  ]]
+};
+
+export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, isAdmin, STATUSES, EVENT_TYPES, MAIN_KB, NAV_KB };
