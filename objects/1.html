@@ -90,7 +90,6 @@
       <div class="obj-addr">с. Урзуф, ул. Новая</div>
       <div class="obj-price">2 500 000 ₽</div>
       <ul class="obj-specs"><li>Тип<b>Земельный участок</b></li><li>Сделка<b>Продажа</b></li><li>Площадь<b>1500 м²</b></li></ul>
-      <div style="background:#f7f9fc;border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:16px;"><div style="font-weight:800;color:var(--primary);margin-bottom:10px;">Ипотека: <b id="m-pay" style="color:var(--accent);" data-price="2500000">—</b> ₽/мес</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"><label style="font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;">Взнос, %<input id="m-down" type="number" min="0" max="90" step="5" value="20" style="padding:7px;border:1px solid var(--border);border-radius:8px;width:100%;font-size:.9rem;"></label><label style="font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;">Срок, лет<input id="m-years" type="number" min="1" max="30" step="1" value="15" style="padding:7px;border:1px solid var(--border);border-radius:8px;width:100%;font-size:.9rem;"></label><label style="font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;">Ставка, %<input id="m-rate" type="number" min="1" max="40" step="0.5" value="12" style="padding:7px;border:1px solid var(--border);border-radius:8px;width:100%;font-size:.9rem;"></label></div><p style="font-size:.7rem;color:var(--muted);margin:8px 0 0;">Расчёт ориентировочный, не оферта.</p></div>
       <div class="obj-map"><iframe src="https://yandex.ru/map-widget/v1/?ll=37.117%2C46.916&z=14&l=map" loading="lazy" title="Район расположения" allowfullscreen></iframe></div><p style="font-size:.78rem;color:var(--muted);margin:0 0 16px;line-height:1.5;">На карте — район расположения. Точный адрес и показ — по телефону.</p>
       <div class="obj-btns">
         <a href="tel:+79495512402" class="btn btn-accent" style="width:100%;padding:13px;font-size:1rem;">📞 +7 (949) 551-24-02</a><a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="width:100%;padding:13px;background:#0088cc;color:#fff;">✈️ Написать в Telegram</a>
@@ -148,25 +147,7 @@
     t.addEventListener('click', function () { if (main) main.src = t.getAttribute('data-full') || t.src; });
   });
 
-  var pay = document.getElementById('m-pay');
-  if (pay) {
-    var down = document.getElementById('m-down');
-    var years = document.getElementById('m-years');
-    var rate = document.getElementById('m-rate');
-    var price = Number(pay.getAttribute('data-price')) || 0;
-    var calc = function () {
-      var d = Math.min(90, Math.max(0, Number(down.value) || 0)) / 100;
-      var n = Math.max(1, Math.min(30, Number(years.value) || 15)) * 12;
-      var i = Math.max(0.1, Number(rate.value) || 12) / 100 / 12;
-      var loan = price * (1 - d);
-      var m = loan * i / (1 - Math.pow(1 + i, -n));
-      pay.textContent = Math.round(m).toLocaleString('ru-RU');
-    };
-    [down, years, rate].forEach(function (el) { if (el) { el.addEventListener('input', calc); el.addEventListener('change', calc); } });
-    calc();
-  }
-
-  var modal = document.getElementById('book-modal');
+    var modal = document.getElementById('book-modal');
   var openBtn = document.getElementById('book-btn');
   var closeBtn = document.getElementById('book-close');
   var form = document.getElementById('book-form');

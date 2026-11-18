@@ -170,42 +170,6 @@
       } catch (e) { /* SEO-блок не критичен */ }
     })();
     const rawGallery = obj.images && obj.images.length > 0 ? obj.images : [obj.image]; 
-    // Калькулятор ипотеки (только для продажи с ценой)
-    const isSale = String(obj.deal || '') === 'Продажа' && Number(obj.price) > 0;
-    const mortgageHtml = isSale ? `
-      <div style="background:#f7f9fc;border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:20px;">
-        <div style="font-weight:800;color:var(--primary);margin-bottom:12px;">Ипотека: <b id="m-pay" style="color:var(--accent);">—</b> ₽/мес</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
-          <label style="font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;">Взнос, %
-            <input id="m-down" type="number" min="0" max="90" step="5" value="20" style="padding:8px;border:1px solid var(--border);border-radius:8px;font-size:.95rem;width:100%;">
-          </label>
-          <label style="font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;">Срок, лет
-            <input id="m-years" type="number" min="1" max="30" step="1" value="15" style="padding:8px;border:1px solid var(--border);border-radius:8px;font-size:.95rem;width:100%;">
-          </label>
-          <label style="font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;">Ставка, %
-            <input id="m-rate" type="number" min="1" max="40" step="0.5" value="12" style="padding:8px;border:1px solid var(--border);border-radius:8px;font-size:.95rem;width:100%;">
-          </label>
-        </div>
-        <p style="font-size:.72rem;color:var(--muted);margin:10px 0 0;">Расчёт ориентировочный, не является офертой.</p>
-      </div>` : '';
-
-    // Модальное окно записи на просмотр
-    const bookModal = `
-      <div id="book-modal" style="position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:1000;">
-        <div style="background:#fff;border-radius:16px;max-width:420px;width:100%;padding:26px 22px;position:relative;box-sizing:border-box;">
-          <button type="button" id="book-close" aria-label="Закрыть" style="position:absolute;top:8px;right:12px;border:0;background:none;font-size:28px;line-height:1;color:#94a3b8;cursor:pointer;">×</button>
-          <h3 style="margin:0 0 6px;font-size:1.2rem;color:var(--primary);">Записаться на просмотр</h3>
-          <p style="margin:0 0 16px;font-size:.86rem;color:var(--muted);line-height:1.5;">${obj.title}</p>
-          <form id="book-form" style="display:flex;flex-direction:column;gap:10px;">
-            <input name="name" required placeholder="Ваше имя" style="padding:12px;border:1px solid var(--border);border-radius:10px;font-size:.95rem;width:100%;box-sizing:border-box;">
-            <input name="phone" type="tel" required placeholder="Телефон" style="padding:12px;border:1px solid var(--border);border-radius:10px;font-size:.95rem;width:100%;box-sizing:border-box;">
-            <input name="when" placeholder="Удобное время (необязательно)" style="padding:12px;border:1px solid var(--border);border-radius:10px;font-size:.95rem;width:100%;box-sizing:border-box;">
-            <button class="btn btn-accent" type="submit" style="padding:14px;">Отправить заявку</button>
-            <div id="book-msg" style="font-size:.85rem;color:var(--muted);min-height:18px;"></div>
-          </form>
-        </div>
-      </div>`;
-
     const galleryImages = rawGallery.map(img => img.replace(/^\//, ''));
     
     let isFav = '';
@@ -262,7 +226,6 @@
           </div>
           ${addressHtml}
           <div style="font-size: 2.2rem; color: var(--accent); font-weight: 900; margin-bottom: 20px; letter-spacing: -1px;">${formatPrice(obj.price, obj.deal)}</div>
-          ${mortgageHtml}
           <ul class="specs-grid">
             <li><span>Тип</span><span>${obj.type}</span></li>
             <li><span>Сделка</span><span>${obj.deal}</span></li>
@@ -286,28 +249,6 @@
 
     /* ипотека + запись на просмотр */
     (function initExtras() {
-      // расчёт аннуитетного платежа
-      try {
-        const pay = document.getElementById('m-pay');
-        const down = document.getElementById('m-down');
-        const years = document.getElementById('m-years');
-        const rate = document.getElementById('m-rate');
-        const calc = function () {
-          if (!pay) return;
-          const total = Number(obj.price) || 0;
-          const d = Math.min(90, Math.max(0, Number(down.value) || 0)) / 100;
-          const n = Math.max(1, Math.min(30, Number(years.value) || 15)) * 12;
-          const i = Math.max(0.1, Number(rate.value) || 12) / 100 / 12;
-          const loan = total * (1 - d);
-          const monthly = loan * i / (1 - Math.pow(1 + i, -n));
-          pay.textContent = Math.round(monthly).toLocaleString('ru-RU');
-        };
-        if (pay) {
-          [down, years, rate].forEach(function (el) { if (el) { el.addEventListener('input', calc); el.addEventListener('change', calc); } });
-          calc();
-        }
-      } catch (e) {}
-
       // модальное окно записи
       try {
         const modal = document.getElementById('book-modal');

@@ -133,8 +133,7 @@ export function renderObject(template, o, all) {
     .replace(/__ADDR__/g, esc(addr))
     .replace(/__PRICE__/g, priceText(o))
     .replace(/__SPECS__/g, specs(o))
-    .replace(/__MORTGAGE__/g, mortgage(o))
-    .replace(/__MAP__/g, mapBlock(o))
+        .replace(/__MAP__/g, mapBlock(o))
     .replace(/__PHONE_BTNS__/g, phoneButtons(o))
     .replace(/__THUMBS__/g, thumbs)
     .replace(/__DESC_BLOCK__/g, o.description

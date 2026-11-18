@@ -34,6 +34,23 @@ export async function acceptInvite(env, code, userId) {
   return { ok: true, already: false, code: c };
 }
 
+/**
+ * Обмен приглашения на сессию панели: человек открывает ссылку и сразу попадает в админку.
+ * Код одноразовый (после обмена удаляется).
+ */
+export async function redeemInviteForPanel(env, code) {
+  const c = normalize(code);
+  if (!c) return { ok: false, error: 'empty' };
+
+  const raw = await env.KV.get(key(c));
+  if (!raw) return { ok: false, error: 'invalid' };
+
+  const token = randomHex(32);
+  await env.KV.put('sess:' + token, 'invite', { expirationTtl: 60 * 60 * 24 * 30 });
+  await env.KV.delete(key(c));
+  return { ok: true, token: token };
+}
+
 /** Проверка кода без сжигания — для страницы /admin/join.html */
 export async function peekInvite(env, code) {
   const c = normalize(code);

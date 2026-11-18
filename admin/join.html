@@ -133,11 +133,14 @@
 <script>
 (function () {
   var BOT = 'MoyDom_Mariupol_bot';
+  var API = 'https://moydom-leads.sergeyberlov20.workers.dev';
   var params = new URLSearchParams(location.search);
   var code = (params.get('c') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
   var go = document.getElementById('go');
   var box = document.getElementById('code');
   var warn = document.getElementById('warn');
+  var h1 = document.querySelector('h1');
+  var lead = document.querySelector('.card > p');
 
   if (!code) {
     warn.style.display = 'block';
@@ -148,6 +151,33 @@
   go.href = 'https://t.me/' + BOT + '?start=inv_' + code;
   box.textContent = code;
   box.hidden = false;
+
+  // сразу меняем приглашение на сессию панели и открываем админку
+  if (h1) h1.textContent = 'Открываем панель…';
+  if (lead) lead.textContent = 'Ссылка одноразовая: сейчас вы попадёте в панель заявок. Для бота попросите отдельное приглашение.';
+
+  fetch(API + '/api/invite/session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: code })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (!d || !d.ok || !d.token) throw new Error('invalid');
+      try { sessionStorage.setItem('md_admin_token', d.token); } catch (e) {}
+      if (h1) h1.textContent = 'Доступ открыт';
+      if (lead) lead.textContent = 'Открываем панель заявок… Если не перешло автоматически — нажмите кнопку.';
+      go.textContent = 'Открыть панель заявок';
+      go.href = 'leads.html';
+      go.style.display = '';
+      setTimeout(function () { location.replace('leads.html'); }, 1200);
+    })
+    .catch(function () {
+      if (h1) h1.textContent = 'Ссылка не сработала';
+      if (lead) lead.textContent = 'Приглашение уже использовано или истекло (живёт 24 часа, одноразовое). Попросите новую ссылку.';
+      warn.textContent = 'Если вам нужен доступ к боту — нажмите кнопку ниже и отправьте /start.';
+      warn.style.display = 'block';
+    });
 })();
 </script>
 </body>

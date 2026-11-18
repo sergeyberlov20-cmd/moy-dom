@@ -4,6 +4,8 @@ import { handleTelegram, dailyDigest, tgSetup, tgTest, tgDiag, tgProfile } from 
 import { remindStale } from './remind.js';
 import { releaseScheduled, postRelease } from './release.js';
 import { reviewsDry, updateYandexReviews, runReviewsCron } from './reviews.js';
+import { redeemInviteForPanel } from './invite.js';
+import { readJson, corsHeaders } from './lib.js';
 import { ghDiag } from './diag.js';
 import {
   adminLogin, adminVerify, adminLogout, adminMe,
@@ -20,6 +22,12 @@ const RT = [
   ['/api/tg/profile', 'GET', tgProfile],
   ['/api/diag/gh', 'GET', ghDiag],
   ['/api/post/release', 'GET', postRelease],
+  ['/api/invite/session', 'POST', async (request, env) => {
+    const body = await readJson(request);
+    const code = body && body.code ? String(body.code).slice(0, 20) : '';
+    const r = await redeemInviteForPanel(env, code);
+    return json(r, r.ok ? 200 : 401, corsHeaders(request, env));
+  }],
   ['/api/reviews/update', 'GET', async (request, env) => {
     const url = new URL(request.url);
     const key = url.searchParams.get('key') || '';
