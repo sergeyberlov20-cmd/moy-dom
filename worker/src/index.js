@@ -3,7 +3,7 @@ import { handleLead, handleEvent } from './leads.js';
 import { handleTelegram, dailyDigest, tgSetup, tgTest, tgDiag, tgProfile } from './bot.js';
 import { remindStale } from './remind.js';
 import { releaseScheduled, postRelease } from './release.js';
-import { reviewsDry, updateYandexReviews } from './reviews.js';
+import { reviewsDry, updateYandexReviews, runReviewsCron } from './reviews.js';
 import { ghDiag } from './diag.js';
 import {
   adminLogin, adminVerify, adminLogout, adminMe,
@@ -21,10 +21,12 @@ const RT = [
   ['/api/diag/gh', 'GET', ghDiag],
   ['/api/post/release', 'GET', postRelease],
   ['/api/reviews/update', 'GET', async (request, env) => {
-    const key = new URL(request.url).searchParams.get('key') || '';
+    const url = new URL(request.url);
+    const key = url.searchParams.get('key') || '';
     if (!env.WEBHOOK_SECRET || key !== env.WEBHOOK_SECRET) return json({ ok: false, error: 'forbidden' }, 403);
     try {
-      return json(await updateYandexReviews(env));
+      // ?notify=1 — тот же путь, что у крона, с сообщением в Telegram о новых отзывах
+      return json(url.searchParams.get('notify') === '1' ? await runReviewsCron(env) : await updateYandexReviews(env));
     } catch (e) {
       return json({ ok: false, error: String((e && e.message) || e) }, 500);
     }
@@ -70,6 +72,9 @@ export default {
     if (cron === '0 6 * * *') {
       ctx.waitUntil(releaseScheduled(env).catch(() => null));
       ctx.waitUntil(dailyDigest(env));
+    } else if (cron === '0 4 1,15 * *') {
+      // раз в две недели: 1-го и 15-го в 07:00 МСК
+      ctx.waitUntil(runReviewsCron(env).catch(() => null));
     } else {
       ctx.waitUntil(remindStale(env));
     }

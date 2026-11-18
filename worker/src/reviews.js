@@ -3,6 +3,7 @@
  * вытаскивает JSON с отзывами и пересобирает js/reviews.js + JSON-LD на странице.
  */
 import { ghGet, ghPut, textToBase64, base64ToText } from './github.js';
+import { tgNotify } from './lib.js';
 
 const ORG = '98286514548';
 const YANDEX = 'https://yandex.ru/maps/org/moy_dom/' + ORG + '/reviews/';
@@ -239,7 +240,30 @@ export async function updateYandexReviews(env) {
   };
 }
 
-/* Диагностика: что сейчас отдаёт Яндекс (без записи в репозиторий) */
+/* Автообновление отзывов по крону (раз в две недели) */
+export async function runReviewsCron(env) {
+  try {
+    const r = await updateYandexReviews(env);
+    if (!r.ok) {
+      await tgNotify(env, '⚠️ <b>Автообновление отзывов</b>\nНе получилось: ' + String(r.error || 'ошибка'));
+      return r;
+    }
+    if (r.added > 0) {
+      await tgNotify(env,
+        '⭐ <b>Новые отзывы на Яндекс.Картах</b>\n\n' +
+        'Добавлено: <b>' + r.added + '</b>\n' +
+        r.newOnes.map((x) => '• ' + x).join('\n') + '\n\n' +
+        'Всего: ' + r.total + ' · оценок: ' + (r.ratingsCount || '—') + '\n' +
+        'https://dom-mc.ru/reviews/');
+    }
+    return r;
+  } catch (e) {
+    const msg = String((e && e.message) || e);
+    await tgNotify(env, '⚠️ <b>Автообновление отзывов упало</b>\n' + msg);
+    return { ok: false, error: msg };
+  }
+}
+
 export async function reviewsDry() {
   const t0 = Date.now();
   try {
