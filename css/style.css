@@ -132,15 +132,15 @@ a[href$="favorites.html"] svg { width: 16px !important; height: 16px !important;
 .blog-mini:hover,
 .blog-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
 
-/* Обложка: одинаковая вставка 8px, одинаковая высота, одинаковый зум */
+/* Обложка: во всю ширину карточки, без внутренней рамки */
 .card-img-wrapper,
 .blog-mini-img,
 .blog-card-img {
   position: relative;
   display: block;
   height: 200px;
-  margin: 8px 8px 0;
-  border-radius: var(--radius) var(--radius) 0 0;
+  margin: 0;
+  border-radius: 0;
   overflow: hidden;
   background: #e9edf5;
 }
