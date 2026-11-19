@@ -27,18 +27,7 @@
     .catalog-sort-wrap select { padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px; background: #fff; font-family: inherit; font-size: 0.9rem; color: var(--primary); font-weight: 600; cursor: pointer; outline: none; }
     .catalog-sort-wrap select:focus { border-color: var(--primary); }
     @media (max-width: 650px) { .catalog-tools { flex-direction: column; align-items: stretch; } .catalog-search-wrap { flex: 0 0 auto; width: 100%; } .catalog-sort-wrap { justify-content: space-between; } }
-      /* Лента всех объектов сверху */
-    .obj-strip-wrap { position: relative; display: flex; align-items: center; gap: 8px; margin: 14px 0 4px; }
-    .obj-strip { display: flex; gap: 10px; overflow-x: auto; scroll-behavior: smooth; padding: 4px 2px 10px; -ms-overflow-style: none; scrollbar-width: none; cursor: grab; }
-    .obj-strip::-webkit-scrollbar { display: none; }
-    .obj-strip.dragging { cursor: grabbing; scroll-behavior: auto; }
-    .obj-strip-item { flex: 0 0 150px; background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; padding: 0; cursor: pointer; text-align: left; transition: transform .15s, box-shadow .15s; }
-    .obj-strip-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
-    .obj-strip-item img { width: 100%; height: 92px; object-fit: cover; display: block; background: #eef1f7; }
-    .obj-strip-item span { display: block; padding: 8px 10px; font-size: .78rem; font-weight: 800; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .obj-strip-btn { flex: 0 0 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border); background: #fff; color: var(--primary); font-size: 20px; line-height: 1; cursor: pointer; box-shadow: var(--shadow); }
-    .obj-strip-btn:disabled { opacity: .35; cursor: default; }
-    @media (max-width: 480px) { .obj-strip-item { flex-basis: 128px; } .obj-strip-item img { height: 78px; } .obj-strip-btn { display: none; } }</style>
+  </style>
 
   <!-- Open Graph / соцсети -->
   <meta property="og:type" content="website">
@@ -85,13 +74,6 @@
 </header>
 <section class="container">
   <h1 class="section-title">Каталог объектов</h1>
-
-  <!-- лента всех объектов: стрелки + перетаскивание -->
-  <div class="obj-strip-wrap" id="obj-strip-wrap" hidden>
-    <button type="button" class="obj-strip-btn prev" id="strip-prev" aria-label="Назад">‹</button>
-    <div class="obj-strip" id="obj-strip"></div>
-    <button type="button" class="obj-strip-btn next" id="strip-next" aria-label="Вперёд">›</button>
-  </div>
   
   <div class="filters-bar">
     <div class="filter-dropdown">
@@ -175,62 +157,6 @@
 <script src="js/main.js"></script>
 <script>
   document.addEventListener('dataLoaded', () => {
-    /* ---------- лента всех объектов сверху ---------- */
-    (function buildStrip() {
-      var wrap = document.getElementById('obj-strip-wrap');
-      var strip = document.getElementById('obj-strip');
-      if (!wrap || !strip || !window.OBJECTS) return;
-
-      strip.innerHTML = (window.OBJECTS || []).map(function (o) {
-        var img = String(o.image || 'images/logo.png').replace(/^\//, '');
-        var price = window.formatPrice ? window.formatPrice(o.price, o.deal) : (o.price || '');
-        var alt = String(o.title || '').replace(/"/g, '');
-        return '<button type="button" class="obj-strip-item" data-quick="' + o.id + '" title="' + alt + '">' +
-          '<img src="' + img + '" alt="' + alt + '" loading="lazy">' +
-          '<span>' + price + '</span></button>';
-      }).join('');
-
-      wrap.hidden = false;
-
-      var prev = document.getElementById('strip-prev');
-      var next = document.getElementById('strip-next');
-
-      function upd() {
-        if (!prev || !next) return;
-        prev.disabled = strip.scrollLeft <= 4;
-        next.disabled = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4;
-      }
-
-      if (prev) prev.addEventListener('click', function () { strip.scrollBy({ left: -Math.round(strip.clientWidth * 0.8), behavior: 'smooth' }); });
-      if (next) next.addEventListener('click', function () { strip.scrollBy({ left: Math.round(strip.clientWidth * 0.8), behavior: 'smooth' }); });
-
-      strip.addEventListener('scroll', upd);
-      window.addEventListener('resize', upd);
-      upd();
-
-      // перетаскивание мышью/пальцем
-      var down = false, startX = 0, startLeft = 0, moved = false;
-      strip.addEventListener('pointerdown', function (e) {
-        down = true; moved = false; startX = e.clientX; startLeft = strip.scrollLeft;
-        strip.classList.add('dragging');
-      });
-      strip.addEventListener('pointermove', function (e) {
-        if (!down) return;
-        var dx = e.clientX - startX;
-        if (Math.abs(dx) > 6) moved = true;
-        strip.scrollLeft = startLeft - dx;
-      });
-      function stop() { down = false; strip.classList.remove('dragging'); }
-      strip.addEventListener('pointerup', stop);
-      strip.addEventListener('pointerleave', stop);
-      strip.addEventListener('pointercancel', stop);
-
-      // если это было перетаскивание — не открываем быстрый просмотр
-      strip.addEventListener('click', function (e) {
-        if (moved) { e.preventDefault(); e.stopPropagation(); }
-      }, true);
-    })();
-
     const catalog = document.getElementById('catalog');
     const priceMinEl = document.getElementById('price-min');
     const priceMaxEl = document.getElementById('price-max');
