@@ -80,7 +80,7 @@ export async function publishPost(env, draft) {
     .replace(/__BODY__/g, (body ? body + '\n' : '') + CONTACT_BLOCK)
     .replace(/__IMG_ABS__/g, imgAbs)
     .replace(/__IMG__/g, imgRel)
-    .replace(/__SOURCE__/g, 'Материал подготовил мультицентр недвижимости «Мой Дом», ' + dateText(date))
+    
     .replace(/__JSONLD__/g, '<script type="application/ld+json">' + JSON.stringify(ld) + '</script>')
     .replace(/__ROBOTS__/, future ? '  <meta name="robots" content="noindex">\r\n' : '');
 

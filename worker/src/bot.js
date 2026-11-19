@@ -10,6 +10,20 @@ import { touchBotUser, botStatsText, botUsersLine } from './botstats.js';
 import { metrikaSummary } from './remind.js';
 
 const STATUS_RU = { new: 'новая', inwork: 'в работе', done: 'закрыта', spam: 'спам' };
+
+/* Стартовое приветствие — показывается на /start и после сброса */
+const GREETING =
+  '👋 <b>Панель агентства «Мой Дом»</b>\n\n' +
+  'Пользуйтесь кнопками внизу — или командами:\n' +
+  '/leads — заявки, /stats — сводка,\n' +
+  '/add — новый объект, /post — пост в блог,\n' +
+  '/done 12 — закрыть заявку, /id — ваш Telegram ID,\n' +
+  '/price 52 4300000 — новая цена, /sold 52 — снять объект,\n' +
+  '/invite — ссылка-приглашение (только у вас),\n' +
+  '/botstats — кто пользуется ботом (только у вас),\n' +
+  '/reviews — обновить отзывы с Яндекс.Карт (только у вас),\n' +
+  '/reset — очистить чат и начать заново.';
+
 const KB = (id) => ({
   inline_keyboard: [[
     { text: '📞 В работе', callback_data: 'st:' + id + ':inwork' },
@@ -137,18 +151,7 @@ export async function handleTelegram(request, env) {
   const arg = parts[1];
 
   if (cmd === '/start' || cmd === '/help') {
-    await tgSend(env, msg.chat.id,
-      '👋 <b>Панель агентства «Мой Дом»</b>\n\n' +
-      'Пользуйтесь кнопками внизу — или командами:\n' +
-      '/leads — заявки, /stats — сводка,\n' +
-      '/add — новый объект, /post — пост в блог,\n' +
-      '/done 12 — закрыть заявку, /id — ваш Telegram ID,\n' +
-      '/price 52 4300000 — новая цена, /sold 52 — снять объект,\n' +
-      '/invite — ссылка-приглашение (только у вас),\n' +
-      '/botstats — кто пользуется ботом (только у вас),\n' +
-      '/reviews — обновить отзывы с Яндекс.Карт (только у вас),\n' +
-      '/reset — сбросить незаконченный диалог.',
-      MAIN_KB);
+    await tgSend(env, msg.chat.id, GREETING, MAIN_KB);
     return new Response('ok');
   }
 
@@ -223,15 +226,10 @@ export async function handleTelegram(request, env) {
     await dropState(env, fromId);
     await dropPostState(env, fromId);
 
-    // чистим сам чат: удаляем сообщения бота, затем присылаем одно с меню
-    let deleted = 0;
-    try { deleted = await tgPurge(env, msg.chat.id); } catch (e) { deleted = 0; }
+    // удаляем всё, что бот присылал (в пределах 48 часов), и показываем только приветствие с меню
+    try { await tgPurge(env, msg.chat.id); } catch (e) { /* не критично */ }
 
-    await tgSend(env, msg.chat.id,
-      '♻️ <b>Готово</b>\n\n' +
-      (deleted ? 'Удалено сообщений: <b>' + deleted + '</b>\n' : '') +
-      'Незаконченные диалоги закрыты, чат чистый.\n' +
-      'Дальше работаем с нуля — кнопки внизу.', MAIN_KB);
+    await tgSend(env, msg.chat.id, GREETING, MAIN_KB);
     return new Response('ok');
   }
 
