@@ -55,16 +55,17 @@
     .home-strip { display: flex; gap: 14px; overflow-x: auto; scroll-behavior: smooth; padding: 6px 2px 14px; -ms-overflow-style: none; scrollbar-width: none; cursor: grab; }
     .home-strip::-webkit-scrollbar { display: none; }
     .home-strip.dragging { cursor: grabbing; scroll-behavior: auto; }
-    .home-strip-item { flex: 0 0 240px; background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; padding: 0; text-align: left; cursor: pointer; transition: transform .18s, box-shadow .18s; display: flex; flex-direction: column; }
+    .home-strip-item { flex: 0 0 calc((100% - 28px) / 3); background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; padding: 0; text-align: left; cursor: pointer; transition: transform .18s, box-shadow .18s; display: flex; flex-direction: column; }
     .home-strip-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-    .home-strip-item img { width: 100%; height: 150px; object-fit: cover; display: block; background: #eef1f7; }
+    .home-strip-item img { width: 100%; height: 190px; object-fit: cover; display: block; background: #eef1f7; }
     .home-strip-body { padding: 10px 12px 12px; }
     .home-strip-price { font-weight: 900; color: var(--accent); font-size: 1rem; }
     .home-strip-title { font-weight: 700; color: var(--primary); font-size: .86rem; line-height: 1.35; margin-top: 3px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .home-strip-meta { font-size: .76rem; color: var(--muted); margin-top: 4px; }
     .home-strip-btn { flex: 0 0 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: #fff; color: var(--primary); font-size: 22px; line-height: 1; cursor: pointer; box-shadow: var(--shadow); }
     .home-strip-btn:disabled { opacity: .35; cursor: default; }
-    @media (max-width: 600px) { .home-strip-item { flex-basis: 190px; } .home-strip-item img { height: 120px; } .home-strip-btn { display: none; } }</style>
+    @media (max-width: 992px) { .home-strip-item { flex-basis: calc((100% - 14px) / 2); } .home-strip-item img { height: 150px; } }
+    @media (max-width: 600px) { .home-strip-item { flex-basis: 84%; } .home-strip-item img { height: 130px; } .home-strip-btn { display: none; } }</style>
 
   <!-- Open Graph / соцсети -->
   <meta property="og:type" content="website">
