@@ -35,19 +35,7 @@
     .blog-preview-all { font-size: 0.95rem; font-weight: 800; color: var(--accent); text-decoration: none; white-space: nowrap; }
     .blog-preview-all:hover { text-decoration: underline; }
     .blog-preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .blog-mini { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0 0 16px; overflow: hidden; box-shadow: var(--shadow); text-decoration: none; transition: transform .3s, box-shadow .3s; }
-    .blog-mini:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
-    .blog-mini-img { height: 180px; margin: 8px 8px 0; border-radius: var(--radius) var(--radius) 0 0; overflow: hidden; background: #e9edf5; }
-    .blog-mini-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
-    .blog-mini:hover .blog-mini-img img { transform: scale(1.05); }
-    .blog-mini > * { margin-left: 20px; margin-right: 20px; }
-    .blog-mini > .blog-mini-img { margin: 8px 8px 0; }
-    .blog-mini-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 0.75rem; color: var(--muted); margin-top: 16px; margin-bottom: 10px; }
-    .blog-mini-tag { background: rgba(204, 34, 41, 0.08); color: var(--accent); font-weight: 800; padding: 3px 8px; border-radius: 5px; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.4px; }
-    .blog-mini-tag.green { background: rgba(16, 185, 129, 0.1); color: #0f9d6f; }
-    .blog-mini-title { font-size: 1.02rem; font-weight: 800; color: var(--primary); line-height: 1.35; margin-bottom: 8px; }
-    .blog-mini-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.5; flex-grow: 1; margin-bottom: 14px; }
-    .blog-mini-more { font-size: 0.85rem; font-weight: 800; color: var(--accent); margin-bottom: 18px; }
+    /* Внешний вид карточек блога — общий с каталогом (css/style.css) */
     @media (max-width: 992px) { .blog-preview-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 650px) { .blog-preview-grid { grid-template-columns: 1fr; } }
       /* Лента всех объектов на главной */
@@ -419,8 +407,51 @@
     el.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
   }
 
-  makeStrip(document.querySelector('.blog-preview-grid'));
-  makeStrip(document.querySelector('.rev-mini-grid'));
+  /* 2.1. Главная: 3 последних опубликованных материала блога (синхронизация с /blog/) */
+  function syncHomeBlog(done) {
+    var grid = document.querySelector('.blog-preview-grid');
+    if (!grid || !window.fetch || !window.DOMParser) return done();
+    var today = new Date().toISOString().slice(0, 10);
+    fetch('blog/index.html', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (html) {
+      if (!html) return done();
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var items = [].slice.call(doc.querySelectorAll('.blog-card, .blog-lead')).map(function (el) {
+        var time = el.querySelector('time');
+        var dt = time ? (time.getAttribute('datetime') || '') : '';
+        return { el: el, dt: dt, ts: dt ? Date.parse(dt) : 0 };
+      }).filter(function (it) { return it.ts && it.dt <= today; });
+      items.sort(function (a, b) { return b.ts - a.ts; });
+      var cards = items.slice(0, 3).map(function (it) { return it.el; });
+      if (!cards.length) return done();
+      var out = cards.map(function (c) {
+        var img = c.querySelector('img');
+        var link = c.querySelector('a[href$=".html"]');
+        var tag = c.querySelector('.blog-tag');
+        var time = c.querySelector('time');
+        var head = c.querySelector('h3') || c.querySelector('h2');
+        var p = c.querySelector('p');
+        if (!img || !link || !head) return '';
+        var slug = (link.getAttribute('href') || '').replace(/^\.\.\//, '');
+        var src = (img.getAttribute('src') || '').replace(/^\.\.\//, '');
+        var dt = time ? (time.getAttribute('datetime') || '') : '';
+        var dateText = time ? time.textContent.trim() : '';
+        return '<a class="blog-mini" href="blog/' + slug + '">' +
+          '<div class="blog-mini-img"><img src="' + src + '" alt="' + (img.getAttribute('alt') || '') + '" loading="lazy"></div>' +
+          '<div class="blog-mini-meta">' + (tag ? '<span class="' + tag.className.trim() + '">' + tag.textContent.trim() + '</span>' : '') +
+          (dateText ? '<time datetime="' + dt + '">' + dateText + '</time>' : '') + '</div>' +
+          '<div class="blog-mini-title">' + head.textContent.trim() + '</div>' +
+          (p ? '<div class="blog-mini-desc">' + p.textContent.trim() + '</div>' : '') +
+          '<span class="blog-mini-more">Читать →</span></a>';
+      }).filter(Boolean).join('');
+      if (out && out !== grid.innerHTML) grid.innerHTML = out;
+      done();
+    }).catch(function () { done(); });
+  }
+
+  syncHomeBlog(function () {
+    makeStrip(document.querySelector('.blog-preview-grid'));
+    makeStrip(document.querySelector('.rev-mini-grid'));
+  });
 })();
 </script>
 

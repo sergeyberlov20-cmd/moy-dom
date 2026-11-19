@@ -113,6 +113,90 @@ a[href$="favorites.html"] svg { width: 16px !important; height: 16px !important;
 .card-title { font-weight: 700; margin-bottom: 8px; font-size: 1.1rem; color: var(--text); }
 .card-meta { color: var(--muted); font-size: .95rem; margin-bottom: 20px; display: flex; align-items: center; gap: 6px; }
 
+/* ===== Единый вид карточек: объекты каталога и материалы блога ===== */
+.card,
+.blog-mini,
+.blog-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.card:hover,
+.blog-mini:hover,
+.blog-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+
+/* Обложка: одинаковая вставка 8px, одинаковая высота, одинаковый зум */
+.card-img-wrapper,
+.blog-mini-img,
+.blog-card-img {
+  position: relative;
+  display: block;
+  height: 200px;
+  margin: 8px 8px 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+  overflow: hidden;
+  background: #e9edf5;
+}
+.card-img,
+.blog-mini-img img,
+.blog-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+.card:hover .card-img,
+.blog-mini:hover .blog-mini-img img,
+.blog-card:hover .blog-card-img img { transform: scale(1.05); }
+
+/* Текстовая часть: одинаковые поля */
+.card-body,
+.blog-card-body { padding: 20px 24px 24px; flex: 1; display: flex; flex-direction: column; }
+.blog-mini { padding: 0 0 24px; }
+.blog-mini > *:not(.blog-mini-img) { margin-left: 24px; margin-right: 24px; }
+
+/* Заголовок карточки */
+.card-title,
+.blog-mini-title,
+.blog-card h3 { font-size: 1.08rem; font-weight: 800; line-height: 1.35; color: var(--primary); margin-bottom: 8px; }
+.blog-card h3 a { color: inherit; text-decoration: none; }
+.blog-card h3 a:hover { color: var(--accent); }
+
+/* Описание */
+.blog-mini-desc,
+.blog-card p { font-size: .88rem; color: var(--muted); line-height: 1.55; flex-grow: 1; margin-bottom: 14px; }
+
+/* Метаданные и плашки-теги */
+.card-meta,
+.blog-mini-meta,
+.blog-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: .78rem; color: var(--muted); margin-bottom: 12px; }
+.card-meta { margin-bottom: 16px; }
+.blog-mini-meta { margin-top: 14px; }
+.card-badge,
+.blog-mini-tag,
+.blog-tag { font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; border-radius: 6px; }
+.card-badge { padding: 5px 11px; }
+.blog-mini-tag,
+.blog-tag { padding: 4px 9px; background: rgba(204, 34, 41, .08); color: var(--accent); }
+.blog-mini-tag.green,
+.blog-tag.green { background: rgba(16, 185, 129, .1); color: #0f9d6f; }
+
+/* Ссылка «читать» и кнопки внизу карточки */
+.blog-mini-more,
+.blog-read { font-size: .85rem; font-weight: 800; color: var(--accent); text-decoration: none; }
+.blog-mini-more { margin-bottom: 0; }
+
+@media (max-width: 600px) {
+  .card-img-wrapper,
+  .blog-mini-img,
+  .blog-card-img { height: 170px; }
+  .card-body,
+  .blog-card-body { padding: 18px 18px 20px; }
+  .blog-mini > *:not(.blog-mini-img) { margin-left: 18px; margin-right: 18px; }
+}
+
 /* Фильтры */
 .filters-bar { display: flex; gap: 12px; margin: 30px 0; flex-wrap: wrap; position: relative; z-index: 150; }
 .filter-dropdown { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 20px; cursor: pointer; user-select: none; display: flex; align-items: center; box-shadow: var(--shadow); }
