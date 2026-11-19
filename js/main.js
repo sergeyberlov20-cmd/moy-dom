@@ -102,7 +102,10 @@ window.renderCard = function(o, opts = {}) {
         <div class="card-price">${formatPrice(o.price, o.deal)}</div>
         <div class="card-title">${o.title}</div>
         ${addressHtml}
-        <a href="objects/${o.id}.html" class="btn" style="${moreBtnStyle} margin-top: auto;">Подробнее</a>
+        <div style="display:flex;gap:8px;margin-top:auto;">
+          <a href="objects/${o.id}.html" class="btn" style="flex:1;">Подробнее</a>
+          <button type="button" class="btn" data-quick="${o.id}" style="flex:0 0 auto;padding:10px 12px;background:#eef1f7;color:var(--primary);" title="Быстрый просмотр">👁</button>
+        </div>
         ${actionsHtml}
       </div>
     </article>`;
@@ -258,4 +261,108 @@ document.addEventListener('DOMContentLoaded', () => {
     else window.addEventListener('load', hide, { once: true });
     setTimeout(hide, 2600);
   } catch (e) { /* заставка не критична для сайта */ }
+})();
+
+
+/* ---------- Быстрый просмотр объекта (без перезагрузки страницы) ---------- */
+(function () {
+  var modal = null;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  function build() {
+    modal = document.createElement('div');
+    modal.id = 'qv-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.style.cssText = 'position:fixed;inset:0;z-index:9998;background:rgba(15,23,42,.6);display:none;align-items:center;justify-content:center;padding:16px;';
+    modal.innerHTML =
+      '<div id="qv-card" style="background:#fff;border-radius:16px;max-width:880px;width:100%;max-height:92vh;overflow:auto;box-sizing:border-box;position:relative;">' +
+        '<button type="button" id="qv-close" aria-label="Закрыть" style="position:absolute;top:10px;right:14px;border:0;background:#fff;border-radius:50%;width:36px;height:36px;font-size:24px;line-height:1;color:#64748b;cursor:pointer;z-index:2;">×</button>' +
+        '<div id="qv-body" style="padding:0;"></div>' +
+      '</div>';
+    document.body.appendChild(modal);
+
+    modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    document.getElementById('qv-close').addEventListener('click', close);
+  }
+
+  function close() {
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function open(id) {
+    var list = window.OBJECTS || [];
+    var o = null;
+    for (var i = 0; i < list.length; i++) if (String(list[i].id) === String(id)) { o = list[i]; break; }
+    if (!o) return;
+
+    if (!modal) build();
+
+    var imgs = (o.images && o.images.length ? o.images : [o.image]).filter(Boolean).map(function (x) {
+      return String(x).replace(/^\//, '');
+    });
+    var addr = (window.publicAddress ? window.publicAddress(o.address) : o.address) || '';
+    var specs = [];
+    if (o.type) specs.push(['Тип', o.type]);
+    if (o.deal) specs.push(['Сделка', o.deal]);
+    if (o.rooms) specs.push(['Комнат', o.rooms]);
+    if (o.area) specs.push(['Площадь', o.area + ' м²']);
+    if (o.floor) specs.push(['Этаж', o.floor + (o.floors ? ' из ' + o.floors : '')]);
+
+    var desc = String(o.description || '').replace(/\s+/g, ' ').slice(0, 700);
+    var phone = o.phone || '+7 (949) 504-44-55';
+
+    document.getElementById('qv-body').innerHTML =
+      '<div style="display:grid;grid-template-columns:1.1fr 1fr;gap:0;">' +
+        '<div style="background:#eef1f7;">' +
+          '<img id="qv-img" src="' + esc(imgs[0]) + '" alt="' + esc(o.title) + '" style="width:100%;height:100%;max-height:420px;object-fit:cover;display:block;">' +
+          (imgs.length > 1 ? '<div style="display:flex;gap:6px;padding:8px;">' + imgs.slice(0, 5).map(function (im) {
+            return '<img src="' + esc(im) + '" data-full="' + esc(im) + '" class="qv-thumb" style="width:20%;height:56px;object-fit:cover;border-radius:8px;cursor:pointer;">';
+          }).join('') + '</div>' : '') +
+        '</div>' +
+        '<div style="padding:20px 22px;">' +
+          '<div style="font-size:1.2rem;font-weight:900;color:var(--primary);line-height:1.3;margin-bottom:8px;">' + esc(o.title) + '</div>' +
+          (addr ? '<div style="font-size:.86rem;color:#6b7280;margin-bottom:12px;">' + esc(addr) + '</div>' : '') +
+          '<div style="font-size:1.6rem;font-weight:900;color:#cc2229;margin-bottom:14px;">' + (window.formatPrice ? window.formatPrice(o.price, o.deal) : o.price) + '</div>' +
+          '<ul style="list-style:none;padding:0;margin:0 0 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">' +
+            specs.map(function (s) {
+              return '<li style="background:#f7f9fc;border-radius:10px;padding:8px 10px;font-size:.75rem;color:#6b7280;">' + esc(s[0]) +
+                '<b style="display:block;color:var(--primary);font-size:.9rem;margin-top:2px;">' + esc(s[1]) + '</b></li>';
+            }).join('') +
+          '</ul>' +
+          (desc ? '<p style="font-size:.86rem;color:#4b5563;line-height:1.6;margin:0 0 14px;">' + esc(desc) + (String(o.description || '').length > 700 ? '…' : '') + '</p>' : '') +
+          '<div style="display:flex;flex-direction:column;gap:8px;">' +
+            '<a href="objects/' + esc(o.id) + '.html" class="btn btn-accent" style="padding:12px;text-align:center;">Открыть страницу объекта</a>' +
+            '<a href="tel:' + esc(String(phone).replace(/[^\d+]/g, '')) + '" class="btn" style="padding:12px;text-align:center;">📞 ' + esc(phone) + '</a>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<style>@media (max-width:760px){#qv-body > div{grid-template-columns:1fr !important;}#qv-body img{max-height:240px !important;}}</style>';
+
+    Array.prototype.forEach.call(document.querySelectorAll('.qv-thumb'), function (t) {
+      t.addEventListener('click', function () {
+        var main = document.getElementById('qv-img');
+        if (main) main.src = t.getAttribute('data-full') || t.src;
+      });
+    });
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  // открытие по клику на кнопку «👁» в карточке
+  document.addEventListener('click', function (e) {
+    var btn = e.target && e.target.closest ? e.target.closest('[data-quick]') : null;
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    open(btn.getAttribute('data-quick'));
+  }, true);
 })();

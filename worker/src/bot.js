@@ -1,4 +1,4 @@
-import { json, esc, tgApi, tgSend, tgNotify, tgTrack, tgPurge, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, MAIN_KB, NAV_KB, isDialogCommand } from './lib.js';
+import { json, esc, tgApi, tgSend, tgNotify, tgTrack, tgPurge, isAdmin, isMaintenance, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, MAIN_KB, NAV_KB, isDialogCommand } from './lib.js';
 import { startAdd, handleAddCallback, handleAddMessage, dropState } from './add.js';
 import { startPost, handlePostCallback, isPosting, dropPostState } from './post.js';
 import { handlePostMessage } from './post_steps.js';
@@ -54,6 +54,21 @@ export async function handleTelegram(request, env) {
     }
     if (d.indexOf('add:') === 0) return await handleAddCallback(env, update.callback_query);
     if (d.indexOf('post:') === 0) return await handlePostCallback(env, update.callback_query);
+
+    if (d.indexOf('maint:') === 0) {
+      const on = d === 'maint:on';
+      try {
+        if (on) await env.KV.put('cfg:maintenance', '1');
+        else await env.KV.delete('cfg:maintenance');
+      } catch (e) { /* не критично */ }
+      await tgApi(env, 'answerCallbackQuery', { callback_query_id: update.callback_query.id, text: on ? 'Включено' : 'Выключено' });
+      await tgSend(env, update.callback_query.message.chat.id,
+        on
+          ? '🛠 <b>Режим обслуживания включён</b>\n\nСайт показывает заглушку, заявки не принимаются.\nВыключить: /maintenance off'
+          : '✅ <b>Режим обслуживания выключен</b>\n\nСайт снова работает в обычном режиме.',
+        MAIN_KB);
+      return new Response('ok');
+    }
 
     if (d.indexOf('sold:') === 0) {
       if (d === 'sold:no') {
@@ -120,7 +135,10 @@ export async function handleTelegram(request, env) {
       return new Response('ok');
     }
     if (msg.text) {
-      await tgSend(env, msg.chat.id, '🤖 Служебный бот агентства «Мой Дом».\nЗаявки — на сайте <b>dom-mc.ru</b>, звонки — +7 949 504-44-55.\n\nЕсли вас должны подключить к панели — отправьте /id.');
+      await tgSend(env, msg.chat.id,
+        '✅ <b>Мы получили вашу заявку</b>\n\n' +
+        'Рассмотрим её и свяжемся с вами.\n' +
+        'Если вопрос срочный — позвоните: <a href="tel:+79495044455">+7 949 504-44-55</a>.');
     }
     return new Response('ok');
   }
@@ -331,6 +349,40 @@ export async function handleTelegram(request, env) {
         { text: '✅ Да, снять', callback_data: 'sold:' + id },
         { text: '❌ Отмена', callback_data: 'sold:no' }
       ]] });
+    return new Response('ok');
+  }
+
+  if (cmd === '/maintenance') {
+    if (!isAdmin(env, fromId)) {
+      await tgSend(env, msg.chat.id, '⛔ Режим обслуживания доступен только владельцу.');
+      return new Response('ok');
+    }
+    const mode = String(arg || '').toLowerCase();
+    const on = mode === 'on' || mode === 'вкл' || mode === '1';
+    const off = mode === 'off' || mode === 'выкл' || mode === '0';
+
+    if (!on && !off) {
+      const cur = await isMaintenance(env);
+      await tgSend(env, msg.chat.id,
+        '🛠 <b>Режим обслуживания: ' + (cur ? 'включён' : 'выключен') + '</b>\n\n' +
+        'Включить: <code>/maintenance on</code>\nВыключить: <code>/maintenance off</code>\n\n' +
+        'Когда включён, на сайте показывается заглушка «Сайт на обслуживании», а формы не принимают заявки.',
+        { inline_keyboard: [[
+          { text: cur ? '✅ Выключить' : '🛠 Включить', callback_data: 'maint:' + (cur ? 'off' : 'on') }
+        ]] });
+      return new Response('ok');
+    }
+
+    try {
+      if (on) await env.KV.put('cfg:maintenance', '1');
+      else await env.KV.delete('cfg:maintenance');
+    } catch (e) { /* не критично */ }
+
+    await tgSend(env, msg.chat.id,
+      on
+        ? '🛠 <b>Режим обслуживания включён</b>\n\nСайт показывает заглушку, заявки не принимаются.\nВыключить: /maintenance off'
+        : '✅ <b>Режим обслуживания выключен</b>\n\nСайт снова работает в обычном режиме.',
+      MAIN_KB);
     return new Response('ok');
   }
 

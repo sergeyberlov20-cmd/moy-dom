@@ -1,11 +1,10 @@
-import { json, corsPreflight } from './lib.js';
+import { json, corsPreflight, readJson, corsHeaders, isMaintenance } from './lib.js';
 import { handleLead, handleEvent } from './leads.js';
 import { handleTelegram, dailyDigest, tgSetup, tgTest, tgDiag, tgProfile } from './bot.js';
 import { remindStale } from './remind.js';
 import { releaseScheduled, postRelease } from './release.js';
 import { reviewsDry, updateYandexReviews, runReviewsCron } from './reviews.js';
 import { redeemInviteForPanel } from './invite.js';
-import { readJson, corsHeaders } from './lib.js';
 import { ghDiag } from './diag.js';
 import {
   adminLogin, adminVerify, adminLogout, adminMe,
@@ -13,7 +12,14 @@ import {
 } from './admin.js';
 
 const RT = [
-  ['/api/lead', 'POST', handleLead],
+  ['/api/status', 'GET', async (request, env) => json({
+    maintenance: await isMaintenance(env),
+    message: 'Обновляем каталог — вернёмся совсем скоро.'
+  }, 200, corsHeaders(request, env))],
+  ['/api/lead', 'POST', async (request, env) => {
+    if (await isMaintenance(env)) return json({ ok: false, error: 'maintenance' }, 503, corsHeaders(request, env));
+    return handleLead(request, env);
+  }],
   ['/api/event', 'POST', handleEvent],
   ['/api/tg/webhook', 'POST', handleTelegram],
   ['/api/tg/setup', 'GET', tgSetup],

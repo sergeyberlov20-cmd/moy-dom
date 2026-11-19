@@ -125,7 +125,7 @@ async function tgPurge(env, chatId) {
 
 /* Постоянная клавиатура внизу чата — как в приложении */
 /* Команды, которые должны срабатывать даже во время диалога /add или /post */
-const DIALOG_COMMANDS = ['/cancel', '/reset', '/post', '/add', '/start', '/help', '/leads', '/stats', '/site', '/id', '/done', '/admins', '/adduser', '/deluser', '/invite', '/botstats', '/reviews', '/price', '/sold'];
+const DIALOG_COMMANDS = ['/cancel', '/reset', '/post', '/add', '/start', '/help', '/leads', '/stats', '/site', '/id', '/done', '/admins', '/adduser', '/deluser', '/invite', '/botstats', '/reviews', '/price', '/sold', '/maintenance'];
 
 export function isDialogCommand(text) {
   const t = String(text || '').trim().toLowerCase();
@@ -196,6 +196,11 @@ async function tgDelete(env, chatId, messageId) {
   }
 }
 
+/* Режим обслуживания: включается из бота, сайт показывает заглушку */
+const isMaintenance = async (env) => {
+  try { return (await env.KV.get('cfg:maintenance')) === '1'; } catch (e) { return false; }
+};
+
 const MAIN_KB = {
   keyboard: [
     [{ text: '📋 Заявки' }, { text: '📊 Статистика' }],
@@ -216,4 +221,4 @@ const NAV_KB = {
   ]]
 };
 
-export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, tgNotify, tgDelete, tgTrack, tgPurge, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, EVENT_TYPES, MAIN_KB, NAV_KB };
+export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, tgNotify, tgDelete, tgTrack, tgPurge, isAdmin, isMaintenance, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, EVENT_TYPES, MAIN_KB, NAV_KB };

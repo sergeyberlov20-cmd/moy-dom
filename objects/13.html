@@ -190,7 +190,7 @@
         msg.textContent = 'Отправляем…';
         window.mdSendLead(payload).then(function () {
           msg.style.color = '#0f9d6f';
-          msg.textContent = 'Заявка отправлена. Перезвоним в течение 15 минут.';
+          msg.textContent = 'Заявка отправлена. Мы получили вашу заявку, рассмотрим её и свяжемся с вами.';
           form.reset();
           if (window.mdTrack) window.mdTrack('form_submit', 'booking');
           setTimeout(close, 2500);

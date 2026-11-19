@@ -44,8 +44,19 @@ const tidy = (s) => String(s || '')
 
 const escAttr = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-/* Скачивает страницы отзывов и собирает уникальные отзывы */
-export async function fetchReviews() {
+/* Скачивает страницы отзывов и собирает уникальные отзывы (результат кэшируется в KV на 6 часов) */
+export async function fetchReviews(env) {
+  const CACHE_KEY = 'cache:reviews';
+  if (env && env.KV) {
+    try {
+      const cached = await env.KV.get(CACHE_KEY);
+      if (cached) {
+        const c = JSON.parse(cached);
+        if (c && c.raw && c.raw.length) return c;
+      }
+    } catch (e) { /* кэш не критичен */ }
+  }
+
   const found = new Map();
   let pages = 0;
   let firstHtml = '';
@@ -87,7 +98,11 @@ export async function fetchReviews() {
   const cm = firstHtml.match(/(\d[\d\s]{0,5})\s*оценк/i);
   if (cm) ratingsCount = Number(cm[1].replace(/\D/g, '')) || 0;
 
-  return { raw: [...found.values()], pages: pages, ratingsCount: ratingsCount };
+  const result = { raw: [...found.values()], pages: pages, ratingsCount: ratingsCount };
+  try {
+    if (env && env.KV && result.raw.length) await env.KV.put(CACHE_KEY, JSON.stringify(result), { expirationTtl: 6 * 60 * 60 });
+  } catch (e) { /* кэш не критичен */ }
+  return result;
 }
 
 /* Приводит отзывы к формату сайта */
@@ -173,7 +188,7 @@ export function buildJsonLd(list) {
 
 /* Обновляет данные и разметку страницы отзывов */
 export async function updateYandexReviews(env) {
-  const got = await fetchReviews();
+  const got = await fetchReviews(env);
   if (!got.raw.length) {
     return { ok: false, error: 'Яндекс не отдал отзывы (капча или смена разметки)', pages: got.pages };
   }
@@ -267,7 +282,7 @@ export async function runReviewsCron(env) {
 export async function reviewsDry() {
   const t0 = Date.now();
   try {
-    const got = await fetchReviews();
+    const got = await fetchReviews(env);
     const list = normalize(got.raw);
     return {
       ok: list.length > 0,

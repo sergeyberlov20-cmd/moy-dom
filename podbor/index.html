@@ -191,7 +191,7 @@
 
       window.mdSendLead({ name: name, phone: phone, message: message, page: '/podbor/' }).then(function () {
         body.innerHTML = '<div class="quiz-q" style="margin-bottom:8px;">Заявка принята ✅</div>' +
-          '<p style="color:#6b7280;line-height:1.6;margin:0;">Подберём варианты и перезвоним в течение 15 минут. Если срочно — <a href="tel:+79495044455" style="color:#cc2229;font-weight:700;">+7 949 504-44-55</a>.</p>';
+          '<p style="color:#6b7280;line-height:1.6;margin:0;">Подберём варианты и свяжемся с вами. Если срочно — <a href="tel:+79495044455" style="color:#cc2229;font-weight:700;">+7 949 504-44-55</a>.</p>';
         msg.textContent = '';
         if (window.mdTrack) window.mdTrack('form_submit', 'quiz');
       }).catch(function () {

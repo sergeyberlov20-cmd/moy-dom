@@ -148,6 +148,12 @@ export async function adminStats(request, env) {
   const today = await env.DB.prepare("SELECT COUNT(*) AS n FROM leads WHERE date(created_at) = date('now')").first();
 
   // откуда приходят заявки: utm → реферер → прямой заход
+  const cacheKey = 'cache:stats';
+  try {
+    const cached = await env.KV.get(cacheKey);
+    if (cached) return json(JSON.parse(cached), 200, corsHeaders(request, env));
+  } catch (e) { /* кэш не критичен */ }
+
   let sources = [];
   try {
     const s = await env.DB.prepare(
@@ -157,7 +163,7 @@ export async function adminStats(request, env) {
     sources = s.results || [];
   } catch (e) { sources = []; }
 
-  return json({
+  const payload = {
     ok: true,
     today: today ? today.n : 0,
     leadsByDay: days.results || [],
@@ -166,7 +172,12 @@ export async function adminStats(request, env) {
     topLeadPages: leadPages.results || [],
     sources: sources,
     metrika: await metrikaSummary(env, 7)
-  }, 200, corsHeaders(request, env));
+  };
+
+  // тяжёлые агрегаты кэшируем на минуту
+  try { await env.KV.put(cacheKey, JSON.stringify(payload), { expirationTtl: 60 }); } catch (e) {}
+
+  return json(payload, 200, corsHeaders(request, env));
 }
 
 /* ---------- выгрузка CSV ---------- */

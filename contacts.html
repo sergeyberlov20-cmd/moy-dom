@@ -87,7 +87,7 @@
   <div class="contacts-layout">
     <div class="contact-card">
       <h2>Оставить заявку</h2>
-      <p>Заполните форму, и мы перезвоним вам в течение 15 минут.</p>
+      <p>Заполните форму — мы получим заявку, рассмотрим её и свяжемся с вами.</p>
       <form id="contact-form">
         <div class="form-group"><label for="name">Ваше имя</label><input type="text" id="name" name="name" required placeholder="Иван Иванов"></div>
         <div class="form-group"><label for="phone">Телефон</label><input type="tel" id="phone" name="phone" required placeholder="+7 (949) 504-44-55"></div>
@@ -158,7 +158,7 @@
         ok = r.ok;
       }
       if (ok) {
-        showToast('Спасибо! Заявка отправлена. Мы свяжемся с вами.', 'success');
+        showToast('Спасибо! Мы получили вашу заявку, рассмотрим её и свяжемся с вами.', 'success');
         form.reset();
         if (window.mdTrack) window.mdTrack('form_submit', payload.page);
       } else {

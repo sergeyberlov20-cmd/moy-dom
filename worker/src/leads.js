@@ -16,10 +16,37 @@ export async function handleLead(request, env) {
     return json({ ok: false, error: 'phone' }, 400, corsHeaders(request, env));
   }
 
+  // форма, заполненная за пару секунд, — почти всегда робот: тихо «принимаем»
+  const elapsed = Number(body.elapsed);
+  if (isFinite(elapsed) && elapsed > 0 && elapsed < 2000) {
+    return json({ ok: true, id: 0 }, 200, corsHeaders(request, env));
+  }
+
+  // ссылки в имени и тексте — типичный спам
+  const links = (String(name) + ' ' + String(message)).match(/https?:\/\/|www\./gi);
+  if (links && links.length > 2) {
+    return json({ ok: true, id: 0 }, 200, corsHeaders(request, env));
+  }
+  if (/https?:\/\//i.test(name)) {
+    return json({ ok: true, id: 0 }, 200, corsHeaders(request, env));
+  }
+
   const iph = await ipHash(request);
+  // три окна: 1 заявка / минуту, 10 / час, 30 / сутки
   if (await rateLimited(env, 'lead:' + iph, 60)) {
     return json({ ok: false, error: 'too_many' }, 429, corsHeaders(request, env));
   }
+  const hourKey = 'cnt:leadH:' + iph;
+  const dayKey = 'cnt:leadD:' + iph;
+  const hourCount = Number(await env.KV.get(hourKey).catch(() => 0)) || 0;
+  const dayCount = Number(await env.KV.get(dayKey).catch(() => 0)) || 0;
+  if (hourCount >= 10 || dayCount >= 30) {
+    return json({ ok: false, error: 'too_many' }, 429, corsHeaders(request, env));
+  }
+  try {
+    await env.KV.put(hourKey, String(hourCount + 1), { expirationTtl: 3600 });
+    await env.KV.put(dayKey, String(dayCount + 1), { expirationTtl: 86400 });
+  } catch (e) { /* счётчики не критичны */ }
 
   const page = clean(body.page, 200);
   const referrer = clean(body.referrer, 300);
