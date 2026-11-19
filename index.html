@@ -421,7 +421,7 @@
         return { el: el, dt: dt, ts: dt ? Date.parse(dt) : 0 };
       }).filter(function (it) { return it.ts; });
       items.sort(function (a, b) { return b.ts - a.ts; });
-      var cards = items.slice(0, 3).map(function (it) { return it.el; });
+      var cards = items.slice(0, 12).map(function (it) { return it.el; });
       if (!cards.length) return done();
       var out = cards.map(function (c) {
         var img = c.querySelector('img');
