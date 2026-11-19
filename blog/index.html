@@ -208,8 +208,7 @@
   var grid = document.querySelector('.blog-grid');
   if (!grid) return;
   var todayStr = new Date().toISOString().slice(0, 10);
-  var allCards = [].slice.call(grid.querySelectorAll('.blog-card'));
-  var cards = allCards.filter(function (c) {
+  var cards = [].slice.call(grid.querySelectorAll('.blog-card')).filter(function (c) {
     var pub = c.getAttribute('data-publish');
     return !pub || pub <= todayStr;
   });
@@ -221,7 +220,7 @@
 
   function apply() {
     var list = cards.filter(function (c) { return cat === 'all' || c.getAttribute('data-cat') === cat; });
-    allCards.forEach(function (c) { c.style.display = 'none'; });
+    cards.forEach(function (c) { c.style.display = 'none'; });
     list.slice(0, shown).forEach(function (c) { c.style.display = ''; });
     var rest = list.length - shown;
     if (rest > 0) { more.style.display = ''; more.textContent = 'Показать ещё (' + rest + ')'; }
