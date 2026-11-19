@@ -1,4 +1,4 @@
-import { json, esc, tgApi, tgSend, tgNotify, tgPurge, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, MAIN_KB, NAV_KB, isDialogCommand } from './lib.js';
+import { json, esc, tgApi, tgSend, tgNotify, tgTrack, tgPurge, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, MAIN_KB, NAV_KB, isDialogCommand } from './lib.js';
 import { startAdd, handleAddCallback, handleAddMessage, dropState } from './add.js';
 import { startPost, handlePostCallback, isPosting, dropPostState } from './post.js';
 import { handlePostMessage } from './post_steps.js';
@@ -89,6 +89,10 @@ export async function handleTelegram(request, env) {
   const fromId = msg.from ? msg.from.id : 0;
   const allowed = await isAllowedAdmin(env, fromId);
   await touchBotUser(env, msg.from, { allowed: allowed, command: !!(msg.text && msg.text.charAt(0) === '/') });
+
+  // запоминаем сообщение пользователя, чтобы «Сброс» удалял и его команды
+  if (msg.message_id) await tgTrack(env, msg.chat.id, msg.message_id);
+
   if (!allowed) {
     // вход по ссылке-приглашению: /start inv_XXXX
     const im = (msg.text || '').trim().match(/^\/start\s+inv_(\S+)/i);

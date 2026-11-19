@@ -91,7 +91,19 @@ const tgSend = async (env, chatId, text, reply_markup) => {
   return r;
 };
 
-/** Удаляет все свои сообщения в чате (в пределах 48 часов) */
+/** Запомнить id сообщения в чате (своё или входящее) — для «Сброса» */
+async function tgTrack(env, chatId, messageId) {
+  try {
+    if (!env.KV || !messageId || !/^-?\d+$/.test(String(chatId))) return;
+    const key = 'msgs:' + chatId;
+    const raw = await env.KV.get(key);
+    const list = raw ? JSON.parse(raw) : [];
+    if (list.indexOf(messageId) === -1) list.push(messageId);
+    await env.KV.put(key, JSON.stringify(list.slice(-80)), { expirationTtl: 60 * 60 * 48 });
+  } catch (e) { /* учёт не критичен */ }
+}
+
+/** Удаляет все сообщения чата: и свои, и входящие (в пределах 48 часов) */
 async function tgPurge(env, chatId) {
   const key = 'msgs:' + chatId;
   let ids = [];
@@ -204,4 +216,4 @@ const NAV_KB = {
   ]]
 };
 
-export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, tgNotify, tgDelete, tgPurge, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, EVENT_TYPES, MAIN_KB, NAV_KB };
+export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, tgNotify, tgDelete, tgTrack, tgPurge, isAdmin, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, EVENT_TYPES, MAIN_KB, NAV_KB };
