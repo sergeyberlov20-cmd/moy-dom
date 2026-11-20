@@ -39,6 +39,40 @@
     .about-intro { font-size: 1.1rem; color: var(--muted); max-width: 900px; margin-bottom: 40px; line-height: 1.8; }
     .director-quote { background: var(--surface); border-left: 5px solid var(--accent); padding: 24px 30px; border-radius: 0 var(--radius) var(--radius) 0; margin: 40px 0 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); font-style: italic; font-size: 1.15rem; color: var(--primary); position: relative; }
     .director-quote span { font-size: 4rem; color: rgba(204, 34, 41, 0.1); font-family: serif; position: absolute; top: 10px; left: 15px; }
+
+    /* НОВЫЕ СТИЛИ ДЛЯ КЛИКАБЕЛЬНЫХ ПЛАШЕК */
+    .service-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #f0fdf4;
+      color: #166534;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 1px solid #bbf7d0;
+    }
+    .service-badge:hover {
+      background-color: #dcfce7;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .service-badge:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+    .service-badge.text-only {
+      background-color: #f3f4f6;
+      color: #6b7280;
+      border: 1px solid #e5e7eb;
+      cursor: default;
+    }
+    .service-badge.text-only:hover {
+      transform: none;
+      box-shadow: none;
+      background-color: #f3f4f6;
+    }
   </style>
 
   <!-- Open Graph / соцсети -->
@@ -93,16 +127,28 @@
     <span style="display: block; margin-top: 15px; font-weight: 700; font-size: 0.9rem; font-style: normal; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; position: static;">— Руководство агентства «Мой Дом»</span>
   </div>
   <h2 class="section-title">Наши услуги</h2>
-  <div class="services-badges" style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 50px;">
-    <span class="service-badge">✓ Продажа и покупка</span>
-    <span class="service-badge">✓ Восстановление документов</span>
-    <span class="service-badge">✓ Росреестр</span>
-    <span class="service-badge">✓ Договоры купли-продажи</span>
-    <span class="service-badge">✓ Оценка для банка и суда</span>
-    <span class="service-badge">✓ Срочный выкуп</span>
-    <span class="service-badge">✓ Судебная экспертиза</span>
-    <span class="service-badge">✓ Аренда</span>
-    <span class="service-badge">✓ Бесплатные консультации</span>
+  <div class="services-badges" style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+    <!-- Сделали ссылки на страницы услуг -->
+    <a href="services/uslugi-1.html" class="service-badge">✓ Продажа и покупка</a>
+    <a href="services/uslugi-5.html" class="service-badge">✓ Восстановление документов</a>
+    <a href="services/uslugi-3.html" class="service-badge">✓ Росреестр</a>
+    
+    <!-- Тут пока нет страниц, оставляем текстом -->
+    <span class="service-badge text-only">✓ Договоры купли-продажи</span>
+    
+    <a href="services/uslugi-8.html" class="service-badge">✓ Оценка для банка и суда</a>
+    
+    <!-- Тут пока нет страниц, оставляем текстом -->
+    <span class="service-badge text-only">✓ Срочный выкуп</span>
+    
+    <a href="services/uslugi-4.html" class="service-badge">✓ Судебная экспертиза</a>
+    <a href="services/uslugi-2.html" class="service-badge">✓ Аренда</a>
+    <a href="services/uslugi-9.html" class="service-badge">✓ Бесплатные консультации</a>
+  </div>
+  
+  <!-- Кнопка Все услуги -->
+  <div style="margin-bottom: 50px;">
+    <a href="services/index.html" class="btn" style="padding: 12px 24px; font-size: 0.95rem;">Все услуги &rarr;</a>
   </div>
 </section>
 <div class="team-section" style="background: #f8f9fa; padding: 50px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 60px;">
@@ -200,14 +246,4 @@
       <div><h4>Мессенджеры</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="https://t.me/nedvizhimost_mariupol" target="_blank">Telegram</a></li><li style="margin-bottom: 12px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank">MAX</a></li><li><a href="https://vk.com/moy_dom_mariupol" target="_blank">ВКонтакте</a></li></ul></div>
       <div><h4>Документы</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li><a href="privacy.html">Политика конфиденциальности</a></li></ul></div>
     </div>
-    <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
-  </div>
-</footer>
-<script src="js/address.js"></script>
-<script src="js/main.js"></script>
-<script src="js/install.js" defer></script>
-<script src="js/mobile-bar.js" defer></script>
-<script src="js/api.js" defer></script>
-<script src="js/metrika.js" defer></script>
-</body>
-</html>
+    <div class="copyright">© 2026 Мой Дом. В
