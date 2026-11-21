@@ -1,4 +1,4 @@
-import { json, corsPreflight, readJson, corsHeaders, isMaintenance } from './lib.js';
+import { json, corsPreflight, readJson, corsHeaders, isMaintenance, isBotPaused } from './lib.js';
 import { handleLead, handleEvent } from './leads.js';
 import { handleTelegram, dailyDigest, tgSetup, tgTest, tgDiag, tgProfile } from './bot.js';
 import { remindStale } from './remind.js';
@@ -82,6 +82,9 @@ export default {
   },
 
   async scheduled(controller, env, ctx) {
+    /* Полная пауза: пока бот усыплён, кроны не выполняются совсем */
+    try { if (await isBotPaused(env)) return; } catch (e) {}
+
     const cron = (controller && controller.cron) || '';
     if (cron === '0 6 * * *') {
       ctx.waitUntil(releaseScheduled(env).catch(() => null));

@@ -1,4 +1,4 @@
-import { json, esc, tgApi, tgSend, tgNotify, tgTrack, tgPurge, isAdmin, isMaintenance, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, MAIN_KB, NAV_KB, isDialogCommand } from './lib.js';
+import { json, esc, tgApi, tgSend, tgNotify, tgTrack, tgPurge, isAdmin, isMaintenance, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, MAIN_KB, NAV_KB, isDialogCommand, isBotPaused, setBotPaused, botPausedInfo } from './lib.js';
 import { startAdd, handleAddCallback, handleAddMessage, dropState } from './add.js';
 import { startPost, handlePostCallback, isPosting, dropPostState } from './post.js';
 import { handlePostMessage } from './post_steps.js';
@@ -22,6 +22,7 @@ const GREETING =
   '/invite — ссылка-приглашение (только у вас),\n' +
   '/botstats — кто пользуется ботом (только у вас),\n' +
   '/reviews — обновить отзывы с Яндекс.Карт (только у вас),\n' +
+  '/pause — усыпить бота целиком (только вы), /resume — включить,\n' +
   '/reset — очистить чат и начать заново.';
 
 const KB = (id) => ({
@@ -52,6 +53,50 @@ export async function handleTelegram(request, env) {
 
   let update = null;
   try { update = await request.json(); } catch (e) { return new Response('bad', { status: 400 }); }
+
+  /* ---------- ПОЛНАЯ ПАУЗА: бот спит у всех ---------- */
+  const pausedNow = await isBotPaused(env);
+  if (pausedNow) {
+    const cb = update.callback_query;
+    const msg0 = update.message;
+    const from = (cb && cb.from) || (msg0 && msg0.from) || {};
+    const uid = from.id || 0;
+    const owner = isAdmin(env, uid);
+    const data = (cb && cb.data) || '';
+    const text = (msg0 && msg0.text) || '';
+
+    await touchBotUser(env, from, { allowed: owner }).catch(() => {});
+
+    // всем, кроме владельца, — полная тишина
+    if (!owner) return new Response('ok');
+
+    const chatId = (cb && cb.message && cb.message.chat && cb.message.chat.id) || (msg0 && msg0.chat && msg0.chat.id) || uid;
+
+    // включить обратно
+    if (data === 'pause:off' || /^\/(resume|on)\b/i.test(text) || String(text).trim() === '▶️ Включить') {
+      await setBotPaused(env, false, uid);
+      if (cb) await tgApi(env, 'answerCallbackQuery', { callback_query_id: cb.id, text: 'Бот включён' });
+      await tgSend(env, chatId, '▶️ <b>Бот включён</b>\n\nУведомления, кроны и публикации снова работают.', MAIN_KB);
+      return new Response('ok');
+    }
+
+    // статус паузы
+    if (data === 'pause:status' || /^\/(start|pause|status|help)\b/i.test(text)) {
+      const info = await botPausedInfo(env);
+      let since = '—';
+      try { if (info && info.since) since = new Date(info.since).toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }); } catch (e) {}
+      const kb = { inline_keyboard: [[{ text: '▶️ Включить', callback_data: 'pause:off' }]] };
+      const txt = '⏸ <b>Бот на паузе</b>\n\nС ' + since + ' МСК.\n' +
+        'Он молчит у всех, кроны (сводка, напоминания, отзывы, посты) не выполняются.\n' +
+        'Заявки с сайта продолжают записываться в базу — они не потеряются.';
+      if (cb) await tgApi(env, 'answerCallbackQuery', { callback_query_id: cb.id, text: 'Бот на паузе' });
+      await tgSend(env, chatId, txt, kb);
+      return new Response('ok');
+    }
+
+    // остальные сообщения владельца игнорируем — бот спит
+    return new Response('ok');
+  }
 
   if (update.callback_query) {
     const d = update.callback_query.data || '';
@@ -379,6 +424,21 @@ export async function handleTelegram(request, env) {
         { text: '✅ Да, снять', callback_data: 'sold:' + id },
         { text: '❌ Отмена', callback_data: 'sold:no' }
       ]] });
+    return new Response('ok');
+  }
+
+  if (cmd === '/pause' || String(msg.text || '').trim() === '⏸ Пауза') {
+    if (!isAdmin(env, fromId)) {
+      await tgSend(env, msg.chat.id, '⛔ Пауза доступна только владельцу.');
+      return new Response('ok');
+    }
+    await setBotPaused(env, true, fromId);
+    await tgSend(env, msg.chat.id,
+      '⏸ <b>Бот на паузе</b>\n\n' +
+      'Он молчит у всех: команды, кнопки, уведомления. Кроны спят — сводка, напоминания, отзывы, посты в блог.\n\n' +
+      'Заявки с сайта продолжают записываться в базу — ничего не потеряется.\n' +
+      'Включить обратно: кнопка ниже или <code>/resume</code>',
+      { inline_keyboard: [[{ text: '▶️ Включить', callback_data: 'pause:off' }]] });
     return new Response('ok');
   }
 

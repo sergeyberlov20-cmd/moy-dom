@@ -133,7 +133,7 @@ async function tgPurge(env, chatId) {
 
 /* Постоянная клавиатура внизу чата — как в приложении */
 /* Команды, которые должны срабатывать даже во время диалога /add или /post */
-const DIALOG_COMMANDS = ['/cancel', '/reset', '/post', '/add', '/start', '/help', '/leads', '/stats', '/site', '/id', '/done', '/del', '/admins', '/adduser', '/deluser', '/invite', '/botstats', '/reviews', '/price', '/sold', '/maintenance'];
+const DIALOG_COMMANDS = ['/cancel', '/reset', '/post', '/add', '/start', '/help', '/leads', '/stats', '/site', '/id', '/done', '/del', '/admins', '/adduser', '/deluser', '/invite', '/botstats', '/reviews', '/price', '/sold', '/maintenance', '/pause', '/resume'];
 
 export function isDialogCommand(text) {
   const t = String(text || '').trim().toLowerCase();
@@ -214,11 +214,32 @@ const MAIN_KB = {
     [{ text: '📋 Заявки' }, { text: '📊 Статистика' }],
     [{ text: '➕ Добавить объект' }, { text: '✍️ Написать в блог' }],
     [{ text: '🔗 Пригласить' }, { text: '👥 Люди' }],
-    [{ text: '♻️ Сброс' }, { text: '🌐 Открыть сайт' }]
+    [{ text: '⏸ Пауза' }, { text: '🌐 Открыть сайт' }]
   ],
   resize_keyboard: true,
   is_persistent: true
 };
+
+/* ---------- полная пауза бота (спит у всех, кроны тоже) ---------- */
+async function isBotPaused(env) {
+  try { return !!(await env.KV.get('cfg:paused')); } catch (e) { return false; }
+}
+
+async function setBotPaused(env, on, by) {
+  try {
+    if (on) await env.KV.put('cfg:paused', JSON.stringify({ since: new Date().toISOString(), by: String(by || '') }));
+    else await env.KV.delete('cfg:paused');
+    return true;
+  } catch (e) { return false; }
+}
+
+async function botPausedInfo(env) {
+  try {
+    const raw = await env.KV.get('cfg:paused');
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch (e) { return { since: null, by: null }; }
+  } catch (e) { return null; }
+}
 
 /* Кнопки под сообщениями со списками/сводкой */
 const NAV_KB = {
@@ -229,4 +250,4 @@ const NAV_KB = {
   ]]
 };
 
-export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, tgNotify, tgDelete, tgTrack, tgPurge, isAdmin, isMaintenance, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, EVENT_TYPES, MAIN_KB, NAV_KB };
+export { json, esc, clean, corsHeaders, corsPreflight, randomHex, ipHash, rateLimited, readJson, tgApi, tgSend, tgNotify, tgDelete, tgTrack, tgPurge, isAdmin, isMaintenance, adminIds, allAdminIds, extraAdminIds, isAllowedAdmin, setExtraAdmins, STATUSES, EVENT_TYPES, MAIN_KB, NAV_KB, isBotPaused, setBotPaused, botPausedInfo };

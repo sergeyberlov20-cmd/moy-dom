@@ -1,4 +1,4 @@
-import { json, esc, clean, corsHeaders, ipHash, readJson, tgNotify, adminIds } from './lib.js';
+import { json, esc, clean, corsHeaders, ipHash, readJson, tgNotify, adminIds, isBotPaused } from './lib.js';
 
 /* ---------- заявка с сайта ---------- */
 export async function handleLead(request, env, ctx) {
@@ -70,7 +70,8 @@ export async function handleLead(request, env, ctx) {
 
   const id = res.meta && res.meta.last_row_id ? res.meta.last_row_id : 0;
 
-  if (env.BOT_TOKEN && adminIds(env).length && id) {
+  const paused = await isBotPaused(env);
+  if (env.BOT_TOKEN && adminIds(env).length && id && !paused) {
     const text =
       '🔔 <b>Новая заявка №' + id + '</b>\n' +
       '👤 ' + esc(name || '—') + '\n' +
