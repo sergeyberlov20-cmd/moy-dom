@@ -65,12 +65,20 @@ async function readJson(request) {
 
 async function tgApi(env, method, payload) {
   if (!env.BOT_TOKEN) return null;
-  const r = await fetch('https://api.telegram.org/bot' + env.BOT_TOKEN + '/' + method, {
+  const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  const timer = ctrl ? setTimeout(() => ctrl.abort(), 8000) : null;
+  return fetch('https://api.telegram.org/bot' + env.BOT_TOKEN + '/' + method, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload || {})
+    body: JSON.stringify(payload || {}),
+    signal: ctrl ? ctrl.signal : undefined
+  }).then(function (r) {
+    if (timer) clearTimeout(timer);
+    return r.json().catch(function () { return null; });
+  }).catch(function () {
+    if (timer) clearTimeout(timer);
+    return null;
   });
-  try { return await r.json(); } catch (e) { return null; }
 }
 
 const tgSend = async (env, chatId, text, reply_markup) => {

@@ -1,7 +1,7 @@
-import { json, esc, clean, corsHeaders, ipHash, rateLimited, readJson, tgNotify, adminIds } from './lib.js';
+import { json, esc, clean, corsHeaders, ipHash, readJson, tgNotify, adminIds } from './lib.js';
 
 /* ---------- заявка с сайта ---------- */
-export async function handleLead(request, env) {
+export async function handleLead(request, env, ctx) {
   const body = await readJson(request);
   if (!body) return json({ ok: false, error: 'bad_request' }, 400, corsHeaders(request, env));
 
@@ -31,26 +31,37 @@ export async function handleLead(request, env) {
     return json({ ok: true, id: 0 }, 200, corsHeaders(request, env));
   }
 
-  const iph = await ipHash(request);
-  // три окна: 1 заявка / минуту, 10 / час, 30 / сутки
-  if (await rateLimited(env, 'lead:' + iph, 60)) {
-    return json({ ok: false, error: 'too_many' }, 429, corsHeaders(request, env));
-  }
-  const hourKey = 'cnt:leadH:' + iph;
-  const dayKey = 'cnt:leadD:' + iph;
-  const hourCount = Number(await env.KV.get(hourKey).catch(() => 0)) || 0;
-  const dayCount = Number(await env.KV.get(dayKey).catch(() => 0)) || 0;
-  if (hourCount >= 10 || dayCount >= 30) {
-    return json({ ok: false, error: 'too_many' }, 429, corsHeaders(request, env));
-  }
-  try {
-    await env.KV.put(hourKey, String(hourCount + 1), { expirationTtl: 3600 });
-    await env.KV.put(dayKey, String(dayCount + 1), { expirationTtl: 86400 });
-  } catch (e) { /* счётчики не критичны */ }
-
   const page = clean(body.page, 200);
   const referrer = clean(body.referrer, 300);
   const utm = clean(body.utm, 300);
+
+  // повторное нажатие «Отправить» с теми же данными не создаёт дубль:
+  // отвечаем успехом и id уже созданной заявки
+  try {
+    const dup = await env.DB.prepare(
+      "SELECT id FROM leads WHERE phone = ? AND coalesce(page, '') = ? AND created_at >= datetime('now','-3 minutes') ORDER BY id DESC LIMIT 1"
+    ).bind(phone, page).first();
+    if (dup && dup.id) {
+      return json({ ok: true, id: dup.id, duplicate: true }, 200, corsHeaders(request, env));
+    }
+  } catch (e) { /* если запрос не удался — просто продолжаем */ }
+
+  const iph = await ipHash(request);
+  // лимиты: 5 заявок / минуту, 10 / час, 30 / сутки с одного IP
+  const minKey = 'cnt:leadM:' + iph;
+  const hourKey = 'cnt:leadH:' + iph;
+  const dayKey = 'cnt:leadD:' + iph;
+  const minCount = Number(await env.KV.get(minKey).catch(() => 0)) || 0;
+  const hourCount = Number(await env.KV.get(hourKey).catch(() => 0)) || 0;
+  const dayCount = Number(await env.KV.get(dayKey).catch(() => 0)) || 0;
+  if (minCount >= 5 || hourCount >= 10 || dayCount >= 30) {
+    return json({ ok: false, error: 'too_many' }, 429, corsHeaders(request, env));
+  }
+  try {
+    await env.KV.put(minKey, String(minCount + 1), { expirationTtl: 60 });
+    await env.KV.put(hourKey, String(hourCount + 1), { expirationTtl: 3600 });
+    await env.KV.put(dayKey, String(dayCount + 1), { expirationTtl: 86400 });
+  } catch (e) { /* счётчики не критичны */ }
 
   const res = await env.DB.prepare(
     `INSERT INTO leads (name, phone, message, page, referrer, utm, ip_hash)
@@ -68,12 +79,16 @@ export async function handleLead(request, env) {
       '🌐 ' + esc(page || '—') + '\n' +
       (referrer ? '↩️ ' + esc(referrer) + '\n' : '') +
       '🕒 ' + new Date().toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
-    await tgNotify(env, text, {
+    // уведомление отправляем в фоне: ответ посетителю не ждёт Telegram
+    const notify = tgNotify(env, text, {
       inline_keyboard: [[
         { text: '📞 В работе', callback_data: 'st:' + id + ':inwork' },
-        { text: '✅ Готово', callback_data: 'st:' + id + ':done' }
+        { text: '✅ Готово', callback_data: 'st:' + id + ':done' },
+        { text: '🗑 Удалить', callback_data: 'del:' + id }
       ]]
-    });
+    }).catch(() => {});
+    if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(notify);
+    else await notify;
   }
 
   return json({ ok: true, id }, 200, corsHeaders(request, env));

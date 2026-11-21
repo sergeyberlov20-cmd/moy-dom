@@ -16,9 +16,9 @@ const RT = [
     maintenance: await isMaintenance(env),
     message: 'Обновляем каталог — вернёмся совсем скоро.'
   }, 200, corsHeaders(request, env))],
-  ['/api/lead', 'POST', async (request, env) => {
+  ['/api/lead', 'POST', async (request, env, ctx) => {
     if (await isMaintenance(env)) return json({ ok: false, error: 'maintenance' }, 503, corsHeaders(request, env));
-    return handleLead(request, env);
+    return handleLead(request, env, ctx);
   }],
   ['/api/event', 'POST', handleEvent],
   ['/api/tg/webhook', 'POST', handleTelegram],
@@ -72,7 +72,7 @@ export default {
     for (const [route, method, handler] of RT) {
       if (path === route && request.method === method) {
         try {
-          return await handler(request, env);
+          return await handler(request, env, ctx);
         } catch (e) {
           return json({ ok: false, error: 'server', detail: String((e && e.message) || e) }, 500);
         }

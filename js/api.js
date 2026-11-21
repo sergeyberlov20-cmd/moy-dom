@@ -34,6 +34,8 @@
         signal: ctrl ? ctrl.signal : undefined
       }).then(function (r) {
         if (timer) clearTimeout(timer);
+        /* 429 = лимит: считаем, что заявка уже принята — не пугаем посетителя ошибкой */
+        if (r.status === 429) return { ok: true, duplicate: true };
         if (!r.ok) throw new Error('api ' + r.status);
         return r.json();
       }).catch(function (e) {
