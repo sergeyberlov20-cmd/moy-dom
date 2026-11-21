@@ -125,7 +125,7 @@ async function tgPurge(env, chatId) {
 
 /* Постоянная клавиатура внизу чата — как в приложении */
 /* Команды, которые должны срабатывать даже во время диалога /add или /post */
-const DIALOG_COMMANDS = ['/cancel', '/reset', '/post', '/add', '/start', '/help', '/leads', '/stats', '/site', '/id', '/done', '/admins', '/adduser', '/deluser', '/invite', '/botstats', '/reviews', '/price', '/sold', '/maintenance'];
+const DIALOG_COMMANDS = ['/cancel', '/reset', '/post', '/add', '/start', '/help', '/leads', '/stats', '/site', '/id', '/done', '/del', '/admins', '/adduser', '/deluser', '/invite', '/botstats', '/reviews', '/price', '/sold', '/maintenance'];
 
 export function isDialogCommand(text) {
   const t = String(text || '').trim().toLowerCase();

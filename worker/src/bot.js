@@ -17,7 +17,7 @@ const GREETING =
   'Пользуйтесь кнопками внизу — или командами:\n' +
   '/leads — заявки, /stats — сводка,\n' +
   '/add — новый объект, /post — пост в блог,\n' +
-  '/done 12 — закрыть заявку, /id — ваш Telegram ID,\n' +
+  '/done 12 — закрыть заявку, /del 12 — удалить заявку, /id — ваш Telegram ID,\n' +
   '/price 52 4300000 — новая цена, /sold 52 — снять объект,\n' +
   '/invite — ссылка-приглашение (только у вас),\n' +
   '/botstats — кто пользуется ботом (только у вас),\n' +
@@ -27,9 +27,19 @@ const GREETING =
 const KB = (id) => ({
   inline_keyboard: [[
     { text: '📞 В работе', callback_data: 'st:' + id + ':inwork' },
-    { text: '✅ Готово', callback_data: 'st:' + id + ':done' }
+    { text: '✅ Готово', callback_data: 'st:' + id + ':done' },
+    { text: '🗑 Удалить', callback_data: 'del:' + id }
   ]]
 });
+
+/* Карточка заявки — используется в списке, при удалении и отмене */
+function leadCardText(r, maxLen) {
+  const lim = maxLen || 400;
+  return '📄 <b>№' + r.id + '</b> · ' + (STATUS_RU[r.status] || r.status) + '\n' +
+    '👤 ' + esc(r.name || '—') + ' · <a href="tel:' + esc(String(r.phone).replace(/[^\d+]/g, '')) + '">' + esc(r.phone) + '</a>' +
+    (r.message ? '\n💬 ' + esc(String(r.message).slice(0, lim)) : '') +
+    '\n🕒 ' + esc(r.created_at) + ' UTC' + (r.page ? ' · ' + esc(String(r.page).slice(0, 40)) : '');
+}
 
 const isAdding = async (env, uid) => !!(await env.KV.get('add:' + uid));
 
@@ -200,16 +210,14 @@ export async function handleTelegram(request, env) {
     const lines = [];
     const buttons = [];
     for (const r of list) {
-      let block = '📄 <b>№' + r.id + '</b> · ' + (STATUS_RU[r.status] || r.status) + '\n' +
-        '👤 ' + esc(r.name || '—') + ' · <a href="tel:' + esc(String(r.phone).replace(/[^\d+]/g, '')) + '">' + esc(r.phone) + '</a>' +
-        (r.message ? '\n💬 ' + esc(String(r.message).slice(0, 160)) : '') +
-        '\n🕒 ' + esc(r.created_at) + ' UTC' + (r.page ? ' · ' + esc(String(r.page).slice(0, 40)) : '');
+      const block = leadCardText(r, 160);
       if (total + block.length > 3300) break;
       total += block.length + 2;
-      lines.push(block);
+      lines.push(block.length > 400 ? block.slice(0, 400) + '…' : block.slice(0, block.length));
       buttons.push([
         { text: '📞 №' + r.id, callback_data: 'st:' + r.id + ':inwork' },
-        { text: '✅ №' + r.id, callback_data: 'st:' + r.id + ':done' }
+        { text: '✅ №' + r.id, callback_data: 'st:' + r.id + ':done' },
+        { text: '🗑 №' + r.id, callback_data: 'del:' + r.id }
       ]);
     }
 
@@ -270,6 +278,28 @@ export async function handleTelegram(request, env) {
     }
     await env.DB.prepare('UPDATE leads SET status = ? WHERE id = ?').bind('done', id).run();
     await tgSend(env, msg.chat.id, '✅ Заявка №' + id + ' закрыта.');
+    return new Response('ok');
+  }
+
+  if (cmd === '/del') {
+    const id = Number(arg);
+    if (!id) {
+      await tgSend(env, msg.chat.id, 'Укажите номер заявки: <code>/del 12</code>\nИли нажмите 🗑 под заявкой.');
+      return new Response('ok');
+    }
+    const row = await env.DB.prepare('SELECT * FROM leads WHERE id = ?').bind(id).first();
+    if (!row) {
+      await tgSend(env, msg.chat.id, 'Заявка №' + id + ' не найдена.');
+      return new Response('ok');
+    }
+    await tgSend(env, msg.chat.id,
+      leadCardText(row, 600) + '\n\n🗑 <b>Удалить заявку №' + id + '?</b>\nДействие необратимо.',
+      {
+        inline_keyboard: [[
+          { text: '✅ Да, удалить', callback_data: 'del:ok:' + id },
+          { text: '❌ Отмена', callback_data: 'cancel:' + id }
+        ]]
+      });
     return new Response('ok');
   }
 
@@ -474,6 +504,69 @@ async function handleCallback(query, env, allowed) {
   const data = query.data || '';
   if (!allowed && !(await isAllowedAdmin(env, fromId))) {
     await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id, text: 'Нет доступа', show_alert: true });
+    return new Response('ok');
+  }
+
+  /* 🗑 Удаление заявки: del:<id> — спросить подтверждение, del:ok:<id> — удалить, cancel:<id> — отмена */
+  const delMatch = data.match(/^del:(ok:)?(\d+)$/);
+  if (delMatch) {
+    const id = Number(delMatch[2]);
+    const msg = query.message;
+    if (!delMatch[1]) {
+      await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id });
+      if (msg) {
+        const base = String(msg.text || '').replace(/\n<b>Статус:<\/b> .*$/m, '');
+        await tgApi(env, 'editMessageText', {
+          chat_id: msg.chat.id,
+          message_id: msg.message_id,
+          text: base + '\n\n🗑 <b>Удалить заявку №' + id + '?</b>\nДействие необратимо — заявка исчезнет из базы и панели.',
+          parse_mode: 'HTML',
+          disable_web_page_preview: true,
+          reply_markup: {
+            inline_keyboard: [[
+              { text: '✅ Да, удалить', callback_data: 'del:ok:' + id },
+              { text: '❌ Отмена', callback_data: 'cancel:' + id }
+            ]]
+          }
+        });
+      }
+      return new Response('ok');
+    }
+    const res = await env.DB.prepare('DELETE FROM leads WHERE id = ?').bind(id).run();
+    const removed = res && res.meta ? res.meta.changes : 0;
+    await tgApi(env, 'answerCallbackQuery', {
+      callback_query_id: query.id,
+      text: removed ? 'Заявка №' + id + ' удалена' : 'Заявка не найдена',
+      show_alert: !removed
+    });
+    if (msg) {
+      await tgApi(env, 'editMessageText', {
+        chat_id: msg.chat.id,
+        message_id: msg.message_id,
+        text: '🗑 <b>Заявка №' + id + '</b> ' + (removed ? 'удалена' : 'не найдена'),
+        parse_mode: 'HTML'
+      });
+    }
+    return new Response('ok');
+  }
+
+  const cancelMatch = data.match(/^cancel:(\d+)$/);
+  if (cancelMatch) {
+    const id = Number(cancelMatch[1]);
+    await tgApi(env, 'answerCallbackQuery', { callback_query_id: query.id, text: 'Отменено' });
+    if (query.message) {
+      const row = await env.DB.prepare('SELECT * FROM leads WHERE id = ?').bind(id).first();
+      if (row) {
+        await tgApi(env, 'editMessageText', {
+          chat_id: query.message.chat.id,
+          message_id: query.message.message_id,
+          text: leadCardText(row, 600),
+          parse_mode: 'HTML',
+          disable_web_page_preview: true,
+          reply_markup: KB(id)
+        });
+      }
+    }
     return new Response('ok');
   }
 

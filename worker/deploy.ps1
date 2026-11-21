@@ -28,17 +28,23 @@ foreach ($k in $vars.Keys) { $obj[$k] = $vars[$k] }
 
 Push-Location $PSScriptRoot
 try {
+    # Если wrangler установлен локально (node_modules) — используем его, иначе npx
+    $localWr = Join-Path $PSScriptRoot 'node_modules\.bin\wrangler.cmd'
+    function Invoke-Wrangler([string[]]$wrArgs) {
+        if (Test-Path -LiteralPath $localWr) { & $localWr @wrArgs } else { & npx --yes wrangler @wrArgs }
+    }
+
     Write-Host '[1/3] Uploading secrets...'
-    & npx --yes wrangler secret bulk $tmp
+    Invoke-Wrangler @('secret', 'bulk', $tmp)
     if ($LASTEXITCODE -ne 0) {
         Write-Host '[1/3] bulk failed, trying one by one...'
         foreach ($k in $vars.Keys) {
-            $vars[$k] | & npx --yes wrangler secret put $k
+            $vars[$k] | Invoke-Wrangler @('secret', 'put', $k)
             if ($LASTEXITCODE -ne 0) { throw "secret put failed for $k" }
         }
     }
     Write-Host '[2/3] Deploying worker...'
-    & npx --yes wrangler deploy
+    Invoke-Wrangler @('deploy')
     if ($LASTEXITCODE -ne 0) { throw 'wrangler deploy failed' }
     Write-Host '[3/3] Done.'
     Write-Host ''
