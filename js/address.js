@@ -1,14 +1,1 @@
-/**
- * Публичный адрес объекта: только улица и район, без номера дома и участка.
- * Правило проекта: точные адреса объектов на сайте не публикуем.
- */
-function publicAddress(addr) {
-  let s = String(addr == null ? '' : addr).trim();
-  if (!s) return '';
-  // «д. 12», «дом 12а», «уч. 5», «участок 12»
-  s = s.replace(/[,;]?\s*(?:д\.?|дом|уч\.?|участок)\s*\d+[а-яa-z]?(?:\s*[\/-]\s*\d+[а-яa-z]?)?\s*$/i, '');
-  // хвост «, 12», «, 12/1», «, 12а»
-  s = s.replace(/[,;]\s*\d+[а-яa-z]?(?:\s*[\/-]\s*\d+[а-яa-z]?)?\s*$/, '');
-  return s.replace(/\s{2,}/g, ' ').replace(/[,;]\s*$/, '').trim();
-}
-window.publicAddress = publicAddress;
+function publicAddress(addr){let s=String(addr==null?'':addr).trim();if(!s)return'';s=s.replace(/[,;]?\s*(?:д\.?|дом|уч\.?|участок)\s*\d+[а-яa-z]?(?:\s*[\/-]\s*\d+[а-яa-z]?)?\s*$/i,'');s=s.replace(/[,;]\s*\d+[а-яa-z]?(?:\s*[\/-]\s*\d+[а-яa-z]?)?\s*$/,'');return s.replace(/\s{2,}/g,' ').replace(/[,;]\s*$/,'').trim();}window.publicAddress=publicAddress;
