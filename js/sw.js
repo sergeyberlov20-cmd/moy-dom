@@ -1,7 +1,7 @@
 /* Service worker «Мой Дом»
    Работает и на dom-mc.ru, и на github.io/moy-dom — все пути относительные. */
 
-const VERSION = 'v127';
+const VERSION = 'v128';
 const STATIC_CACHE = 'moydom-static-' + VERSION;
 const PAGE_CACHE = 'moydom-pages-' + VERSION;
 
