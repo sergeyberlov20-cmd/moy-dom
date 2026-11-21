@@ -161,6 +161,11 @@ document.getElementById('contact-form').addEventListener('submit', async functio
     btn.textContent = 'Отправка...';
     btn.disabled = true;
 
+    /* Если сеть «тормозит», успокаиваем посетителя: заявка не потеряется */
+    const slowTimer = setTimeout(function () {
+      if (window.showToast) showToast('Отправка затянулась — не закрывайте страницу: заявка уйдёт автоматически', 'error');
+    }, 5000);
+
     const payload = {
       name: (data.get('name') || '').toString().trim(),
       phone: (data.get('phone') || '').toString().trim(),
@@ -187,6 +192,7 @@ document.getElementById('contact-form').addEventListener('submit', async functio
     } catch (error) {
       showToast('Ошибка сети. Попробуйте позже.', 'error');
     } finally {
+      clearTimeout(slowTimer);
       btn.textContent = originalText;
       btn.disabled = false;
     }
