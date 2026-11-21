@@ -122,4 +122,23 @@
     setTimeout(watermark, 400);
   }
   window.addEventListener('load', function () { setTimeout(watermark, 1200); });
+
+  /* Каталог и лента объектов появляются после подгрузки data.json —
+     поэтому повторяем разметку знаков ещё несколько раз и следим за DOM */
+  var tries = 0;
+  var timer = setInterval(function () {
+    watermark();
+    if (++tries > 10) clearInterval(timer);
+  }, 1000);
+
+  document.addEventListener('dataLoaded', function () { setTimeout(watermark, 300); });
+
+  try {
+    var pending = null;
+    var mo = new MutationObserver(function () {
+      if (pending) return;
+      pending = setTimeout(function () { pending = null; watermark(); }, 700);
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+  } catch (e) { /* старые браузеры — обойдёмся таймером */ }
 })();
