@@ -23,14 +23,93 @@
     if (!BASE) return Promise.reject(new Error('no-api'));
     var body = Object.assign({}, payload || {});
     if (!body.elapsed) body.elapsed = window.mdElapsed();
-    return fetch(BASE + '/api/lead', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    }).then(function (r) {
-      if (!r.ok) throw new Error('api ' + r.status);
-      return r.json();
+
+    function attempt(left) {
+      var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 9000) : null;
+      return fetch(BASE + '/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: ctrl ? ctrl.signal : undefined
+      }).then(function (r) {
+        if (timer) clearTimeout(timer);
+        if (!r.ok) throw new Error('api ' + r.status);
+        return r.json();
+      }).catch(function (e) {
+        if (timer) clearTimeout(timer);
+        if (left > 0) {
+          return new Promise(function (res) { setTimeout(res, 800); }).then(function () { return attempt(left - 1); });
+        }
+        throw e;
+      });
+    }
+
+    return attempt(1).catch(function (e) {
+      /* Связь с сервером не удалась: заявку не теряем — кладём в очередь
+         и показываем резервный канал связи (Telegram / телефон). */
+      try { mdQueueLead(body); } catch (err) {}
+      try { window.mdShowLeadFallback(body); } catch (err) {}
+      throw e;
     });
+  };
+
+  /* ===== Очередь заявок на случай недоступности сервера ===== */
+  var QKEY = 'md_lead_queue';
+  function mdReadQueue() {
+    try { return JSON.parse(localStorage.getItem(QKEY) || '[]') || []; } catch (e) { return []; }
+  }
+  function mdWriteQueue(list) {
+    try { localStorage.setItem(QKEY, JSON.stringify(list.slice(-20))); } catch (e) {}
+  }
+  function mdQueueLead(body) {
+    var q = mdReadQueue();
+    q.push(Object.assign({ queued_at: new Date().toISOString() }, body));
+    mdWriteQueue(q);
+  }
+  window.mdFlushQueue = function () {
+    var q = mdReadQueue();
+    if (!q.length) return;
+    var rest = [];
+    var chain = Promise.resolve();
+    q.forEach(function (item) {
+      chain = chain.then(function () {
+        return fetch(BASE + '/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(item)
+        }).then(function (r) { if (!r.ok) throw new Error('bad'); })
+          .catch(function () { rest.push(item); });
+      });
+    });
+    chain.then(function () { mdWriteQueue(rest); });
+  };
+
+  /* Резервный канал: если сервер недоступен — заявка уходит в Telegram от имени клиента */
+  window.mdShowLeadFallback = function (payload) {
+    if (document.getElementById('md-lead-fallback')) return;
+    var text = 'Заявка с сайта dom-mc.ru' +
+      (payload.name ? '\nИмя: ' + payload.name : '') +
+      (payload.phone ? '\nТелефон: ' + payload.phone : '') +
+      (payload.message ? '\nСообщение: ' + payload.message : '') +
+      (payload.page ? '\nСтраница: ' + payload.page : '');
+    var tg = 'https://t.me/nedvizhimost_mariupol?text=' + encodeURIComponent(text);
+
+    var wrap = document.createElement('div');
+    wrap.id = 'md-lead-fallback';
+    wrap.setAttribute('role', 'dialog');
+    wrap.setAttribute('aria-modal', 'true');
+    wrap.style.cssText = 'position:fixed;inset:0;z-index:99998;background:rgba(15,23,42,.6);display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,Arial,sans-serif;';
+    wrap.innerHTML = '<div style="background:#fff;border-radius:18px;max-width:440px;width:100%;padding:26px 24px;box-shadow:0 24px 60px rgba(0,0,0,.3);">' +
+      '<div style="font-size:1.15rem;font-weight:800;color:#1c2e5a;margin-bottom:8px;">Заявка почти отправлена</div>' +
+      '<p style="margin:0 0 16px;color:#4b5563;font-size:.95rem;line-height:1.6;">Сервер не ответил (возможно, нестабильный интернет). Мы сохранили заявку и отправим её автоматически. Если хотите быстрее — отправьте её в Telegram одним нажатием.</p>' +
+      '<a href="' + tg + '" target="_blank" rel="noopener" style="display:block;text-align:center;background:#cc2229;color:#fff;text-decoration:none;font-weight:800;padding:13px 18px;border-radius:12px;margin-bottom:10px;">Отправить в Telegram</a>' +
+      '<a href="tel:+79495044455" style="display:block;text-align:center;background:#1c2e5a;color:#fff;text-decoration:none;font-weight:800;padding:13px 18px;border-radius:12px;margin-bottom:10px;">Позвонить +7 949 504-44-55</a>' +
+      '<button type="button" style="display:block;width:100%;background:#eef1f7;color:#1c2e5a;border:0;font-weight:800;padding:12px 18px;border-radius:12px;cursor:pointer;">Закрыть</button>' +
+      '</div>';
+    document.body.appendChild(wrap);
+    wrap.querySelector('button').addEventListener('click', function () { wrap.remove(); });
+    wrap.addEventListener('click', function (e) { if (e.target === wrap) wrap.remove(); });
   };
 
   if (!BASE) return;
@@ -76,5 +155,10 @@
   // просмотр страницы (один раз)
   if (document.readyState === 'complete') window.mdTrack('pageview', document.title);
   else window.addEventListener('load', function () { window.mdTrack('pageview', document.title); }, { once: true });
+
+  // если в прошлый раз сервер не ответил — досылаем сохранённые заявки
+  window.addEventListener('load', function () {
+    setTimeout(function () { try { window.mdFlushQueue(); } catch (e) {} }, 2500);
+  }, { once: true });
 })();
 

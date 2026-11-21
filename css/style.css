@@ -420,19 +420,20 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
   .nav-right { gap: 10px; flex-wrap: nowrap; align-items: center; justify-content: flex-end; }
   .social-icons { display: none !important; }
   
-  .logo { gap: 8px !important; display: flex; align-items: center; margin-right: auto; flex-shrink: 0; }
-  .logo-img { height: 40px !important; width: auto !important; object-fit: contain; } 
+  .logo { gap: 8px !important; display: flex; align-items: center; margin-right: auto; min-width: 0; flex-shrink: 1; }
+  .logo-img { height: 40px !important; width: auto !important; object-fit: contain; flex-shrink: 0; }
   
-  .logo-text { display: flex !important; flex-direction: column; justify-content: center; white-space: nowrap; }
+  .logo-text { display: flex !important; flex-direction: column; justify-content: center; white-space: nowrap; min-width: 0; overflow: hidden; }
   .logo-title { font-size: 1.4rem !important; line-height: 1; margin-bottom: 2px; } 
   .logo-subtitle { display: block !important; font-size: 0.6rem !important; letter-spacing: 0.5px; } 
   
   .mobile-menu-btn { display: flex !important; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 0; z-index: 300; flex-shrink: 0; }
   .mobile-menu-btn span { width: 28px; height: 2px; background: var(--text); transition: 0.3s; border-radius: 2px; }
   
-  .nav ul { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 0 0 16px 16px; z-index: 250; }
+  .nav ul { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 0 0 16px 16px; z-index: 250; max-height: calc(100vh - 75px); overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .nav ul.show { display: flex; }
   .nav ul li { width: 100%; text-align: center; margin-bottom: 15px; }
+  .nav ul li:last-child { margin-bottom: 0; }
   .nav ul a { font-size: 1.1rem !important; display: block; padding: 10px; }
 
   .objects-grid { grid-template-columns: 1fr; }
@@ -477,4 +478,66 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin
     padding: 20px 15px;
   }
   .price-values { font-size: 0.85rem; }
+}
+
+/* ===== Перелинковка: плашки услуг на «О нас» ===== */
+.services-badges { display: flex; flex-wrap: wrap; gap: 4px 2px; }
+.service-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  transition: background-color .18s ease, color .18s ease, box-shadow .18s ease;
+}
+span.service-badge { cursor: default; }
+a.service-badge:hover { background: rgba(28, 46, 90, .07); color: var(--primary); }
+a.service-badge:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; background: rgba(204, 34, 41, .06); }
+.services-all { margin: -30px 0 40px; }
+
+/* ===== Перелинковка: блок «Связанные услуги» на страницах услуг ===== */
+.service-related { margin: 10px 0 40px; }
+.service-related h2 { font-size: 1.35rem; font-weight: 800; color: var(--primary); margin-bottom: 6px; }
+.service-related p.lead { color: var(--muted); font-size: .95rem; margin-bottom: 16px; }
+.related-links { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+.related-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: .95rem;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  transition: background-color .18s ease, border-color .18s ease, color .18s ease;
+}
+.related-links a:hover { border-color: var(--accent); color: var(--accent); }
+.related-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (max-width: 600px) {
+  .service-badge { padding: 8px 10px; }
+  .services-all { margin: -18px 0 32px; }
+  .services-all .btn { width: 100%; }
+  .related-links a { width: 100%; justify-content: center; }
+}
+
+/* Узкие телефоны: логотип и бургер должны помещаться */
+@media (max-width: 380px) {
+  .logo-img { height: 34px !important; }
+  .logo-title { font-size: 1.15rem !important; }
+  .logo-subtitle { font-size: 0.5rem !important; letter-spacing: 0 !important; }
+  .mobile-menu-btn span { width: 24px; }
+}
+@media (max-width: 340px) {
+  .logo { gap: 6px !important; }
+  .logo-subtitle { display: none !important; }
+  .logo-title { font-size: 1.05rem !important; }
 }
