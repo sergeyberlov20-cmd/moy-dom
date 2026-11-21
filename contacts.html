@@ -125,7 +125,33 @@
 <script src="js/address.js"></script>
 <script src="js/main.js"></script>
 <script>
-  document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  /* Подсказка, если не отмечено согласие или поле не заполнено */
+document.getElementById('contact-form').addEventListener('invalid', function (e) {
+  var el = e.target;
+  if (!el || !el.style) return;
+  el.style.outline = '2px solid #cc2229';
+  el.style.outlineOffset = '2px';
+  if (el.type === 'checkbox') {
+    var row = el.closest('.checkbox-group');
+    if (row) {
+      row.style.background = 'rgba(204,34,41,.08)';
+      row.style.borderRadius = '10px';
+      row.style.padding = '10px';
+      row.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+    if (window.showToast) showToast('Отметьте согласие на обработку персональных данных', 'error');
+  }
+}, true);
+document.getElementById('contact-form').addEventListener('input', function (e) {
+  if (e.target && e.target.style) { e.target.style.outline = ''; }
+}, true);
+document.getElementById('contact-form').addEventListener('change', function (e) {
+  if (e.target && e.target.style) { e.target.style.outline = ''; }
+  var row = e.target && e.target.closest ? e.target.closest('.checkbox-group') : null;
+  if (row) { row.style.background = ''; row.style.padding = ''; }
+}, true);
+/* md-form-invalid-ok */
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const form = e.target;
     const data = new FormData(form);
