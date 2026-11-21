@@ -46,3 +46,4 @@ CREATE TABLE IF NOT EXISTS bot_users (
 
 CREATE INDEX IF NOT EXISTS idx_bot_users_last ON bot_users (last_seen);
 
+CREATE INDEX IF NOT EXISTS idx_leads_phone_created ON leads(phone, created_at);

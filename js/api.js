@@ -26,7 +26,7 @@
 
     function attempt(left) {
       var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
-      var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 9000) : null;
+      var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 7000) : null;
       return fetch(BASE + '/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -41,13 +41,13 @@
       }).catch(function (e) {
         if (timer) clearTimeout(timer);
         if (left > 0) {
-          return new Promise(function (res) { setTimeout(res, 800); }).then(function () { return attempt(left - 1); });
+          return new Promise(function (res) { setTimeout(res, 600); }).then(function () { return attempt(left - 1); });
         }
         throw e;
       });
     }
 
-    return attempt(1).catch(function (e) {
+    return attempt(2).catch(function (e) {
       /* Связь с сервером не удалась: заявку не теряем — кладём в очередь
          и показываем резервный канал связи (Telegram / телефон). */
       try { mdQueueLead(body); } catch (err) {}
