@@ -25,8 +25,9 @@
     .form-group label { display: block; font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
     .form-group input, .form-group textarea { width: 100%; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; font-size: 1rem; font-family: inherit; background: #f8f9fa; transition: all 0.2s; outline: none; }
     .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px rgba(28, 46, 90, 0.1); }
-    .checkbox-group { display: flex; align-items: flex-start; gap: 12px; margin: 24px 0; font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
-    .checkbox-group input { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; flex-shrink: 0; }
+    .checkbox-group { display: flex; align-items: flex-start; gap: 12px; margin: 24px 0; font-size: 0.85rem; color: var(--muted); line-height: 1.4; cursor: pointer; }
+    .checkbox-group:hover { color: var(--text); }
+    .checkbox-group input { margin-top: 2px; width: 22px; height: 22px; accent-color: var(--primary); cursor: pointer; flex-shrink: 0; }
     .checkbox-group a { color: var(--accent); text-decoration: none; }
     .checkbox-group a:hover { text-decoration: underline; }
     .info-list { list-style: none; padding: 0; margin: 0 0 30px 0; }
@@ -150,6 +151,15 @@ document.getElementById('contact-form').addEventListener('change', function (e) 
   var row = e.target && e.target.closest ? e.target.closest('.checkbox-group') : null;
   if (row) { row.style.background = ''; row.style.padding = ''; }
 }, true);
+/* клик по всей строке согласия переключает галочку */
+document.querySelectorAll('.checkbox-group').forEach(function (row) {
+  row.addEventListener('click', function (e) {
+    if (e.target && e.target.tagName === 'A') return;
+    var cb = row.querySelector('input[type=checkbox]');
+    if (!cb) return;
+    if (e.target !== cb) { cb.checked = !cb.checked; cb.dispatchEvent(new Event('change', { bubbles: true })); }
+  });
+});
 /* md-form-invalid-ok */
 document.getElementById('contact-form').addEventListener('submit', async function(e) {
     e.preventDefault();
