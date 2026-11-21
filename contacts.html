@@ -151,15 +151,6 @@ document.getElementById('contact-form').addEventListener('change', function (e) 
   var row = e.target && e.target.closest ? e.target.closest('.checkbox-group') : null;
   if (row) { row.style.background = ''; row.style.padding = ''; }
 }, true);
-/* клик по всей строке согласия переключает галочку */
-document.querySelectorAll('.checkbox-group').forEach(function (row) {
-  row.addEventListener('click', function (e) {
-    if (e.target && e.target.tagName === 'A') return;
-    var cb = row.querySelector('input[type=checkbox]');
-    if (!cb) return;
-    if (e.target !== cb) { cb.checked = !cb.checked; cb.dispatchEvent(new Event('change', { bubbles: true })); }
-  });
-});
 /* md-form-invalid-ok */
 document.getElementById('contact-form').addEventListener('submit', async function(e) {
     e.preventDefault();
