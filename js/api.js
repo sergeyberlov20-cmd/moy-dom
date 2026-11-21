@@ -26,7 +26,7 @@
 
     function attempt(left) {
       var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
-      var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 7000) : null;
+      var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 4500) : null;
       return fetch(BASE + '/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -47,7 +47,7 @@
       });
     }
 
-    return attempt(2).catch(function (e) {
+    return attempt(3).catch(function (e) {
       /* Связь с сервером не удалась: заявку не теряем — кладём в очередь
          и показываем резервный канал связи (Telegram / телефон). */
       try { mdQueueLead(body); } catch (err) {}
