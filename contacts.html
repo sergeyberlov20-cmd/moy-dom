@@ -17,9 +17,9 @@
   <link rel="preload" as="font" type="font/woff2" href="fonts/inter-400-cyrillic.woff2" crossorigin>
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
   <style>
-    .map-wrapper .leaflet-container { line-height: 1.4; font-family: inherit; }
+    .map-wrapper .maplibregl-map { line-height: 1.4; font-family: inherit; }
     .contacts-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 40px 0 80px; align-items: start; }
     .contact-card { background: var(--surface); padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
     .contact-card h2 { font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; font-weight: 800; }
@@ -109,7 +109,7 @@
           <li><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg><div><strong>Email</strong><span>100-da@mail.ru</span></div></li>
         </ul>
       </div>
-      <!-- Карта OpenStreetMap -->
+      <!-- Карта OpenFreeMap (подписи на русском) -->
       <div class="map-wrapper">
         <div id="office-map" style="height:320px;"></div>
       </div>
@@ -128,7 +128,7 @@
     <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
   </div>
 </footer>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="js/map.js"></script>
 <script>mdMap('office-map', 47.095, 37.548707, 17, { marker: '<b>Мой Дом</b><br>пр. Ленина (Мира), 54/46' });</script>
 <script src="js/address.js"></script>
