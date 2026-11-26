@@ -16,7 +16,9 @@
   <link rel="preload" as="font" type="font/woff2" href="fonts/inter-400-cyrillic.woff2" crossorigin>
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style>
+    .mini-map .leaflet-container { font-family: inherit; line-height: 1.4; }
     .object-layout { display: grid; grid-template-columns: 1fr 400px; gap: 30px; margin: 40px 0; align-items: start; }
     .object-main-left { display: flex; flex-direction: column; gap: 24px; }
     .object-sidebar-right { background: var(--surface); padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow); position: sticky; top: 100px; border: 1px solid var(--border); }
@@ -98,6 +100,8 @@
     <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
   </div>
 </footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/map.js"></script>
 <script src="js/data.js"></script>
 <script src="js/address.js"></script>
 <script src="js/main.js"></script>
@@ -197,14 +201,12 @@
     const mapLat = round3(obj.lat, 47.095);
     const mapLon = round3(obj.lon, 37.548);
     
-    // Карта OpenStreetMap: только район, без метки
-const dLat = 0.008, dLon = 0.012;
-const bbox = [mapLon - dLon, mapLat - dLat, mapLon + dLon, mapLat + dLat].join('%2C');
-const mapHtml = `
-  <div class="mini-map" style="margin-bottom: 8px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
-    <iframe src="https://www.openstreetmap.org/export/embed?bbox=${bbox}&layer=mapnik" width="100%" height="200" style="border:0;" loading="lazy"></iframe>
-  </div>
-  <p style="font-size: .82rem; color: var(--muted); margin: 0 0 24px; line-height: 1.5;">На карте — район расположения. Точный адрес и показ — по телефону <a href="tel:+79495044455" style="color: inherit;">+7 949 504-44-55</a>.</p>`;
+    // Карта OpenStreetMap (Leaflet): только район, без метки
+    const mapHtml = `
+      <div class="mini-map" style="margin-bottom: 8px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
+        <div id="obj-map" style="height:200px;"></div>
+      </div>
+      <p style="font-size: .82rem; color: var(--muted); margin: 0 0 24px; line-height: 1.5;">На карте — район расположения. Точный адрес и показ — по телефону <a href="tel:+79495044455" style="color: inherit;">+7 949 504-44-55</a>.</p>`;
 
     // Персональный телефон или дефолтный (поддержка двух номеров)
     const phoneStr1 = obj.phone || '+7 (949) 504-44-55';
@@ -250,6 +252,7 @@ const mapHtml = `
       </div>
       ${bookModal}`;
     if (window.initDetailGallery) { window.initDetailGallery(); }
+    mdMap('obj-map', mapLat, mapLon, 14, { circle: 600 });
 
     /* ипотека + запись на просмотр */
     (function initExtras() {
