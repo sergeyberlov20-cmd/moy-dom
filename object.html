@@ -1,2 +1,333 @@
-<!DOCTYPE html> <html lang="ru"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="theme-color" content="#1c2e5a"> <link rel="manifest" href="manifest.json"> <meta name="apple-mobile-web-app-capable" content="yes"> <meta name="mobile-web-app-capable" content="yes"> <meta name="apple-mobile-web-app-status-bar-style" content="default"> <meta name="apple-mobile-web-app-title" content="Мой Дом"> <link rel="icon" type="image/png" href="images/icon-192.png"> <link rel="apple-touch-icon" href="images/icon-192.png"> <title>Объект — Мой Дом</title> <meta name="description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики."> <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin> <link rel="stylesheet" href="css/fonts.css"> <link rel="stylesheet" href="css/style.css"> <style>.object-layout{display:grid;grid-template-columns:1fr 400px;gap:30px;margin:40px 0;align-items:start}.object-main-left{display:flex;flex-direction:column;gap:24px}.object-sidebar-right{background:var(--surface);padding:30px;border-radius:var(--radius);box-shadow:var(--shadow);position:sticky;top:100px;border:1px solid var(--border)}.description-box{background:var(--surface);padding:30px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}.description-title{font-size:1.4rem;font-weight:900;color:var(--primary);margin-bottom:20px;border-bottom:2px solid var(--border);padding-bottom:15px}.specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:25px 0;padding:0;list-style:none}.specs-grid li{background:#f8f9fa;padding:12px 16px;border-radius:8px;display:flex;flex-direction:column;border:1px solid var(--border)}.specs-grid li span:first-child{font-size:0.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}.specs-grid li span:last-child{font-weight:700;color:var(--text);font-size:1rem}.guarantee-box{background:#f0fdf4;border:1px solid #bbf7d0;padding:16px;border-radius:12px;margin-top:24px;display:flex;gap:12px;align-items:center}.guarantee-box svg{width:28px;height:28px;fill:#16a34a;flex-shrink:0}.guarantee-box p{margin:0;font-size:0.9rem;color:#166534;font-weight:500;line-height:1.4}@media (max-width:900px){.object-layout{grid-template-columns:1fr}.object-sidebar-right{position:static}.specs-grid{grid-template-columns:1fr}}</style> <meta property="og:type" content="website"> <meta property="og:site_name" content="Мой Дом"> <meta property="og:locale" content="ru_RU"> <meta property="og:title" content="Объект — Мой Дом"> <meta property="og:description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики."> <meta property="og:url" content="https://dom-mc.ru/object.html"> <meta property="og:image" content="https://dom-mc.ru/images/og-cover.png"> <meta property="og:image:width" content="1200"> <meta property="og:image:height" content="630"> <meta name="twitter:card" content="summary_large_image"> <meta name="twitter:title" content="Объект — Мой Дом"> <meta name="twitter:description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики."> <meta name="twitter:image" content="https://dom-mc.ru/images/og-cover.png"> </head> <body> <header> <div class="container nav"> <a href="index.html" class="logo"> <img src="images/logo.png" alt="Мой Дом" class="logo-img" width="50" height="50"> <div class="logo-text"><div class="logo-title">Мой<span>Дом</span></div><div class="logo-subtitle">Мультицентр недвижимости</div></div> </a> <div class="nav-right"> <ul id="main-nav"> <li><a href="index.html">Главная</a></li> <li><a href="catalog.html">Каталог</a></li> <li><a href="services/index.html">Услуги</a></li> <li><a href="blog/index.html">Блог</a></li> <li><a href="reviews/index.html">Отзывы</a></li> <li><a href="about.html">О нас</a></li> <li><a href="contacts.html">Контакты</a></li> <li><a href="favorites.html"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg> Избранное</a></li> </ul> <div class="social-icons"> <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="social-tg"></a> <a href="https://vk.com/moy_dom_mariupol" target="_blank" class="social-vk"></a> <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" class="social-max"></a> </div> <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню"><span></span><span></span><span></span></button> </div> </div> </header> <div class="container" id="object-container"> <div id="loader" style="text-align: center; padding: 100px 0; color: var(--muted);"> <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #e1e3e6; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div> <p style="margin-top: 15px; font-weight: 500;">Загружаем данные...</p> </div> </div> <style>@keyframes spin{100%{transform:rotate(360deg)}}</style> <section class="container" id="similar-section" style="display: none; margin: 10px auto 50px;"> <h2 class="section-title" style="font-size: 1.5rem;">Похожие объекты</h2> <p class="section-sub">Похожие по типу и цене — чтобы было с чем сравнить</p> <div class="objects-grid" id="similar-grid"></div> </section> <button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V6"/><path d="M5.6 12.4L12 6l6.4 6.4"/></svg></button> <footer> <div class="container"> <div class="footer-grid"> <div><h4>Мультицентр недвижимости «Мой Дом»</h4><p style="line-height: 1.8;">Помогаем покупать, продавать и арендовать жильё в Мариуполе. Работаем честно и открыто.</p></div> <div><h4>Контакты</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="tel:+79495044455" style="color:#fff; font-weight:bold; font-size: 1.2rem;">+7 (949) 504-44-55</a></li><li style="margin-bottom: 12px;">г. Мариуполь, пр. Ленина (Мира), 54/46</li></ul></div> <div><h4>Мессенджеры</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="https://t.me/nevizhimost_mariupol" target="_blank">Telegram</a></li><li style="margin-bottom: 12px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank">MAX</a></li><li><a href="https://vk.com/moy_dom_mariupol" target="_blank">ВКонтакте</a></li></ul></div> <div><h4>Документы</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li><a href="privacy.html">Политика конфиденциальности</a></li></ul></div> </div> <div class="copyright">© 2026 Мой Дом. Все права защищены.</div> </div> </footer> <script src="js/data.js"></script> <script src="js/address.js"></script> <script src="js/main.js"></script> <script>document.addEventListener("dataLoaded",()=>{const urlParams=new URLSearchParams(location.search),id=Number(urlParams.get("id")),obj=OBJECTS.find(o=>o.id===id),container=document.getElementById("object-container");if(!obj)return void(container.innerHTML='<div style="text-align: center; padding: 80px 20px;"><h1 class="section-title">Объект не найден</h1><p style="color: var(--muted); margin-bottom: 20px;">Возможно, он уже продан или ссылка устарела.</p><a href="catalog.html" class="btn">Вернуться в каталог</a></div>');document.title=`${obj.title} — ${obj.deal} | Мой Дом`,function(){try{const SITE="https://dom-mc.ru",url=SITE+"/objects/"+obj.id+".html";let canon=document.querySelector('link[rel="canonical"]');canon||(canon=document.createElement("link"),canon.rel="canonical",document.head.appendChild(canon)),canon.setAttribute("href",url);const cover=rawGallery&&rawGallery[0]?String(rawGallery[0]).replace(/^\//,""):"images/logo.png",pubAddr=window.publicAddress?window.publicAddress(obj.address):obj.address,desc=[obj.title,obj.deal,pubAddr,obj.price?Math.round(obj.price).toLocaleString("ru-RU")+" ₽":""].filter(Boolean).join(" · ").slice(0,300),setMeta=(key,content,isProp)=>{const sel=(isProp?'meta[property="':'meta[name="')+key+'"]';let el=document.querySelector(sel);el||(el=document.createElement("meta"),el.setAttribute(isProp?"property":"name",key),document.head.appendChild(el)),el.setAttribute("content",content)};setMeta("description",desc),setMeta("og:type","product",!0),setMeta("og:title",document.title,!0),setMeta("og:description",desc,!0),setMeta("og:url",url,!0),setMeta("og:image",SITE+"/"+cover,!0);const ld=document.createElement("script");ld.type="application/ld+json",ld.textContent=JSON.stringify({"@context":"https://schema.org","@type":"Product",name:obj.title,description:(obj.description||desc).slice(0,500),image:[SITE+"/"+cover],category:obj.type,url:url,offers:{"@type":"Offer",price:Number(obj.price)||0,priceCurrency:"RUB",availability:"https://schema.org/InStock",url:url,seller:{"@type":"RealEstateAgent",name:"Мультицентр недвижимости «Мой Дом»",telephone:"+7-949-504-44-55"}}}),document.head.appendChild(ld)}catch(e){}}();const rawGallery=obj.images&&obj.images.length>0?obj.images:[obj.image],galleryImages=rawGallery.map(img=>img.replace(/^\//,""));let isFav="";try{"function"==typeof isFavorite&&(isFav=isFavorite(obj.id)?"active":"")}catch(e){}const roomsRow=obj.rooms>0?`<li><span>Комнат</span><span>${obj.rooms}</span></li>`:"",areaRow=obj.area>0?`<li><span>Площадь</span><span>${obj.area} м²</span></li>`:"",floorRow=obj.floor>0&&obj.floors>0?`<li><span>Этаж</span><span>${obj.floor} из ${obj.floors}</span></li>`:"",addrText=window.publicAddress?window.publicAddress(obj.address):obj.address,addressHtml=addrText?`\n      <div style="color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; display: flex; align-items: center; gap: 6px;">\n        <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor; opacity:0.6;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>\n        ${addrText}\n      </div>`:"",round3=(v,fallback)=>{const n=Number(v);return isFinite(n)&&0!==n?Math.round(1e3*n)/1e3:fallback},mapLat=round3(obj.lat,47.095),mapLon=void 0,mapHtml=`\n      <div class="mini-map" style="margin-bottom: 8px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">\n        <iframe src="https://yandex.ru/map-widget/v1/?ll=${round3(obj.lon,37.548)}%2C${mapLat}&z=14&l=map" width="100%" height="200" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>\n      </div>\n      <p style="font-size: .82rem; color: var(--muted); margin: 0 0 24px; line-height: 1.5;">На карте — район расположения. Точный адрес и показ — по телефону <a href="tel:+79495044455" style="color: inherit;">+7 949 504-44-55</a>.</p>`,phoneStr1=obj.phone||"+7 (949) 504-44-55",phoneClean1=phoneStr1.replace(/[^0-9+]/g,""),phoneStr2=obj.phone2||"",phoneClean2=phoneStr2.replace(/[^0-9+]/g,"");container.innerHTML=`\n      <div class="object-layout">\n        <div class="object-main-left">\n          <div class="object-gallery" id="object-gallery" data-images='${JSON.stringify(galleryImages)}' style="height: 500px;"></div>\n          <div class="description-box">\n            <div class="description-title">Подробное описание</div>\n            <p style="white-space: pre-wrap; line-height: 1.8; font-size: 1.05rem; color: #333; margin: 0;">${obj.description}</p>\n          </div>\n        </div>\n        <div class="object-sidebar-right">\n          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">\n            <h1 style="font-size: 1.5rem; line-height: 1.3; margin: 0; font-weight: 800;">${obj.title}</h1>\n            <button class="favorite-btn ${isFav}" aria-label="В избранное" style="position:relative; top:0; right:0; width:40px; height:40px; flex-shrink:0;" onclick="toggleFavorite(${obj.id}, this)">\n              <svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>\n            </button>\n          </div>\n          ${addressHtml}\n          <div style="font-size: 2.2rem; color: var(--accent); font-weight: 900; margin-bottom: 20px; letter-spacing: -1px;">${formatPrice(obj.price,obj.deal)}</div>\n          <ul class="specs-grid">\n            <li><span>Тип</span><span>${obj.type}</span></li>\n            <li><span>Сделка</span><span>${obj.deal}</span></li>\n            ${roomsRow}${areaRow}${floorRow}\n          </ul>\n          ${mapHtml}\n          <div style="display: flex; flex-direction: column; gap: 10px;">\n            <a href="tel:${phoneClean1}" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">📞 ${phoneStr1}</a>\n            ${phoneStr2?`<a href="tel:${phoneClean2}" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">📞 ${phoneStr2}</a>`:""}\n            <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="width: 100%; padding: 16px; font-size: 1.1rem; background: #0088cc;">✈️ Написать в Telegram</a>\n            <button type="button" id="book-btn" class="btn" style="width: 100%; padding: 16px; font-size: 1.05rem; background: #1c2e5a; color: #fff;">📅 Записаться на просмотр</button>\n          </div>\n          <div class="guarantee-box">\n            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>\n            <p>Юридическая чистота сделки гарантирована агентством «Мой Дом»</p>\n          </div>\n        </div>\n      </div>\n      ${bookModal}`,window.initDetailGallery&&window.initDetailGallery(),function initExtras(){try{const modal=document.getElementById("book-modal"),openBtn=document.getElementById("book-btn"),closeBtn=document.getElementById("book-close"),form=document.getElementById("book-form"),msg=document.getElementById("book-msg");if(!modal||!openBtn)return;const open=function(){modal.style.display="flex",document.body.style.overflow="hidden"},close=function(){modal.style.display="none",document.body.style.overflow=""};openBtn.addEventListener("click",open),closeBtn&&closeBtn.addEventListener("click",close),modal.addEventListener("click",function(e){e.target===modal&&close()}),document.addEventListener("keydown",function(e){"Escape"===e.key&&close()}),form&&form.addEventListener("submit",function(e){e.preventDefault();const data=new FormData(form),payload={name:String(data.get("name")||"").trim(),phone:String(data.get("phone")||"").trim(),message:"Запись на просмотр: "+obj.title+" (объект №"+obj.id+")"+(String(data.get("when")||"").trim()?". Удобное время: "+String(data.get("when")).trim():""),page:location.pathname+location.search};msg.textContent="Отправляем…",window.mdSendLead?window.mdSendLead(payload).then(function(){msg.style.color="#0f9d6f",msg.textContent="Заявка отправлена. Мы получили вашу заявку, рассмотрим её и свяжемся с вами.",form.reset(),window.mdTrack&&window.mdTrack("form_submit","booking"),setTimeout(close,2500)}).catch(function(){msg.style.color="#cc2229",msg.textContent="Не удалось отправить. Позвоните: +7 949 504-44-55"}):msg.textContent="Форма временно недоступна, позвоните: +7 949 504-44-55"})}catch(e){}}();try{const sec=document.getElementById("similar-section"),grid=document.getElementById("similar-grid");if(sec&&grid&&Array.isArray(OBJECTS)&&window.renderCard){const base=Number(obj.price)||0,scored=OBJECTS.filter(x=>x.id!==obj.id&&x.deal===obj.deal).map(x=>{const p=Number(x.price)||0;let score=Math.abs(p-base);return x.type===obj.type&&(score*=.35),String(x.address).split(",")[0]===String(obj.address).split(",")[0]&&(score*=.8),{x:x,score:score}}).sort((a,b)=>a.score-b.score).slice(0,4).map(s=>s.x);scored.length&&(grid.innerHTML=scored.map(x=>window.renderCard(x,{actions:!0})).join(""),window.initMiniSliders&&window.initMiniSliders(),sec.style.display="")}}catch(e){}});</script> <script src="js/install.js" defer></script> <script src="js/mobile-bar.js" defer></script> <script src="js/api.js" defer></script> <script src="js/metrika.js" defer></script> <script src="js/protect.js" defer></script>
-</body> </html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1c2e5a">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Мой Дом">
+  <link rel="icon" type="image/png" href="images/icon-192.png">
+  <link rel="apple-touch-icon" href="images/icon-192.png">
+  <title>Объект — Мой Дом</title>
+  <meta name="description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики.">
+  <link rel="preload" as="font" type="font/woff2" href="fonts/inter-400-cyrillic.woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .object-layout { display: grid; grid-template-columns: 1fr 400px; gap: 30px; margin: 40px 0; align-items: start; }
+    .object-main-left { display: flex; flex-direction: column; gap: 24px; }
+    .object-sidebar-right { background: var(--surface); padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow); position: sticky; top: 100px; border: 1px solid var(--border); }
+    .description-box { background: var(--surface); padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .description-title { font-size: 1.4rem; font-weight: 900; color: var(--primary); margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 15px; }
+    .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 25px 0; padding: 0; list-style: none; }
+    .specs-grid li { background: #f8f9fa; padding: 12px 16px; border-radius: 8px; display: flex; flex-direction: column; border: 1px solid var(--border); }
+    .specs-grid li span:first-child { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .specs-grid li span:last-child { font-weight: 700; color: var(--text); font-size: 1rem; }
+    .guarantee-box { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 16px; border-radius: 12px; margin-top: 24px; display: flex; gap: 12px; align-items: center; }
+    .guarantee-box svg { width: 28px; height: 28px; fill: #16a34a; flex-shrink: 0; }
+    .guarantee-box p { margin: 0; font-size: 0.9rem; color: #166534; font-weight: 500; line-height: 1.4; }
+    @media (max-width: 900px) { .object-layout { grid-template-columns: 1fr; } .object-sidebar-right { position: static; } .specs-grid { grid-template-columns: 1fr; } }
+  </style>
+
+  <!-- Open Graph / соцсети -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Мой Дом">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:title" content="Объект — Мой Дом">
+  <meta property="og:description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики.">
+  <meta property="og:url" content="https://dom-mc.ru/object.html">
+  <meta property="og:image" content="https://dom-mc.ru/images/og-cover.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Объект — Мой Дом">
+  <meta name="twitter:description" content="Подробная информация об объекте недвижимости в Мариуполе. Фото, цена, характеристики.">
+  <meta name="twitter:image" content="https://dom-mc.ru/images/og-cover.png">
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo">
+      <img src="images/logo.png" alt="Мой Дом" class="logo-img" width="50" height="50">
+      <div class="logo-text"><div class="logo-title">Мой<span>Дом</span></div><div class="logo-subtitle">Мультицентр недвижимости</div></div>
+    </a>
+    <div class="nav-right">
+      <ul id="main-nav">
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="catalog.html">Каталог</a></li>
+        <li><a href="services/index.html">Услуги</a></li>
+        <li><a href="blog/index.html">Блог</a></li>
+        <li><a href="reviews/index.html">Отзывы</a></li>
+        <li><a href="about.html">О нас</a></li>
+        <li><a href="contacts.html">Контакты</a></li>
+        <li><a href="favorites.html"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg> Избранное</a></li>
+      </ul>
+      <div class="social-icons">
+        <a href="https://t.me/nedvizhimost_mariupol" target="_blank" class="social-tg"></a>
+        <a href="https://vk.com/moy_dom_mariupol" target="_blank" class="social-vk"></a>
+        <a href="https://max.ru/nedvizhimost_mariupol" target="_blank" class="social-max"></a>
+      </div>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="container" id="object-container">
+  <div id="loader" style="text-align: center; padding: 100px 0; color: var(--muted);">
+    <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #e1e3e6; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+    <p style="margin-top: 15px; font-weight: 500;">Загружаем данные...</p>
+  </div>
+</div>
+<style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
+<section class="container" id="similar-section" style="display: none; margin: 10px auto 50px;">
+  <h2 class="section-title" style="font-size: 1.5rem;">Похожие объекты</h2>
+  <p class="section-sub">Похожие по типу и цене — чтобы было с чем сравнить</p>
+  <div class="objects-grid" id="similar-grid"></div>
+</section>
+<button id="scrollTopBtn" title="Наверх" aria-label="Наверх"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V6"/><path d="M5.6 12.4L12 6l6.4 6.4"/></svg></button>
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div><h4>Мультицентр недвижимости «Мой Дом»</h4><p style="line-height: 1.8;">Помогаем покупать, продавать и арендовать жильё в Мариуполе. Работаем честно и открыто.</p></div>
+      <div><h4>Контакты</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="tel:+79495044455" style="color:#fff; font-weight:bold; font-size: 1.2rem;">+7 (949) 504-44-55</a></li><li style="margin-bottom: 12px;">г. Мариуполь, пр. Ленина (Мира), 54/46</li></ul></div>
+      <div><h4>Мессенджеры</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li style="margin-bottom: 12px;"><a href="https://t.me/nedvizhimost_mariupol" target="_blank">Telegram</a></li><li style="margin-bottom: 12px;"><a href="https://max.ru/nedvizhimost_mariupol" target="_blank">MAX</a></li><li><a href="https://vk.com/moy_dom_mariupol" target="_blank">ВКонтакте</a></li></ul></div>
+      <div><h4>Документы</h4><ul style="list-style: none; padding: 0; margin-top: 5px;"><li><a href="privacy.html">Политика конфиденциальности</a></li></ul></div>
+    </div>
+    <div class="copyright">© 2026 Мой Дом. Все права защищены.</div>
+  </div>
+</footer>
+<script src="js/data.js"></script>
+<script src="js/address.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.addEventListener('dataLoaded', () => {
+    const urlParams = new URLSearchParams(location.search);
+    const id = Number(urlParams.get('id'));
+    const obj = OBJECTS.find(o => o.id === id);
+    const container = document.getElementById('object-container');
+    
+    if (!obj) {
+      container.innerHTML = `<div style="text-align: center; padding: 80px 20px;"><h1 class="section-title">Объект не найден</h1><p style="color: var(--muted); margin-bottom: 20px;">Возможно, он уже продан или ссылка устарела.</p><a href="catalog.html" class="btn">Вернуться в каталог</a></div>`;
+      return;
+    }
+    
+    document.title = `${obj.title} — ${obj.deal} | Мой Дом`;
+
+    /* SEO карточки: canonical, description и OG под конкретный объект */
+    (function () {
+      try {
+        const SITE = 'https://dom-mc.ru';
+        const url = SITE + '/objects/' + obj.id + '.html';
+        let canon = document.querySelector('link[rel="canonical"]');
+        if (!canon) { canon = document.createElement('link'); canon.rel = 'canonical'; document.head.appendChild(canon); }
+        canon.setAttribute('href', url);
+
+        const cover = (obj.images && obj.images[0] ? String(obj.images[0]).replace(/^\//, '') : 'images/logo.png');
+        const pubAddr = (window.publicAddress ? window.publicAddress(obj.address) : obj.address);
+        const desc = [obj.title, obj.deal, pubAddr, obj.price ? Math.round(obj.price).toLocaleString('ru-RU') + ' ₽' : '']
+          .filter(Boolean).join(' · ').slice(0, 300);
+
+        const setMeta = (key, content, isProp) => {
+          const sel = (isProp ? 'meta[property="' : 'meta[name="') + key + '"]';
+          let el = document.querySelector(sel);
+          if (!el) {
+            el = document.createElement('meta');
+            el.setAttribute(isProp ? 'property' : 'name', key);
+            document.head.appendChild(el);
+          }
+          el.setAttribute('content', content);
+        };
+
+        setMeta('description', desc);
+        setMeta('og:type', 'product', true);
+        setMeta('og:title', document.title, true);
+        setMeta('og:description', desc, true);
+        setMeta('og:url', url, true);
+        setMeta('og:image', SITE + '/' + cover, true);
+
+        const ld = document.createElement('script');
+        ld.type = 'application/ld+json';
+        ld.textContent = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: obj.title,
+          description: (obj.description || desc).slice(0, 500),
+          image: [SITE + '/' + cover],
+          category: obj.type,
+          url: url,
+          offers: {
+            '@type': 'Offer',
+            price: Number(obj.price) || 0,
+            priceCurrency: 'RUB',
+            availability: 'https://schema.org/InStock',
+            url: url,
+            seller: { '@type': 'RealEstateAgent', name: 'Мультицентр недвижимости «Мой Дом»', telephone: '+7-949-504-44-55' }
+          }
+        });
+        document.head.appendChild(ld);
+      } catch (e) { /* SEO-блок не критичен */ }
+    })();
+    const rawGallery = obj.images && obj.images.length > 0 ? obj.images : [obj.image]; 
+    const galleryImages = rawGallery.map(img => img.replace(/^\//, ''));
+    
+    let isFav = '';
+    try { if (typeof isFavorite === 'function') isFav = isFavorite(obj.id) ? 'active' : ''; } catch(e) {}
+    
+    const roomsRow  = obj.rooms  > 0 ? `<li><span>Комнат</span><span>${obj.rooms}</span></li>` : '';
+    const areaRow   = obj.area   > 0 ? `<li><span>Площадь</span><span>${obj.area} м²</span></li>` : '';
+    const floorRow  = (obj.floor > 0 && obj.floors > 0) ? `<li><span>Этаж</span><span>${obj.floor} из ${obj.floors}</span></li>` : '';
+    
+    // Если адрес есть, выводим его — только улица и район, без номера дома
+    const addrText = (window.publicAddress ? window.publicAddress(obj.address) : obj.address);
+    const addressHtml = addrText ? `
+      <div style="color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; display: flex; align-items: center; gap: 6px;">
+        <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor; opacity:0.6;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        ${addrText}
+      </div>` : '';
+
+    // Политика приватности: точный адрес и точку на карте не публикуем.
+    // Показываем только улицу и район расположения — метка не ставится.
+    const round3 = (v, fallback) => {
+      const n = Number(v);
+      if (!isFinite(n) || n === 0) return fallback;
+      return Math.round(n * 1000) / 1000;
+    };
+    const mapLat = round3(obj.lat, 47.095);
+    const mapLon = round3(obj.lon, 37.548);
+    
+    // НОВАЯ КАРТА 2ГИС (ВМЕСТО ЯНДЕКСА)
+    const mapHtml = `
+      <div class="mini-map" style="margin-bottom: 8px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
+        <iframe src="https://maps.2gis.ru/widget?lon=${mapLon}&lat=${mapLat}&z=14&utm_source=site&utm_medium=widget" width="100%" height="200" frameborder="0" allowfullscreen="true" style="border:0;" loading="lazy"></iframe>
+      </div>
+      <p style="font-size: .82rem; color: var(--muted); margin: 0 0 24px; line-height: 1.5;">На карте — район расположения. Точный адрес и показ — по телефону <a href="tel:+79495044455" style="color: inherit;">+7 949 504-44-55</a>.</p>`;
+
+    // Персональный телефон или дефолтный (поддержка двух номеров)
+    const phoneStr1 = obj.phone || '+7 (949) 504-44-55';
+    const phoneClean1 = phoneStr1.replace(/[^0-9+]/g, '');
+    const phoneStr2 = obj.phone2 || '';
+    const phoneClean2 = phoneStr2.replace(/[^0-9+]/g, '');
+
+    container.innerHTML = `
+      <div class="object-layout">
+        <div class="object-main-left">
+          <div class="object-gallery" id="object-gallery" data-images='${JSON.stringify(galleryImages)}' style="height: 500px;"></div>
+          <div class="description-box">
+            <div class="description-title">Подробное описание</div>
+            <p style="white-space: pre-wrap; line-height: 1.8; font-size: 1.05rem; color: #333; margin: 0;">${obj.description}</p>
+          </div>
+        </div>
+        <div class="object-sidebar-right">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
+            <h1 style="font-size: 1.5rem; line-height: 1.3; margin: 0; font-weight: 800;">${obj.title}</h1>
+            <button class="favorite-btn ${isFav}" aria-label="В избранное" style="position:relative; top:0; right:0; width:40px; height:40px; flex-shrink:0;" onclick="toggleFavorite(${obj.id}, this)">
+              <svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+            </button>
+          </div>
+          ${addressHtml}
+          <div style="font-size: 2.2rem; color: var(--accent); font-weight: 900; margin-bottom: 20px; letter-spacing: -1px;">${formatPrice(obj.price, obj.deal)}</div>
+          <ul class="specs-grid">
+            <li><span>Тип</span><span>${obj.type}</span></li>
+            <li><span>Сделка</span><span>${obj.deal}</span></li>
+            ${roomsRow}${areaRow}${floorRow}
+          </ul>
+          ${mapHtml}
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <a href="tel:${phoneClean1}" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">📞 ${phoneStr1}</a>
+            ${phoneStr2 ? `<a href="tel:${phoneClean2}" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">📞 ${phoneStr2}</a>` : ''}
+            <a href="https://t.me/nedvizhimost_mariupol" target="_blank" class="btn" style="width: 100%; padding: 16px; font-size: 1.1rem; background: #0088cc;">✈️ Написать в Telegram</a>
+            <button type="button" id="book-btn" class="btn" style="width: 100%; padding: 16px; font-size: 1.05rem; background: #1c2e5a; color: #fff;">📅 Записаться на просмотр</button>
+          </div>
+          <div class="guarantee-box">
+            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            <p>Юридическая чистота сделки гарантирована агентством «Мой Дом»</p>
+          </div>
+        </div>
+      </div>
+      ${bookModal}`;
+    if (window.initDetailGallery) { window.initDetailGallery(); }
+
+    /* ипотека + запись на просмотр */
+    (function initExtras() {
+      // модальное окно записи
+      try {
+        const modal = document.getElementById('book-modal');
+        const openBtn = document.getElementById('book-btn');
+        const closeBtn = document.getElementById('book-close');
+        const form = document.getElementById('book-form');
+        const msg = document.getElementById('book-msg');
+        if (!modal || !openBtn) return;
+
+        const open = function () { modal.style.display = 'flex'; document.body.style.overflow = 'hidden'; };
+        const close = function () { modal.style.display = 'none'; document.body.style.overflow = ''; };
+
+        openBtn.addEventListener('click', open);
+        if (closeBtn) closeBtn.addEventListener('click', close);
+        modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+        if (form) {
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const data = new FormData(form);
+            const payload = {
+              name: String(data.get('name') || '').trim(),
+              phone: String(data.get('phone') || '').trim(),
+              message: 'Запись на просмотр: ' + obj.title + ' (объект №' + obj.id + ')' +
+                (String(data.get('when') || '').trim() ? '. Удобное время: ' + String(data.get('when')).trim() : ''),
+              page: location.pathname + location.search
+            };
+            msg.textContent = 'Отправляем…';
+            if (!window.mdSendLead) { msg.textContent = 'Форма временно недоступна, позвоните: +7 949 504-44-55'; return; }
+            window.mdSendLead(payload).then(function () {
+              msg.style.color = '#0f9d6f';
+              msg.textContent = 'Заявка отправлена. Мы получили вашу заявку, рассмотрим её и свяжемся с вами.';
+              form.reset();
+              if (window.mdTrack) window.mdTrack('form_submit', 'booking');
+              setTimeout(close, 2500);
+            }).catch(function () {
+              msg.style.color = '#cc2229';
+              msg.textContent = 'Не удалось отправить. Позвоните: +7 949 504-44-55';
+            });
+          });
+        }
+      } catch (e) {}
+    })();
+
+    // Похожие объекты: тот же тип и сделка, близкая цена
+    try {
+      const sec = document.getElementById('similar-section');
+      const grid = document.getElementById('similar-grid');
+      if (sec && grid && Array.isArray(OBJECTS) && window.renderCard) {
+        const base = Number(obj.price) || 0;
+        const scored = OBJECTS
+          .filter((x) => x.id !== obj.id && x.deal === obj.deal)
+          .map((x) => {
+            const p = Number(x.price) || 0;
+            let score = Math.abs(p - base);
+            if (x.type === obj.type) score = score * 0.35;          // тот же тип — приоритет
+            if (String(x.address).split(',')[0] === String(obj.address).split(',')[0]) score *= 0.8;
+            return { x: x, score: score };
+          })
+          .sort((a, b) => a.score - b.score)
+          .slice(0, 4)
+          .map((s) => s.x);
+
+        if (scored.length) {
+          grid.innerHTML = scored.map((x) => window.renderCard(x, { actions: true })).join('');
+          if (window.initMiniSliders) window.initMiniSliders();
+          sec.style.display = '';
+        }
+      }
+    } catch (e) { /* похожие объекты не критичны */ }
+  });
+</script>
+<script src="js/install.js" defer></script>
+<script src="js/mobile-bar.js" defer></script>
+<script src="js/api.js" defer></script>
+<script src="js/metrika.js" defer></script>
+  <script src="js/protect.js" defer></script>
+</body>
+</html>
