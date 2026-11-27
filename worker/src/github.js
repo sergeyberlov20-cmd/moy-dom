@@ -211,8 +211,8 @@ export async function addObjectToCatalog(env, draft) {
       area: Number(draft.area) || 0,
       floor: 0,
       floors: 0,
-      image: imagePath || 'images/logo.png',
-      images: [imagePath || 'images/logo.png'],
+      image: imagePath || 'images/logo.webp',
+      images: [imagePath || 'images/logo.webp'],
       description: draft.description || '',
       date: new Date().toISOString().slice(0, 10)
     };

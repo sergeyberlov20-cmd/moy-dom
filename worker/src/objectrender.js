@@ -54,7 +54,7 @@ function phoneButtons(o) {
 }
 
 function card(o) {
-  const img = String(o.image || 'images/logo.png').replace(/^\//, '');
+  const img = String(o.image || 'images/logo.webp').replace(/^\//, '');
   const thumb = img.replace(/(^|\/)images\//, '$1images/thumb/');
   const addr = String(o.address || '').replace(/^г\.\s*Мариуполь,\s*/i, '');
   const sp = [];
@@ -83,7 +83,7 @@ const BOOK_MODAL = `<div id="book-modal" style="position:fixed;inset:0;backgroun
 /** Рендер страницы объекта из шаблона */
 export function renderObject(template, o, all) {
   const addr = String(o.address || '').replace(/^г\.\s*Мариуполь,\s*/i, '');
-  const imgMain = '../' + String(o.image || 'images/logo.png').replace(/^\//, '');
+  const imgMain = '../' + String(o.image || 'images/logo.webp').replace(/^\//, '');
   const imgs = (o.images && o.images.length ? o.images : [o.image]).filter(Boolean);
   const thumbs = '';
   // список фото для слайдера на странице объекта
