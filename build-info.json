@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T20:15:11.032Z",
+ "builtAt": "2026-11-27T20:17:25.061Z",
  "files": 1167,
- "hash": "dbb6aeb5b988a12cad8857542d81d322824c011c61f8b4309ff9734699fa57e8",
+ "hash": "8d022a489ec6050687dc5efeb54972e4ad1ee3fef55c5d9b92081aad4107300d",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "0135563a40f3717806fddb3f047366d62594a2cd7a9773d3d7b241ce82274404",
@@ -1049,7 +1049,7 @@
   "js/data.json": "146121d62eb372b05233d682e3124d37ccf91489bebf20487edc15aa88a6c5df",
   "js/fav.js": "a4224bb8ca6cb6bf3f2fade2b346d6610ccc86338dcc481da1b537dc19857d03",
   "js/install.js": "b84850783354c3927a019b9621b2c620a1669a139cbb04e2f17230b85bede4df",
-  "js/main.js": "524f651e898a6ebeb7b2c9da5be419056e847eff43d3402bfa8ecc3060a5c0d8",
+  "js/main.js": "1840ee468099708c791e045ccd08a857740dddf2d36f78ae5dfb2a7b50ba1826",
   "js/map-config.js": "971ef64f7dfa429f65347467ac3522b894689cf893bc7216ec37dc94aee63d56",
   "js/map.js": "c4674a83d5cf4505c7c76127b5b0c0db70a09e7b59efd0775a62871d8df70988",
   "js/metrika.js": "726b7d0490e8b7cd2a563e44fd835fc1db2e21be3dbb163082e50c73da3e0069",
@@ -1133,15 +1133,15 @@
   "reviews/index.html": "230c7633a8aeac5548a1451fec3a2b0ad9c14909034693d6d77e60b2d9fb6441",
   "robots.txt": "9172aed7b9c935f7b8886292df2bce99500c77dd8fb45274139fbae27de0040f",
   "services/index.html": "90fab03883dad8012b8e2cd874118a83b2f1c0dbf363fa15b827a4b7ec4f815e",
-  "services/uslugi-1.html": "89136bfc36a4b872687bb64515c9d40b63a412a13e5b92cff09b5b56b1b99fe7",
-  "services/uslugi-2.html": "46e0b38c9ffb804b5815018f6f150467a4bca50855931d4c99a93789ab6e435c",
-  "services/uslugi-3.html": "efeb204fd61d1779dd2ddd53d85ea0b4a97838ccc401ef5f522a1c4bf23aa685",
-  "services/uslugi-4.html": "a055fa354383c2c119d7473401a9ac895ce299553dac727a0db454623e982a7c",
-  "services/uslugi-5.html": "79afe69c84ef68159b566114ca3b879f592feb0d227a59909482d84d7626368e",
-  "services/uslugi-6.html": "336270be3bc9808fb9e3ec883bb0a06cc239a5aef2a53f4c4fe52b5e91972ff5",
-  "services/uslugi-7.html": "79d52a9d225e28551900a3836da77373ae4d69c9c2060a7b90eaae33e962fcd2",
-  "services/uslugi-8.html": "8d117197721df3747cc438fe5a4b1c9833758e9c391620d5f4ad2e6935b7773f",
-  "services/uslugi-9.html": "ea654d1440edd68fbe93c727711caa7b5db77fbaacebde4adc01962300915f65",
+  "services/uslugi-1.html": "2f5d88ced41d8c20932b5e7f249a0bfd168a9d0e32eb3a1eff93bae713eb2088",
+  "services/uslugi-2.html": "e656256c1da35eda29d7dfdb0825ecc68f07280e374309a73a9ceecec2d97ab0",
+  "services/uslugi-3.html": "c9ea9e8e7fe616d4516736cbe968895aa080cf5ee703784501b46045510fe762",
+  "services/uslugi-4.html": "212268ce35aa4a7181468be8db6ed80d952a429cde8cb9ddd069f226bc1813b0",
+  "services/uslugi-5.html": "467a72414e28be4968b0e4483cd2ffa939aeb5b0836202b42919574b35f74219",
+  "services/uslugi-6.html": "b23365955e9116c08ef40135645150da6fa73da82dcdf34b3971a3232ba585c1",
+  "services/uslugi-7.html": "98e665fe99113bad8f84f732083cf74546b0d8652e422b47e69b8c7bc2d1b52b",
+  "services/uslugi-8.html": "0e871d8bf74d501736f3dd154256f14199988d49987d5e3d7f3f0f77c656d885",
+  "services/uslugi-9.html": "bc40afaa5554ea61b7c9d94aebed93025ce1982974b09fb86eec620e652b33aa",
   "sitemap.xml": "1fe01884742f1c1e9cf95ef74a725786b007ced9909545aa2de743a048899f52",
   "worker/.wrangler/cache/wrangler-account.json": "b5a4fb3f9526fc6327e1cbeaed45c5291756d6ee9cf8974c0f098105eaf2aeb0",
   "worker/check-token.ps1": "111ba0cf6c92675d263a0bd9f2b3353296021a175bf4bb630bc9e09edb4dd027",
@@ -1172,5 +1172,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "2896cde629718e4846ef86fa7daf930bd3855a34789e541eaa7fe4c209c1ed58"
  },
- "signature": "a59b02a9374aec8d2a43ad802477a7c16825ac974febbaf38ebcbf211995d0a5"
+ "signature": "20e9f22bd5ac8a52f6652c8f69b7fcaac05beb8e247ea2d2150e74fabf1ef43a"
 }
