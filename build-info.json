@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T15:38:33.451Z",
+ "builtAt": "2026-11-27T15:47:45.764Z",
  "files": 862,
- "hash": "57c485adf32c41c6daafb5200c497a2ec47ba2f8f8a8862fd3317850b4a7d6a3",
+ "hash": "98ad69cb0aa1bcc07f9b903af64d5cb98d5840259a725939deac485d8da89b25",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "90f95bb7c0137e61ced2b49318416a460dcb7b55477a3598ce2817f0cae1432f",
@@ -18,7 +18,7 @@
   "CNAME": "1bad9674717ec23875628fd389dcf282cf277fe9d185915d7a6109d4b79d7dba",
   "contacts.html": "e77a422a4c4233075f850c311484d6dd39a1827b0e5c79f9868a8ba90c292cc8",
   "css/fonts.css": "4a117b8c8ace94d83a10790a632b9109a5b39bdf7c9d6d20c4e4298f7125285e",
-  "css/style.css": "47fbe47b1eb08945181caaae161b25c63dc6b462cfcbfa74bd5e8bb9f20a3d2d",
+  "css/style.css": "f729fd7faa2697c787adac87ecdf74bc15ab79fad03734940837a55b5a1f87b7",
   "favorites.html": "8aae6abc6aa9b5c9a4390ba7d7a8b3e1b8f38a9a647a9477b9e5abb90344fc40",
   "fonts/inter-var-cyrillic-ext.woff2": "ca157063339ac4ad418f214f3abfed119b0798ab4d377386ce5c9e5a7a435ebd",
   "fonts/inter-var-cyrillic.woff2": "71d5ee93cc1e9f1d520a3a8b66456de18c7879d8df09d57fcd2eaff75fef0075",
@@ -748,7 +748,7 @@
   "images/uploads/2.jpg": "29002e74c88097f6a69f3d9812b8a482fc65cbd261ceb996819041a96cce9844",
   "images/uploads/3.jpg": "db40984236bd6f7d28bbb86c25717968856b5aaea767ec4fb6f950879dda4528",
   "images/vk-logo.png": "25dfe61842345c39cb13beeee5b921cfe1c16b5f774067416728f8046c56f925",
-  "index.html": "caaa2c9ee0fc1488d86099d4994bf659db7d0f678bd1b1f4c9b65c43f5a63fcb",
+  "index.html": "270b09bdf0a9313a2b8e3d713942f1050cda71a973479adae991e926ea72de1d",
   "js/address.js": "134c6c95c0a4b6f559a75f4da2ddf641632ef27ace9bf0e9c05da799bfcaf544",
   "js/api.js": "838316d01bf6cf9bd9c9958df3b3ba6d3de4a47dcd18b369adc42ceedfab6832",
   "js/data.js": "f44a109af6fd3bf17be178edc7b548e6bd936939ca5e9ba6d44208bcdcac2118",
@@ -764,7 +764,7 @@
   "js/reviews.js": "9eb60c3b56255afebc017bde67b644718c214ea177471523fc381cafb98d8d31",
   "js/script.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "js/slider.js": "26e82d7e4c688716c973156b5c9cb001d66af0a53fe7010ac6d7f25bf756308f",
-  "js/sw.js": "04ecfec59c7022f75395bcf8ffcda9fa953efd3e833da6328a7cfe0a25110ed0",
+  "js/sw.js": "22c7d6e063f3d7f73c9069e79bac16b918d483438f735be2f094b5a961b3aab5",
   "manifest.json": "12263af58a571e969fb57509b1b2119cc99dfa890ccddac728a7e72bd79fac1d",
   "object.html": "8a36166f12f2f6e043b5dafc6a89f57499773d3e41e1641199c93b8740ce69aa",
   "objects/1.html": "8731bfa11bf1df6072aef592dc4d6f3bf75cb5f0bb481c3cf6706c55e4a67501",
@@ -867,5 +867,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "9690b6ccdad74718c395d0b2e555487c2b9a3cc6fc5afb625e3b5b1fa2e444d9"
  },
- "signature": "e4fcbdd009476dbdd8fbfcca541a9668515c3452630405ec46ece77f8b6dc673"
+ "signature": "24558f48479934c18a88f7ce95c2fb184c3c3c67ded5a04ce4a0b329d6702436"
 }
