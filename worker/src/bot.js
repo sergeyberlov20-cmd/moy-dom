@@ -53,6 +53,27 @@ export async function handleTelegram(request, env) {
 
   let update = null;
   try { update = await request.json(); } catch (e) { return new Response('bad', { status: 400 }); }
+  // ── Цена из Telegram: админ пишет «3569 4500000» ──
+  {
+    const _msg = update && update.message;
+    const _txt = String((_msg && _msg.text) || '').trim();
+    const _m = /^(\d{3,6})\s+(\d{4,9})$/.exec(_txt);
+    const _uid = _msg && _msg.from ? _msg.from.id : 0;
+    if (_m && isAdmin(env, _uid) && env.DB) {
+      const post = 'nedvizhimost_mariupol/' + _m[1];
+      const price = Number(_m[2]);
+      try {
+        await env.DB.prepare("UPDATE tg_queue SET price = ?, status = 'ready' WHERE post = ?").bind(price, post).run();
+        const row = await env.DB.prepare('SELECT post, price FROM tg_queue WHERE post = ?').bind(post).first();
+        if (row) await tgSend(env, _msg.chat.id, '✅ Цена принята: ' + _m[1] + ' — ' + price + ' ₽');
+        else await tgSend(env, _msg.chat.id, '⚠️ Поста ' + _m[1] + ' нет в очереди.');
+      } catch (e) {
+        await tgSend(env, _msg.chat.id, '⚠️ Ошибка: ' + e.message);
+      }
+      return new Response('ok');
+    }
+  }
+
 
   /* ---------- ПОЛНАЯ ПАУЗА: бот спит у всех ---------- */
   const pausedNow = await isBotPaused(env);
