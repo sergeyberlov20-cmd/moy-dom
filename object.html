@@ -31,9 +31,9 @@
           ${mapHtml}
           <div style="display: flex; flex-direction: column; gap: 10px;">
             <a href="tel:${phoneClean1}" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">📞 ${phoneStr1}</a>
-            ${phoneStr2 ? `<a href="tel:${phoneClean2}"class="btn btn-accent"style="width: 100%; padding: 16px; font-size: 1.1rem;">📞${phoneStr2}</a>` : ''}
-            <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="width:100%;padding:16px;font-size:1.1rem;background:#0088cc;">✈️ Написать в Telegram</a>
-            <button type="button" id="book-btn" class="btn" style="width:100%;padding:16px;font-size:1.05rem;background:#1c2e5a;color:#fff;">📅 Записаться на просмотр</button>
+            ${phoneStr2 ? `<a href="tel:${phoneClean2}" class="btn btn-accent" style="width: 100%; padding: 16px; font-size: 1.1rem;">📞 ${phoneStr2}</a>` : ''}
+            <a href="https://t.me/nevizhimost_mariupol" target="_blank" class="btn" style="width: 100%; padding: 16px; font-size: 1.1rem; background: #0088cc;">✈️ Написать в Telegram</a>
+            <button type="button" id="book-btn" class="btn" style="width: 100%; padding: 16px; font-size: 1.05rem; background: #1c2e5a; color: #fff;">📅 Записаться на просмотр</button>
           </div>
           <div class="guarantee-box">
             <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
@@ -41,82 +41,6 @@
           </div>
         </div>
       </div>
-      ${bookModal}`;
-    if (window.initDetailGallery) { window.initDetailGallery(); }
-
-    /* ипотека + запись на просмотр */
-    (function initExtras() {
-      // модальное окно записи
-      try {
-        const modal = document.getElementById('book-modal');
-        const openBtn = document.getElementById('book-btn');
-        const closeBtn = document.getElementById('book-close');
-        const form = document.getElementById('book-form');
-        const msg = document.getElementById('book-msg');
-        if (!modal || !openBtn) return;
-
-        const open = function () { modal.style.display = 'flex'; document.body.style.overflow = 'hidden'; };
-        const close = function () { modal.style.display = 'none'; document.body.style.overflow = ''; };
-
-        openBtn.addEventListener('click', open);
-        if (closeBtn) closeBtn.addEventListener('click', close);
-        modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
-        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-
-        if (form) {
-          form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const data = new FormData(form);
-            const payload = {
-              name: String(data.get('name') || '').trim(),
-              phone: String(data.get('phone') || '').trim(),
-              message: 'Запись на просмотр: ' + obj.title + ' (объект №' + obj.id + ')' +
-                (String(data.get('when') || '').trim() ? '. Удобное время: ' + String(data.get('when')).trim() : ''),
-              page: location.pathname + location.search
-            };
-            msg.textContent = 'Отправляем…';
-            if (!window.mdSendLead) { msg.textContent = 'Форма временно недоступна, позвоните: +7 949 504-44-55'; return; }
-            window.mdSendLead(payload).then(function () {
-              msg.style.color = '#0f9d6f';
-              msg.textContent = 'Заявка отправлена. Мы получили вашу заявку, рассмотрим её и свяжемся с вами.';
-              form.reset();
-              if (window.mdTrack) window.mdTrack('form_submit', 'booking');
-              setTimeout(close, 2500);
-            }).catch(function () {
-              msg.style.color = '#cc2229';
-              msg.textContent = 'Не удалось отправить. Позвоните: +7 949 504-44-55';
-            });
-          });
-        }
-      } catch (e) {}
-    })();
-
-    // Похожие объекты: тот же тип и сделка, близкая цена
-    try {
-      const sec = document.getElementById('similar-section');
-      const grid = document.getElementById('similar-grid');
-      if (sec && grid && Array.isArray(OBJECTS) && window.renderCard) {
-        const base = Number(obj.price) || 0;
-        const scored = OBJECTS
-          .filter((x) => x.id !== obj.id && x.deal === obj.deal)
-          .map((x) => {
-            const p = Number(x.price) || 0;
-            let score = Math.abs(p - base);
-            if (x.type === obj.type) score = score * 0.35;          // тот же тип — приоритет
-            if (String(x.address).split(',')[0] === String(obj.address).split(',')[0]) score *= 0.8;
-            return { x: x, score: score };
-          })
-          .sort((a, b) => a.score - b.score)
-          .slice(0, 4)
-          .map((s) => s.x);
-
-        if (scored.length) {
-          grid.innerHTML = scored.map((x) => window.renderCard(x, { actions: true })).join('');
-          if (window.initMiniSliders) window.initMiniSliders();
-          sec.style.display = '';
-        }
-      }
-    } catch (e) { /* похожие объекты не критичны */ }
-  });</script> <script src="js/install.js" defer></script> <script src="js/mobile-bar.js" defer></script> <script src="js/api.js" defer></script>
+      ${bookModal}`;if(window.initDetailGallery){window.initDetailGallery();}(function initExtras(){try{const modal=document.getElementById('book-modal');const openBtn=document.getElementById('book-btn');const closeBtn=document.getElementById('book-close');const form=document.getElementById('book-form');const msg=document.getElementById('book-msg');if(!modal||!openBtn)return;const open=function(){modal.style.display='flex';document.body.style.overflow='hidden';};const close=function(){modal.style.display='none';document.body.style.overflow='';};openBtn.addEventListener('click',open);if(closeBtn)closeBtn.addEventListener('click',close);modal.addEventListener('click',function(e){if(e.target===modal)close();});document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});if(form){form.addEventListener('submit',function(e){e.preventDefault();const data=new FormData(form);const payload={name:String(data.get('name')||'').trim(),phone:String(data.get('phone')||'').trim(),message:'Запись на просмотр: '+obj.title+' (объект №'+obj.id+')'+(String(data.get('when')||'').trim()?'. Удобное время: '+String(data.get('when')).trim():''),page:location.pathname+location.search};msg.textContent='Отправляем…';if(!window.mdSendLead){msg.textContent='Форма временно недоступна, позвоните: +7 949 504-44-55';return;}window.mdSendLead(payload).then(function(){msg.style.color='#0f9d6f';msg.textContent='Заявка отправлена. Мы получили вашу заявку, рассмотрим её и свяжемся с вами.';form.reset();if(window.mdTrack)window.mdTrack('form_submit','booking');setTimeout(close,2500);}).catch(function(){msg.style.color='#cc2229';msg.textContent='Не удалось отправить. Позвоните: +7 949 504-44-55';});});}}catch(e){}})();try{const sec=document.getElementById('similar-section');const grid=document.getElementById('similar-grid');if(sec&&grid&&Array.isArray(OBJECTS)&&window.renderCard){const base=Number(obj.price)||0;const scored=OBJECTS.filter((x)=>x.id!==obj.id&&x.deal===obj.deal).map((x)=>{const p=Number(x.price)||0;let score=Math.abs(p-base);if(x.type===obj.type)score=score*0.35;if(String(x.address).split(',')[0]===String(obj.address).split(',')[0])score*=0.8;return{x:x,score:score};}).sort((a,b)=>a.score-b.score).slice(0,4).map((s)=>s.x);if(scored.length){grid.innerHTML=scored.map((x)=>window.renderCard(x,{actions:!0})).join('');if(window.initMiniSliders)window.initMiniSliders();sec.style.display='';}}}catch(e){}});</script> <script src="js/install.js" defer></script> <script src="js/mobile-bar.js" defer></script> <script src="js/api.js" defer></script>
 <script src="js/fav.js" defer></script> <script src="js/metrika.js" defer></script> <script src="js/protect.js" defer></script>
 </body></html>

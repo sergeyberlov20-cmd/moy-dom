@@ -85,6 +85,8 @@ export function renderObject(template, o, all) {
   const imgMain = '../' + String(o.image || 'images/logo.png').replace(/^\//, '');
   const imgs = (o.images && o.images.length ? o.images : [o.image]).filter(Boolean);
   const thumbs = '';
+  // список фото для слайдера на странице объекта
+  const imgsJson = JSON.stringify(imgs.map((p) => '../' + String(p).replace(/^\//, ''))).replace(/'/g, '&#39;');
 
   const title = o.title + ' — ' + (String(o.deal) === 'Аренда' ? 'аренда' : 'продажа') + ' в Мариуполе | Мой Дом';
   const desc = (o.title + ' · ' + priceText(o) + (addr ? ' · ' + addr : '') + '. ' + String(o.description || '').replace(/\s+/g, ' ')).slice(0, 300).trim();
@@ -126,6 +128,7 @@ export function renderObject(template, o, all) {
     .replace(/__DESC__/g, esc(desc))
     .replace(/__IMG_ABS__/g, SITE + '/' + String(o.image || '').replace(/^\//, ''))
     .replace(/__IMG_MAIN__/g, esc(imgMain))
+    .replace(/__IMAGES__/g, imgsJson)
     .replace(/__CRUMB__/g, esc(o.title.slice(0, 60)))
     .replace(/__H1__/g, esc(o.title))
     .replace(/__ADDR__/g, esc(addr))
