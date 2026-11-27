@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T20:17:25.061Z",
+ "builtAt": "2026-11-27T20:19:14.080Z",
  "files": 1167,
- "hash": "8d022a489ec6050687dc5efeb54972e4ad1ee3fef55c5d9b92081aad4107300d",
+ "hash": "228d98423f1ace122efb6e1740ab6f6e5c47ce53784406eb03ec428dea8d3a01",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "0135563a40f3717806fddb3f047366d62594a2cd7a9773d3d7b241ce82274404",
@@ -1130,7 +1130,7 @@
   "rayony/oblast.html": "a3086f8efe1ad30a0a30cc626e2bed11868d6f31575dfbb19f08ce50ee3e8ff8",
   "rayony/ordzhonikidzevsky.html": "cc1626486cbaf637aa55dab19bbd4aab98e54f2b818bf2f79e3487582eaefdef",
   "rayony/primorsky.html": "69b49aaa6665bd9898bf2d2c6832242ddb3d8aaeb8330286e8f72995df444e82",
-  "reviews/index.html": "230c7633a8aeac5548a1451fec3a2b0ad9c14909034693d6d77e60b2d9fb6441",
+  "reviews/index.html": "f01179cde41bb8b2406b91e5bb44a3918cfaa6d4bd695a1123bea6f37f2afcc8",
   "robots.txt": "9172aed7b9c935f7b8886292df2bce99500c77dd8fb45274139fbae27de0040f",
   "services/index.html": "90fab03883dad8012b8e2cd874118a83b2f1c0dbf363fa15b827a4b7ec4f815e",
   "services/uslugi-1.html": "2f5d88ced41d8c20932b5e7f249a0bfd168a9d0e32eb3a1eff93bae713eb2088",
@@ -1172,5 +1172,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "2896cde629718e4846ef86fa7daf930bd3855a34789e541eaa7fe4c209c1ed58"
  },
- "signature": "20e9f22bd5ac8a52f6652c8f69b7fcaac05beb8e247ea2d2150e74fabf1ef43a"
+ "signature": "e220dc379eb4b3fba717bce5c964aaddd5157da8939388036badbfb29d5e63cb"
 }
