@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T20:00:18.314Z",
+ "builtAt": "2026-11-27T20:04:46.579Z",
  "files": 1167,
- "hash": "59237fdf2da1ecb0c8f6f9a54082098e8bacc974041f1eaaba4dc1120790f3ae",
+ "hash": "37e5b0be0a6503010bdc90f43d584859edfe4964f56839ebedd0d59305b50c71",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "0135563a40f3717806fddb3f047366d62594a2cd7a9773d3d7b241ce82274404",
@@ -1042,7 +1042,7 @@
   "images/uploads/2.jpg": "29002e74c88097f6a69f3d9812b8a482fc65cbd261ceb996819041a96cce9844",
   "images/uploads/3.jpg": "db40984236bd6f7d28bbb86c25717968856b5aaea767ec4fb6f950879dda4528",
   "images/vk-logo.png": "25dfe61842345c39cb13beeee5b921cfe1c16b5f774067416728f8046c56f925",
-  "index.html": "bcfef2f3f94a12db34deb4f5a91431ce3dfcffa4ca608368cc12b32fd0de9048",
+  "index.html": "545f6b353ad125af015fbc037d2e37fe4b5cb37931ed2c8b8e2dfa7a50d4db8f",
   "js/address.js": "134c6c95c0a4b6f559a75f4da2ddf641632ef27ace9bf0e9c05da799bfcaf544",
   "js/api.js": "838316d01bf6cf9bd9c9958df3b3ba6d3de4a47dcd18b369adc42ceedfab6832",
   "js/data.js": "f44a109af6fd3bf17be178edc7b548e6bd936939ca5e9ba6d44208bcdcac2118",
@@ -1172,5 +1172,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "2896cde629718e4846ef86fa7daf930bd3855a34789e541eaa7fe4c209c1ed58"
  },
- "signature": "c0e120ccb97cfdd54e72870f34148a178c0b9937aaad0d1905667adc0e690924"
+ "signature": "197db8447da5f4f2bf0914c29923a97e89bff68a49f185fe7fa69fc49886b7c4"
 }
