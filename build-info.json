@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T13:52:37.983Z",
+ "builtAt": "2026-11-27T13:58:27.296Z",
  "files": 529,
- "hash": "63919b931207ddc97a6c8b7ef370a4051fbb8240ef3d822f987357df130e418f",
+ "hash": "e0a452ad58592ddb3b4dcfa9d45cddbe3b00bfc491adaec0154c814b37a6b2f8",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "13dc8b99aeec83799d318e91f2031b85e7f3e280b59bfddff53cc12a6976b646",
@@ -423,7 +423,7 @@
   "js/api.js": "838316d01bf6cf9bd9c9958df3b3ba6d3de4a47dcd18b369adc42ceedfab6832",
   "js/data.js": "f44a109af6fd3bf17be178edc7b548e6bd936939ca5e9ba6d44208bcdcac2118",
   "js/data.json": "faf02ad0d223f47abce2bc534da7692f255057962154d63c4469cb5803fd951f",
-  "js/fav.js": "72f63401f68e28e7dae1f0e267e96566af32666d5f023e1cf07dd393ee4a5b65",
+  "js/fav.js": "3addb0bfda59f444ab2afcb595dbb879bf4b711d253a1b0c1d61adb390fffd68",
   "js/install.js": "b84850783354c3927a019b9621b2c620a1669a139cbb04e2f17230b85bede4df",
   "js/main.js": "dc99f63914d26cc983dec8aebab3d7985f1c190261c8105aa017e8cd52059397",
   "js/metrika.js": "726b7d0490e8b7cd2a563e44fd835fc1db2e21be3dbb163082e50c73da3e0069",
@@ -534,5 +534,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "9690b6ccdad74718c395d0b2e555487c2b9a3cc6fc5afb625e3b5b1fa2e444d9"
  },
- "signature": "8e2c0aade64f40fd65ade55be9e1bcf60c2bf55142e5a6d7802990e2ee296b75"
+ "signature": "e7a5147911a9c87f5d1cfc9059a8b5259e7782ae4f9cf95ad7b2141c87a6cc66"
 }
