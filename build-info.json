@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T21:31:11.903Z",
+ "builtAt": "2026-11-27T21:33:41.755Z",
  "files": 1169,
- "hash": "2487e5b354c8b01be594c9f76a45f391cb7b41401c5fa3c51b3c6121025c9abd",
+ "hash": "34077f99efb935e74be5a38ed80025b8843eab2b76a705e85146093fafda3476",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "0135563a40f3717806fddb3f047366d62594a2cd7a9773d3d7b241ce82274404",
@@ -26,7 +26,7 @@
   "CNAME": "1bad9674717ec23875628fd389dcf282cf277fe9d185915d7a6109d4b79d7dba",
   "contacts.html": "29c03bf36d1988c7a018b803e390ab7c0f17d855eb453b041babcb9b1e12b702",
   "css/fonts.css": "4a117b8c8ace94d83a10790a632b9109a5b39bdf7c9d6d20c4e4298f7125285e",
-  "css/style.css": "bdba9d7a51a90f6787239b4230df5c1cad695fda46d40a3f61a24ebac5415a57",
+  "css/style.css": "628e67dba5ead9b721fbac9ad01d2cf10da7d059ff3b23f1152783f5aa2fd128",
   "favorites.html": "ae4bd9311b57b6e965eda425b633f32d3fc79cc1d77db24e4bc5ae3c26cf6319",
   "fonts/inter-var-cyrillic-ext.woff2": "ca157063339ac4ad418f214f3abfed119b0798ab4d377386ce5c9e5a7a435ebd",
   "fonts/inter-var-cyrillic.woff2": "71d5ee93cc1e9f1d520a3a8b66456de18c7879d8df09d57fcd2eaff75fef0075",
@@ -1174,5 +1174,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "2896cde629718e4846ef86fa7daf930bd3855a34789e541eaa7fe4c209c1ed58"
  },
- "signature": "d1e27b15bd787aa06ba312537f40c51d392505df5c957c9d09878e92b90080a8"
+ "signature": "e019c3d2df5de05fcdd7df30bc2500e68d086167359c3350f822875f64cf5c53"
 }
