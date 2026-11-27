@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T17:12:24.530Z",
+ "builtAt": "2026-11-27T17:22:27.405Z",
  "files": 865,
- "hash": "30f85ff8e18072de5a502335633709e4073ab1f8cba10f30fccf573f81786fad",
+ "hash": "af69a84e08ad52a3490a46f9d7fd7679a02c4f9f218a6d18a2c685b16d7d9a10",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "7d6054625c85730c334c28126860b6ae8cb0831fddc71d54ba2ef9cbbbff602e",
@@ -19,7 +19,7 @@
   "compare.html": "ad0cdef1323f1448f1ef7c04837b8276998d8fe687b6bd721d34c8c33a814968",
   "contacts.html": "d04e6d2f9822c68afbedd5f5429084247fe871bb4c88995473a2f4608e173805",
   "css/fonts.css": "4a117b8c8ace94d83a10790a632b9109a5b39bdf7c9d6d20c4e4298f7125285e",
-  "css/style.css": "20f6a9cf8e6b8df63d43f692b241e768f01cc8df2b8e010a4ec62cd2b49c57e0",
+  "css/style.css": "5abc4d641fb09707d69b2349ae91a03964c821ad034edc3a091dfe2bc0cb7f42",
   "favorites.html": "cda7c8cb297ab36479d7969328cb10c6d58f22d2e9c13a359fcbedfc6956bb60",
   "fonts/inter-var-cyrillic-ext.woff2": "ca157063339ac4ad418f214f3abfed119b0798ab4d377386ce5c9e5a7a435ebd",
   "fonts/inter-var-cyrillic.woff2": "71d5ee93cc1e9f1d520a3a8b66456de18c7879d8df09d57fcd2eaff75fef0075",
@@ -767,7 +767,7 @@
   "js/reviews.js": "9eb60c3b56255afebc017bde67b644718c214ea177471523fc381cafb98d8d31",
   "js/script.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "js/slider.js": "26e82d7e4c688716c973156b5c9cb001d66af0a53fe7010ac6d7f25bf756308f",
-  "js/sw.js": "3738651e22892f925bcaac73690778704cffa21e905e5253bca834946e670e1d",
+  "js/sw.js": "d77deb1eb47aca5e671832d58134c55bd8b27e3932f5c2afe0c099e86d36c378",
   "manifest.json": "12263af58a571e969fb57509b1b2119cc99dfa890ccddac728a7e72bd79fac1d",
   "object.html": "52cec3e3ffd7b7007fb913660c42802fecfecfc676437607f6eb4f829d5aa072",
   "objects/1.html": "edfdc31f159dd83bfdd61acaf9aa100868ac59cfb16bbccc7e64fd36b1f42908",
@@ -870,5 +870,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "91b58c95b5e47cedfb689f8427468b8c610bc2fabb84342fce6ff0406c59aded"
  },
- "signature": "fdf1bc6f8a2bf03631a51db846fa7859cb95e22a9caf325446fbf707d5a668db"
+ "signature": "ccc0f8ba4c8148ac8a2f416f38950101b3c5f1720a68ece8cd12a6bf217d5e09"
 }
