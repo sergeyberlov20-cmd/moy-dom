@@ -23,6 +23,7 @@ const _priceFormatter=new Intl.NumberFormat("ru-RU");window.formatPrice=function
         <div style="display:flex;gap:8px;margin-top:auto;">
           <a href="objects/${o.id}.html" class="btn" style="flex:1;">Подробнее</a>
           <button type="button" class="btn" data-quick="${o.id}" style="flex:0 0 auto;padding:10px 12px;background:#eef1f7;color:var(--primary);" title="Быстрый просмотр">👁</button>
+          <button type="button" class="btn" data-cmp="${o.id}" style="flex:0 0 auto;padding:10px 12px;background:#eef1f7;color:var(--primary);" title="Добавить к сравнению">⚖</button>
         </div>
         ${actionsHtml}
       </div>
