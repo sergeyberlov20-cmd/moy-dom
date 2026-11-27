@@ -1,7 +1,6 @@
 import { json, corsPreflight, readJson, corsHeaders, isMaintenance, isBotPaused } from './lib.js';
 import { handleLead, handleEvent } from './leads.js';
 import { handleTelegram, dailyDigest, tgSetup, tgTest, tgDiag, tgProfile } from './bot.js';
-import { handleTgQueue } from './tgqueue.js';
 import { remindStale } from './remind.js';
 import { releaseScheduled, postRelease } from './release.js';
 import { reviewsDry, updateYandexReviews, runReviewsCron } from './reviews.js';
@@ -23,8 +22,6 @@ const RT = [
   }],
   ['/api/event', 'POST', handleEvent],
   ['/api/tg/webhook', 'POST', handleTelegram],
-  ['/api/tg/queue', 'GET', handleTgQueue],
-  ['/api/tg/queue', 'POST', handleTgQueue],
   ['/api/tg/setup', 'GET', tgSetup],
   ['/api/tg/test', 'GET', tgTest],
   ['/api/tg/diag', 'GET', tgDiag],

@@ -65,30 +65,6 @@ export async function handleTelegram(request, env) {
     const data = (cb && cb.data) || '';
     const text = (msg0 && msg0.text) || '';
 
-  // ── Цена из Telegram: админ пишет «3569 4500000» ──
-  // (номера постов из нашего парсера группы)
-  {
-    const m = /^(\d{3,6})\s+(\d{4,9})$/.exec(String(text).trim());
-    const fromId = msg0 && msg0.from ? msg0.from.id : 0;
-    if (m && isAdmin(env, fromId) && env.DB) {
-      const post = 'nedvizhimost_mariupol/' + m[1];
-      const price = Number(m[2]);
-      try {
-        await env.DB.prepare("UPDATE tg_queue SET price = ?, status = 'ready' WHERE post = ?").bind(price, post).run();
-        const row = await env.DB.prepare('SELECT post, price, status FROM tg_queue WHERE post = ?').bind(post).first();
-        if (row) {
-          await tgSend(env, msg0.chat.id, '✅ Цена принята: ' + m[1] + ' — ' + price.toLocaleString('ru-RU') + ' ₽\nПост: ' + post);
-        } else {
-          await tgSend(env, msg0.chat.id, '⚠️ Поста ' + m[1] + ' нет в очереди. Сначала запустите разбор группы.');
-        }
-      } catch (e) {
-        await tgSend(env, msg0.chat.id, '⚠️ Не удалось сохранить цену: ' + e.message);
-      }
-      return new Response('ok');
-    }
-  }
-
-
     await touchBotUser(env, from, { allowed: owner }).catch(() => {});
 
     // всем, кроме владельца, — полная тишина

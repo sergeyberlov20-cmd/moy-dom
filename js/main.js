@@ -18,6 +18,7 @@ const _priceFormatter=new Intl.NumberFormat("ru-RU");window.formatPrice=function
       </div>
       <div class="card-body">
         <div class="card-price">${formatPrice(o.price, o.deal)}</div>
+        ${o.area ? `<div class="card-ppm">${Math.round(o.price / o.area).toLocaleString("ru-RU")} ₽/м²</div>` : ''}
         <div class="card-title">${o.title}</div>
         ${addressHtml}
         <div class="card-actions">
