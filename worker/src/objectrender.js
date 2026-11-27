@@ -38,10 +38,11 @@ function mortgage(o) {
 function mapBlock(o) {
   const lat = Math.round((Number(o.lat) || 47.095) * 1000) / 1000;
   const lon = Math.round((Number(o.lon) || 37.548) * 1000) / 1000;
-  const d = 0.05;
-  const bbox = [lon - d, lat - d / 2, lon + d, lat + d / 2].map(function (v) { return v.toFixed(5); }).join('%2C');
-  return '<div class="obj-map"><iframe src="https://www.openstreetmap.org/export/embed.html?bbox=' + bbox + '&layer=mapnik" loading="lazy" title="Район расположения" allowfullscreen></iframe></div>' +
-    '<p style="font-size:.78rem;color:var(--muted);margin:0 0 16px;line-height:1.5;">На карте — район расположения. Точный адрес и показ — по телефону.</p>';
+  return '<div class="obj-map"><iframe src="https://yandex.ru/map-widget/v1/?ll=' + lon + '%2C' + lat + '&z=17&pt=' + lon + '%2C' + lat + '%2Cpm2rdm" loading="lazy" title="Расположение объекта" allowfullscreen></iframe></div>';
+}
+
+function favButton(o) {
+  return '<button type="button" class="btn obj-fav" data-id="' + o.id + '" style="width:100%;padding:13px;background:#eef1f7;color:#1c2e5a;font-weight:700;">🔖 В избранное</button>';
 }
 
 function phoneButtons(o) {
@@ -83,12 +84,7 @@ export function renderObject(template, o, all) {
   const addr = String(o.address || '').replace(/^г\.\s*Мариуполь,\s*/i, '');
   const imgMain = '../' + String(o.image || 'images/logo.png').replace(/^\//, '');
   const imgs = (o.images && o.images.length ? o.images : [o.image]).filter(Boolean);
-  const thumbs = imgs.length > 1
-    ? '<div class="obj-thumbs">' + imgs.map((im) => {
-        const src = '../' + String(im).replace(/^\//, '');
-        return '<img src="' + esc(src) + '" data-full="' + esc(src) + '" alt="' + esc(o.title) + '" loading="lazy">';
-      }).join('') + '</div>'
-    : '';
+  const thumbs = '';
 
   const title = o.title + ' — ' + (String(o.deal) === 'Аренда' ? 'аренда' : 'продажа') + ' в Мариуполе | Мой Дом';
   const desc = (o.title + ' · ' + priceText(o) + (addr ? ' · ' + addr : '') + '. ' + String(o.description || '').replace(/\s+/g, ' ')).slice(0, 300).trim();
@@ -136,7 +132,7 @@ export function renderObject(template, o, all) {
     .replace(/__PRICE__/g, priceText(o))
     .replace(/__SPECS__/g, specs(o))
         .replace(/__MAP__/g, mapBlock(o))
-    .replace(/__PHONE_BTNS__/g, phoneButtons(o))
+    .replace(/__PHONE_BTNS__/g, favButton(o) + phoneButtons(o))
     .replace(/__THUMBS__/g, thumbs)
     .replace(/__DESC_BLOCK__/g, o.description
       ? '<div class="obj-desc"><h2>Описание</h2><p>' + esc(String(o.description).slice(0, 3000)) + '</p></div>'
