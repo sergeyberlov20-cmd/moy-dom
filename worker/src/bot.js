@@ -53,6 +53,28 @@ export async function handleTelegram(request, env) {
 
   let update = null;
   try { update = await request.json(); } catch (e) { return new Response('bad', { status: 400 }); }
+  // ── КОМАНДА /today: сводка за сегодня ──
+  {
+    const _m = update && update.message;
+    const _t = String((_m && _m.text) || '').trim().toLowerCase();
+    const _uid = _m && _m.from ? _m.from.id : 0;
+    if ((_t === '/today' || _t === '/сегодня') && isAdmin(env, _uid) && env.DB) {
+      try {
+        const day = await env.DB.prepare("SELECT COUNT(*) AS n FROM leads WHERE date(created_at) = date('now')").first();
+        const fresh = await env.DB.prepare("SELECT COUNT(*) AS n FROM leads WHERE status = 'new'").first();
+        const views = await env.DB.prepare("SELECT COUNT(*) AS n FROM events WHERE type = 'pageview' AND date(created_at) = date('now')").first();
+        await tgSend(env, _m.chat.id,
+          '📅 <b>Сегодня</b>\n' +
+          '• заявок: <b>' + ((day && day.n) || 0) + '</b>\n' +
+          '• ждут ответа: <b>' + ((fresh && fresh.n) || 0) + '</b>\n' +
+          '• просмотров сайта: <b>' + ((views && views.n) || 0) + '</b>');
+      } catch (e) {
+        await tgSend(env, _m.chat.id, '⚠️ Не удалось собрать сводку: ' + e.message);
+      }
+      return new Response('ok');
+    }
+  }
+
   // ── Цена из Telegram: админ пишет «3569 4500000» ──
   {
     const _msg = update && update.message;

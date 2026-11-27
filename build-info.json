@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T21:48:25.186Z",
+ "builtAt": "2026-11-27T21:54:14.969Z",
  "files": 1166,
- "hash": "cb9d51dad26867019a98fd55fe04b24d7cfdd04288af5d581ff28afdfb35605f",
+ "hash": "1b192b8951091e76cbaa49ae955eb026357da4a29234890bfd5b89abba7e1f65",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "0135563a40f3717806fddb3f047366d62594a2cd7a9773d3d7b241ce82274404",
@@ -1148,7 +1148,7 @@
   "worker/schema.sql": "ea1356dbe43c9f522ccd30a4126a210b899afac64f94499f7f087029d41e7f89",
   "worker/src/add.js": "9a4b7cfd26ad3e44343b39da2030dbb125d3035b175cfebbf519e4e57e682af9",
   "worker/src/admin.js": "1e9a85e94da33a357cda5e51113087f36136fdb9d783017b3356c3a4a0ce3359",
-  "worker/src/bot.js": "03e79a8e0dc081971e2f495effa4002fbb03b4999b3159c9f9b48c9de9edfbc0",
+  "worker/src/bot.js": "2aef64d50a84cf056c5c3e6a8bfd35b9f66c01c9bd1376db19726300ea937411",
   "worker/src/botstats.js": "da06c04df9e62cb54a995cab6144d09ebd5509c0560a15bb4892eb5ccc96116a",
   "worker/src/diag.js": "345d0bf1823fa5e03ac889f92e7e5ccf32c5ea3c496e9ba0bdbf900496a5d988",
   "worker/src/github.js": "759e7fd460e55af317b968c49675401f37b97d1e127c1231dfa47c423e98b929",
@@ -1171,5 +1171,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "2896cde629718e4846ef86fa7daf930bd3855a34789e541eaa7fe4c209c1ed58"
  },
- "signature": "6aef491f610e1751dec50515c4e7a66bfad2656cc0bb8d1427dd7a751ec2b70e"
+ "signature": "2a1db644b2a1c88b84ff5ee19afef60ac1f3d7c67faae5d46175ddefb462293f"
 }
