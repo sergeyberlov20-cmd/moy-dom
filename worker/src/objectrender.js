@@ -38,7 +38,9 @@ function mortgage(o) {
 function mapBlock(o) {
   const lat = Math.round((Number(o.lat) || 47.095) * 1000) / 1000;
   const lon = Math.round((Number(o.lon) || 37.548) * 1000) / 1000;
-  return '<div class="obj-map"><iframe src="https://yandex.ru/map-widget/v1/?ll=' + lon + '%2C' + lat + '&z=14&l=map" loading="lazy" title="Район расположения" allowfullscreen></iframe></div>' +
+  const d = 0.05;
+  const bbox = [lon - d, lat - d / 2, lon + d, lat + d / 2].map(function (v) { return v.toFixed(5); }).join('%2C');
+  return '<div class="obj-map"><iframe src="https://www.openstreetmap.org/export/embed.html?bbox=' + bbox + '&layer=mapnik" loading="lazy" title="Район расположения" allowfullscreen></iframe></div>' +
     '<p style="font-size:.78rem;color:var(--muted);margin:0 0 16px;line-height:1.5;">На карте — район расположения. Точный адрес и показ — по телефону.</p>';
 }
 

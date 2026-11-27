@@ -1,1 +1,1 @@
-window.OBJECTS=[],fetch("js/data.json").then(res=>res.json()).then(data=>{window.OBJECTS=Array.isArray(data)?data:data.objects||[],document.dispatchEvent(new Event("dataLoaded"))}).catch(err=>console.error("Ошибка загрузки data.json:",err));
+window.OBJECTS=[];fetch('js/data.json').then(res=>res.json()).then(data=>{window.OBJECTS=Array.isArray(data)?data:(data.objects||[]);document.dispatchEvent(new Event('dataLoaded'));}).catch(err=>console.error('Ошибка загрузки data.json:',err));
