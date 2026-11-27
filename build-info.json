@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T21:37:05.206Z",
- "files": 1165,
- "hash": "7ea7e8dc07b28cecf436c64776a0545337b9c0ebe55a16ec787631fccd788704",
+ "builtAt": "2026-11-27T21:39:11.898Z",
+ "files": 1166,
+ "hash": "1f6a37602a73725b3e0662fd8bd3fc73189de98c424a6c1bcaefecb3569d2328",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "0135563a40f3717806fddb3f047366d62594a2cd7a9773d3d7b241ce82274404",
@@ -1038,7 +1038,7 @@
   "images/thumb/partners/8.webp": "0499b26e10399ae8c6c3062a0e21e685c410a9d3a179e386eadc5bdb4acecbbf",
   "images/thumb/partners/9.webp": "39499a10f385498193dcb90557f30a7cbdd195846635c7195440005194daee7e",
   "images/vk-logo.png": "25dfe61842345c39cb13beeee5b921cfe1c16b5f774067416728f8046c56f925",
-  "index.html": "6981ef9b701eca4abb417b44be946abffff2ae0e47024e56bf3ce3247efccd48",
+  "index.html": "e533fd2bb78febfabeeaa5b43b50194ac42cc74f6910ae6eca6a07e97be879e1",
   "js/address.js": "134c6c95c0a4b6f559a75f4da2ddf641632ef27ace9bf0e9c05da799bfcaf544",
   "js/api.js": "838316d01bf6cf9bd9c9958df3b3ba6d3de4a47dcd18b369adc42ceedfab6832",
   "js/chips.js": "8aeb37ba6de1b8dcf1bee5f016555487883f001068e6578ed3134c28c7aa5988",
@@ -1054,9 +1054,10 @@
   "js/mobile-bar.js": "1c0da25d11db7f3c56e6d1beb4926dca49e7de5be7eb198faa20a045a27e63e1",
   "js/nav.js": "d5340b36ce3326ed1eaf532531d841ff82a96ca28b2ee84f4fe97f3ed3f4a93c",
   "js/protect.js": "b629d4dda6736861e56982192d44215594171a7059be095e55b960f7fbac48d1",
+  "js/reviews-home.js": "7f1c04f7cba0abc57f94fd8e8cdd14fe349e437e073db4fd579ef01b3d1531e0",
   "js/reviews.js": "9eb60c3b56255afebc017bde67b644718c214ea177471523fc381cafb98d8d31",
   "js/slider.js": "d0751526a27aab85f192d185e048879536ed819f6e34d60d0c0642eb94e3d689",
-  "js/sw.js": "5b7742136f1141f9502f8d18ad73b4ff787f1308aa5ee38cb02bde25f2510a53",
+  "js/sw.js": "52c6c28f42e43bfbbce709f7f95f389659f6bbc3b6401c2d23c956208a81cae6",
   "manifest.json": "12263af58a571e969fb57509b1b2119cc99dfa890ccddac728a7e72bd79fac1d",
   "object.html": "d7f80054e6b30078a9ac389aebf3024a2a718a6854057604c30d340589b8c0db",
   "objects/1.html": "5376415ded611bbb72621f4ec33c36305f4aa4e856a1e86af345b2717e72affa",
@@ -1170,5 +1171,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "2896cde629718e4846ef86fa7daf930bd3855a34789e541eaa7fe4c209c1ed58"
  },
- "signature": "06a4061934ba2eade7c90bab702cf0fd5199465bd2d45cbbbef79682fb2f298a"
+ "signature": "a03935721fbe639143b82254811d44214c293bc1038bbfeda48f2de402afc19c"
 }
