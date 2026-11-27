@@ -1,6 +1,6 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T19:52:20.125Z",
+ "builtAt": "2026-11-27T19:57:32.077Z",
  "files": 1158,
  "hash": "c2ca7700180c24e3174e093a6b201fa84403634b413a483e957febafb342cdf0",
  "hashes": {
@@ -1163,5 +1163,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "2896cde629718e4846ef86fa7daf930bd3855a34789e541eaa7fe4c209c1ed58"
  },
- "signature": "994bf956003da0c71e9770abf0d0718394bde7f69d2b1080734fac6157e4030d"
+ "signature": "bb029fa6a81f173efb83b5d1a328912c1e6eea9359e55a593705a55862352ada"
 }
