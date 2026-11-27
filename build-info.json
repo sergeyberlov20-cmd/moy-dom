@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T22:59:58.794Z",
- "files": 1560,
- "hash": "942ddf898129699c4b4db5bfea3e78343366e4d134bd4aad62fd09ffa546ce96",
+ "builtAt": "2026-11-27T23:48:16.015Z",
+ "files": 1561,
+ "hash": "ec9d17b2e5087f5c69fb4a4f09eebbec06fda45892c7ddc846589924dd4f3c20",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "0135563a40f3717806fddb3f047366d62594a2cd7a9773d3d7b241ce82274404",
@@ -1546,10 +1546,11 @@
   "worker/src/botstats.js": "da06c04df9e62cb54a995cab6144d09ebd5509c0560a15bb4892eb5ccc96116a",
   "worker/src/diag.js": "345d0bf1823fa5e03ac889f92e7e5ccf32c5ea3c496e9ba0bdbf900496a5d988",
   "worker/src/github.js": "759e7fd460e55af317b968c49675401f37b97d1e127c1231dfa47c423e98b929",
-  "worker/src/index.js": "7ccfbd939ccfc158a8690fd3ac2301126f60658393a927853bc435b4ebecf587",
+  "worker/src/index.js": "84aba3a4fc8155d2fcdbcc79b9576f8847720190dc235520e762b95dc8a831aa",
   "worker/src/invite.js": "7ce962f9a945200b6111491e6672a8cf74beb81fb1711b5239fe14a86ac89a31",
   "worker/src/leads.js": "65c0f5945befc6dec63236146cb93965af822a5c91537fa673b302c6e9c51627",
   "worker/src/lib.js": "3025ea96306d2c0ec098302ebe9c2841755266999f3f0dcd8c2fca18a32e79ef",
+  "worker/src/monitor.js": "d99d69036b70332bfba5ceb4aa17e313eae8d0e034a485a6435f1df195f660d1",
   "worker/src/objectrender.js": "e666c6f0e2e59e2294a12df2415d7784ad849052ac5535b68708a015c09e9fa6",
   "worker/src/post.js": "aa75f7e0a8871a9899cb08c971aaf65b30f81f864886cce71d145096ee1bae34",
   "worker/src/postutil.js": "6657ece514463c33c77390b32621eb124e84d582c7678fa8dec8bb4505b702af",
@@ -1562,8 +1563,8 @@
   "worker/src/tgqueue.js": "1befe83481767f8839f804c48e5adbd19e144a7d8be9d71c2a4f8151e857bc7c",
   "worker/templates/article.html": "102288fb247dfa1e332529d1f3ac3977d8e7bfd2297e13bec9fb4f0382657f61",
   "worker/templates/object.html": "df73ac5101180e580932d5e2b5252e900888d3a021db92c246dffcc8e6b1f217",
-  "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
+  "worker/wrangler.toml": "91b89ae6deb927799856dc4736981ba69de5eeb63af9798799bb7ce9b92d677b",
   "yandex_578a34d4fb2453a1.html": "2896cde629718e4846ef86fa7daf930bd3855a34789e541eaa7fe4c209c1ed58"
  },
- "signature": "b8c32524598a4bc7e69f30ac09133e682407a7d0810768926411d088baa0c025"
+ "signature": "fd1295d08b28fe91867dde132a5e9e804a7439f13389d4659359c3a379686d6e"
 }

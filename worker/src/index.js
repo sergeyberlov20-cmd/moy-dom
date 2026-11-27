@@ -2,6 +2,7 @@ import { json, corsPreflight, readJson, corsHeaders, isMaintenance, isBotPaused 
 import { handleLead, handleEvent } from './leads.js';
 import { handleTelegram, dailyDigest, tgSetup, tgTest, tgDiag, tgProfile } from './bot.js';
 import { handleTgQueue } from './tgqueue.js';
+import { monitor } from "./monitor.js";
 import { remindStale } from './remind.js';
 import { releaseScheduled, postRelease } from './release.js';
 import { reviewsDry, updateYandexReviews, runReviewsCron } from './reviews.js';
@@ -89,7 +90,9 @@ export default {
     try { if (await isBotPaused(env)) return; } catch (e) {}
 
     const cron = (controller && controller.cron) || '';
-    if (cron === '0 6 * * *') {
+    if (cron === '0 * * * *') {
+      ctx.waitUntil(monitor(env).catch(() => null));
+    } else if (cron === '0 6 * * *') {
       ctx.waitUntil(releaseScheduled(env).catch(() => null));
       ctx.waitUntil(dailyDigest(env));
     } else if (cron === '0 4 1,15 * *') {
