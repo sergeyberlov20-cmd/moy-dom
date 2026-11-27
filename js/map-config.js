@@ -1,0 +1,1 @@
+window.MD_MAP={key:'',lang:'ru_RU'};

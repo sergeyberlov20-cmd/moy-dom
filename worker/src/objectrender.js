@@ -38,7 +38,7 @@ function mortgage(o) {
 function mapBlock(o) {
   const lat = Math.round((Number(o.lat) || 47.095) * 1000) / 1000;
   const lon = Math.round((Number(o.lon) || 37.548) * 1000) / 1000;
-  return '<div class="obj-map"><iframe src="https://yandex.ru/map-widget/v1/?ll=' + lon + '%2C' + lat + '&z=17&pt=' + lon + '%2C' + lat + '%2Cpm2rdm" loading="lazy" title="Расположение объекта" allowfullscreen></iframe></div>';
+  return '<div class="obj-map" data-map data-lat="' + lat + '" data-lon="' + lon + '" data-zoom="17" data-title="' + esc(o.title || '') + '"><iframe src="https://yandex.ru/map-widget/v1/?ll=' + lon + '%2C' + lat + '&z=17&pt=' + lon + '%2C' + lat + '%2Cpm2rdm" loading="lazy" title="Расположение объекта" allowfullscreen></iframe></div>';
 }
 
 function favButton(o) {
@@ -55,11 +55,12 @@ function phoneButtons(o) {
 
 function card(o) {
   const img = String(o.image || 'images/logo.png').replace(/^\//, '');
+  const thumb = img.replace(/(^|\/)images\//, '$1images/thumb/');
   const addr = String(o.address || '').replace(/^г\.\s*Мариуполь,\s*/i, '');
   const sp = [];
   if (o.rooms) sp.push(o.rooms + ' комн.');
   if (o.area) sp.push(o.area + ' м²');
-  return '<article class="card"><div class="card-img-wrapper"><img src="../' + esc(img) + '" class="card-img" width="320" height="240" loading="lazy" alt="' + esc(o.title) + '"><span class="card-badge">' + esc(o.deal) + '</span></div>' +
+  return '<article class="card"><div class="card-img-wrapper"><img src="../' + esc(thumb) + '" srcset="../' + esc(thumb) + ' 640w, ../' + esc(img) + ' 1200w" sizes="(max-width: 600px) 92vw, 360px" class="card-img" width="320" height="240" loading="lazy" decoding="async" alt="' + esc(o.title) + '"><span class="card-badge">' + esc(o.deal) + '</span></div>' +
     '<div class="card-body"><div class="card-price">' + priceText(o) + '</div><div class="card-title">' + esc(o.title) + '</div>' +
     '<div class="card-meta">' + esc(addr) + (sp.length ? ' · ' + sp.join(' · ') : '') + '</div>' +
     '<a href="' + o.id + '.html" class="btn" style="margin-top:auto;">Подробнее</a></div></article>';
