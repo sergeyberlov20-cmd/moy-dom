@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T20:40:05.620Z",
- "files": 1168,
- "hash": "05db2e511296f460e2a23f2264996b994d6aac1c0bbba8d3bde8e8c11133f692",
+ "builtAt": "2026-11-27T20:43:40.675Z",
+ "files": 1169,
+ "hash": "b151e75d46c6c303910db469ab67237d5d47bc95d7b217efc7a0bae3d45729e6",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "0135563a40f3717806fddb3f047366d62594a2cd7a9773d3d7b241ce82274404",
@@ -26,7 +26,7 @@
   "CNAME": "1bad9674717ec23875628fd389dcf282cf277fe9d185915d7a6109d4b79d7dba",
   "contacts.html": "29c03bf36d1988c7a018b803e390ab7c0f17d855eb453b041babcb9b1e12b702",
   "css/fonts.css": "4a117b8c8ace94d83a10790a632b9109a5b39bdf7c9d6d20c4e4298f7125285e",
-  "css/style.css": "8e8d8fe860e9c92d44a50c83434f013d21cc63db424cdbab0572c92dfeab5001",
+  "css/style.css": "b6d2b3ec13e8b16f9e220fffa7e429f774cbc5378e7fdbc135f8e59a69e1c3b4",
   "favorites.html": "ae4bd9311b57b6e965eda425b633f32d3fc79cc1d77db24e4bc5ae3c26cf6319",
   "fonts/inter-var-cyrillic-ext.woff2": "ca157063339ac4ad418f214f3abfed119b0798ab4d377386ce5c9e5a7a435ebd",
   "fonts/inter-var-cyrillic.woff2": "71d5ee93cc1e9f1d520a3a8b66456de18c7879d8df09d57fcd2eaff75fef0075",
@@ -1042,13 +1042,14 @@
   "images/uploads/2.jpg": "29002e74c88097f6a69f3d9812b8a482fc65cbd261ceb996819041a96cce9844",
   "images/uploads/3.jpg": "db40984236bd6f7d28bbb86c25717968856b5aaea767ec4fb6f950879dda4528",
   "images/vk-logo.png": "25dfe61842345c39cb13beeee5b921cfe1c16b5f774067416728f8046c56f925",
-  "index.html": "545f6b353ad125af015fbc037d2e37fe4b5cb37931ed2c8b8e2dfa7a50d4db8f",
+  "index.html": "c532b261181d4843df3108feb16512899dd5dd6b448c346422fcc9f929f9b56a",
   "js/address.js": "134c6c95c0a4b6f559a75f4da2ddf641632ef27ace9bf0e9c05da799bfcaf544",
   "js/api.js": "838316d01bf6cf9bd9c9958df3b3ba6d3de4a47dcd18b369adc42ceedfab6832",
   "js/chips.js": "8aeb37ba6de1b8dcf1bee5f016555487883f001068e6578ed3134c28c7aa5988",
   "js/data.js": "f44a109af6fd3bf17be178edc7b548e6bd936939ca5e9ba6d44208bcdcac2118",
   "js/data.json": "146121d62eb372b05233d682e3124d37ccf91489bebf20487edc15aa88a6c5df",
   "js/fav.js": "a4224bb8ca6cb6bf3f2fade2b346d6610ccc86338dcc481da1b537dc19857d03",
+  "js/hstrip.js": "7de2ca93bd00160122b894cf3848e775d5d8f832dd1791720610d9d76d89f045",
   "js/install.js": "b84850783354c3927a019b9621b2c620a1669a139cbb04e2f17230b85bede4df",
   "js/main.js": "1840ee468099708c791e045ccd08a857740dddf2d36f78ae5dfb2a7b50ba1826",
   "js/map-config.js": "971ef64f7dfa429f65347467ac3522b894689cf893bc7216ec37dc94aee63d56",
@@ -1173,5 +1174,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "2896cde629718e4846ef86fa7daf930bd3855a34789e541eaa7fe4c209c1ed58"
  },
- "signature": "1f36eac4848bac148785fafe21b562a6109ff8201eda6afc4d8274d4b64f7c71"
+ "signature": "a88f33ccf9942c2627b1a5204d61239c437854a144defc0dc59e9cef4b9142b0"
 }
