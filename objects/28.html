@@ -56,5 +56,4 @@
   }
 })();
 </script> <script src="../js/protect.js" defer></script>
-<script>(function(){var b=document.querySelector(".obj-fav");if(!b)return;var id=Number(b.getAttribute("data-id"));function favs(){try{return JSON.parse(localStorage.getItem("favorites")||"[]");}catch(e){return[];}}function paint(){var on=favs().indexOf(id)>=0;b.textContent=on?"🔖 В избранном":"🔖 В избранное";b.style.background=on?"#cc2229":"#eef1f7";b.style.color=on?"#fff":"#1c2e5a";}b.addEventListener("click",function(){var list=favs();var i=list.indexOf(id);if(i>=0)list.splice(i,1);else list.push(id);try{localStorage.setItem("favorites",JSON.stringify(list));}catch(e){}paint();});paint();})();</script>
 </body></html>
