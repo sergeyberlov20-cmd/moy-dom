@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T14:50:06.671Z",
- "files": 530,
- "hash": "0e14cb1b41e6426c3ad3492bb651d684bfd806d4495ce53d2747bf12a5e05643",
+ "builtAt": "2026-11-27T15:02:59.982Z",
+ "files": 531,
+ "hash": "d63f08c9bda5a64816b9aa9f7cb7bceec72f131beef3a1043afb8e46b51297fd",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "13dc8b99aeec83799d318e91f2031b85e7f3e280b59bfddff53cc12a6976b646",
@@ -16,7 +16,7 @@
   "blog/index.html": "4773b4a90c74cca091ef155a3a87d62cccba8ac29917578e15e94aba7694772a",
   "catalog.html": "2d6bd521e34bade4dee1594d1cda148fc36ba89e88681f299bf14935f062221c",
   "CNAME": "1bad9674717ec23875628fd389dcf282cf277fe9d185915d7a6109d4b79d7dba",
-  "contacts.html": "4dbd7ace8bcbf8b882bddbe3163b8a7b1367b1f1e0015b628df5e1b4a116cd66",
+  "contacts.html": "4c5fd6b6e906be1531344fe3595acb0654dd6e1b70bef81bdc10454bef45281d",
   "css/fonts.css": "375fa45a5f3da9df9a5e326771c266cfbe264ede77f5dcc68a9ef5bc5eac1a1b",
   "css/style.css": "7708b4a910adc8fa85561c201d6321955cfddacdc773a47c2ce69c9bba805e00",
   "favorites.html": "8520072f6b204265b2dcc708300b30f715577d9e6176c5935c02ca697e4c784b",
@@ -384,6 +384,7 @@
   "images/icon-512-maskable.png": "756ed8cd8f87d5547bc2e7b77d4bc9d8e97ceaeb35c80ed17159fa1b40de0a52",
   "images/icon-512.png": "cc1003fd24a900d26f7d3ed1b170cc0f1eac57b9a3f4a3c9afb2b1a4e60ddd55",
   "images/logo.png": "8095e16d36183e7aa6c63204bf852dde349394f2e0942a254240f8234a3d3b91",
+  "images/map-office.png": "ac12cd87bd6c76f2ae846ebef2053eadd6e2a0552dd20d84c05de65e06639694",
   "images/max-logo.png": "3fc657d8c168eb6f17435b72e21aa803985ff9d94b483594f52232ede4ea96b4",
   "images/og-cover.png": "a44232d6bd2549624aa1f013ffaf3468d97ef20727d77d6f446e82e59a305ab2",
   "images/partners/1.webp": "53694248c9d09838169393159a0083e14d4b217a5f1883754c52cd5ee0216b20",
@@ -432,7 +433,7 @@
   "js/reviews.js": "9eb60c3b56255afebc017bde67b644718c214ea177471523fc381cafb98d8d31",
   "js/script.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "js/slider.js": "bc6e53f509134566128dca27a5dab8cd1c3c6c004015db9b9f81b321bc5f5ce0",
-  "js/sw.js": "77b8bd333c9dedef8ce1144db88a07933b76563cc021bd285dfc7365faaec57e",
+  "js/sw.js": "b6284cc69eed540ac32f7eafb0a7fca6f22dd19cc5af19517222ef3198252839",
   "manifest.json": "12263af58a571e969fb57509b1b2119cc99dfa890ccddac728a7e72bd79fac1d",
   "object.html": "c752080a65ff1ab12c4b20050dad71e0c920d70c68bc5eb5be1c0ef9ddc2bca2",
   "objects/1.html": "bff34d965fb6062361addc8df8ece4d5f2a4f7c855ec5d7c96b4aa8464dd5299",
@@ -535,5 +536,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "9690b6ccdad74718c395d0b2e555487c2b9a3cc6fc5afb625e3b5b1fa2e444d9"
  },
- "signature": "33e37a0b96ec2deb493551f193dd4754de40b4fda4716e3ae8ccaaa388318039"
+ "signature": "87eba43e14be37b524dd944ea8d424c7b9e015a569a3c604986cc5875dddf910"
 }
