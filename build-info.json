@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T19:58:36.283Z",
- "files": 1158,
- "hash": "cfa23d2a974147b0389d8a1f4e77c4ac5e8e241a52066f910421f72a28631590",
+ "builtAt": "2026-11-27T20:00:18.314Z",
+ "files": 1167,
+ "hash": "59237fdf2da1ecb0c8f6f9a54082098e8bacc974041f1eaaba4dc1120790f3ae",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "0135563a40f3717806fddb3f047366d62594a2cd7a9773d3d7b241ce82274404",
@@ -1020,6 +1020,15 @@
   "images/thumb/blog/blog-podgotovka-k-prodazhe.webp": "a8ab161525a28ea6944ca14b03f98fd0e6765ed86c4569712c6e34adee5bd792",
   "images/thumb/blog/blog-vosstanovlenie.webp": "09b0c1fa39dc134368cbf873674a144830766b54a59020d010bf8f5516de97b8",
   "images/thumb/blog/placeholder.webp": "66b615b997b22df53a619d1f8a57e8259ba998c56c3751937f5fb5701a18d39c",
+  "images/thumb/blog/tg-3434.webp": "6515e48a18de4bf45dfc1597d897e5ccc1aea076a26668c5552af8fe9a9c58c8",
+  "images/thumb/blog/tg-3442.webp": "2329206a1450959aab7feb62bf6059eae9a41a8d852b3d26a934edeb15c63d8e",
+  "images/thumb/blog/tg-3454.webp": "0357faf02e4bdf1a3f3b38db7958a19690241bda0b48a9aa41781850421ab67c",
+  "images/thumb/blog/tg-3505.webp": "f1f6469fa5bf7ef5957080dc9c85bdacce97ffd5068f36fa81aadb1ea290f19a",
+  "images/thumb/blog/tg-3529.webp": "2a7df0d98844236959537de97e9325832a38eeca20ffe9783e1fea4dda6ea24c",
+  "images/thumb/blog/tg-3530.webp": "11f63ecc99e3f3ab3e104c3545193dbeca0d69d632ffda45b63b0043a27f1f78",
+  "images/thumb/blog/tg-3531.webp": "0ef0ed572a08bc67d8ff4a080e5acfc0527f0b95071a464b8cefe4e8d9ac5f85",
+  "images/thumb/blog/tg-3547.webp": "a2f27e3a4b010cb77f4f9b5d512b367dc8751b75b4e42d306dee088c38d5c6c0",
+  "images/thumb/blog/tg-3568.webp": "18ee5d3c673ff572c9078cf407f8f2f8cbc29eb87f38b3acb378702dd64a5449",
   "images/thumb/partners/1.webp": "31172443a2a646293b726657521616044e635d1b81353d251465d4563e8fa645",
   "images/thumb/partners/10.webp": "c5aac44ac7aba8c47545756f7da24e23e92d4e238226d249872ff1853afd04bc",
   "images/thumb/partners/2.webp": "1c802d48b4f42626290530c46559ab579b9eda03a17fb707261137feec7faea8",
@@ -1163,5 +1172,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "2896cde629718e4846ef86fa7daf930bd3855a34789e541eaa7fe4c209c1ed58"
  },
- "signature": "270769b1684cffbcaae8f08cf6e664dd24a5045daf805b46cc1b7b3a7b78f114"
+ "signature": "c0e120ccb97cfdd54e72870f34148a178c0b9937aaad0d1905667adc0e690924"
 }
