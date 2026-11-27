@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T16:56:58.916Z",
+ "builtAt": "2026-11-27T17:02:31.803Z",
  "files": 865,
- "hash": "a9570eaba859846271e7a2e35d50f097e11a02301da5bfd624984c1f76d35638",
+ "hash": "d67a5068ed6e137a25fac7662b909c69acd44b3e5f04f311f84eccfcf1a1ae93",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "bc9668d428b2125837428ed41038ca2a822edab1c1f4b5ffce9fdcead8d34544",
@@ -19,7 +19,7 @@
   "compare.html": "68355533e31efa1f9ba0134aa0952b45c30f4db32b86f41293c038fbb2022cf6",
   "contacts.html": "bf88e99cde6931d311a533afecb2fa8c822d4d516e56c168daf3b78a516bf234",
   "css/fonts.css": "4a117b8c8ace94d83a10790a632b9109a5b39bdf7c9d6d20c4e4298f7125285e",
-  "css/style.css": "8e9dd57b81578026453d213c706953a139f725c14dcb35c9724bcd10157dc9ed",
+  "css/style.css": "7edf91e961b4a2aef409d40588f2c5bc9a2b39e14a0fe5231a893b928c4c2404",
   "favorites.html": "114b7b7e203b5e128f89ecaa9489f3701edf5b3f23b0b15a023d2b58de4d423c",
   "fonts/inter-var-cyrillic-ext.woff2": "ca157063339ac4ad418f214f3abfed119b0798ab4d377386ce5c9e5a7a435ebd",
   "fonts/inter-var-cyrillic.woff2": "71d5ee93cc1e9f1d520a3a8b66456de18c7879d8df09d57fcd2eaff75fef0075",
@@ -757,7 +757,7 @@
   "js/data.json": "faf02ad0d223f47abce2bc534da7692f255057962154d63c4469cb5803fd951f",
   "js/fav.js": "a4224bb8ca6cb6bf3f2fade2b346d6610ccc86338dcc481da1b537dc19857d03",
   "js/install.js": "b84850783354c3927a019b9621b2c620a1669a139cbb04e2f17230b85bede4df",
-  "js/main.js": "e9b04f18c82852e71c7e1aef21c5232f24f8605f76c691c6edb41070beba92c1",
+  "js/main.js": "596bb3ececbb471ca7727efd3fd2e08b09e1489d1e6207a5318105ba50b995c5",
   "js/map-config.js": "971ef64f7dfa429f65347467ac3522b894689cf893bc7216ec37dc94aee63d56",
   "js/map.js": "c4674a83d5cf4505c7c76127b5b0c0db70a09e7b59efd0775a62871d8df70988",
   "js/metrika.js": "726b7d0490e8b7cd2a563e44fd835fc1db2e21be3dbb163082e50c73da3e0069",
@@ -767,7 +767,7 @@
   "js/reviews.js": "9eb60c3b56255afebc017bde67b644718c214ea177471523fc381cafb98d8d31",
   "js/script.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "js/slider.js": "26e82d7e4c688716c973156b5c9cb001d66af0a53fe7010ac6d7f25bf756308f",
-  "js/sw.js": "9ae657a8c4d05890b5570d225f8d262277223f818a7e9bcddbcd4e179c1aa504",
+  "js/sw.js": "8de7e6c20991317a3086bf826eaaaa69a05a8470d386db5ae314dc3f748dc4c2",
   "manifest.json": "12263af58a571e969fb57509b1b2119cc99dfa890ccddac728a7e72bd79fac1d",
   "object.html": "4b41d1db33cc497511e572f79f53ef773779647242fe82efa0a8fa9dc60f615e",
   "objects/1.html": "edfdc31f159dd83bfdd61acaf9aa100868ac59cfb16bbccc7e64fd36b1f42908",
@@ -870,5 +870,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "91b58c95b5e47cedfb689f8427468b8c610bc2fabb84342fce6ff0406c59aded"
  },
- "signature": "9f2b40bc333fe6db312c659dea8acf8fa2ca79c05e55a79018cb6ef0c1fe3b6c"
+ "signature": "0d0fda94e07edbcf7acc5c951721560de8e44c516cf1e4f0b3ef18b763844b44"
 }
