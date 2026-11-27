@@ -1,8 +1,8 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-27T20:28:04.042Z",
- "files": 1167,
- "hash": "4f8a9cd3e1b7b62a8868a423b14a571dbe832403f12ded376f5eedf2bb897b75",
+ "builtAt": "2026-11-27T20:40:05.620Z",
+ "files": 1168,
+ "hash": "05db2e511296f460e2a23f2264996b994d6aac1c0bbba8d3bde8e8c11133f692",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "0135563a40f3717806fddb3f047366d62594a2cd7a9773d3d7b241ce82274404",
@@ -22,11 +22,11 @@
   "blog/blog-tg-3568.html": "99365e668c071b159d9012da72da2fa33c1b6ab87b53646b01023f8fbee0944a",
   "blog/blog-vosstanovlenie.html": "0479b90f0aa9b31042a6af2f6d6977c95acdd7407641e302339afb82e53015cf",
   "blog/index.html": "e3bf1dc46a5d0b7cf3a0729605d4d0ccfb2456ffc32f52217e05278db44af416",
-  "catalog.html": "b06acbe693ada1e1dc58b7b8c8fb21cebcad99b1c65b23f97f60df8f551bd924",
+  "catalog.html": "e4b20dc8b0d3cc70e37528f93ae8809b8d01c37f7390682a0f91c0b09294ed15",
   "CNAME": "1bad9674717ec23875628fd389dcf282cf277fe9d185915d7a6109d4b79d7dba",
   "contacts.html": "29c03bf36d1988c7a018b803e390ab7c0f17d855eb453b041babcb9b1e12b702",
   "css/fonts.css": "4a117b8c8ace94d83a10790a632b9109a5b39bdf7c9d6d20c4e4298f7125285e",
-  "css/style.css": "fbb79516bbe988e12e7d83a715dd31c69a86956f85db4f5fe5410529ed53cc81",
+  "css/style.css": "8e8d8fe860e9c92d44a50c83434f013d21cc63db424cdbab0572c92dfeab5001",
   "favorites.html": "ae4bd9311b57b6e965eda425b633f32d3fc79cc1d77db24e4bc5ae3c26cf6319",
   "fonts/inter-var-cyrillic-ext.woff2": "ca157063339ac4ad418f214f3abfed119b0798ab4d377386ce5c9e5a7a435ebd",
   "fonts/inter-var-cyrillic.woff2": "71d5ee93cc1e9f1d520a3a8b66456de18c7879d8df09d57fcd2eaff75fef0075",
@@ -1045,6 +1045,7 @@
   "index.html": "545f6b353ad125af015fbc037d2e37fe4b5cb37931ed2c8b8e2dfa7a50d4db8f",
   "js/address.js": "134c6c95c0a4b6f559a75f4da2ddf641632ef27ace9bf0e9c05da799bfcaf544",
   "js/api.js": "838316d01bf6cf9bd9c9958df3b3ba6d3de4a47dcd18b369adc42ceedfab6832",
+  "js/chips.js": "8aeb37ba6de1b8dcf1bee5f016555487883f001068e6578ed3134c28c7aa5988",
   "js/data.js": "f44a109af6fd3bf17be178edc7b548e6bd936939ca5e9ba6d44208bcdcac2118",
   "js/data.json": "146121d62eb372b05233d682e3124d37ccf91489bebf20487edc15aa88a6c5df",
   "js/fav.js": "a4224bb8ca6cb6bf3f2fade2b346d6610ccc86338dcc481da1b537dc19857d03",
@@ -1172,5 +1173,5 @@
   "worker/wrangler.toml": "928b2ee4301d8c583f041961f9dad39d68322b3a1a69d0b2e82b2180b3f7eed8",
   "yandex_578a34d4fb2453a1.html": "2896cde629718e4846ef86fa7daf930bd3855a34789e541eaa7fe4c209c1ed58"
  },
- "signature": "30c14737a71c476da35d0398a1f49b5f7ca5fe0dc93fe5a246751aa8cc166770"
+ "signature": "1f36eac4848bac148785fafe21b562a6109ff8201eda6afc4d8274d4b64f7c71"
 }
