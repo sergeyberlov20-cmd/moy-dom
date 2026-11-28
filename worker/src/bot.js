@@ -2,6 +2,7 @@ import { json, esc, tgApi, tgSend, tgNotify, tgTrack, tgPurge, isAdmin, isMainte
 import { startAdd, handleAddCallback, handleAddMessage, dropState } from './add.js';
 import { startPost, handlePostCallback, isPosting, dropPostState } from './post.js';
 import { handlePostMessage } from './post_steps.js';
+import { handleSiteReviewCallback, siteReviewsPending } from './siteReviews.js';
 import { createInvite, acceptInvite } from './invite.js';
 import { updateYandexReviews } from './reviews.js';
 import { setObjectPrice, removeObjectFromCatalog, loadCatalog, ghGet, ghDelete } from './github.js';
@@ -22,6 +23,7 @@ const GREETING =
   '/invite — ссылка-приглашение (только у вас),\n' +
   '/botstats — кто пользуется ботом (только у вас),\n' +
   '/reviews — обновить отзывы с Яндекс.Карт (только у вас),\n' +
+  '/site-reviews — отзывы, которые пишут на сайте: опубликовать или отклонить,\n' +
   '/pause — усыпить бота целиком (только вы), /resume — включить,\n' +
   '/reset — очистить чат и начать заново.';
 
@@ -202,6 +204,7 @@ export async function handleTelegram(request, env) {
     }
     if (d.indexOf('add:') === 0) return await handleAddCallback(env, update.callback_query);
     if (d.indexOf('post:') === 0) return await handlePostCallback(env, update.callback_query);
+    if (d.indexOf('srv:') === 0) return await handleSiteReviewCallback(env, update.callback_query);
 
     if (d.indexOf('maint:') === 0) {
       const on = d === 'maint:on';
@@ -314,6 +317,7 @@ export async function handleTelegram(request, env) {
     '✍️ Написать в блог': '/post',
     '🔗 Пригласить': '/invite',
     '👥 Люди': '/botstats',
+    '💬 Отзывы': '/site-reviews',
     '♻️ Сброс': '/reset',
     '🌐 Открыть сайт': '/site'
   };
@@ -467,6 +471,37 @@ export async function handleTelegram(request, env) {
         'Статус: ' + touched + ' · сайт отдаст свежую версию через 1–2 минуты.', MAIN_KB);
     } catch (e) {
       await tgSend(env, msg.chat.id, '⚠️ Ошибка обновления: ' + esc(String((e && e.message) || e)));
+    }
+    return new Response('ok');
+  }
+
+  if (cmd === '/site-reviews') {
+    try {
+      const info = await siteReviewsPending(env, 5);
+      if (!info.rows.length) {
+        await tgSend(env, msg.chat.id,
+          '💬 <b>Отзывы на сайте</b>\n\nНа проверке: 0 · опубликовано: ' + info.approved +
+          '\n\nКогда кто-то оставит отзыв на dom-mc.ru/reviews, он придёт сюда с кнопками «Опубликовать» и «Отклонить».',
+          MAIN_KB);
+        return new Response('ok');
+      }
+      await tgSend(env, msg.chat.id,
+        '💬 <b>Отзывы на сайте</b>\nНа проверке: <b>' + info.pending + '</b> · опубликовано: ' + info.approved,
+        MAIN_KB);
+      for (const r of info.rows) {
+        await tgSend(env, msg.chat.id,
+          '👤 ' + esc(r.name) + ' · ' + '★'.repeat(Number(r.rating) || 5) + '\n' +
+          '💬 ' + esc(String(r.text || '').slice(0, 700)) + '\n' +
+          '🕒 ' + esc(String(r.created_at || '')),
+          {
+            inline_keyboard: [[
+              { text: '✅ Опубликовать', callback_data: 'srv:a:' + r.id },
+              { text: '❌ Отклонить', callback_data: 'srv:r:' + r.id }
+            ]]
+          });
+      }
+    } catch (e) {
+      await tgSend(env, msg.chat.id, '⚠️ Не удалось получить отзывы: ' + esc(String((e && e.message) || e)));
     }
     return new Response('ok');
   }

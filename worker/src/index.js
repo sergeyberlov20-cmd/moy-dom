@@ -6,6 +6,7 @@ import { monitor } from "./monitor.js";
 import { remindStale } from './remind.js';
 import { releaseScheduled, postRelease } from './release.js';
 import { reviewsDry, updateYandexReviews, runReviewsCron } from './reviews.js';
+import { handleSiteReview, handleSiteReviewsGet } from './siteReviews.js';
 import { redeemInviteForPanel } from './invite.js';
 import { ghDiag } from './diag.js';
 import {
@@ -23,6 +24,8 @@ const RT = [
     return handleLead(request, env, ctx);
   }],
   ['/api/event', 'POST', handleEvent],
+  ['/api/reviews/site', 'GET', handleSiteReviewsGet],
+  ['/api/reviews/site', 'POST', handleSiteReview],
   ['/api/tg/webhook', 'POST', handleTelegram],
   ['/api/tg/queue', 'GET', handleTgQueue],
   ['/api/tg/queue', 'POST', handleTgQueue],
