@@ -53,6 +53,56 @@ export async function handleTelegram(request, env) {
 
   let update = null;
   try { update = await request.json(); } catch (e) { return new Response('bad', { status: 400 }); }
+  function _q(v) { return String(v == null ? '' : v).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+
+  // ── КОМАНДА /find: поиск по каталогу из чата ──
+  {
+    const _m = update && update.message;
+    const _t = String((_m && _m.text) || '').trim();
+    const _uid = _m && _m.from ? _m.from.id : 0;
+    if (/^\/(find|поиск)\b/i.test(_t) && isAdmin(env, _uid)) {
+      const q = _t.replace(/^\/(find|поиск)\s*/i, '').toLowerCase();
+      const rooms = (/\b(\d)\s*(?:комн|комн\.|ком)/.exec(q) || [])[1];
+      const maxPrice = (() => {
+        const mln = /(\d+(?:[.,]\d+)?)\s*млн/.exec(q);
+        if (mln) return Math.round(parseFloat(mln[1].replace(',', '.')) * 1e6);
+        const num = /до\s*(\d[\d\s]{4,})/.exec(q);
+        if (num) return Number(num[1].replace(/\s/g, ''));
+        return 0;
+      })();
+      const type = /дом/.test(q) ? 'Дом' : /участ/.test(q) ? 'Земельный участок' : /квартир/.test(q) ? 'Квартира' : '';
+      const deal = /аренд|снять|сдам/.test(q) ? 'Аренда' : '';
+
+      try {
+        const r = await fetch('https://raw.githubusercontent.com/sergeyberlov20-cmd/moy-dom/main/js/data.json');
+        const data = await r.json();
+        const arr = Array.isArray(data) ? data : (data.objects || []);
+
+        let list = arr.filter(function (o) {
+          if (rooms && Number(o.rooms) !== Number(rooms)) return false;
+          if (maxPrice && Number(o.price) > maxPrice) return false;
+          if (type && o.type !== type) return false;
+          if (deal && o.deal !== deal) return false;
+          return true;
+        }).sort(function (a, b) { return Number(a.price) - Number(b.price); }).slice(0, 6);
+
+        if (!list.length) {
+          await tgSend(env, _m.chat.id, '🔍 Ничего не нашлось по запросу: <i>' + _q(q) + '</i>');
+        } else {
+          const fmt = function (n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
+          const lines = list.map(function (o, i) {
+            return (i + 1) + '. <a href="https://dom-mc.ru/objects/' + o.id + '.html">' + o.title + '</a>\n   ' +
+              fmt(o.price) + ' ₽' + (o.deal === 'Аренда' ? '/мес' : '') + (o.area ? ' · ' + o.area + ' м²' : '');
+          }).join('\n');
+          await tgSend(env, _m.chat.id, '🔍 <b>Найдено: ' + list.length + '</b>\n' + lines);
+        }
+      } catch (e) {
+        await tgSend(env, _m.chat.id, '⚠️ Не удалось выполнить поиск: ' + e.message);
+      }
+      return new Response('ok');
+    }
+  }
+
   // ── КОМАНДА /today: сводка за сегодня ──
   {
     const _m = update && update.message;
