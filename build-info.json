@@ -1,9 +1,9 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-28T01:18:16.119Z",
- "version": "vdda2c6ed",
+ "builtAt": "2026-11-28T01:21:58.105Z",
+ "version": "v6e68ed64",
  "files": 1564,
- "hash": "76382ca57fe4afdc84898ff86a1cc08b893e5f8234958b3083960ab2b3346c6e",
+ "hash": "f830b9ca8879054ebbcaf71161a34a1358713cd1527ec81a99326196a5354fdc",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "0135563a40f3717806fddb3f047366d62594a2cd7a9773d3d7b241ce82274404",
@@ -18,8 +18,8 @@
   "blog/blog-tg-3454.html": "09a1a5137a0a799af1ed8e6c37dc91950d9b00540c91ec85c53baa158088d359",
   "blog/blog-tg-3529.html": "ea03f38e98a01df48c58378d45447f12ea4953fd5a519cb66b698e56ecb15370",
   "blog/blog-tg-3530.html": "100466887538ca09eba1e415fc8967ec17d22e51698eb3b4be6aefd27ac8c603",
-  "blog/blog-tg-3531.html": "ddc1f9bc10bb7f82cb9e1ac6276bdbbb988f072ef500b012866a0ea9904f41ef",
-  "blog/blog-tg-3547.html": "4f80d548e0a98e20a6639e67b7bfc410825390a210ed941e347bb60a2aa7104b",
+  "blog/blog-tg-3531.html": "57f3fd3a89504e44eaaadd921dfefc634564231649850d8956c204ca9e655e4e",
+  "blog/blog-tg-3547.html": "975e731939425d688fa6b6164da125c7839a3fe48f28ad0bf072d3204908534f",
   "blog/blog-tg-3568.html": "89383752b864e29efd5bb415a88243ac7cb0de70cedd5b360ae30a1d14e4b142",
   "blog/blog-vosstanovlenie.html": "6619e1939b4cfe3b87e613a83e66a56625f7018f1d53d8af48ab27a3e97724ab",
   "blog/index.html": "231aa69e6c664f1344064770a71839f014a1436e53ec14bfce573b881505f376",
@@ -1453,7 +1453,7 @@
   "js/reviews.js": "9eb60c3b56255afebc017bde67b644718c214ea177471523fc381cafb98d8d31",
   "js/site-reviews.js": "43a6d8665a004c8c61abd80ba845cba03f9f263924ead5311de11adacdf1a795",
   "js/slider.js": "c38dc99c0561bca83e1d661e3f8f53943c03187a581c11e219c06153cd1c9167",
-  "js/sw.js": "dfc4a6d41cedd5c7d9bd130c8d6b0033db0d465d2737c6b1b3e25bbaf6e274ac",
+  "js/sw.js": "f160e1c0e414e2352ef07bcc678bc7a3392f084cc31fa8766858d8c0de747bc1",
   "manifest.json": "12263af58a571e969fb57509b1b2119cc99dfa890ccddac728a7e72bd79fac1d",
   "object.html": "d7f80054e6b30078a9ac389aebf3024a2a718a6854057604c30d340589b8c0db",
   "objects/1.html": "ba64e3b327d24dba09d3456dcee7f37e73f6c29ef0dd336efc97f51be76c4a2d",
@@ -1570,5 +1570,5 @@
   "worker/wrangler.toml": "91b89ae6deb927799856dc4736981ba69de5eeb63af9798799bb7ce9b92d677b",
   "yandex_578a34d4fb2453a1.html": "2896cde629718e4846ef86fa7daf930bd3855a34789e541eaa7fe4c209c1ed58"
  },
- "signature": "89b68e09569a07f3d8606b353aaeb3a04dd4d182e4f418d78e443e2814c81884"
+ "signature": "8b3c7042529f6e63e84a6cc46f0da8876c24d1cb58d0fa077d46e0a6d73355fb"
 }
