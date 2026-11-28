@@ -1,9 +1,9 @@
 {
  "site": "dom-mc.ru",
- "builtAt": "2026-11-28T00:43:55.553Z",
- "version": "v2abe2ab1",
+ "builtAt": "2026-11-28T00:46:12.581Z",
+ "version": "v633dd3aa",
  "files": 1561,
- "hash": "93f08d16710a11ea895241122298d16d34ccae661dafe256718e64f908b3d3a5",
+ "hash": "fcbee1fd9dc1c1d8dbcca8ddc9ddb8bbe992d6b756e375b3ba13e81335a45c4a",
  "hashes": {
   ".nojekyll": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "404.html": "0135563a40f3717806fddb3f047366d62594a2cd7a9773d3d7b241ce82274404",
@@ -27,7 +27,7 @@
   "CNAME": "1bad9674717ec23875628fd389dcf282cf277fe9d185915d7a6109d4b79d7dba",
   "contacts.html": "29c03bf36d1988c7a018b803e390ab7c0f17d855eb453b041babcb9b1e12b702",
   "css/fonts.css": "4a117b8c8ace94d83a10790a632b9109a5b39bdf7c9d6d20c4e4298f7125285e",
-  "css/style.css": "aa5eddab86c1246207dd089f6732690b23fc00ff8c0b539f708a8bb498f288e1",
+  "css/style.css": "ab8c0677eb7a3f776f24dd7edb36f4b0e4a403c26fcdd3f4faa0b940a7d8221e",
   "favorites.html": "ae4bd9311b57b6e965eda425b633f32d3fc79cc1d77db24e4bc5ae3c26cf6319",
   "fonts/inter-var-cyrillic-ext.woff2": "ca157063339ac4ad418f214f3abfed119b0798ab4d377386ce5c9e5a7a435ebd",
   "fonts/inter-var-cyrillic.woff2": "71d5ee93cc1e9f1d520a3a8b66456de18c7879d8df09d57fcd2eaff75fef0075",
@@ -1452,7 +1452,7 @@
   "js/reviews-home.js": "7f1c04f7cba0abc57f94fd8e8cdd14fe349e437e073db4fd579ef01b3d1531e0",
   "js/reviews.js": "9eb60c3b56255afebc017bde67b644718c214ea177471523fc381cafb98d8d31",
   "js/slider.js": "c38dc99c0561bca83e1d661e3f8f53943c03187a581c11e219c06153cd1c9167",
-  "js/sw.js": "72078c561ab69117707a4f1720d960fbe4a83b415c46eba9a0ddda3059e6aa9d",
+  "js/sw.js": "aa19f42e8a2812f2d05dac108965ba705edb969c74273366bfe13b9959eeae66",
   "manifest.json": "12263af58a571e969fb57509b1b2119cc99dfa890ccddac728a7e72bd79fac1d",
   "object.html": "d7f80054e6b30078a9ac389aebf3024a2a718a6854057604c30d340589b8c0db",
   "objects/1.html": "ba64e3b327d24dba09d3456dcee7f37e73f6c29ef0dd336efc97f51be76c4a2d",
@@ -1567,5 +1567,5 @@
   "worker/wrangler.toml": "91b89ae6deb927799856dc4736981ba69de5eeb63af9798799bb7ce9b92d677b",
   "yandex_578a34d4fb2453a1.html": "2896cde629718e4846ef86fa7daf930bd3855a34789e541eaa7fe4c209c1ed58"
  },
- "signature": "b060283b817e8e10cb855894bcf06890ec106d95ca159c2d40d1bc865cb58fdf"
+ "signature": "4338581ffffe29385e2bdebcfa5aab7b412cf22100c25dfe355d5573e6f0a6fe"
 }
